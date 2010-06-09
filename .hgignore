@@ -1,0 +1,31 @@
+syntax: glob
+# General
+\.orig$
+\.bak$
+.*~$
+.*\.log$
+/tmp.*$
+
+# vim
+\.swp$
+
+# CMake
+/Testing/
+/CMakeFiles/
+CMakeCache.txt
+/src/test/Makefile
+/src/test/Testing/
+cmake_install.cmake$
+CTestTestfile.cmake$
+
+# Generated tests
+/results/
+/src/resources/.*/[1-9]-.*\.html$
+/src/resources/.*/SignInNormal.html$
+/src/resources/.*/SignInAdmin.html$
+/src/resources/.*/SignOut.html$
+hudson_test_wrap.sh
+
+# Imported projects
+/samples/
+/apikey$
