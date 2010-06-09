@@ -1,4 +1,4 @@
-syntax: glob
+#syntax: glob
 # General
 \.orig$
 \.bak$
@@ -29,3 +29,4 @@ hudson_test_wrap.sh
 # Imported projects
 /samples/
 /apikey$
+
