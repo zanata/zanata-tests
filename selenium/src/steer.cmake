@@ -44,6 +44,10 @@ SETTING_FILE_GET_ATTRIBUTE(BROWSERS_TO_TEST "BROWSERS_TO_TEST" "${TEST_CFG}" UNQ
 STRING(REGEX MATCHALL "[^ \t]+" BROWSERS_TO_TEST "${BROWSERS_TO_TEST}")
 MESSAGE("BROWSERS_TO_TEST=${BROWSERS_TO_TEST}")
 
+#===================================================================
+# Selenium server port: Default 4444
+SET_ENV(SELENIUM_SERVER_PORT "4444")
+
 # For hudson testing/reporting
 SETTING_FILE_GET_ATTRIBUTE(HUDSON_HOME "HUDSON_HOME" "${TEST_CFG}" UNQUOTED)
 SETTING_FILE_GET_ATTRIBUTE(FLIES_URL "FLIES_URL" "${TEST_CFG}" UNQUOTED)
@@ -138,7 +142,7 @@ SET(ALL_OUTPUT_TARGETS "")
 MACRO(ADD_OUTPUT_FOR_BROWSERS testSuiteName testRole suiteFile)
     FOREACH(browser ${BROWSERS_TO_TEST})
 	SET(BROWSER_STR "*${browser} ${${browser}_BIN}")
-	FILE(APPEND ${CTESTTEST_CMAKE} "ADD_TEST(\"${testSuiteName}.${testRole}.${browser}\" ${SELENIUM_SERVER_CMD} ${SELENIUM_SERVER_ARG} -htmlsuite \"${BROWSER_STR}\" ${BASE_URL}  ${suiteFile} ${RESULT_DIR}/${testSuiteName}.${testRole}.${browser}.html)\n")
+	FILE(APPEND ${CTESTTEST_CMAKE} "ADD_TEST(\"${testSuiteName}.${testRole}.${browser}\" ${SELENIUM_SERVER_CMD} -port ${SELENIUM_SERVER_PORT} ${SELENIUM_SERVER_ARG} -htmlsuite \"${BROWSER_STR}\" ${BASE_URL}  ${suiteFile} ${RESULT_DIR}/${testSuiteName}.${testRole}.${browser}.html)\n")
     ENDFOREACH()
 ENDMACRO()
 
