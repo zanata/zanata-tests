@@ -142,12 +142,12 @@ FILE(GLOB_RECURSE TEST_SUITES_RAW  "0-*.html")
 
 MESSAGE("TEST_SUITES_RAW=${TEST_SUITES_RAW}")
 SET(ALL_OUTPUT_TARGETS "")
-SET(SELENIUM_SERVER_ARG "${SELENIUM_SERVER_ARG} -port ${SELENIUM_SERVER_PORT} -debug -log ${TEST_LOGFILE}")
+SET(SELENIUM_SERVER_ARG "${SELENIUM_SERVER_ARG} -port ${SELENIUM_SERVER_PORT} -debug")
 
 MACRO(ADD_OUTPUT_FOR_BROWSERS testSuiteName testRole suiteFile)
     FOREACH(browser ${BROWSERS_TO_TEST})
 	SET(BROWSER_STR "*${browser} ${${browser}_BIN}")
-	FILE(APPEND ${CTESTTEST_CMAKE} "ADD_TEST(\"${testSuiteName}.${testRole}.${browser}\" ${SELENIUM_SERVER_CMD} ${SELENIUM_SERVER_ARG} -htmlsuite \"${BROWSER_STR}\" ${BASE_URL}  ${suiteFile} ${RESULT_DIR}/${testSuiteName}.${testRole}.${browser}.html)\n")
+	FILE(APPEND ${CTESTTEST_CMAKE} "ADD_TEST(\"${testSuiteName}.${testRole}.${browser}\" ${SELENIUM_SERVER_CMD} ${SELENIUM_SERVER_ARG} -log ${testSuiteName}.${testRole}.${browser}.${TEST_LOGFILE} -htmlsuite \"${BROWSER_STR}\" ${BASE_URL}  ${suiteFile} ${RESULT_DIR}/${testSuiteName}.${testRole}.${browser}.html)\n")
     ENDFOREACH()
 ENDMACRO()
 
