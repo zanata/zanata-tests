@@ -40,12 +40,22 @@
 # Get date in specified format and locale.
 #
 #-------------------------------------------------------------------
+# GET_ENV(var default_value [env])
+#     var: Variable to be set
+#     default_value: Default value of the var
+#     env: The name of environment variable. Only need if different from var.
+#
+# Get the value of a environment variable, or use default
+# if the environment variable does not exist or is empty.
+#
+#-------------------------------------------------------------------
 # SET_ENV(var default_value [env])
 #     var: Variable to be set
 #     default_value: Default value of the var
 #     env: The name of environment variable. Only need if different from var.
 #
-# Set the variable and add compiler environment.
+# Add compiler environment with a variable and its value.
+# If the variable is not defined yet, then a default value is assigned to it first.
 #
 
 IF(NOT DEFINED _BASIC_MACROS_CMAKE_)
@@ -127,20 +137,32 @@ IF(NOT DEFINED _BASIC_MACROS_CMAKE_)
 	COMMAND_OUTPUT_TO_VARIABLE(${date_var} date "${format}")
     ENDMACRO(DATE_FORMAT date_var format)
 
-    MACRO(SET_ENV var default_value)
-	SET(_env ${ARGV2})
-	SET(value ${${var}})
-	IF(_env)
-	    SET(env ${_env})
+    MACRO(GET_ENV var default_value)
+	IF(${ARGV2})
+	    SET(_env "${ARGV2}")
 	ELSE()
-	    SET(env ${var})
+	    SET(_env "${var}")
 	ENDIF()
-	IF(NOT DEFINED value)
-	    SET(value "${default_value}")
-	    SET(${var} "${value}")
-	ENDIF(NOT DEFINED value)
-	ADD_DEFINITIONS(-D${env}='"${value}"')
-    ENDMACRO(SET_ENV var default_value env)
+	IF ("$ENV{${_env}}" STREQUAL "")
+	    SET(${var} "${default_value}")
+	ELSE()
+	    SET(${var} "$ENV{${_env}}")
+	ENDIF()
+	# MESSAGE("Variable ${var}=${${var}}")
+    ENDMACRO(GET_ENV var default_value)
+
+    MACRO(SET_ENV var default_value)
+	IF(${ARGV2})
+	    SET(_env ${ARGV2})
+	ELSE()
+	    SET(_env ${var})
+	ENDIF()
+	IF(NOT DEFINED ${var})
+	    SET(${var} "${default_value}")
+	ENDIF(NOT DEFINED ${var})
+	#MESSAGE("Variable Set to ${var},${_env}=${${var}}")
+	ADD_DEFINITIONS(-D${_env}='"${${var}}"')
+    ENDMACRO(SET_ENV var default_value)
 
 ENDIF(NOT DEFINED _BASIC_MACROS_CMAKE_)
 
