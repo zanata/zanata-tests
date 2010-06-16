@@ -4,21 +4,21 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>No Search access test</title>
+<title>Issue7-NoReindexTest</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">No Search access test</td></tr>
+<tr><td rowspan="1" colspan="3">NoReindexTest</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>/flies/admin/search.seam</td>
+	<td>/flies/admin/</td>
 	<td></td>
 </tr>
 <tr>
-	<td>verifyTextNotPresent</td>
-	<td>Search</td>
+	<td>verifyElementNotPresent</td>
+	<td>//input[@value='Re-index full text search database']</td>
 	<td></td>
 </tr>
 

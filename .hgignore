@@ -19,14 +19,19 @@ cmake_install.cmake$
 CTestTestfile.cmake$
 
 # Generated tests
-/results/
-/src/resources/.*/[1-9]-.*\.html$
-/src/resources/.*/SignInNormal.html$
-/src/resources/.*/SignInAdmin.html$
-/src/resources/.*/SignOut.html$
-hudson_test_wrap.sh
+/src/.*test-suites.*/[1-9]-.*\.html$
+/src/.*test-suites.*/SignIn.*.html$
+/src/.*test-suites.*/SignOut.html$
+
+# Privilege specific
+/src/privilege-test-suites/0-.*\.html$
+/src/privilege-test-suites/.*\.normal\.html$
+/src/privilege-test-suites/.*\.prelogin\.html$
 
 # Imported projects
 /samples/
 /apikey$
+
+# result
+/results/
 

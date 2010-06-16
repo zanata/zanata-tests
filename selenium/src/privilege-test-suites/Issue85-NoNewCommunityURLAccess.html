@@ -4,42 +4,22 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>leaveDeTribe</title>
+<title>NoNewCommunityURLAccess</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">leaveDeTribe</td></tr>
+<tr><td rowspan="1" colspan="3">Issue85-NoNewCommunityURLAccess</td></tr>
 </thead><tbody>
 <tr>
-	<td>pause</td>
-	<td>5000</td>
+	<td>open</td>
+	<td>/flies/community/create/</td>
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Tribes</td>
+	<td>verifyTextNotPresent</td>
+	<td>Create a New Community</td>
 	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Deutsch (Deutschland)</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td></td>
-	<td>Leave this tribe</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>link=Leave this tribe</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td></td>
-	<td>Join this tribe</td>
 </tr>
 
 </tbody></table>
