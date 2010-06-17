@@ -8,39 +8,47 @@ fi
 echo "Generating privilege test suite.."
 TEST_CASES_PATH=$1
 
+#=========================================================
+# Functions
+function print_html_header() {
+    FILENAME=$1
+    SUITE_NAME=$2
+    cat > ${FILENAME} << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+    <title>${SUITE_NAME}</title>
+</head>
+<body>
+<table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
+<tr><td><b>${SUITE_NAME}</b></td></tr>
+EOF
+}
+
+function print_html_footer() {
+    FILENAME=$1
+    cat >> ${FILENAME} << EOF
+</tbody></table>
+</body>
+</html>
+EOF
+}
+
 source ./test.cfg
 pushd ${TEST_CASES_PATH}
 ### remove old generation file.
 rm -f Issue*.prelogin.html
 rm -f Issue*.normal.html
 
+
+HTML_HEADER_TEMPLATE
 ### Header for prelogin
-cat > ${PRESIGNIN_TEST_SUITE} << EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
-    <title>Prelogin Privilege Test Suite</title>
-</head>
-<body>
-<table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
-<tr><td><b>Prelogin Privilege Test Suite</b></td></tr>
-EOF
+print_html_header ${PRESIGNIN_TEST_SUITE} "Pre Sign-in Privilege Test Suite"
 
 ### Header for normal user
-cat > ${NORMAL_TEST_SUITE} << EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
-    <title>Normal User Privilege Test Suite</title>
-</head>
-<body>
-<table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
-<tr><td><b>Normal User Privilege Test Suite</b></td></tr>
-EOF
+print_html_header ${NORMAL_TEST_SUITE} "Normal user Privilege Test Suite"
 
 for testCase in Issue*.html;do
     ### For prelogin
@@ -64,23 +72,14 @@ for testCase in Issue*.html;do
     echo "  Case $testName is added to test suite."
 done
 
-### Footer for prelogin
-cat >> ${PRESIGNIN_TEST_SUITE} << EOF
-</tbody></table>
-</body>
-</html>
-EOF
+### Footers
+print_html_footer ${PRESIGNIN_TEST_SUITE}
+print_html_footer ${NORMAL_TEST_SUITE}
 
-### Footer for normal user
-cat >> ${NORMAL_TEST_SUITE} << EOF
-</tbody></table>
-</body>
-</html>
-EOF
+### URL_NotFound.list
 popd
 
 source ./generate_test_suite.sh NORMAL ${TEST_CASES_PATH} ${NORMAL_TEST_SUITE_NAME} ${NORMAL_TEST_SUITE_SI}  ${NORMAL_TEST_SUITE_SISO}
-
 
 echo "Done generating privilege test suite."
 
