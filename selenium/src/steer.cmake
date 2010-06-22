@@ -36,7 +36,7 @@ SET(PROJECT_DESCRIPTION "Online translator collaboration system")
 
 SETTING_FILE_GET_ALL_ATTRIBUTES("${TEST_CFG}" UNQUOTED)
 #MESSAGE("BASE_URL=${BASE_URL}")
-#MESSAGE("FLIES_URL=${FLIES_URL}")
+MESSAGE("FLIES_URL=${FLIES_URL}")
 SET(RESULT_DIR "${CTEST_SOURCE_DIRECTORY}/${RESULT_DIR}")
 SET(FUNCTIONS_DIR "${CTEST_SOURCE_DIRECTORY}/${FUNCTIONS_DIR}")
 
@@ -104,7 +104,7 @@ FOREACH(_browser ${BROWSERS_TO_TEST})
     IF("${${_browser}_BIN}" STREQUAL "NOTFOUND")
 	MESSAGE(FATAL_ERROR "Cannot find ${_browser} with ${${_browser}_BIN_NAME}, install it please.")
     ELSE()
-	# MESSAGE("${_browser}_BIN=${${_browser}_BIN}")
+	MESSAGE("${_browser}_BIN=${${_browser}_BIN}")
     ENDIF()
 ENDFOREACH()
 
@@ -114,10 +114,11 @@ ENDFOREACH()
 
 #===================================================================
 # Generate test suites.
+MESSAGE("TEST_ROOT=${TEST_ROOT}")
 FILE(GLOB_RECURSE TEST_SUITES_RAW  "${TEST_ROOT}/0-*.html")
+MESSAGE("TEST_SUITES_RAW=${TEST_SUITES_RAW}")
 SET(TEST_ROOT "${CTEST_SOURCE_DIRECTORY}/${TEST_ROOT}")
 
-MESSAGE("TEST_SUITES_RAW=${TEST_SUITES_RAW}")
 SET(SELENIUM_SERVER_ARG "${SELENIUM_SERVER_ARG} -port ${SELENIUM_SERVER_PORT} -debug")
 
 MACRO(ADD_OUTPUT_FOR_BROWSERS testSuiteName testRole suiteFile)
@@ -169,6 +170,7 @@ SET(CTESTTEST_CMAKE "${CTEST_BINARY_DIRECTORY}/CTestTestfile.cmake")
 FILE(WRITE ${CTESTTEST_CMAKE} "## Generate by CTest\n")
 
 ## General tests
+MESSAGE("Generate General tests")
 FOREACH(testSuiteRaw ${TEST_SUITES_RAW})
     GET_FILENAME_COMPONENT(testSuitePath ${testSuiteRaw} PATH)
     GET_FILENAME_COMPONENT(testSuiteNameOrig ${testSuiteRaw} NAME_WE)
