@@ -27,6 +27,7 @@ CTestTestfile.cmake$
 /src/privilege-test-suites/0-.*\.html$
 /src/privilege-test-suites/.*\.normal\.html$
 /src/privilege-test-suites/.*\.prelogin\.html$
+/src/privilege-test-suites/.*\.sh$
 
 # Imported projects
 /samples/

@@ -72,15 +72,15 @@ EOF
 
 function print_html_case_item_signin_check() {
     FILENAME=$1
-    URL=$2
-    print_html_case_item ${FILENAME} open "${URL}"
+    _url=$2
+    print_html_case_item ${FILENAME} open "${_url}"
     print_html_case_item ${FILENAME} verifyText "css=li.warnmsg" "Please log in first"
 }
 
 function print_html_case_item_permission_deny() {
     FILENAME=$1
-    URL=$2
-    print_html_case_item ${FILENAME} open "${URL}"
+    _url=$2
+    print_html_case_item ${FILENAME} open "${_url}"
     print_html_case_item ${FILENAME} verifyTextPresent "You don't have permission to access this resource"
 }
 
@@ -112,24 +112,25 @@ EOF
 	    ;;
         PERMISSION )
 	    URL=`echo "${LINE}" | cut -f 2`
+	    echo "PAT=/${FLIES_PATH}${URL}"
 	    print_html_case_item_signin_check ${OUTPUTFILE}.prelogin.html "/${FLIES_PATH}${URL}"
 	    print_html_case_item_permission_deny ${OUTPUTFILE}.normal.html "/${FLIES_PATH}${URL}"
 	    ;;
         TEXT_PRESENT )
 	    TEXT=`echo "${LINE}" | cut -f 2`
-	    print_html_case_item ${OUTPUTFILE}.normal.html vertifyTextPresent ${TEXT}
+	    print_html_case_item ${OUTPUTFILE}.normal.html verifyTextPresent ${TEXT}
 	    ;;
         TEXT_NOT_PRESENT )
 	    TEXT=`echo "${LINE}" | cut -f 2`
-	    print_html_case_item ${OUTPUTFILE}.normal.html vertifyTextNotPresent ${TEXT}
+	    print_html_case_item ${OUTPUTFILE}.normal.html verifyTextNotPresent ${TEXT}
 	    ;;
         ELEM_PRESENT )
 	    LOCATOR=`echo "${LINE}" | cut -f 2`
-	    print_html_case_item ${OUTPUTFILE}.normal.html vertifyElementPresent ${LOCATOR}
+	    print_html_case_item ${OUTPUTFILE}.normal.html verifyElementPresent ${LOCATOR}
 	    ;;
         ELEM_NOT_PRESENT )
  	    LOCATOR=`echo "${LINE}" | cut -f 2`
-	    print_html_case_item ${OUTPUTFILE}.normal.html vertifyTextNotPresent ${LOCATOR}
+	    print_html_case_item ${OUTPUTFILE}.normal.html verifyElementNotPresent ${LOCATOR}
 	    ;;
 	*)
 	    ;;

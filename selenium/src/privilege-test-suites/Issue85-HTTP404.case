@@ -1,0 +1,4 @@
+HTTP404	/admin/search.seam
+HTTP404	/admin/rolemanager.seam
+HTTP404	/admin/usermanager.seam
+

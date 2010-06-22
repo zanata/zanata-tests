@@ -1,0 +1,3 @@
+PERMISSION	/admin/
+ELEM_NOT_PRESENT	css=input[value~='Re-index']
+
