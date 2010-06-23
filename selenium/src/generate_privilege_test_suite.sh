@@ -85,7 +85,6 @@ function print_html_case_item_permission_deny() {
 }
 
 
-HTTP404_FIRSTTIME=1
 function test_case_read_line(){
     OUTPUTFILE=$1
     LINE=$2
@@ -98,17 +97,8 @@ function test_case_read_line(){
 	    break
    	    ;;
         HTTP404 )
-  	    URL=`echo "${LINE}" | cut -f 2`
-cat >> ${HTTP_404_CHECK_SCRIPT} << EOF
-ret=\`curl --fail "${FLIES_URL}${URL}" 2>&1 | grep "returned error: 404"\`
-if [ -z "\${ret}" ]; then
-    msg="Failed on: ${URL}"
-else
-    msg="Correct on: ${URL}"
-fi
-echo "\${msg}"
-echo "\${msg}" >> ${HTTP_404_CHECK_LOG_REAL}
-EOF
+	    # They are handled by http404_check.perl
+	    break
 	    ;;
         PERMISSION )
 	    URL=`echo "${LINE}" | cut -f 2`
@@ -148,17 +138,9 @@ EOF
 }
 
 source ./test.cfg
-HTTP_404_CHECK_LOG_REAL=${PWD}/${HTTP_404_CHECK_LOG}
+HTTP_404_CHECK_RESULT_REAL=${PWD}/${HTTP_404_CHECK_RESULT}
 
 pushd ${TEST_CASES_PATH}
-### Header for HTTP 404 check
-cat > ${HTTP_404_CHECK_SCRIPT} << EOF
-#!/bin/sh
-# ${HTTP_404_CHECK_SCRIPT}
-
-rm -f ${HTTP_404_CHECK_LOG_REAL}
-EOF
-
 ### remove old generation file.
 rm -f Issue*.prelogin.html
 rm -f Issue*.normal.html
@@ -197,18 +179,6 @@ done
 print_html_footer ${PRESIGNIN_TEST_SUITE}
 print_html_footer ${NORMAL_TEST_SUITE}
 
-### Footer for HTTP 404 check
-cat >> ${HTTP_404_CHECK_SCRIPT} << EOF
-ret=\`grep "Fail" ${HTTP_404_CHECK_LOG_REAL}\`
-if [ -z "\${ret}" ]; then
-    echo "All Pass"
-    exit 0
-fi
-echo "Failed"
-exit 1
-EOF
-
-chmod 755 ${HTTP_404_CHECK_SCRIPT}
 popd
 
 source ./generate_test_suite.sh NORMAL ${TEST_CASES_PATH} ${NORMAL_TEST_SUITE_NAME} ${NORMAL_TEST_SUITE_SI}  ${NORMAL_TEST_SUITE_SISO}
