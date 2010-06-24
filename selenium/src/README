@@ -9,32 +9,84 @@ Selenium Tests for flies
                 e.g. Login, Logout, go to Japanese translation...
    * Test Suite: A list of test cases for performing a certain task.
    * Test Root: The directory that contains all the tests.
-                By default, it is at the subdirectory "resources".
+                By default, it is at the subdirectory "test-suites".
+   * Privilege tests: Those tests require special care, thus are put in "privilege-test-suites".
+   * Normal tests: Non-privilege related tests are deemed to be "normal test".
 
-1. File naming convention.
-   Test case and suite files should be named according to file naming convention,
-   otherwise those test files won't be picked up by test system.
-   * Test Case: A .html file that start with an English alphabet.
-   * Test Suite: A .html file with the prefix "0-". 
-     The middle name will be use as test name. 
-     For example, name the suite "0-Tribe_JoinLeave.html",
-     if the test name "Tribe_JoinLeave" is desired.
+1. Normal test.
+   1.a File naming convention.
+      Test case and suite files should be named according to file naming convention,
+      otherwise those test files won't be picked up by test system.
+      * Test Case: A .html file that start with an English alphabet.
+      * Test Suite: A .html file with the prefix "0-".
+        The middle name will be use as test name.
+        For example, name the suite "0-Tribe_JoinLeave.html",
+        if the test name "Tribe_JoinLeave" is desired.
 
-  It's recommended that a test suite and its corresponding test cases
-  occupy their own directory. This directory should be under the test root.
+       It's recommended that a test suite and its corresponding test cases
+       occupy their own directory. This directory should be under the test root.
+
+       If the test suite is related to an issue, it's also good to include the issue number
+       in the test suite name.
+
+   1.b How to include a test suite.
+      In flies, test suites are unit of testing.
+      Following steps show how to make a test case.
+
+   Step 0: Edit selenium/src/test.cfg to suit your own need.
+           Some options are also overridable via environment variable, they are:
+           BROWSERS_TO_TEST: browser to be used to preform the test.
+                             Support value: firefox, googlechrome
+                             Default value: firefox:googlechrome
+           SELENIUM_SERVER_PORT: port for selenium server
+                             Default value: 4444
 
 
-2. How to make a test suite:
-   In flies, test suites are unit of testing.
-   Following steps show how to make a test case.
 
-   Step 1: Make a test suite and corresponding test suite in selenium IDE.
+   Step 1: Make a test suite and corresponding test cases in selenium IDE.
            Note that: test suites does not need to include login/logout functions,
                       because test system will add the them automatically.
 
-   Step 2: Run "cmake ."
-           This will pick up all the test suites and make corresponding make rules.
+   Step 2: In command line, run:
+           ctest -V -s steer.cmake
+           This will pick up all the test suites and start running tests.
 
-3. Running test:
-   Run "make test"
+2. Privilege tests
+   Privilege tests are located in the directory privilege-test-suites.
+   These test will be either be run as normal user and prelogin ( unlogined users),
+   to see if they can access resources they should not be allowed to.
+
+   2.a Type of privilege tests
+
+       There are several types of privilege tests:
+
+       HTTP404          URL that should return HTTP status 404 when visit.
+       PERMISSION       URL that should be access only by admin.
+       TEXT_PRESENT     Text to be shown.
+       TEXT_NOT_PRESENT Text not to be shown.
+       ELEM_PRESENT     Web element to be shown.
+       ELEM_NOT_PRESENT Web element not to be shown.
+
+   2.b File naming convention
+       All privilege test file should have .case extension. The filename without .case extenstion
+       is test name.
+
+   2.c File format
+       Each .case has 2 field, split by tab.
+       First field is test types, list in 2.a,
+       second filed is test data, it can be:
+         URL exclude $FLIES_URL, for HTTP404 or PERMISSION
+	 Text string for TEXT_PRESENT or TEXT_NOT_PRESENT
+	 Selenium locator for ELEM_PRESENT and ELEM_NOT_PRESENT
+
+       Each .case can have one or more lines.
+       '#' can be use to comment out lines.
+
+   2.d Include and run test.
+       Tests other than HTTP404 will be included in selenium tests,
+       i.e. grab by
+       ctest -VV -s steer.cmake
+
+       HTTP404 tests can be perform by running http404_check.sh
+
 
