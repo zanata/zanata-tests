@@ -1,5 +1,9 @@
 Selenium Tests for flies
 
+Please refer 
+http://code.google.com/p/flies/wiki/WebTestWithSelenium
+for latest documentation.
+
 * Note: This README assumes you have at least basic knowledge of selenium,
         such as using Selenium IDE to edit, load, save test cases and test suites.
         Selenium server and browsers such as firefox and/or google-chrome should also be installed.
@@ -37,7 +41,7 @@ Selenium Tests for flies
            Some options are also overridable via environment variable, they are:
            BROWSERS_TO_TEST: browser to be used to preform the test.
                              Support value: firefox, googlechrome
-                             Default value: firefox:googlechrome
+                             Default value: firefox;googlechrome
            SELENIUM_SERVER_PORT: port for selenium server
                              Default value: 4444
 
@@ -68,24 +72,23 @@ Selenium Tests for flies
        ELEM_NOT_PRESENT Web element not to be shown.
 
    2.b File naming convention
-       All privilege test file should have .case extension. The filename without .case extenstion
-       is test name.
+     Test file should be named with "Issue<IssueNum>-TestName.suite".
 
    2.c File format
-       Each .case has 2 field, split by tab.
+       Each .suite has 2 field, split by tab.
        First field is test types, list in 2.a,
        second filed is test data, it can be:
          URL exclude $FLIES_URL, for HTTP404 or PERMISSION
 	 Text string for TEXT_PRESENT or TEXT_NOT_PRESENT
 	 Selenium locator for ELEM_PRESENT and ELEM_NOT_PRESENT
 
-       Each .case can have one or more lines.
+       Each .suite can have one or more lines.
        '#' can be use to comment out lines.
 
    2.d Include and run test.
        Tests other than HTTP404 will be included in selenium tests,
        i.e. grab by
-       ctest -VV -s steer.cmake
+       ctest -V -s steer.cmake
 
        HTTP404 tests can be perform by running http404_check.sh
 

@@ -151,27 +151,27 @@ print_html_suite_header ${PRESIGNIN_TEST_SUITE} "Pre Sign-in Privilege Test Suit
 ### Header for normal user
 print_html_suite_header ${NORMAL_TEST_SUITE} "Normal user Privilege Test Suite"
 
-for testCaseRaw in Issue*.case ;do
-    # echo "testCaseRaw=${testCaseRaw}"
-    testCaseName=`basename ${testCaseRaw} .case`
-    print_html_case_header ${testCaseName}.prelogin.html "${testCaseName}"
-    print_html_case_header ${testCaseName}.normal.html "${testCaseName}"
-    cat ${testCaseRaw} | while read _line; do test_case_read_line ${testCaseName} "${_line}"; done
-    print_html_footer ${testCaseName}.prelogin.html
-    print_html_footer ${testCaseName}.normal.html
+for testSuiteRaw in *.suite ;do
+    # echo "testSuiteRaw=${testSuiteRaw}"
+    testSuiteName=`basename ${testSuiteRaw} .suite`
+    print_html_case_header ${testSuiteName}.prelogin.html "${testSuiteName}"
+    print_html_case_header ${testSuiteName}.normal.html "${testSuiteName}"
+    cat ${testSuiteRaw} | while read _line; do test_case_read_line ${testSuiteName} "${_line}"; done
+    print_html_footer ${testSuiteName}.prelogin.html
+    print_html_footer ${testSuiteName}.normal.html
 done
 
 ### For prelogin
-for testCase in Issue*.prelogin.html;do
-    testName=`basename ${testCase} .prelogin.html`
-    echo "<tr><td><a href=\"${testCase}\">${testName}</a></td></tr>" >> ${PRESIGNIN_TEST_SUITE}
+for testSuite in Issue*.prelogin.html;do
+    testName=`basename ${testSuite} .prelogin.html`
+    echo "<tr><td><a href=\"${testSuite}\">${testName}</a></td></tr>" >> ${PRESIGNIN_TEST_SUITE}
     echo "   ${testName}	added to pre sign-in tests."
 done
 
 ### For Normal user
-for testCase in Issue*.normal.html;do
-    testName=`basename ${testCase} .normal.html`
-    echo "<tr><td><a href=\"${testCase}\">${testName}</a></td></tr>" >> ${NORMAL_TEST_SUITE}
+for testSuite in Issue*.normal.html;do
+    testName=`basename ${testSuite} .normal.html`
+    echo "<tr><td><a href=\"${testSuite}\">${testName}</a></td></tr>" >> ${NORMAL_TEST_SUITE}
     echo "   ${testName}	added to normal user privilege tests."
 done
 

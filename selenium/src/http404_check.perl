@@ -16,13 +16,13 @@ if ($PRIVILEGE_TEST_ROOT eq ""){
     die 'Please source test.cfg and make sure it has PRIVILEGE_TEST_ROOT!'
 }
 
-$HTTP_404_CHECK_RESULT=$ENV{'HTTP_404_CHECK_RESULT'};
-if ($HTTP_404_CHECK_RESULT eq ""){
-    die 'Please source test.cfg and make sure it has HTTP_404_CHECK_RESULT!'
+$HTTP404_CHECK_RESULT=$ENV{'HTTP404_CHECK_RESULT'};
+if ($HTTP404_CHECK_RESULT eq ""){
+    die 'Please source test.cfg and make sure it has HTTP404_CHECK_RESULT!'
 }
 
 
-open(OUTFILE, ">$HTTP_404_CHECK_RESULT");
+open(OUTFILE, ">$HTTP404_CHECK_RESULT");
 $failed=0;
 $passed=0;
 
@@ -48,7 +48,7 @@ sub read_line{
 }
 
 ## Get all cases that have HTTP404 include.
-@files=glob("$PRIVILEGE_TEST_ROOT/*.case");
+@files=glob("$PRIVILEGE_TEST_ROOT/*.suite");
 @failedURL=();
 foreach $inf (@files){
      print "Reading $inf\n";
