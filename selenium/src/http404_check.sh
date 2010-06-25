@@ -5,6 +5,6 @@ if [ -z ${FLIES_URL} ];then
 fi
 export FLIES_URL
 export PRIVILEGE_TEST_ROOT
-export HTTP_404_CHECK_RESULT
+export HTTP404_CHECK_RESULT
 perl http404_check.perl
 

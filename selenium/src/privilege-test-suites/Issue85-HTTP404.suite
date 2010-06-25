@@ -1,4 +1,5 @@
 HTTP404	/admin/search.seam
 HTTP404	/admin/rolemanager.seam
 HTTP404	/admin/usermanager.seam
+HTTP404	/project/add_iteration.seam?projectSlug=sample-project
 

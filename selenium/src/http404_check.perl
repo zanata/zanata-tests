@@ -28,19 +28,17 @@ $passed=0;
 
 sub read_line{
     local($line)=($_[0]);
-    local($type,$url)=split(/\t/, $line);
+    local($type,$url)=split(' ', $line);
 #    print "\tTYPE=$type, URL=$url\n";
     if ($type eq "HTTP404"){
-	$ret=`curl --fail "$FLIES_URL$url" 2>&1 | grep "returned error: 404"`;
-#	print "\t\tRET=$ret\n";
-	if ( $ret eq "" ){
-	    $failed++;
-	    $msg="  Failed on: $url";
-	    push(@failedURL, $url);
-	}
-	else{
+	local(@ret)=(`curl --silent --dump-header /dev/stdout "$FLIES_URL$url"`);
+	if ( $ret[0] =~ m/HTTP\/[0-9].[0-9] 404/){
 	    $passed++;
-	    $msg="  Passed on: $url";
+	    $msg="  Passed on: $ret[0]";
+        }else{
+	    $failed++;
+	    $msg="  Failed on: $url\t$ret[0]";
+	    push(@failedURL, "$url\n");
 	}
 	print "$msg";
         print OUTFILE $msg;
@@ -68,7 +66,7 @@ close(INFILE);
 close(OUTFILE);
 if ($failed){
     print "Failed on following:\n";
-    print "@failedURL";
+    print @failedURL;
     exit 1;
 }
 print "All passed.\n";
