@@ -2,9 +2,10 @@
 # $0 <glob pattern> <searchPaths>
 
 PATTERN=$1
-SEARCH_PATHS=$2
+SEARCH_PATHS=`echo $2 | sed -e 's/ /\\ /g' | sed -e 's/\([^\\]\);/\1 /g' | sed -e 's/\\;/;/g' `
+#echo "SEARCH_PATHS=${SEARCH_PATHS}"
 
-for fileDir in $SEARCH_PATHS ;do
+for fileDir in ${SEARCH_PATHS} ;do
     dirs=`/bin/ls -d ${fileDir} 2>/dev/null`
     for fileDirM in $dirs; do
 	filePath=`find $fileDirM -name "${PATTERN}" -type f | head --lines=1`

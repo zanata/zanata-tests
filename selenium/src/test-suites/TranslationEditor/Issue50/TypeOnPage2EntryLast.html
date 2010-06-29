@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>TypeOnPage2EntryLast</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">TypeOnPage2EntryLast</td></tr>
+</thead><tbody>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=tr.TableEditorRow:last-child()&gt;td:nth-child(2)&gt;div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=tr.TableEditorRow:last-child()&gt;td:nth-child(2)&gt;div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=tr.TableEditorRow:last-child()&gt;td:nth-child(2)&gt;div&gt;textarea</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>css=tr.TableEditorRow:last-child()&gt;td:nth-child(2)&gt;div&gt;textarea</td>
+	<td>Test</td>
+</tr>
+<!--Simulate Save Hotkey (Ctrl-Enter)-->
+<tr>
+	<td>controlKeyDown</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>keyDown</td>
+	<td>css=tr.TableEditorRow:last-child()&gt;td:nth-child(2)&gt;div&gt;textarea</td>
+	<td>\13</td>
+</tr>
+<tr>
+	<td>keyPress</td>
+	<td>css=tr.TableEditorRow:last-child()&gt;td:nth-child(2)&gt;div&gt;textarea</td>
+	<td>\13</td>
+</tr>
+<tr>
+	<td>keyUp</td>
+	<td>css=tr.TableEditorRow:last-child()&gt;td:nth-child(2)&gt;div&gt;textarea</td>
+	<td>\13</td>
+</tr>
+<tr>
+	<td>controlKeyUp</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--Should be on Page3  Entry 1-->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=tr.TableEditorRow:nth-child(2)&gt;td:nth-child(2)&gt;div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>css=tr.TableEditorRow:nth-child(2)&gt;td:nth-child(2)&gt;div&gt;textarea</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

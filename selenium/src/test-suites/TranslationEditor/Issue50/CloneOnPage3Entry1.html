@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>CloneOnPage3Entry1</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">CloneOnPage3Entry1</td></tr>
+</thead><tbody>
+<!--Simulate Clone+Save Hotkey (Ctrl-End)-->
+<tr>
+	<td>controlKeyDown</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>keyDown</td>
+	<td>css=tr.TableEditorRow:nth-child(2)&gt;td:nth-child(2)&gt;div&gt;textarea</td>
+	<td>\35</td>
+</tr>
+<tr>
+	<td>keyPress</td>
+	<td>css=tr.TableEditorRow:nth-child(2)&gt;td:nth-child(2)&gt;div&gt;textarea</td>
+	<td>\35</td>
+</tr>
+<tr>
+	<td>keyUp</td>
+	<td>css=tr.TableEditorRow:nth-child(2)&gt;td:nth-child(2)&gt;div&gt;textarea</td>
+	<td>\35</td>
+</tr>
+<tr>
+	<td>controlKeyUp</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--Should move to next row-->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=tr.TableEditorRow:nth-child(3)&gt;td:nth-child(2)&gt;div&gt;textarea</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=tr.TableEditorRow:nth-child(2)&gt;td:nth-child(2)&gt;div</td>
+	<td>Refer to the &lt;filename&gt;pam_timestamp_check&lt;/filename&gt; man page for more information about destroying the timestamp file using &lt;command&gt;pam_timestamp_check&lt;/command&gt;.</td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

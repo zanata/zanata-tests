@@ -60,20 +60,11 @@ SET(MAVEN_REPOSITORY "$ENV{HOME}/.m2/repository/")
 SET(MAVEN_SELENIUM_SERVER_PATH "${MAVEN_REPOSITORY}/org/seleniumhq/selenium/server/selenium-server/")
 SET(SELENIUM_SEARCH_PATHS $ENV{HOME} ${MAVEN_SELENIUM_SERVER_PATH} /usr/share/java)
 
-SET(firefox_SEARCH_PATHS "/usr/lib64/firefox-3.6 /usr/lib/firefox-3.6 /usr/lib64/firefox-3.5 /usr/lib/firefox-3.5
-    /usr/lib64/firefox-3* /usr/lib/firefox-3* /usr/lib64/firefox* /usr/lib/firefox*")
-SET(firefox_BIN_NAME firefox)
-
-SET(opera_SEARCH_PATHS "/usr/lib64/opera /usr/lib/opera /opt/opera")
-SET(opera_BIN_NAME opera)
-
-SET(googlechrome_SEARCH_PATHS /opt/google/chrome)
-SET(googlechrome_BIN_NAME google-chrome)
 
 #===================================================================
 # Macro FIND_FILE_IN_DIRS
 MACRO(FIND_FILE_IN_DIRS var pattern searchPaths)
-    EXECUTE_PROCESS(COMMAND ${CTEST_SOURCE_DIRECTORY}/find_file_in_paths.sh ${pattern} ${searchPaths}
+    EXECUTE_PROCESS(COMMAND ${CTEST_SOURCE_DIRECTORY}/find_file_in_paths.sh ${pattern} "${searchPaths}"
 	OUTPUT_VARIABLE _result)
     IF ( _result STREQUAL "NOT_FOUND")
 	SET(${var} "NOTFOUND")
@@ -127,7 +118,7 @@ SET(SELENIUM_SERVER_ARG "${SELENIUM_SERVER_ARG} -port ${SELENIUM_SERVER_PORT} -d
 
 MACRO(ADD_OUTPUT_FOR_BROWSERS testSuiteName testRole suiteFile)
     FOREACH(browser ${BROWSERS_TO_TEST})
-	SET(BROWSER_STR "*${browser} ${${browser}_BIN}")
+	SET(BROWSER_STR "*${browser}\ ${${browser}_BIN}")
 	FILE(APPEND ${CTESTTEST_CMAKE} "ADD_TEST(\"${testSuiteName}.${testRole}.${browser}\"")
 	FILE(APPEND ${CTESTTEST_CMAKE} " ${SELENIUM_SERVER_CMD} ${SELENIUM_SERVER_ARG}")
 	FILE(APPEND ${CTESTTEST_CMAKE} " -log ${RESULT_DIR}/${testSuiteName}.${testRole}.${browser}.${TEST_LOGFILE_POSTFIX}")

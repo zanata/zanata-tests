@@ -81,7 +81,7 @@ function print_html_case_item_permission_deny() {
     FILENAME=$1
     _url=$2
     print_html_case_item ${FILENAME} open "${_url}"
-    print_html_case_item ${FILENAME} verifyTextPresent "You don't have permission to access this resource"
+    print_html_case_item ${FILENAME} verifyTextPresent "regex:You do(n't| not) have permission to access this resource"
 }
 
 
