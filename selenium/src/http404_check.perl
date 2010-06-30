@@ -40,18 +40,19 @@ sub read_line{
 	local($t0) = ([gettimeofday]);
 	`curl --silent --show-error --dump-header "$tmp_file" "$FLIES_URL/$url"`;
 	local($ret)=`head --lines=1 "$tmp_file"`;
-       	chomp($ret);
 	push(@elapseds, tv_interval($t0));
 	push(@names, $url);
-        if ( $ret =~ /HTTP\/[0-9].[0-9] 404/){
+	local($status, $desc)= ($ret =~ m|HTTP/[0-9].[0-9] ([0-9]{3}) ([^\r\n]*)|);
+	push(@statuses, $status);
+	push(@descs, $desc);
+        if ( $status eq "404"){
 	    $passed++;
-	    $msg="Passed on: $ret";
+	    $msg="Passed on: $url\tHTTP $status";
 	}else{
 	    $failed++;
-	    $msg="Failed on: $url\t$ret";
-	    push(@failedURL, "$url\n");
+	    $msg="Failed on: $url\tHTTP $status $desc";
+	    push(@failedURL, "$url");
 	}
-	push(@results, "$msg");
 	print "  $msg\n";
 	print OUTFILE "  $msg\n";
     }
@@ -59,24 +60,23 @@ sub read_line{
 
 # Print JUnit XML
 sub print_junit_xml_header{
-    local($failures,$tests,$hostname,$time)=($_[0],$_[1],$_[2],$_[3]);
+    local($hostname,$totalTime)=(@_);
     local($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=gmtime(time);
     local($timestamp)=sprintf("%04d-%02d-%02dT%02d:%02d:%02dZ", $year+1900, $mon+1, $mday, $hour,$sec);
     print XMLOUTFILE "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-    print XMLOUTFILE "<testsuite errors=\"0\" failures=\"0\" hostname=\"$hostname\" name=\"HTTP404 Check\" tests=\"$tests\" time=\"$time\" timestamp=\"$timestamp\">\n";
-    print XMLOUTFILE "  <properties>\n";
-    print XMLOUTFILE "  </properties>\n";
+    print XMLOUTFILE "<testsuite errors=\"0\" failures=\"$failed\" hostname=\"$hostname\" name=\"HTTP404 Check\" tests=\"$totalTests\" time=\"$totalTime\" timestamp=\"$timestamp\">\n";
+#    print XMLOUTFILE "  <properties>\n";
+#    print XMLOUTFILE "  </properties>\n";
 }
 
 sub print_junit_xml_case{
-    local($name,$time,$result)=($_[0],$_[1],$_[2]);
-    print XMLOUTFILE "  <testcase classname=\"$name\" name=\"$name\" time=\"$time\" ";
-    if ($result =~ /^Passed on:/){
+    local($name,$time,$status,$desc)=(@_);
+    print XMLOUTFILE "  <testcase name=\"$name\" time=\"$time\" ";
+    if ($status eq "404"){
 	print XMLOUTFILE "/>\n";
     }else{
 	print XMLOUTFILE ">\n";
-	local($error_type, $message) = $result =~ m|HTTP/[0-9].[0-9] ([0-9]{3}) (\S*)| ;
-	print XMLOUTFILE "    <error message=\"$message\" type=\"$error_type\">$result</error>\n";
+	print XMLOUTFILE "    <failure type=\"$status\" message=\"$desc\">HTTP $status $desc</failure>\n";
 	print XMLOUTFILE "  </testcase>\n";
     }
 }
@@ -89,17 +89,17 @@ sub print_junit_xml_footer{
 }
 
 sub print_junit_xml{
-    local($failures,$tests,$hostname,$out,$err)=(@_);
-    local($totaltime)=(0.0);
+    local($hostname,$out,$err)=(@_);
+    local($totalTime)=(0.0);
 
     foreach $e (@elapseds){
-	$totaltime+=$e;
+	$totalTime+=$e;
     }
 
     open(XMLOUTFILE, ">$HTTP404_CHECK_RESULT_XML");
-    print_junit_xml_header($failures,$test,$hostname,$totaltime);
-    for($i=0; $i< $#names ; ++$i){
-	print_junit_xml_case($names[$i],$elapseds[$i],$results[$i]);
+    print_junit_xml_header($hostname,$totalTime);
+    for($i=0; $i<= $#names ; ++$i){
+	print_junit_xml_case($names[$i],$elapseds[$i],$statuses[$i],$descs[$i]);
     }
     print_junit_xml_footer($out,$err);
     close(XMLOUTFILE);
@@ -119,14 +119,17 @@ foreach $inf (@files){
      close(INFILE);
 }
 
-$total=$failed+$passed;
-$summary=sprintf("%.2f",100*$failed/$total)." % failed,\t(".${failed}." out of ".${total}." failed).\n";
+$totalTests=$failed+$passed;
+$summary=sprintf("%.2f",100*$failed/$totalTests)." % failed,\t(".${failed}." out of ".${total}." failed).\n";
 print $summary;
 print OUTFILE $summary;
 close(INFILE);
 close(OUTFILE);
 if ($failed){
-    $errmsg="Failed on following:\n @failedURL";
+    $errmsg="Failed on following:\n";
+    foreach $fURL (@failedURL){
+	$errmsg=$errmsg."$fURL\n";
+    }
     print $errmsg;
     $outmsg="<![CDATA[]]>";
 }else{
@@ -140,7 +143,7 @@ unlink $tmp_file;
 print "Generating XML report...";
 ($hostname) = $FLIES_URL =~ m|http[s]?://([^/]*)| ;
 
-print_junit_xml($failures,$total,$hostname,$outmsg,$errmsg);
+print_junit_xml($hostname,$outmsg,$errmsg);
 print "Done.\n";
 
 if ($failed){
