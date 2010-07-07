@@ -4,41 +4,41 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>leaveDeTribe</title>
+<title>joinDeTeam</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">leaveDeTribe</td></tr>
+<tr><td rowspan="1" colspan="3">joinDeTeam</td></tr>
 </thead><tbody>
-<tr>
-	<td>pause</td>
-	<td>3000</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Languages</td>
-	<td></td>
-</tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Deutsch (Deutschland)</td>
 	<td></td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
-	<td>Leave this tribe</td>
-	<td></td>
-</tr>
-<tr>
 	<td>click</td>
-	<td>link=Leave this tribe</td>
+	<td>link=Join Language Team</td>
 	<td></td>
 </tr>
 <tr>
+	<td>waitForElementPresent</td>
+	<td>css=a.action_link</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseOver</td>
+	<td>css=span:contains(&quot;Languages&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=a[href*=&quot;de-De&quot;]</td>
+	<td>Deutsch (Deutschland)</td>
+</tr>
+<tr>
 	<td>verifyTextPresent</td>
-	<td>Join this tribe</td>
+	<td>Leave Language Team</td>
 	<td></td>
 </tr>
 
