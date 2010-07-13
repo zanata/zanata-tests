@@ -120,7 +120,7 @@ foreach $inf (@files){
 }
 
 $totalTests=$failed+$passed;
-$summary=sprintf("%.2f",100*$failed/$totalTests)." % failed,\t(".${failed}." out of ".${total}." failed).\n";
+$summary=sprintf("%.2f",100*$failed/$totalTests)." % failed,\t(".${failed}." out of ".${totalTests}." failed).\n";
 print $summary;
 print OUTFILE $summary;
 close(INFILE);
