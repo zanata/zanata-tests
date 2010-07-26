@@ -15,7 +15,7 @@ function FIND_PROGRAM(){
 }
 
 function set_opts(){
-    export FLIES_PUBLICAN_COMMON_OPTS="--errors --debug --user admin --key ${APIKEY}"
+    export FLIES_PUBLICAN_COMMON_OPTS="--errors --debug --user admin --key ${APIKEY_admin}"
 }
 
 function upload_(){
@@ -61,7 +61,7 @@ for pProj in $PUBLICAN_PROJECTS; do
 	    continue
 	fi
 	echo "  Flies has this project, start ${ACTION}."
-	APIKEY=`cat apikey`
+	APIKEY_admin=`cat apikey.admin`
 	NEED_NEW_APIKEY=0
     else
 	echo "  Flies does not have this project, start importing."
@@ -71,7 +71,7 @@ for pProj in $PUBLICAN_PROJECTS; do
     if [ ${NEED_NEW_APIKEY} -eq 1 ];then
         echo "Reload current apikey"
 	NEED_NEW_APIKEY=0
-	source ./get_apikey.sh ${FLIES_URL}
+	source ./get_apikey.sh
     fi
     set_opts
 
