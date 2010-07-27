@@ -32,7 +32,7 @@ for opt in $*;do
 			EMAIL=$1
 			shift
 			;;
-		--LANGUS)
+		--langs)
 			shift
 			LANGUS=$1
 			shift
@@ -51,7 +51,7 @@ for opt in $*;do
 done
 
 if [ -z ${FLIES_PUBLICAN} ];then
-	FLIES_PUBLICAN=flies_publican
+	FLIES_PUBLICAN=flies-publican
 fi
 
 
