@@ -50,6 +50,11 @@ for opt in $*;do
 	esac
 done
 
+if [ -z ${FLIES_PUBLICAN} ];then
+	FLIES_PUBLICAN=flies_publican
+fi
+
+
 if [ -z "$FLIES_URL" ]; then
     source ./test.cfg
 fi
@@ -90,7 +95,7 @@ fi
 echo "USER=$USER NAME=$NAME"
 echo "APIKEY_USER=${APIKEY_USER}"
 
-CMD="flies-publican putuser -e --debug --user admin --key \"${APIKEY_admin}\" --flies \"${FLIES_URL}\"  --name \"${NAME}\" --username \"${USER}\" --email \"${EMAIL}\" --passwordhash \"${HASH}\" --userkey \"${APIKEY_USER}\" --roles \"${ROLES}\" --langs \"${LANGUS}\""
+CMD="$FLIES_PUBLICAN putuser -e --debug --user admin --key \"${APIKEY_admin}\" --flies \"${FLIES_URL}\"  --name \"${NAME}\" --username \"${USER}\" --email \"${EMAIL}\" --passwordhash \"${HASH}\" --userkey \"${APIKEY_USER}\" --roles \"${ROLES}\" --langs \"${LANGUS}\""
 echo "CMD=$CMD"
 eval "$CMD"
 
