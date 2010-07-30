@@ -1,7 +1,16 @@
 #!/bin/sh
 # Import the sample projects
 
+if [ -n "$FLIES_URL" ]; then
+   FLIES_URL_BAK=$FLIES_URL
+fi
+
 source ./test.cfg
+# restore back environment setting
+if [ -n "$FLIES_URL_BAK" ]; then
+    FLIES_URL=$FLIES_URL_BAK
+fi
+
 NEED_NEW_APIKEY=1
 FLIES_PUBLICAN_LOG=flies_publican.log
 
