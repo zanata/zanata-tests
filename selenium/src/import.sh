@@ -28,11 +28,15 @@ function set_opts(){
 }
 
 function upload_(){
-    echo "       Uploading project"
-    _proj=$1
-    _upload_dest="${FLIES_URL}/${REST_PATH}${_proj}/iterations/i/${INIT_ITER}/documents"
-    echo "_upload_dest=${_upload_dest}"
-    ${FLIES_PUBLICAN_CMD} upload ${FLIES_PUBLICAN_COMMON_OPTS} -i --src . --dst "${_upload_dest}" >> ${FLIES_PUBLICAN_LOG}
+	echo "       Uploading project"
+	_proj=$1
+	_upload_dest="${FLIES_URL}/${REST_PATH}${_proj}/iterations/i/${INIT_ITER}/documents"
+	echo "_upload_dest=${_upload_dest}"
+	if [ $PYTHON_CLIENT -eq 1 ];then
+		${FLIES_CLIENT_CMD} push --project $_proj --iteration "${INIT_ITER}" >> ${FLIES_PUBLICAN_LOG}
+	else
+		${FLIES_CLIENT_CMD} upload ${FLIES_PUBLICAN_COMMON_OPTS} -i --src . --dst "${_upload_dest}" >> ${FLIES_PUBLICAN_LOG}
+	fi
 }
 
 # get_projects <cachefile>
@@ -51,10 +55,27 @@ function has_project(){
 }
 
 PUBLICAN_CMD=`FIND_PROGRAM publican`
-FLIES_PUBLICAN_CMD=`FIND_PROGRAM flies-publican`
+FLIES_PYTHON_CLIENT=flies
+FLIES_JAVA_CLIENT=flies-publican
+while getopts "p" ARG;	do
+	case $opt in
+		p)
+			PYTHON_CLIENT=1
+			;;
+		*)	
+			;;
+	esac
+done
+shift $((OPTIND-1));
+ACTION=$1
+if [ $PYTHON_CLIENT -eq 1 ]; then
+	FLIES_CLIENT_CMD=`FIND_PROGRAM flies`
+else
+	FLIES_CLIENT_CMD=`FIND_PROGRAM flies-publican`
+fi
+
 mkdir -p ${SAMPLE_PROJ_DIR}
 rm -f ${FILES_PUBLICAN_LOG}
-ACTION=$1
 get_projects tmp0.html
 
 for pProj in $PUBLICAN_PROJECTS; do
@@ -137,7 +158,11 @@ for pProj in $PUBLICAN_PROJECTS; do
 
     if [  -z "${ACTION}" -o "${ACTION}" = "createproj" ]; then
 	echo "   Creating project ${_proj_name}"
-	${FLIES_PUBLICAN_CMD} createproj ${FLIES_PUBLICAN_COMMON_OPTS} --flies "${FLIES_URL}" --proj "${_proj}" --name "${_proj_name}" --desc "${_proj_name}" >> ${FLIES_PUBLICAN_LOG}
+	if [ $PYTHON_CLIENT -eq 1 ];then
+		${FLIES_CLIENT_CMD} project create  "${_proj}" --name "${_proj_name}" --description "${_proj_name}" >> ${FLIES_PUBLICAN_LOG}
+	else
+		${FLIES_CLIENT_CMD} createproj ${FLIES_PUBLICAN_COMMON_OPTS} --flies "${FLIES_URL}" --proj "${_proj}" --name "${_proj_name}" --desc "${_proj_name}" >> ${FLIES_PUBLICAN_LOG}
+	fi
 
 	if [ $? -ne 0 ]; then
 	    echo "Error occurs, skip following steps!"
@@ -147,7 +172,11 @@ for pProj in $PUBLICAN_PROJECTS; do
 
     if [ -z "${ACTION}" -o "${ACTION}" = "createiter" ]; then
 	echo "       Creating project iteration as ${INIT_NAME}"
-	${FLIES_PUBLICAN_CMD} createiter ${FLIES_PUBLICAN_COMMON_OPTS} --flies "${FLIES_URL}" --proj "${_proj}" --iter "${INIT_ITER}" --name "${INIT_ITER_NAME}" --desc "${INIT_ITER_DESC}" >> ${FLIES_PUBLICAN_LOG}
+	if [ $PYTHON_CLIENT -eq 1 ];then
+		${FLIES_CLIENT_CMD} iteration create "${INIT_ITER}" --project "${_proj}" --name "${INIT_ITER_NAME}" --description "${INIT_ITER_DESC}" >> ${FLIES_PUBLICAN_LOG}
+	else
+		${FLIES_CLIENT_CMD} createiter ${FLIES_PUBLICAN_COMMON_OPTS} --flies "${FLIES_URL}" --proj "${_proj}" --iter "${INIT_ITER}" --name "${INIT_ITER_NAME}" --desc "${INIT_ITER_DESC}" >> ${FLIES_PUBLICAN_LOG}
+	fi
 
 	if [ $? -ne 0 ]; then
 	    echo "Error occurs, skip following steps!"
