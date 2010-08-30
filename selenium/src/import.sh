@@ -12,7 +12,7 @@ if [ -n "$FLIES_URL_BAK" ]; then
 fi
 
 NEED_NEW_APIKEY=1
-FLIES_PUBLICAN_LOG=flies_publican.log
+FLIES_PUBLICAN_LOG=`pwd`/flies_publican.log
 
 function FIND_PROGRAM(){
    _cmd=`which $1 2>/dev/null`
@@ -28,13 +28,16 @@ function set_opts(){
 }
 
 function upload_(){
-	echo "       Uploading project"
+	echo "       Uploading documents"
 	_proj=$1
 	_upload_dest="${FLIES_URL}/${REST_PATH}${_proj}/iterations/i/${INIT_ITER}/documents"
-	echo "_upload_dest=${_upload_dest}"
 	if [ $PYTHON_CLIENT -eq 1 ];then
-		${FLIES_CLIENT_CMD} push --project $_proj --iteration "${INIT_ITER}" >> ${FLIES_PUBLICAN_LOG}
+		for doc in pot/*.pot; do
+			echo "         Uploading $doc"
+			${FLIES_CLIENT_CMD} publican push --project $_proj --iteration "${INIT_ITER}" $doc >> ${FLIES_PUBLICAN_LOG}
+		done
 	else
+		echo "_upload_dest=${_upload_dest}"
 		${FLIES_CLIENT_CMD} upload ${FLIES_PUBLICAN_COMMON_OPTS} -i --src . --dst "${_upload_dest}" >> ${FLIES_PUBLICAN_LOG}
 	fi
 }
@@ -57,7 +60,8 @@ function has_project(){
 PUBLICAN_CMD=`FIND_PROGRAM publican`
 FLIES_PYTHON_CLIENT=flies
 FLIES_JAVA_CLIENT=flies-publican
-while getopts "p" ARG;	do
+PYTHON_CLIENT=0
+while getopts "p" opt;	do
 	case $opt in
 		p)
 			PYTHON_CLIENT=1
@@ -171,7 +175,7 @@ for pProj in $PUBLICAN_PROJECTS; do
     fi
 
     if [ -z "${ACTION}" -o "${ACTION}" = "createiter" ]; then
-	echo "       Creating project iteration as ${INIT_NAME}"
+	echo "       Creating project iteration as ${INIT_ITER_NAME}"
 	if [ $PYTHON_CLIENT -eq 1 ];then
 		${FLIES_CLIENT_CMD} iteration create "${INIT_ITER}" --project "${_proj}" --name "${INIT_ITER_NAME}" --description "${INIT_ITER_DESC}" >> ${FLIES_PUBLICAN_LOG}
 	else

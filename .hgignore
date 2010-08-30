@@ -5,6 +5,7 @@
 .*~$
 .*\.log$
 /tmp.*$
+/\.cache/
 
 # vim
 \.swp$
@@ -31,7 +32,8 @@ CTestTestfile.cmake$
 
 # Imported projects
 /samples/
-/apikey$
+/src/apikey.*
+
 
 # result
 /results/

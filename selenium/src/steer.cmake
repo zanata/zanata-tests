@@ -34,7 +34,10 @@ SET(TEST_CFG "${CTEST_BINARY_DIRECTORY}/test.cfg")
 #PROJECT(flies-selenium)
 SET(PROJECT_DESCRIPTION "Online translator collaboration system")
 
-SETTING_FILE_GET_ALL_ATTRIBUTES("${TEST_CFG}" UNQUOTED)
+IF (NOT "$ENV{BASE_URL}" STREQUAL "")
+    SET(BASE_URL $ENV{BASE_URL})
+ENDIF()
+SETTING_FILE_GET_ALL_ATTRIBUTES("${TEST_CFG}" NOREPLACE UNQUOTED)
 
 #MESSAGE("BASE_URL=${BASE_URL}")
 MESSAGE("FLIES_URL=${FLIES_URL}")
@@ -53,13 +56,11 @@ SET(TEST_ROLES ADMIN NORMAL)
 GET_ENV(SELENIUM_SERVER_PORT "4444")
 MESSAGE("SELENIUM_SERVER_PORT=${SELENIUM_SERVER_PORT}")
 
-
 #===================================================================
 # Search Paths
 SET(MAVEN_REPOSITORY "$ENV{HOME}/.m2/repository/")
 SET(MAVEN_SELENIUM_SERVER_PATH "${MAVEN_REPOSITORY}/org/seleniumhq/selenium/server/selenium-server/")
 SET(SELENIUM_SEARCH_PATHS $ENV{HOME} ${MAVEN_SELENIUM_SERVER_PATH} /usr/share/java)
-
 
 #===================================================================
 # Macro FIND_FILE_IN_DIRS
@@ -74,6 +75,15 @@ MACRO(FIND_FILE_IN_DIRS var pattern searchPaths)
     ENDIF()
 ENDMACRO()
 
+MACRO(FIND_FILES_IN_DIR var pattern searchPath)
+    EXECUTE_PROCESS(COMMAND find ${searchPath} -name "${pattern}" -printf "%p;"
+	OUTPUT_VARIABLE _result)
+    IF ( _result STREQUAL "")
+	SET(${var} "NOTFOUND")
+    ELSE()
+	SET(${var} ${_result})
+    ENDIF()
+ENDMACRO()
 
 ####################################################################
 # Dependencies
@@ -111,7 +121,9 @@ ENDFOREACH()
 #===================================================================
 # Generate test suites.
 MESSAGE("TEST_ROOT=${TEST_ROOT}")
-FILE(GLOB_RECURSE TEST_SUITES_RAW  "${TEST_ROOT}/0-*.html")
+#FILE(GLOB_RECURSE TEST_SUITES_RAW  "${TEST_ROOT}/0-*.html")
+FIND_FILES_IN_DIR(TEST_SUITES_RAW  "0-*.html" "${TEST_ROOT}")
+
 MESSAGE("TEST_SUITES_RAW=${TEST_SUITES_RAW}")
 
 SET(SELENIUM_SERVER_ARG "${SELENIUM_SERVER_ARG} -port ${SELENIUM_SERVER_PORT} -debug")

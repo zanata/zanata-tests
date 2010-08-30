@@ -8,9 +8,10 @@ siOut=$4
 siSoOut=$5
 testRoot=$6
 
-if [ -z ${FLIES_URL} ]; then
+if [ -z ${FLIES_URL} ] || [ -z ${FUNCTIONS_DIR} ]; then
     source ./test.cfg
 fi
+
 
 SI_PATTERN_MATCH="</b></td></tr>"
 case $testRole in
