@@ -13,12 +13,17 @@
 </thead><tbody>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>css=tr.TableEditorRow:nth-child(6)&gt;td:nth-child(2)</td>
+	<td>css=tr.TableEditorRow:nth-child(6)&gt;td.TableEditorCell-Target</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=tr.TableEditorRow:nth-child(6)&gt;td:nth-child(2)</td>
+	<td>css=tr.TableEditorRow:nth-child(6)&gt;td.TableEditorCell-Target</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=tr.TableEditorRow:nth-child(6)&gt;td.TableEditorCell-Target</td>
 	<td></td>
 </tr>
 <tr>
@@ -27,9 +32,29 @@
 	<td>Fedora 翻譯</td>
 </tr>
 <tr>
-	<td>keyPress</td>
-	<td>css=div:contains(^Save$)</td>
+	<td>controlKeyDown</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>keyDown</td>
+	<td>css=textarea[class='TableEditorContent-Edit']</td>
 	<td>\13</td>
+</tr>
+<tr>
+	<td>keyPress</td>
+	<td>css=textarea[class='TableEditorContent-Edit']</td>
+	<td>\13</td>
+</tr>
+<tr>
+	<td>keyUp</td>
+	<td>css=textarea[class='TableEditorContent-Edit']</td>
+	<td>\13</td>
+</tr>
+<tr>
+	<td>controlKeyUp</td>
+	<td></td>
+	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
@@ -38,7 +63,7 @@
 </tr>
 <tr>
 	<td>verifyElementPresent</td>
-	<td>css=tr.TableEditorRow:nth-child(7)&gt;td:nth-child(2)&gt;div&gt;textarea</td>
+	<td>css=tr.TableEditorRow:nth-child(7)&gt;td.TableEditorCell-Target&gt;div&gt;textarea</td>
 	<td></td>
 </tr>
 
