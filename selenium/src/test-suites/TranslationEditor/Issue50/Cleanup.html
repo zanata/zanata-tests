@@ -14,7 +14,7 @@
 <!--Remove Page 3 entry 1-->
 <tr>
 	<td>click</td>
-	<td>css=tr.TableEditorRow:nth-child(2)&gt;td:nth-child(2)&gt;div</td>
+	<td>css=tr.TableEditorRow:nth-child(2)&gt;td.TableEditorCell-Target</td>
 	<td></td>
 </tr>
 <tr>
@@ -22,14 +22,35 @@
 	<td>css=textarea[class='TableEditorContent-Edit']</td>
 	<td></td>
 </tr>
+<!--Simulate Save Hotkey (Ctrl-Enter)-->
 <tr>
-	<td>keyPress</td>
-	<td>css=div:contains(^Save$)</td>
+	<td>controlKeyDown</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>keyDown</td>
+	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target&gt;textarea</td>
 	<td>\13</td>
 </tr>
 <tr>
+	<td>keyPress</td>
+	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target&gt;textarea</td>
+	<td>\13</td>
+</tr>
+<tr>
+	<td>keyUp</td>
+	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target&gt;textarea</td>
+	<td>\13</td>
+</tr>
+<tr>
+	<td>controlKeyUp</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
 	<td>verifyText</td>
-	<td>css=tr.TableEditorRow:nth-child(2)&gt;td:nth-child(2)&gt;div</td>
+	<td>css=tr.TableEditorRow:nth-child(2)&gt;td.TableEditorCell-Target</td>
 	<td></td>
 </tr>
 <!--Move to Previous page (Page 2)-->
@@ -41,17 +62,17 @@
 <!--Clean page 2, last entry.-->
 <tr>
 	<td>waitForElementPresent</td>
-	<td>css=tr.TableEditorRow:last-child()&gt;td:nth-child(2)&gt;div</td>
+	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=tr.TableEditorRow:last-child()&gt;td:nth-child(2)&gt;div</td>
+	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>css=tr.TableEditorRow:last-child()&gt;td:nth-child(2)&gt;div&gt;textarea</td>
+	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target&gt;textarea</td>
 	<td></td>
 </tr>
 <tr>
@@ -59,10 +80,31 @@
 	<td>css=textarea[class='TableEditorContent-Edit']</td>
 	<td></td>
 </tr>
+<!--Simulate Save Hotkey (Ctrl-Enter)-->
+<tr>
+	<td>controlKeyDown</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>keyDown</td>
+	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target&gt;textarea</td>
+	<td>\13</td>
+</tr>
 <tr>
 	<td>keyPress</td>
-	<td>css=div:contains(^Save$)</td>
+	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target&gt;textarea</td>
 	<td>\13</td>
+</tr>
+<tr>
+	<td>keyUp</td>
+	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target&gt;textarea</td>
+	<td>\13</td>
+</tr>
+<tr>
+	<td>controlKeyUp</td>
+	<td></td>
+	<td></td>
 </tr>
 <!--Move to Previous page (Page 2)-->
 <tr>
@@ -72,7 +114,7 @@
 </tr>
 <tr>
 	<td>verifyText</td>
-	<td>css=tr.TableEditorRow:last-child()&gt;td:nth-child(2)&gt;div</td>
+	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target</td>
 	<td></td>
 </tr>
 
