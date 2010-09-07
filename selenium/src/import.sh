@@ -5,13 +5,17 @@ if [ -n "$FLIES_URL" ]; then
    FLIES_URL_BAK=$FLIES_URL
 fi
 
-source ./test.cfg
+if [ -n "$TEST_CONFIG_FILE" ]; then
+    source $TEST_CONFIG_FILE
+else
+    source ./test.cfg
+fi
+
 # restore back environment setting
 if [ -n "$FLIES_URL_BAK" ]; then
     FLIES_URL=$FLIES_URL_BAK
 fi
 
-NEED_NEW_APIKEY=1
 FLIES_PUBLICAN_LOG=`pwd`/flies_publican.log
 
 function FIND_PROGRAM(){
@@ -42,31 +46,40 @@ function upload_(){
 	fi
 }
 
-# get_projects <cachefile>
-function get_projects(){
-   curl --silent --output $1 ${FLIES_URL}/
-}
 
 # has_project <proj_id> <cachefile>
 function has_project(){
-   _res=`grep "<a href=\"/flies/project/view/$1" $2`
-   if [ -z "${_res}" ]; then
-       echo "FALSE"
-   else
-       echo "TRUE"
-   fi
+    proj_id=$1
+    if [ $PYTHON_CLIENT -eq 1 ]; then
+	_ret=`$FLIES_CLIENT_CMD list | grep -e "Id:\s*${proj_id}"`
+	if [ "${_ret}" = "" ]; then
+	    echo "FALSE"
+	else
+	    echo "TRUE"
+	fi
+    fi
+}
+
+# Whether the current api key valid
+function is_current_apikey_valid(){
+    _apikey_file=$1
+    if [ -f "${_apikey_file}" ];then
+	echo "TRUE"
+    else
+	echo "FALSE"
+    fi
 }
 
 PUBLICAN_CMD=`FIND_PROGRAM publican`
 FLIES_PYTHON_CLIENT=flies
 FLIES_JAVA_CLIENT=flies-publican
-PYTHON_CLIENT=0
+export PYTHON_CLIENT=0
 while getopts "p" opt;	do
 	case $opt in
 		p)
-			PYTHON_CLIENT=1
+			export PYTHON_CLIENT=1
 			;;
-		*)	
+		*)
 			;;
 	esac
 done
@@ -78,9 +91,15 @@ else
 	FLIES_CLIENT_CMD=`FIND_PROGRAM flies-publican`
 fi
 
+ret=`is_current_apikey_valid apikey.admin`
+if [ "${ret}" = "TRUE" ]; then
+    APIKEY_admin=`cat apikey.admin`
+else
+    source ./get_apikey.sh
+fi
+
 mkdir -p ${SAMPLE_PROJ_DIR}
 rm -f ${FILES_PUBLICAN_LOG}
-get_projects tmp0.html
 
 for pProj in $PUBLICAN_PROJECTS; do
     _proj=$(eval echo \$${pProj})
@@ -96,18 +115,10 @@ for pProj in $PUBLICAN_PROJECTS; do
 	fi
 	echo "  Flies has this project, start ${ACTION}."
 	APIKEY_admin=`cat apikey.admin`
-	NEED_NEW_APIKEY=0
     else
 	echo "  Flies does not have this project, start importing."
     fi
 
-    # Reload current apikey
-    if [ ${NEED_NEW_APIKEY} -eq 1 ];then
-        echo "Reload current apikey"
-	NEED_NEW_APIKEY=0
-	source ./get_apikey.sh
-    fi
-    set_opts
 
     _clone_action=
     _update_action=
