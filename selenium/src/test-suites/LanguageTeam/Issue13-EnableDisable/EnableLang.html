@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>EnableLang</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">EnableLang</td></tr>
+</thead><tbody>
+<tr>
+	<td>store</td>
+	<td>zh-CN-Hans</td>
+	<td>lang</td>
+</tr>
+<tr>
+	<td>storeElementPresent</td>
+	<td>css=tr.dr-table-row&gt;td:contains(&quot;${lang}&quot;)</td>
+	<td>langExists</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>${langExists}</td>
+	<td>AlreadyAdded</td>
+</tr>
+<!--Add new language-->
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add New Language</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>css=select</td>
+	<td>label=${lang}</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[value=Save]</td>
+	<td></td>
+</tr>
+<!--Language Added-->
+<tr>
+	<td>label</td>
+	<td>AlreadyAdded</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=tr.dr-table-row&gt;td:contains(&quot;${lang}&quot;)</td>
+	<td></td>
+</tr>
+<!--Enable language-->
+<tr>
+	<td>storeElementPresent</td>
+	<td>css=tr.dr-table-row&gt;td:contains(&quot;${lang}&quot;) ~ td &gt;a:contains(&quot;Disable&quot;)</td>
+	<td>langEnabled</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>${langEnabled}</td>
+	<td>End</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=tr.dr-table-row&gt;td:contains(&quot;${lang}&quot;) ~ td &gt;a:contains(&quot;Enable&quot;))</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>Are you sure you wish to enable this language?</td>
+	<td></td>
+</tr>
+<tr>
+	<td>chooseOkOnNextConfirmationAndWait</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>End</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
