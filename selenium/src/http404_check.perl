@@ -33,7 +33,7 @@ $failed=0;
 $passed=0;
 
 sub read_line{
-    local($line)=($_[0]);
+    local($line)= @_;
     local($type,$url)=split(' ', $line);
 #    print "\tTYPE=$type, URL=$url\n";
     if ($type eq "HTTP404"){

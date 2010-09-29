@@ -32,7 +32,7 @@ function set_opts(){
 }
 
 function upload_(){
-	echo "       Uploading documents"
+    echo "       Uploading documents"
 	_proj=$1
 	_upload_dest="${FLIES_URL}/${REST_PATH}${_proj}/iterations/i/${INIT_ITER}/documents"
 	if [ $PYTHON_CLIENT -eq 1 ];then

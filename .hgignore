@@ -1,7 +1,8 @@
 #syntax: glob
 # General
-\.orig$
 \.bak$
+\.old$
+\.orig$
 .*~$
 .*\.log$
 /tmp.*$
