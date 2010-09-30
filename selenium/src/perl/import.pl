@@ -29,10 +29,27 @@ while ( <IN> ) {
 }
 close IN;
 $ENV{FLIES_URL} = $fliesUrl if $fliesUrl;
-print "BASE_URL=$ENV{BASE_URL}\n";
-print "FLIES_PATH=$ENV{FLIES_PATH}\n";
 print "FLIES_URL=|$ENV{FLIES_URL}|\n";
-print "RESULT_DIR=$ENV{RESULT_DIR}\n";
-print "HTTP404_CHECK_RESULT=$ENV{HTTP404_CHECK_RESULT}\n";
+
+my $client=""
+# has_project <proj_id> <cachefile>
+sub has_project_python{
+    my ($proj_id, $cachefile) = @_;
+    if ($client eq "python"){
+	my $_ret=`$flies_pytho_client list | grep -e "Id:\s*${proj_id}"`
+	if ($_ret){
+	    return 1;
+	}
+	return 0;
+    }
+}
+
+sub is_current_apikey_valid(){
+    my ($_apikey_file)=@_;
+    if ( -e $_apikey_file){
+	return 1;
+    }
+    return 0;
+}
 
 
