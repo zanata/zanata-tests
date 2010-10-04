@@ -114,8 +114,10 @@ foreach my $pProj (@publicanProjects){
 	$update_action="svn up";
     }
 
+    # Clone or update
     my $proj_dir="$ENV{'SAMPLE_PROJ_DIR'}/$pProj";
     unless( $action){
+UPDATE_SRC:
 	if (-d ${proj_dir}){
 	    print "    ${proj_dir} exists, updating.\n";
 	    system("cd ${proj_dir}; $update_action");
@@ -124,6 +126,35 @@ foreach my $pProj (@publicanProjects){
 	    system("$clone_action ". $ENV{"${pProj}_URL"} . " ${proj_dir}");
 	}
     }
+
+    # Remove brand
+    unless( $action){
+REMOVE_BRAND:
+	if system('grep -e "brand:.*" publican.cfg'){
+	    print "    Removing brand.\n"
+	    system('mv publican.cfg publican.cfg.orig');
+	    system("sed -e 's/brand:.*//' publican.cfg.orig > publican.cfg");
+	}
+
+    }
+
+    if [ ! -d "pot" ]; then
+    echo "    pot does not exist, update_pot now!"
+    ${PUBLICAN_CMD} update_pot >> ${FLIES_PUBLICAN_LOG}
+    touch pot
+    fi
+
+    if [ "publican.cfg" -nt "pot" ]; then
+    echo "    "publican.cfg" is newer than "pot", update_pot needed."
+    ${PUBLICAN_CMD} update_pot >> ${FLIES_PUBLICAN_LOG}
+    fi
+
+    ${PUBLICAN_CMD}  update_po --langs="${LANGS}" >> ${FLIES_PUBLICAN_LOG}
+
+    _proj_name=$(eval echo \$${pProj}_NAME)
+_proj_desc=$(eval echo \$${pProj}_DESC)
+    fi
+
 
 }
 
