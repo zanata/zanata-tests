@@ -10,6 +10,20 @@ use strict "vars";
 use Getopt::Std;
 use Pod::Usage;
 use File::Path qw(make_path remove_tree);
+
+# Get script location
+my ($scriptDir)= ($0 =~ m|(.*)/|);
+my ($myCmd)= ($0 =~ m|/([^/]*)$|);
+require "${scriptDir}/manage_variable.pl";
+my $currDir=`pwd`;
+chomp $currDir;
+my $logFile="${currDir}/${myCmd}.log";
+
+# opt map
+my %opts=();
+getopts("pa:", \%opts);
+my $action=$opts{'a'};
+
 sub VERSION_MESSAGE {
     my $fh = shift;
     print $fh "flies import script 0.1.0 \n";
@@ -17,28 +31,21 @@ sub VERSION_MESSAGE {
 
 sub HELP_MESSAGE{
     my $fh = shift;
-    print $fh "Usage: $0 [-p] [-a action]\n";
+    print $fh "Usage: $myCmd [-p] [-a action]\n";
     print $fh "Options: p: Use flies python client.\n";
     print $fh "         a: Perform only that action.\n";
 }
-
-# opt map
-my %opts=();
-getopts("pa:", \%opts);
-my $action=$opts{'a'};
-
-# Get script location
-my ($scriptDir)= ($0 =~ m|(.*)/|);
-require "${scriptDir}/manage_variable.pl";
 
 my $fliesPythonClient="";
 my $fliesMavenClient="";
 if ($opts{'p'}){
     $fliesPythonClient=find_program(FLIES_PYTHON_CLIENT_EXE);
     die "&FLIES_PYTHON_CLIENT_EXE not found in PATH" unless $fliesPythonClient;
+    chomp $fliesPythonClient;
 }else{
     $fliesMavenClient=find_program(FLIES_MAVEN_CLIENT_EXE);
     die "&FLIES_MAVEN_CLIENT_EXE not found in PATH" unless $fliesMavenClient;
+    chomp $fliesMavenClient;
 }
 
 my $fliesUrl=set_var_with_env('FLIES_URL');
@@ -67,7 +74,6 @@ print "FLIES_URL=|$ENV{FLIES_URL}|\n";
 
 my $publicanCmd= find_program(PUBLICAN_EXE);
 
-
 # has_project <proj_id> <cachefile>
 sub has_project{
     my ($proj_id, $cachefile) = @_;
@@ -94,6 +100,7 @@ make_path($ENV{'SAMPLE_PROJ_DIR'});
 unlink $ENV{'FILES_PUBLICAN_LOG'};
 
 my @publicanProjects=split /\s/, $ENV{'PUBLICAN_PROJECTS'};
+my $errCode=0;
 foreach my $pProj (@publicanProjects){
     print "Processing project ${pProj}:".$ENV{"${pProj}_NAME"}. "\n";
     if (has_project(${pProj},"tmp0.html")){
@@ -102,6 +109,8 @@ foreach my $pProj (@publicanProjects){
 	    next;
 	}
 	print "  Flies has this project, start ${action}.\n";
+    }else{
+	print "  Flies does not have this project, start importing.\n";
     }
 
     my $clone_action="";
@@ -114,46 +123,78 @@ foreach my $pProj (@publicanProjects){
 	$update_action="svn up";
     }
 
-    # Clone or update
-    my $proj_dir="$ENV{'SAMPLE_PROJ_DIR'}/$pProj";
+    # Download src
+    my $projDir="$ENV{'SAMPLE_PROJ_DIR'}/$pProj";
     unless( $action){
-UPDATE_SRC:
-	if (-d ${proj_dir}){
-	    print "    ${proj_dir} exists, updating.\n";
-	    system("cd ${proj_dir}; $update_action");
+download_src:
+	if (-d ${projDir}){
+	    print "    ${projDir} exists, updating.\n";
+	    system("cd ${projDir}; $update_action");
 	}else{
-	    print "    ${proj_dir} does not exist, clone now.\n";
-	    system("$clone_action ". $ENV{"${pProj}_URL"} . " ${proj_dir}");
+	    print "    ${projDir} does not exist, clone now.\n";
+	    system("$clone_action ". $ENV{"${pProj}_URL"} . " ${projDir}");
 	}
     }
 
-    # Remove brand
+    # Update pot
     unless( $action){
-REMOVE_BRAND:
-	if system('grep -e "brand:.*" publican.cfg'){
-	    print "    Removing brand.\n"
-	    system('mv publican.cfg publican.cfg.orig');
+update_pot:
+	chdir($projDir);
+	# Remove brand
+	if (system("grep -e 'brand:.*' publican.cfg")==0){
+	    print "    Removing brand.\n";
+	    system("mv publican.cfg publican.cfg.orig");
 	    system("sed -e 's/brand:.*//' publican.cfg.orig > publican.cfg");
 	}
 
+	unless(-d "pot"){
+	    print "    pot does not exist, update_pot now!\n";
+	    system("${publicanCmd} update_pot >> ${logFile}");
+	    system("touch pot");
+	}
+
+	if ((stat('publican.cfg'))[9] > (stat('pot'))[9]){
+	    print "    publican.cfg is newer than pot, update_pot needed.\n";
+	    system("${publicanCmd} update_pot >> ${logFile}");
+	}
+
+	system("$publicanCmd update_po --langs=\"$ENV{'LANGS'}\" >> ${logFile}");
+	chdir($currDir);
     }
 
-    if [ ! -d "pot" ]; then
-    echo "    pot does not exist, update_pot now!"
-    ${PUBLICAN_CMD} update_pot >> ${FLIES_PUBLICAN_LOG}
-    touch pot
+    my $projName=$ENV{"${pProj}_NAME"};
+    my $projDesc=$ENV{"${pProj}_DESC"};
+
+    # Create project
+    unless($action){
+create_project:
+	print "   Creating project ${projName}\n";
+	if ($fliesPythonClient){
+	    #Python client
+	    system("${fliesPythonClient} project create \"${pProj}\" --name \"${projName}\" --description \"${projDesc}\" >> ${logFile}");
+	}
+	unless ( $? == 0){
+	    print "Error occurs, skip following steps!\n";
+	    next;
+	}
+    }
+
+    my $projName
+
+    if [ -z "${ACTION}" -o "${ACTION}" = "createiter" ]; then
+    echo "       Creating project iteration as ${INIT_ITER_NAME}"
+    if [ $PYTHON_CLIENT -eq 1 ];then
+    ${FLIES_CLIENT_CMD} iteration create "${INIT_ITER}" --project "${_proj}" --name "${INIT_ITER_NAME}" --description "${INIT_ITER_DESC}" >> ${FLIES_PUBLICAN_LOG}
+    else
+    ${FLIES_CLIENT_CMD} createiter ${FLIES_PUBLICAN_COMMON_OPTS} --flies "${FLIES_URL}" --proj "${_proj}" --iter "${INIT_ITER}" --name "${INIT_ITER_NAME}" --desc "${INIT_ITER_DESC}" >> ${FLIES_PUBLICAN_LOG}
     fi
 
-    if [ "publican.cfg" -nt "pot" ]; then
-    echo "    "publican.cfg" is newer than "pot", update_pot needed."
-    ${PUBLICAN_CMD} update_pot >> ${FLIES_PUBLICAN_LOG}
+    if [ $? -ne 0 ]; then
+    echo "Error occurs, skip following steps!"
+    continue
+    fi
     fi
 
-    ${PUBLICAN_CMD}  update_po --langs="${LANGS}" >> ${FLIES_PUBLICAN_LOG}
-
-    _proj_name=$(eval echo \$${pProj}_NAME)
-_proj_desc=$(eval echo \$${pProj}_DESC)
-    fi
 
 
 }
