@@ -101,44 +101,36 @@ unlink $ENV{'FILES_PUBLICAN_LOG'};
 
 my @publicanProjects=split /\s/, $ENV{'PUBLICAN_PROJECTS'};
 my $errCode=0;
-foreach my $pProj (@publicanProjects){
-    print "Processing project ${pProj}:".$ENV{"${pProj}_NAME"}. "\n";
-    if (has_project(${pProj},"tmp0.html")){
-	unless ($action){
-	    print "  Flies already has this project, skip importing.\n";
-	    next;
-	}
-	print "  Flies has this project, start ${action}.\n";
-    }else{
-	print "  Flies does not have this project, start importing.\n";
-    }
+
+sub getSource{
+    my ($proj, $ver) =@_;
 
     my $clone_action="";
     my $update_action="";
-    if ($ENV{"${pProj}_REPO_TYPE"} eq "git"){
+    if ($ENV{"${proj}_REPO_TYPE"} eq "git"){
 	$clone_action="git clone";
 	$update_action="git pull";
-    }elsif($ENV{"${pProj}_REPO_TYPE"} eq "svn"){
+    }elsif($ENV{"${proj}_REPO_TYPE"} eq "svn"){
 	$clone_action="svn co";
 	$update_action="svn up";
     }
 
     # Download src
-    my $projDir="$ENV{'SAMPLE_PROJ_DIR'}/$pProj";
-    unless( $action){
-download_src:
-	if (-d ${projDir}){
-	    print "    ${projDir} exists, updating.\n";
-	    system("cd ${projDir}; $update_action");
-	}else{
-	    print "    ${projDir} does not exist, clone now.\n";
-	    system("$clone_action ". $ENV{"${pProj}_URL"} . " ${projDir}");
-	}
+    my $projDir="$ENV{'SAMPLE_PROJ_DIR'}/$proj";
+
+    if (-d ${projDir}){
+	print "    ${projDir} exists, updating.\n";
+	system("cd ${projDir}; $update_action");
+    }else{
+	print "    ${projDir} does not exist, clone now.\n";
+	my $url=$ENV{"${proj}_URL"};
+	$url=~ s/%\{ver\}/${ver}/g;
+	print "url=${url}\n";
+	system("$clone_action $url ${projDir}");
     }
 
     # Update pot
     unless( $action){
-update_pot:
 	chdir($projDir);
 	# Remove brand
 	if (system("grep -e 'brand:.*' publican.cfg")==0){
@@ -162,6 +154,30 @@ update_pot:
 	chdir($currDir);
     }
 
+}
+
+foreach my $pProj (@publicanProjects){
+    print "Processing project ${pProj}:".$ENV{"${pProj}_NAME"}. "\n";
+    if (has_project(${pProj},"tmp0.html")){
+	unless ($action){
+	    print "  Flies already has this project, skip importing.\n";
+	    next;
+	}
+	print "  Flies has this project, start ${action}.\n";
+    }else{
+	print "  Flies does not have this project, start importing.\n";
+    }
+
+    my $clone_action="";
+    my $update_action="";
+    if ($ENV{"${pProj}_REPO_TYPE"} eq "git"){
+	$clone_action="git clone";
+	$update_action="git pull";
+    }elsif($ENV{"${pProj}_REPO_TYPE"} eq "svn"){
+	$clone_action="svn co";
+	$update_action="svn up";
+    }
+
     my $projName=$ENV{"${pProj}_NAME"};
     my $projDesc=$ENV{"${pProj}_DESC"};
 
@@ -179,23 +195,28 @@ create_project:
 	}
     }
 
-    my $projName
+    # Create version
+    unless($action){
+create_version:
+	my @vers=split /\s/, $ENV{"${pProj}_VERSION"};
+	foreach my $ver (@vers){
+	    print "   Creating ${projName} version $ver\n";
+	    if ($fliesPythonClient){
+		#Python client
+		system("${fliesPythonClient} iteration create $ver --project \"${pProj}\" --name \"Ver ${ver}\" --description \"Version ${ver}\" >> ${logFile}");
+	    }
 
-    if [ -z "${ACTION}" -o "${ACTION}" = "createiter" ]; then
-    echo "       Creating project iteration as ${INIT_ITER_NAME}"
-    if [ $PYTHON_CLIENT -eq 1 ];then
-    ${FLIES_CLIENT_CMD} iteration create "${INIT_ITER}" --project "${_proj}" --name "${INIT_ITER_NAME}" --description "${INIT_ITER_DESC}" >> ${FLIES_PUBLICAN_LOG}
-    else
-    ${FLIES_CLIENT_CMD} createiter ${FLIES_PUBLICAN_COMMON_OPTS} --flies "${FLIES_URL}" --proj "${_proj}" --iter "${INIT_ITER}" --name "${INIT_ITER_NAME}" --desc "${INIT_ITER_DESC}" >> ${FLIES_PUBLICAN_LOG}
-    fi
+	    if ( $? == 0){
+		getSource($pProj, $ver);
+	    }else{
+		print "Error occurs, skip following steps!\n";
+		next;
+	    }
 
-    if [ $? -ne 0 ]; then
-    echo "Error occurs, skip following steps!"
-    continue
-    fi
-    fi
+	}
 
 
+    }
 
 }
 
