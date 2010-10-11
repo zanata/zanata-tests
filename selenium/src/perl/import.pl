@@ -116,7 +116,8 @@ sub getSource{
     }
 
     # Download src
-    my $projDir="$ENV{'SAMPLE_PROJ_DIR'}/$proj";
+    my $slug=$ENV{"$proj"};
+    my $projDir="$ENV{'SAMPLE_PROJ_DIR'}/$slug";
 
     if (-d ${projDir}){
 	print "    ${projDir} exists, updating.\n";
@@ -138,6 +139,7 @@ sub getSource{
 	    system("mv publican.cfg publican.cfg.orig");
 	    system("sed -e 's/brand:.*//' publican.cfg.orig > publican.cfg");
 	}
+	print "publicanCmd=${publicanCmd}\n";
 
 	unless(-d "pot"){
 	    print "    pot does not exist, update_pot now!\n";
@@ -157,7 +159,8 @@ sub getSource{
 }
 
 foreach my $pProj (@publicanProjects){
-    print "Processing project ${pProj}:".$ENV{"${pProj}_NAME"}. "\n";
+    my $slug=$ENV{"${pProj}"};
+    print "Processing project ${slug}:".$ENV{"${pProj}_NAME"}. "\n";
     if (has_project(${pProj},"tmp0.html")){
 	unless ($action){
 	    print "  Flies already has this project, skip importing.\n";
@@ -187,7 +190,7 @@ create_project:
 	print "   Creating project ${projName}\n";
 	if ($fliesPythonClient){
 	    #Python client
-	    system("${fliesPythonClient} project create \"${pProj}\" --name \"${projName}\" --description \"${projDesc}\" >> ${logFile}");
+	    system("${fliesPythonClient} project create \"${slug}\" --name \"${projName}\" --description \"${projDesc}\" >> ${logFile}");
 	}
 	unless ( $? == 0){
 	    print "Error occurs, skip following steps!\n";
@@ -203,7 +206,7 @@ create_version:
 	    print "   Creating ${projName} version $ver\n";
 	    if ($fliesPythonClient){
 		#Python client
-		system("${fliesPythonClient} iteration create $ver --project \"${pProj}\" --name \"Ver ${ver}\" --description \"Version ${ver}\" >> ${logFile}");
+		system("${fliesPythonClient} iteration create $ver --project \"${slug}\" --name \"Ver ${ver}\" --description \"Version ${ver}\" >> ${logFile}");
 	    }
 
 	    if ( $? == 0){
