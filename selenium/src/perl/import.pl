@@ -1,12 +1,13 @@
 #!/usr/bin/env perl
-# Import the sample projects
-# Ensure it runs on RHEL5
 
 use constant FLIES_PYTHON_CLIENT_EXE => "flies";
 use constant FLIES_MAVEN_CLIENT_EXE => "mvn";
 use constant PUBLICAN_EXE => "publican";
+
+# Ensure it runs on RHEL5
 use 5.008_008;
-use strict "vars";
+
+use strict;
 use Getopt::Std;
 use Pod::Usage;
 use File::Path qw(make_path remove_tree);
@@ -102,7 +103,7 @@ unlink $ENV{'FILES_PUBLICAN_LOG'};
 my @publicanProjects=split /\s/, $ENV{'PUBLICAN_PROJECTS'};
 my $errCode=0;
 
-sub getSource{
+sub get_source{
     my ($proj, $ver) =@_;
 
     my $clone_action="";
@@ -117,7 +118,7 @@ sub getSource{
 
     # Download src
     my $slug=$ENV{"$proj"};
-    my $projDir="$ENV{'SAMPLE_PROJ_DIR'}/$slug";
+    my $projDir="$ENV{'SAMPLE_PROJ_DIR'}/$slug/$ver";
 
     if (-d ${projDir}){
 	print "    ${projDir} exists, updating.\n";
@@ -133,14 +134,13 @@ sub getSource{
     # Update pot
     unless( $action){
 	chdir($projDir);
+
 	# Remove brand
 	if (system("grep -e 'brand:.*' publican.cfg")==0){
 	    print "    Removing brand.\n";
 	    system("mv publican.cfg publican.cfg.orig");
 	    system("sed -e 's/brand:.*//' publican.cfg.orig > publican.cfg");
 	}
-	print "publicanCmd=${publicanCmd}\n";
-
 	unless(-d "pot"){
 	    print "    pot does not exist, update_pot now!\n";
 	    system("${publicanCmd} update_pot >> ${logFile}");
@@ -152,10 +152,10 @@ sub getSource{
 	    system("${publicanCmd} update_pot >> ${logFile}");
 	}
 
-	system("$publicanCmd update_po --langs=\"$ENV{'LANGS'}\" >> ${logFile}");
+	system("${publicanCmd} update_po --langs=\"$ENV{'LANGS'}\" >> ${logFile}");
 	chdir($currDir);
     }
-
+    return $projDir;
 }
 
 foreach my $pProj (@publicanProjects){
@@ -201,16 +201,17 @@ create_project:
     # Create version
     unless($action){
 create_version:
-	my @vers=split /\s/, $ENV{"${pProj}_VERSION"};
-	foreach my $ver (@vers){
-	    print "   Creating ${projName} version $ver\n";
+	my @projVers=split /\s/, $ENV{"${pProj}_VERSION"};
+	foreach my $projVer (@projVers){
+	    print "   Creating ${projName} version $projVer\n";
 	    if ($fliesPythonClient){
 		#Python client
-		system("${fliesPythonClient} iteration create $ver --project \"${slug}\" --name \"Ver ${ver}\" --description \"Version ${ver}\" >> ${logFile}");
+		system("${fliesPythonClient} iteration create $projVer --project \"${slug}\" --name \"Ver ${projVer}\" --description \"Version ${projVer}\" >> ${logFile}");
 	    }
 
 	    if ( $? == 0){
-		getSource($pProj, $ver);
+		my $projDir=get_source($pProj, $projVer);
+		system("$scriptDir/upload_pot.pl $projDir $slug $projVer");
 	    }else{
 		print "Error occurs, skip following steps!\n";
 		next;

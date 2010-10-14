@@ -11,6 +11,7 @@ sub set_var_with_env{
 sub find_program{
     my ($progName) = @_;
     my $_ret=`which ${progName} 2>/dev/null`;
+    chomp $_ret;
     die "Error: ${progName} cannot be found is PATH!" unless $_ret;
     return $_ret;
 }
