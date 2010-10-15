@@ -32,10 +32,10 @@ CTestTestfile.cmake$
 /src/privilege-test-suites/.*\.sh$
 
 # Imported projects
-/samples/
-/src/apikey.*
+samples/
+apikey.*
 
 
 # result
 /results/
-
+tmpc00

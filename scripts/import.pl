@@ -32,9 +32,11 @@ sub VERSION_MESSAGE {
 
 sub HELP_MESSAGE{
     my $fh = shift;
-    print $fh "Usage: $myCmd [-p] [-a action]\n";
+    print $fh "Usage: $myCmd [-p] [-a action] [configFile]\n";
     print $fh "Options: p: Use flies python client.\n";
     print $fh "         a: Perform only that action.\n";
+    print $fh "         configFile: configuration file to be loaded.\n";
+    print $fh "                     default value: test.cfg\n";
 }
 
 my $fliesPythonClient="";
@@ -50,11 +52,12 @@ if ($opts{'p'}){
 }
 
 my $fliesUrl=set_var_with_env('FLIES_URL');
-my $TEST_CONFIG_FILE=set_var_with_env('TEST_CONFIG_FILE','./test.cfg');
-print "TEST_CONFIG_FILE=${TEST_CONFIG_FILE}\n";
+
+my $testConfigFile=($ARGV[0]) ? $ARGV[0]: "test.cfg";
+print "testConfigFile=${testConfigFile}\n";
 
 # Load config file
-open IN, "<", "${TEST_CONFIG_FILE}" or die "Test config file ${TEST_CONFIG_FILE} not found!\n";
+open IN, "<", "${testConfigFile}" or die "Test config file ${testConfigFile} not found!\n";
 while ( <IN> ) {
     chomp;
     next if ($_ eq "");
@@ -91,7 +94,7 @@ sub has_project{
 
 my $apikey="";
 unless (is_current_apikey_valid("apikey.admin")){
-    system("./get_apikey.sh");
+    system("${scriptDir}/get_apikey.sh");
 }
 open(KEYFILE, "apikey.admin");
 $apikey=<KEYFILE>;
