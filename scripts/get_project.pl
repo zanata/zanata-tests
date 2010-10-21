@@ -5,7 +5,7 @@ use strict;
 my $currDir=`pwd`;
 chomp $currDir;
 
-my ($projBase, $proj, $projName, $projDesc, $ver, $scm, $url)=@ARGV;
+my ($projBase, $proj, $scm, $url)=@ARGV;
 my $projDir="$projBase/$proj";
 my $clone_action="";
 my $update_action="";
@@ -19,7 +19,7 @@ if ($scm eq "git"){
 }
 
 # Download src
-my @vers= split /\s/, $ver;
+#my @vers= split /\s/, $ver;
 
 
 if (-d ${projDir}){
