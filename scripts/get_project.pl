@@ -2,10 +2,14 @@
 # Ensure it runs on RHEL5
 use 5.008_008;
 use strict;
+use Getopt::Std;
+use Pod::Usage;
+use File::Path qw(make_path remove_tree);
+
 my $currDir=`pwd`;
 chomp $currDir;
 
-my ($projBase, $proj, $scm, $url)=@ARGV;
+my ($projBase, $proj, $scm, $ver, $url)=@ARGV;
 my $projDir="$projBase/$proj";
 my $clone_action="";
 my $update_action="";
@@ -18,17 +22,14 @@ if ($scm eq "git"){
     $update_action="svn up";
 }
 
-# Download src
-#my @vers= split /\s/, $ver;
-
-
-if (-d ${projDir}){
-    print "    ${projDir} exists, updating.\n";
-    system("cd ${projDir};$update_action");
+if (-d "${projDir}/$ver"){
+    print "    ${projDir}/$ver exists, updating.\n";
+    system("cd ${projDir}/$ver;$update_action");
 }else{
-    print "    ${projDir} does not exist, clone now.\n";
-    system("$clone_action $url $projDir");
+    print "    ${projDir}/$ver does not exist, clone now.\n";
+    system("$clone_action $url $projDir/$ver");
+    if ($scm eq "git"){
+	system("cd ${projDir}/$ver;git checkout $ver");
+    }
 }
-
-
 

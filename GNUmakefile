@@ -1,121 +1,199 @@
 FLIES_PYTHON_CLIENT=flies
 FLIES_MAVEN_CLIENT=mvn
+
+# Deployment Guide
+DeploymentGuide_REPO_TYPE:=git
+DeploymentGuide_NAME:="Fedora Deployment Guide"
+DeploymentGuide_DESC:="The Fedora Deployment Guide"
+DeploymentGuide_VERS:=f13 f14
+DeploymentGuide_URL_f13:="git://git.fedorahosted.org/docs/deployment-guide.git"
+DeploymentGuide_URL_f14:="git://git.fedorahosted.org/docs/deployment-guide.git"
+
+# Documentation tools and utilities
+DocUtils_REPO_TYPE:=git
+DocUtils_NAME:="Documentation tools and utilities"
+DocUtils_DESC:="Fedora Documentation tools and utilities"
+DocUtils_VERS:=f13 f14
+DocUtils_URL_f13:="git://git.fedorahosted.org/docs/fedora-doc-utils.git"
+DocUtils_URL_f14:="git://git.fedorahosted.org/docs/fedora-doc-utils.git"
+
+# Release Notes
+ReleaseNotes_REPO_TYPE:=git
+ReleaseNotes_NAME:="Fedora Release Notes"
+ReleaseNotes_DESC:="Fedora Documentation - Release Notes"
+ReleaseNotes_VERS:=f13 f14
+ReleaseNotes_URL_f13:="git://git.fedorahosted.org/git/docs/release-notes.git"
+ReleaseNotes_URL_f14:="git://git.fedorahosted.org/git/docs/release-notes.git"
+
 # Security Guide
-SecurityGuide:=SecurityGuide
 SecurityGuide_REPO_TYPE:=svn
-SecurityGuide_VERSION:=trunk
-SecurityGuide_URL:="http://svn.fedorahosted.org/svn/securityguide/community/trunk"
-SecurityGuide_NAME:="Security Guide of Fedora"
-SecurityGuide_DESC:="Security Guide of Fedora"
+SecurityGuide_NAME:="Fedora Security Guide"
+SecurityGuide_DESC:="Fedora Documentation - Security Guide"
+SecurityGuide_VERS:=trunk
+SecurityGuide_URL_trunk:="http://svn.fedorahosted.org/svn/securityguide/community/trunk"
 
-# Release Note
-ReleaseNote:=ReleaseNote
-ReleaseNote_VERSION:=f13 f14
-ReleaseNote_REPO_TYPE:=git
-ReleaseNote_URL:="git://git.fedorahosted.org/git/docs/release-notes.git"
-ReleaseNote_NAME:="Fedora Release Note"
-ReleaseNote_DESC:="Fedora Release Note"
-
-#PUBLICAN_PROJECTS="ReleaseNote SecurityGuide_F13 PROJ_ABOUT_FEDORA"
-#PUBLICAN_PROJECTS=ReleaseNote SecurityGuide
-.SUFFIXES:
+# Selinux Guide
+SELinuxGuide_REPO_TYPE:=svn
+SELinuxGuide_NAME:="Fedora SELinux Guide"
+SELinuxGuide_DESC:="Fedora Documentation - SELinux Guide"
+SELinuxGuide_VERS:=trunk f13
+SELinuxGuide_URL_trunk:="http://svn.fedorahosted.org/svn/selinuxguide/community/trunk/SELinux_User_Guide"
+SELinuxGuide_URL_f13:="http://svn.fedorahosted.org/svn/selinuxguide/community/branches/f13/SELinux_User_Guide"
 
 SAMPLE_PROJ_DIR:=samples
-
 LANGS:=zh-CN,zh-TW
 LANG_LIST:=zh-CN zh-TW
-PUBLICAN_PROJECTS:= SecurityGuide ReleaseNote
-PUBLICAN_PROJECT_DIRS:=$(addprefix $(SAMPLE_PROJ_DIR)/,$(PUBLICAN_PROJECTS))
 
+proj_vers=$(foreach ver,${${1}_VERS},${SAMPLE_PROJ_DIR}/${1}/${ver})
+PYTHON_PROJECTS:=DeploymentGuide DocUtils
+PYTHON_PROJECT_DIRS:=$(foreach proj,${PYTHON_PROJECTS},$(call proj_vers,${proj}))
+
+MVN_PROJECTS:=ReleaseNotes SecurityGuide SELinuxGuide
+MVN_PROJECT_DIRS:=$(foreach proj,${MVN_PROJECTS},$(call proj_vers,${proj}))
+
+PUBLICAN_PROJECTS:= ${PYTHON_PROJECTS} ${MVN_PROJECTS}
+PUBLICAN_PROJECT_DIRS:=${PYTHON_PROJECT_DIRS} ${MVN_PROJECT_DIRS}
+
+PUBLICAN_CFG_STAMP:=publican.cfg.stamp
 
 PYTHON_STAMP:=python.stamp
-VERS_PYTHON_STAMP:=.vers.${PYTHON_STAMP}
 PROJ_PYTHON_STAMP:=.proj.${PYTHON_STAMP}
+VERS_PYTHON_STAMP:=.vers.${PYTHON_STAMP}
 POT_UPLOADED_PYTHON_STAMP:=.pot.${PYTHON_STAMP}
 PO_UPLOADED_PYTHON_STAMP:=.po.${PYTHON_STAMP}
 
+MVN_STAMP:=mvn.stamp
+PROJ_MVN_STAMP:=.proj.${MVN_STAMP}
+VERS_MVN_STAMP:=.vers.${MVN_STAMP}
+POT_UPLOADED_MVN_STAMP:=.pot.${MVN_STAMP}
+PO_UPLOADED_MVN_STAMP:=.po.${MVN_STAMP}
+
 #include test.cfg
 
-.PHONY: get_projects create_vers_python create_projs_python
-
+.SUFFIXES:
+.PHONY: ${PUBLICAN_PROJECTS}
 
 all:
 
 force: ;
 
+#####################################################################
+# Python Client
+#
+$(addsuffix /${PO_UPLOADED_PYTHON_STAMP}, ${PYTHON_PROJECT_DIRS}) :\
+    ${SAMPLE_PROJ_DIR}/%/${PO_UPLOADED_PYTHON_STAMP}:\
+    ${SAMPLE_PROJ_DIR}/%/${POT_UPLOADED_PYTHON_STAMP}
+	@echo "  [Python] Uploading po for proj $(*D) ver $(*F)"
+	for l in ${LANG_LIST}; do \
+	    for doc in $(@D)/$$l/*.po; do \
+		echo "      Uploading po $$doc";\
+		flies publican update --project-id $(*D) --version-id $(*F) $$doc; \
+	    done; \
+	done && touch $@
 
+$(addsuffix /${POT_UPLOADED_PYTHON_STAMP}, ${PYTHON_PROJECT_DIRS}) :\
+    ${SAMPLE_PROJ_DIR}/%/${POT_UPLOADED_PYTHON_STAMP}:\
+    ${SAMPLE_PROJ_DIR}/%/${VERS_PYTHON_STAMP}
+	@echo "  [Python] Uploading pot for proj $(*D) ver $(*F)"
+	for doc in $(@D)/pot/*.pot; do \
+	    echo "      Uploading pot $$doc";\
+	    flies publican push --project-id $(*D) --version-id $(*F) $$doc; \
+	done &&	touch $@
+
+$(addsuffix /${VERS_PYTHON_STAMP}, ${PYTHON_PROJECT_DIRS}):\
+    ${SAMPLE_PROJ_DIR}/%/${VERS_PYTHON_STAMP}:\
+    ${SAMPLE_PROJ_DIR}/%/${PROJ_PYTHON_STAMP}
+	@echo "  [Python] Creating versions: proj $(*D) ver $(*F)"
+	flies iteration create --version-id $(*F) --project-id $(*D) --version-name "Ver $(*F)" --version-desc "Desc of Ver $(*D)" && touch $@
+
+$(addsuffix /${PROJ_PYTHON_STAMP}, ${PYTHON_PROJECT_DIRS}):\
+    ${SAMPLE_PROJ_DIR}/%/${PROJ_PYTHON_STAMP}:\
+    ${SAMPLE_PROJ_DIR}/%/pot ${SAMPLE_PROJ_DIR}/%/update_po
+	@echo "  [Python] Creating versions: proj $(*D)"
+	flies project create --project-id $(*D) --project-name ${$(*D)_NAME} --project-desc ${$(*D)_DESC} && touch $@
+
+${PYTHON_PROJECTS}: % : ${SAMPLE_PROJ_DIR}/%/${POT_UPLOADED_PYTHON_STAMP}
+
+#####################################################################
+# Mvn Client
+#
+$(addsuffix /${PO_UPLOADED_MVN_STAMP}, ${MVN_PROJECT_DIRS}) :\
+    ${SAMPLE_PROJ_DIR}/%/${PO_UPLOADED_MVN_STAMP}:\
+    ${SAMPLE_PROJ_DIR}/%/${POT_UPLOADED_MVN_STAMP}
+	@echo "  [Mvn] Uploading po for proj $(*D) ver $(*F)"
+	for l in ${LANG_LIST}; do \
+	    for doc in $(@D)/$$l/*.po; do \
+		echo "      Uploading po $$doc";\
+		flies publican update --project-id $(*D) --version-id $(*F) $$doc; \
+	    done; \
+	done && touch $@
+
+$(addsuffix /${POT_UPLOADED_MVN_STAMP}, ${MVN_PROJECT_DIRS}) :\
+    ${SAMPLE_PROJ_DIR}/%/${POT_UPLOADED_MVN_STAMP}:\
+    ${SAMPLE_PROJ_DIR}/%/${VERS_MVN_STAMP}
+	@echo "  [Mvn] Uploading pot for proj $(*D) ver $(*F)"
+	for doc in $(@D)/pot/*.pot; do \
+	    echo "      Uploading pot $$doc";\
+	    flies publican push --project-id $(*D) --version-id $(*F) $$doc; \
+	done &&	touch $@
+
+$(addsuffix /${VERS_MVN_STAMP}, ${MVN_PROJECT_DIRS}):\
+    ${SAMPLE_PROJ_DIR}/%/${VERS_MVN_STAMP}:\
+    ${SAMPLE_PROJ_DIR}/%/${PROJ_MVN_STAMP}
+	@echo "  [Mvn] Creating versions: proj $(*D) ver $(*F)"
+	flies iteration create --version-id $(*F) --project-id $(*D) --version-name "Ver $(*F)" --version-desc "Desc of Ver $(*D)" && touch $@
+
+$(addsuffix /${PROJ_MVN_STAMP}, ${MVN_PROJECT_DIRS}):\
+    ${SAMPLE_PROJ_DIR}/%/${PROJ_MVN_STAMP}:\
+    ${SAMPLE_PROJ_DIR}/%/flies.xml
+	@echo "  [Mvn] Creating versions: proj $(*D)"
+	flies project create --project-id $(*D) --project-name ${$(*D)_NAME} --project-desc ${$(*D)_DESC} && touch $@
+
+
+$(addsuffix /flies.xml,${MVN_PROJECT_DIRS}):\
+    ${SAMPLE_PROJ_DIR}/%/flies.xml:\
+    ${SAMPLE_PROJ_DIR}/%/pot ${SAMPLE_PROJ_DIR}/%/update_po
+	perl scripts/generate_flies_xml.pl samples SELinuxGuide trunk ${LANG_LIST}
+
+${MVN_PROJECTS}: % : $(addsuffix ${PO_UPLOADED_MVN_STAMP},$(call proj_vers,%))
+
+
+#####################################################################
+# Common config
+#
 ${SAMPLE_PROJ_DIR}:
 	mkdir -p ${SAMPLE_PROJ_DIR}
 
-$(addsuffix /${PO_UPLOADED_PYTHON_STAMP}, ${PUBLICAN_PROJECT_DIRS}) : ${SAMPLE_PROJ_DIR}/%/${PO_UPLOADED_PYTHON_STAMP}: ${SAMPLE_PROJ_DIR}/%/${POT_UPLOADED_PYTHON_STAMP}
-	@echo "  [Python] Uploading po for $*"
-	for v in ${$*_VERSION};do \
-		echo "    Uploading for Ver $$v";\
-		perl scripts/switch_version.pl ${SAMPLE_PROJ_DIR} $* ${$*_REPO_TYPE} $$v; \
-		for l in ${LANG_LIST}; do \
-			for doc in $(@D)/$$l/*.po; do \
-				echo "      Uploading po $$doc";\
-				flies publican update --project $* --iteration $$v  $$doc; \
-			done; \
-		done; \
-	done
-	touch $@
-
-$(addsuffix /${POT_UPLOADED_PYTHON_STAMP}, ${PUBLICAN_PROJECT_DIRS}) : ${SAMPLE_PROJ_DIR}/%/${POT_UPLOADED_PYTHON_STAMP}: ${SAMPLE_PROJ_DIR}/%/${VERS_PYTHON_STAMP}
-	@echo "  [Python] Uploading pot for $*"
-	for v in ${$*_VERSION};do \
-		echo "    Uploading for Ver $$v";\
-		perl scripts/switch_version.pl ${SAMPLE_PROJ_DIR} $* ${$*_REPO_TYPE} $$v; \
-		for doc in $(@D)/pot/*.pot; do \
-			echo "      Uploading pot $$doc";\
-			flies publican push $$doc --project $* --iteration $$v $$doc; \
-		done; \
-	done
-	touch $@
-
-$(addsuffix /${VERS_PYTHON_STAMP}, ${PUBLICAN_PROJECT_DIRS}): ${SAMPLE_PROJ_DIR}/%/${VERS_PYTHON_STAMP}: ${SAMPLE_PROJ_DIR}/%/${PROJ_PYTHON_STAMP}
-	@echo "  [Python] Creating versions of $*"
-	for v in ${$*_VERSION};do \
-		echo "    Create Ver $$v";\
-		flies iteration create $$v --project $* --name "Ver $$v" --description "Desc of Ver $$v";\
-	done
-	touch $@
-
-$(addsuffix /${PROJ_PYTHON_STAMP}, ${PUBLICAN_PROJECT_DIRS}): ${SAMPLE_PROJ_DIR}/%/${PROJ_PYTHON_STAMP}:
-	@echo "  [Python] Creating project $*:${$*_NAME}"
-	flies project create  $* --name ${$*_NAME} --description ${$*_DESC}
-	touch $@
+$(addprefix ${SAMPLE_PROJ_DIR}/,${PUBLICAN_PROJECTS}): ${SAMPLE_PROJ_DIR}/% : $(call proj_vers,%)
 
 ${PUBLICAN_PROJECT_DIRS}: ${SAMPLE_PROJ_DIR}/% : | ${SAMPLE_PROJ_DIR}
-	@echo "   Get sources of $(@F):${$(@F)_NAME}"
-	perl scripts/get_project.pl ${SAMPLE_PROJ_DIR} $(@F) ${$(@F)_REPO_TYPE} {$(@F)_URL}
+	@echo "   Get sources of $* $(*D):${$(*D)_NAME}"
+	perl scripts/get_project.pl ${SAMPLE_PROJ_DIR} $(*D) ${$(*D)_REPO_TYPE} $(*F) ${$(*D)_URL_$(*F)}
 
-%/publican.cfg.stamp: %/publican.cfg
+$(addsuffix /publican.cfg,${PUBLICAN_PROJECT_DIRS}):\
+    ${SAMPLE_PROJ_DIR}/%/publican.cfg: ${SAMPLE_PROJ_DIR}/%
+
+$(addsuffix /${PUBLICAN_CFG_STAMP},${PUBLICAN_PROJECT_DIRS}):\
+    ${SAMPLE_PROJ_DIR}/%/${PUBLICAN_CFG_STAMP}: ${SAMPLE_PROJ_DIR}/%/publican.cfg
 	if grep -e 'brand:.*' $(@D)/publican.cfg; then \
 	    echo "    Removing brand"; \
-	    mv $(@D)/publican.cfg $(@D)/publican.cfg.stamp; \
-	    sed -e 's/brand:.*//' $(@D)/publican.cfg.stamp > $(@D)/publican.cfg; \
-	else \
-	    cp $(@D)/publican.cfg $(@D)/publican.cfg.stamp; \
-	fi
+	    mv $(@D)/publican.cfg $(@D)/${PUBLICAN_CFG_STAMP}; \
+	    sed -e 's/brand:.*//' $(@D)/${PUBLICAN_CFG_STAMP} > $(@D)/publican.cfg; \
+	    else \
+	    cp $(@D)/publican.cfg $(@D)/${PUBLICAN_CFG_STAMP}; \
+	    fi
 
-%/pot: % %/publican.cfg.stamp force
+$(addsuffix /pot,${PUBLICAN_PROJECT_DIRS}):\
+    ${SAMPLE_PROJ_DIR}/%/pot: ${SAMPLE_PROJ_DIR}/%/${PUBLICAN_CFG_STAMP}
 	cd $(@D); publican update_pot; touch pot
 
-%/update_po: force
+$(addsuffix /update_po,${PUBLICAN_PROJECT_DIRS}):\
+    ${SAMPLE_PROJ_DIR}/%/update_po: ${SAMPLE_PROJ_DIR}/%/pot
 	cd $(@D); publican update_po --langs "$(LANGS)"
 
-get_projects: ${PUBLICAN_PROJECT_DIRS}
 
-update_pots: get_projects $(addsuffix /pot, ${PUBLICAN_PROJECT_DIRS})
-
-update_pos: update_pots $(addsuffix /update_po, ${PUBLICAN_PROJECT_DIRS})
-
-create_projs_python: $(addsuffix /${PROJ_PYTHON_STAMP}, ${PUBLICAN_PROJECT_DIRS})
-
-create_vers_python: $(addsuffix /${VERS_PYTHON_STAMP}, ${PUBLICAN_PROJECT_DIRS})
-
-upload_pots_python: $(addsuffix /${POT_UPLOADED_PYTHON_STAMP}, ${PUBLICAN_PROJECT_DIRS})
-
-upload_pos_python: $(addsuffix /${PO_UPLOADED_PYTHON_STAMP}, ${PUBLICAN_PROJECT_DIRS})
+show:
+	echo "PYTHON_PROJECT_DIRS=${PYTHON_PROJECT_DIRS}"
+	echo "MVN_PROJECT_DIRS=${MVN_PROJECT_DIRS}"
+	echo "PUBLICAN_PROJECT_DIRS=${PUBLICAN_PROJECT_DIRS}"
 
