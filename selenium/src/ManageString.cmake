@@ -1,55 +1,113 @@
 # - Collection of String utility macros.
 # Defines the following macros:
-#   STRING_TRIM(var str [NOUNQUOTED])
-#     - Trim a string by removing the leading and trailing spaces,
-#       just like STRING(STRIP ...) in CMake 2.6 and later.
-#       This macro is needed as CMake 2.4 does not support STRING(STRIP ..)
-#       * Parameters:
-#          var: A variable that stores the result.
-#          str: A string.
-#          UNQUOTED: (Optional) remove the double quote mark around the string.
+#   STRING_TRIM(var str [NOUNQUOTE])
+#   - Trim a string by removing the leading and trailing spaces,
+#     just like STRING(STRIP ...) in CMake 2.6 and later.
+#     This macro is needed as CMake 2.4 does not support STRING(STRIP ..)
+#     This macro also remove quote and double quote marks around the string,
+#     unless NOUNQUOTE is defined.
+#     * Parameters:
+#       + var: A variable that stores the result.
+#       + str: A string.
+#       + NOUNQUOTE: (Optional) do not remove the double quote mark around the string.
 #
+#   STRING_UNQUOTE(var str)
+#   - Remove double quote marks and quote marks around a string.
+#     * Parameters:
+#       + var: A variable that stores the result.
+#       + str: A string.
+#
+#   STRING_JOIN(var delimiter str_list [str...])
+#   - Concatenate strings, with delimiter inserted between strings.
+#     * Parameters:
+#       + var: A variable that stores the result.
+#       + str_list: A list of string.
+#       + str: (Optional) more string to be join.
+#
+#   STRING_SPLIT(var delimiter str [NOESCAPE_SEMICOLON])
+#   - Split a string into a list using a delimiter, which can be in 1 or more
+#     characters long.
+#     * Parameters:
+#       + var: A variable that stores the result.
+#       + delimiter: To separate a string.
+#       + str: A string.
+#       + NOESCAPE_SEMICOLON: (Optional) Do not escape semicolons.
+#
+
 IF(NOT DEFINED _MANAGE_STRING_CMAKE_)
     SET(_MANAGE_STRING_CMAKE_ "DEFINED")
 
     MACRO(STRING_TRIM var str)
 	SET(${var} "")
-	IF (NOT "${ARGN}" STREQUAL "NOUNQUOTED")
+	IF (NOT "${ARGN}" STREQUAL "NOUNQUOTE")
 	    # Need not trim a quoted string.
-	    STRING_UNQUOTED(_var str)
+	    STRING_UNQUOTE(_var "${str}")
 	    IF(NOT _var STREQUAL "")
 		# String is quoted
 		SET(${var} "${_var}")
 	    ENDIF(NOT _var STREQUAL "")
-	ENDIF(NOT "${ARGN}" STREQUAL "NOUNQUOTED")
+	ENDIF(NOT "${ARGN}" STREQUAL "NOUNQUOTE")
 
 	IF(${var} STREQUAL "")
-	    SET(_var_1 "+${str}+")
-	    STRING(REPLACE  "^[+][ \t\r\n]*" "" _var_2 "${_var_1}" )
-	    STRING(REPLACE  "[ \t\r\n]*[+]$" "" ${var} "${_var_2}" )
+	    SET(_var_1 "${str}")
+	    STRING(REGEX REPLACE  "^[ \t\r\n]+" "" _var_2 "${_var_1}" )
+	    STRING(REGEX REPLACE  "[ \t\r\n]+$" "" _var_3 "${_var_2}" )
+	    SET(${var} "${_var_3}")
 	ENDIF(${var} STREQUAL "")
     ENDMACRO(STRING_TRIM var str)
 
-    MACRO(STRING_UNQUOTED var str)
-	IF ("${ARGN}" STREQUAL "")
-	    SET(_quoteChars "\"" "'")
-	ELSE ("${ARGN}" STREQUAL "")
-	    SET(_quoteChars ${ARGN})
-	ENDIF ("${ARGN}" STREQUAL "")
+    MACRO(STRING_UNQUOTE var str)
 
-	SET(_var "")
-	FOREACH(_qch ${_quoteChars})
-	    MESSAGE("_var=${_var} _qch=${_qch}")
-	    IF(_var STREQUAL "")
-		STRING(REPLACE "^[ \t\r\n]*${_qch}\(.*[^\\]*\)${_qch}[ \t\r\n]*$" "\\1" _var ${str})
-	    ENDIF(_var STREQUAL "")
-	ENDFOREACH(_qch ${_quoteChars})
-	SET(${var} "${_var}")
-    ENDMACRO(STRING_UNQUOTED var str)
+	# ';' and '\' are tricky, need to be encoded.
+	# '\' => '#B'
+	# '#' => '#H'
+	# ';' => '#S'
+	STRING(REGEX REPLACE "#" "#H" _ret "${str}")
+	STRING(REGEX REPLACE "\\\\" "#B" _ret "${_ret}")
+	STRING(REGEX REPLACE ";" "#S" _ret "${_ret}")
+
+	IF(_ret MATCHES "^[ \t\r\n]+")
+	    STRING(REGEX REPLACE "^[ \t\r\n]+" "" _ret "${_ret}")
+	ENDIF(_ret MATCHES "^[ \t\r\n]+")
+	IF(_ret MATCHES "^\"")
+	    # Double quote
+	    STRING(REGEX REPLACE "\"\(.*\)\"[ \t\r\n]*$" "\\1" _ret "${_ret}")
+	ELSEIF(_ret MATCHES "^'")
+	    # Single quote
+	    STRING(REGEX REPLACE "'\(.*\)'[ \t\r\n]*$" "\\1" _ret "${_ret}")
+	ELSE(_ret MATCHES "^\"")
+	    SET(_ret "")
+	ENDIF(_ret MATCHES "^\"")
+
+	# Unencoding
+	STRING(REGEX REPLACE "#B" "\\\\" _ret "${_ret}")
+	STRING(REGEX REPLACE "#H" "#" _ret "${_ret}")
+	STRING(REGEX REPLACE "#S" "\\\\;" ${var} "${_ret}")
+    ENDMACRO(STRING_UNQUOTE var str)
 
     #    MACRO(STRING_ESCAPE_SEMICOLON var str)
     #	STRING(REGEX REPLACE ";" "\\\\;" ${var} "${str}")
     #ENDMACRO(STRING_ESCAPE_SEMICOLON var str)
+
+    MACRO(STRING_JOIN var delimiter str_list)
+	SET(_ret "")
+	FOREACH(_str ${str_list})
+	    IF(_ret STREQUAL "")
+		SET(_ret "${_str}")
+	    ELSE(_ret STREQUAL "")
+		SET(_ret "${_ret}${delimiter}${_str}")
+	    ENDIF(_ret STREQUAL "")
+	ENDFOREACH(_str ${str_list})
+
+	FOREACH(_str ${ARGN})
+	    IF(_ret STREQUAL "")
+		SET(_ret "${_str}")
+	    ELSE(_ret STREQUAL "")
+		SET(_ret "${_ret}${delimiter}${_str}")
+	    ENDIF(_ret STREQUAL "")
+	ENDFOREACH(_str ${str_list})
+	SET(${var} "${_ret}")
+    ENDMACRO(STRING_JOIN var delimiter str_list)
 
     MACRO(STRING_SPLIT var delimiter str)
 	SET(_max_tokens "")
@@ -95,11 +153,12 @@ IF(NOT DEFINED _MANAGE_STRING_CMAKE_)
 		SET(_index 0)
 		#MESSAGE("_str_len=${_str_len}")
 		SET(_token "")
+		SET(_str_remain "")
 		MATH(EXPR _str_end ${_str_len}-${_de_len}+1)
 		SET(_bound "k")
 		WHILE(_index LESS _str_end)
 		    STRING(SUBSTRING "${_str}" ${_index} ${_de_len} _str_cursor)
-		    #MESSAGE("_index=${_index} _str_cursor=${_str_cursor} _delimiter=${_delimiter} _de_len=${_de_len}")
+		    #MESSAGE("_index=${_index} _str_cursor=${_str_cursor} _de_len=${_de_len} _delimiter=|${_delimiter}|")
 		    IF(_str_cursor STREQUAL _delimiter)
 			# Get the token
 			STRING(SUBSTRING "${_str}" 0 ${_index} _token)
@@ -115,14 +174,14 @@ IF(NOT DEFINED _MANAGE_STRING_CMAKE_)
 
 		#MESSAGE("_token=${_token} _str_remain=${_str_remain}")
 
-		IF(_token STREQUAL "")
+		IF(_str_remain STREQUAL "")
 		    # Meaning: end of string
 		    SET(_str_list ${_str_list} "${_str}")
 		    SET(_max_tokens ${_token_count})
-		ELSE(_token STREQUAL "")
+		ELSE(_str_remain STREQUAL "")
 		    SET(_str_list ${_str_list} "${_token}")
 		    SET(_str "${_str_remain}")
-		ENDIF(_token STREQUAL "")
+		ENDIF(_str_remain STREQUAL "")
 	    ENDIF(_token_count EQUAL _max_tokens)
 	    #MESSAGE("_token_count=${_token_count} _max_tokens=${_max_tokens} _str=${_str}")
 	ENDWHILE(NOT _token_count EQUAL _max_tokens)
