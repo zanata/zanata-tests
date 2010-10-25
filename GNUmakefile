@@ -38,7 +38,7 @@ SELinuxGuide_NAME:="Fedora SELinux Guide"
 SELinuxGuide_DESC:="Fedora Documentation - SELinux Guide"
 SELinuxGuide_VERS:=trunk f13
 SELinuxGuide_URL_trunk:="http://svn.fedorahosted.org/svn/selinuxguide/community/trunk/SELinux_User_Guide"
-SELinuxGuide_URL_f13:="http://svn.fedorahosted.org/svn/selinuxguide/community/branches/f13/SELinux_User_Guide"
+SELinuxGuide_URL_f13:="http://svn.fedorahosted.org/svn/selinuxguide/community/branches/f13"
 
 SAMPLE_PROJ_DIR:=samples
 LANGS:=zh-CN,zh-TW
@@ -121,39 +121,37 @@ $(addsuffix /${PO_UPLOADED_MVN_STAMP}, ${MVN_PROJECT_DIRS}) :\
     ${SAMPLE_PROJ_DIR}/%/${PO_UPLOADED_MVN_STAMP}:\
     ${SAMPLE_PROJ_DIR}/%/${POT_UPLOADED_MVN_STAMP}
 	@echo "  [Mvn] Uploading po for proj $(*D) ver $(*F)"
-	for l in ${LANG_LIST}; do \
-	    for doc in $(@D)/$$l/*.po; do \
-		echo "      Uploading po $$doc";\
-		flies publican update --project-id $(*D) --version-id $(*F) $$doc; \
-	    done; \
-	done && touch $@
+	mvn flies:publican-push -Dusername=admin -Dkey=b6d7044e9ee3b2447c28fb7c50d86d98 -Dproject=$(*D) -DprojectVersion=$(*F) -DsubDir=$(@D) && touch $@
 
 $(addsuffix /${POT_UPLOADED_MVN_STAMP}, ${MVN_PROJECT_DIRS}) :\
     ${SAMPLE_PROJ_DIR}/%/${POT_UPLOADED_MVN_STAMP}:\
     ${SAMPLE_PROJ_DIR}/%/${VERS_MVN_STAMP}
 	@echo "  [Mvn] Uploading pot for proj $(*D) ver $(*F)"
-	for doc in $(@D)/pot/*.pot; do \
-	    echo "      Uploading pot $$doc";\
-	    flies publican push --project-id $(*D) --version-id $(*F) $$doc; \
-	done &&	touch $@
+	touch $@
 
 $(addsuffix /${VERS_MVN_STAMP}, ${MVN_PROJECT_DIRS}):\
     ${SAMPLE_PROJ_DIR}/%/${VERS_MVN_STAMP}:\
     ${SAMPLE_PROJ_DIR}/%/${PROJ_MVN_STAMP}
 	@echo "  [Mvn] Creating versions: proj $(*D) ver $(*F)"
-	flies iteration create --version-id $(*F) --project-id $(*D) --version-name "Ver $(*F)" --version-desc "Desc of Ver $(*D)" && touch $@
+	mvn flies:putversion -Dusername=admin -Dkey=b6d7044e9ee3b2447c28fb7c50d86d98 -DversionSlug=$(*F) -DversionProject=$(*D) -DversionName="Ver $(*F)" --DversionDesc="Desc of Ver $(*D)" && touch $@
 
 $(addsuffix /${PROJ_MVN_STAMP}, ${MVN_PROJECT_DIRS}):\
     ${SAMPLE_PROJ_DIR}/%/${PROJ_MVN_STAMP}:\
     ${SAMPLE_PROJ_DIR}/%/flies.xml
 	@echo "  [Mvn] Creating versions: proj $(*D)"
-	flies project create --project-id $(*D) --project-name ${$(*D)_NAME} --project-desc ${$(*D)_DESC} && touch $@
+	mvn flies:putproject -Dusername=admin -Dkey=b6d7044e9ee3b2447c28fb7c50d86d98 -DprojectSlug=$(*D) -DprojectName=${$(*D)_NAME} -DprojectDesc=${$(*D)_DESC} && touch $@
 
 
 $(addsuffix /flies.xml,${MVN_PROJECT_DIRS}):\
     ${SAMPLE_PROJ_DIR}/%/flies.xml:\
     ${SAMPLE_PROJ_DIR}/%/pot ${SAMPLE_PROJ_DIR}/%/update_po
 	perl scripts/generate_flies_xml.pl samples SELinuxGuide trunk ${LANG_LIST}
+
+ReleaseNotes: ${SAMPLE_PROJ_DIR}/ReleaseNotes/f13 ${SAMPLE_PROJ_DIR}/ReleaseNotes/f14
+
+SecurityGuide: ${SAMPLE_PROJ_DIR}/SecurityGuide/trunk
+
+SELinuxGuide: ${SAMPLE_PROJ_DIR}/SELinuxGuide/trunk/ ${SAMPLE_PROJ_DIR}/SELinuxGuide/f13
 
 ${MVN_PROJECTS}: % : $(addsuffix ${PO_UPLOADED_MVN_STAMP},$(call proj_vers,%))
 
