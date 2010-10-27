@@ -1,5 +1,5 @@
-FLIES_PYTHON_CLIENT=flies
-FLIES_MAVEN_CLIENT=mvn
+KEY=b6d7044e9ee3b2447c28fb7c50d86d98
+FLIES_URL=http://hudson.englab.bne.redhat.com/flies/
 
 # Deployment Guide
 DeploymentGuide_REPO_TYPE:=git
@@ -55,6 +55,8 @@ PUBLICAN_PROJECTS:= ${PYTHON_PROJECTS} ${MVN_PROJECTS}
 PUBLICAN_PROJECT_DIRS:=${PYTHON_PROJECT_DIRS} ${MVN_PROJECT_DIRS}
 
 PUBLICAN_CFG_STAMP:=publican.cfg.stamp
+PUBLICAN_STAMP:=publican.stamp
+UPDATE_PO_PUBLICAN_STAMP:=.updatePo.${PUBLICAN_STAMP}
 
 PYTHON_STAMP:=python.stamp
 PROJ_PYTHON_STAMP:=.proj.${PYTHON_STAMP}
@@ -73,9 +75,9 @@ PO_UPLOADED_MVN_STAMP:=.po.${MVN_STAMP}
 .SUFFIXES:
 .PHONY: ${PUBLICAN_PROJECTS}
 
-all:
+all: ${PUBLICAN_PROJECTS}
 
-force: ;
+FORCE: ;
 
 #####################################################################
 # Python Client
@@ -103,20 +105,19 @@ $(addsuffix /${POT_UPLOADED_PYTHON_STAMP}, ${PYTHON_PROJECT_DIRS}) :\
 $(addsuffix /${VERS_PYTHON_STAMP}, ${PYTHON_PROJECT_DIRS}):\
     ${SAMPLE_PROJ_DIR}/%/${VERS_PYTHON_STAMP}:\
     ${SAMPLE_PROJ_DIR}/%/${PROJ_PYTHON_STAMP}
-	@echo "  [Python] Creating versions: proj $(*D) ver $(*F)"
-	flies iteration create --version-id $(*F) --project-id $(*D) --version-name "Ver $(*F)" --version-desc "Desc of Ver $(*D)" && touch $@
+	@echo "  [Python] Creating version: proj $(*D) ver $(*F)"
+	flies iteration create $(*F) --project-id $(*D) --version-name "Ver $(*F)" --version-desc "Desc of Ver $(*D)" && touch $@
 
 $(addsuffix /${PROJ_PYTHON_STAMP}, ${PYTHON_PROJECT_DIRS}):\
     ${SAMPLE_PROJ_DIR}/%/${PROJ_PYTHON_STAMP}:\
-    ${SAMPLE_PROJ_DIR}/%/pot ${SAMPLE_PROJ_DIR}/%/update_po
-	@echo "  [Python] Creating versions: proj $(*D)"
-	flies project create --project-id $(*D) --project-name ${$(*D)_NAME} --project-desc ${$(*D)_DESC} && touch $@
+    ${SAMPLE_PROJ_DIR}/%/pot ${SAMPLE_PROJ_DIR}/%/${UPDATE_PO_PUBLICAN_STAMP}
+	@echo "  [Python] Creating project: proj $(*D)"
+	flies project create $(*D) --project-name ${$(*D)_NAME} --project-desc ${$(*D)_DESC} && touch $@
 
-DeploymentGuide:
+DeploymentGuide: ${SAMPLE_PROJ_DIR}/DeploymentGuide/f13/${PO_UPLOADED_PYTHON_STAMP} ${SAMPLE_PROJ_DIR}/DeploymentGuide/f14/${PO_UPLOADED_PYTHON_STAMP}
 
-DocUtils:
+DocUtils: ${SAMPLE_PROJ_DIR}/DocUtils/f13/${PO_UPLOADED_PYTHON_STAMP} ${SAMPLE_PROJ_DIR}/DocUtils/f14/${PO_UPLOADED_PYTHON_STAMP}
 
-${PYTHON_PROJECTS}: % : ${SAMPLE_PROJ_DIR}/%/${POT_UPLOADED_PYTHON_STAMP}
 
 #####################################################################
 # Mvn Client
@@ -125,7 +126,7 @@ $(addsuffix /${PO_UPLOADED_MVN_STAMP}, ${MVN_PROJECT_DIRS}) :\
     ${SAMPLE_PROJ_DIR}/%/${PO_UPLOADED_MVN_STAMP}:\
     ${SAMPLE_PROJ_DIR}/%/${POT_UPLOADED_MVN_STAMP}
 	@echo "  [Mvn] Uploading po for proj $(*D) ver $(*F)"
-	mvn flies:publican-push -Dflies.username=admin -Dflies.key=b6d7044e9ee3b2447c28fb7c50d86d98 -Dflies.project=$(*D) -Dflies.projectVersion=$(*F) -Dflies.subDir=$(@D) && touch $@
+	mvn flies:publican-push -Dflies.username=admin -Dflies.key=${KEY} -Dflies.project=$(*D) -Dflies.projectVersion=$(*F) -Dflies.srcDir=$(@D) -Dflies.url=${FLIES_URL} && touch $@
 
 $(addsuffix /${POT_UPLOADED_MVN_STAMP}, ${MVN_PROJECT_DIRS}) :\
     ${SAMPLE_PROJ_DIR}/%/${POT_UPLOADED_MVN_STAMP}:\
@@ -136,19 +137,19 @@ $(addsuffix /${POT_UPLOADED_MVN_STAMP}, ${MVN_PROJECT_DIRS}) :\
 $(addsuffix /${VERS_MVN_STAMP}, ${MVN_PROJECT_DIRS}):\
     ${SAMPLE_PROJ_DIR}/%/${VERS_MVN_STAMP}:\
     ${SAMPLE_PROJ_DIR}/%/${PROJ_MVN_STAMP}
-	@echo "  [Mvn] Creating versions: proj $(*D) ver $(*F)"
-	mvn flies:putversion -Dflies.username=admin -Dflies.key=b6d7044e9ee3b2447c28fb7c50d86d98 -Dflies.versionSlug=$(*F) -Dflies.versionProject=$(*D) -Dflies.versionName="Ver $(*F)" --Dflies.versionDesc="Desc of Ver $(*D)" && touch $@
+	@echo "  [Mvn] Creating version: proj $(*D) ver $(*F)"
+	mvn flies:putversion -Dflies.username=admin -Dflies.key=${KEY} -Dflies.version.slug=$(*F) -Dflies.version.project=$(*D) -Dflies.version.name="Ver $(*F)" -Dflies.version.desc="Desc of Ver $(*D)" -Dflies.url=${FLIES_URL} && touch $@
 
 $(addsuffix /${PROJ_MVN_STAMP}, ${MVN_PROJECT_DIRS}):\
     ${SAMPLE_PROJ_DIR}/%/${PROJ_MVN_STAMP}:\
     ${SAMPLE_PROJ_DIR}/%/flies.xml
-	@echo "  [Mvn] Creating versions: proj $(*D)"
-	mvn flies:putproject -Dflies.username=admin -Dflies.key=b6d7044e9ee3b2447c28fb7c50d86d98 -Dflies.projectSlug=$(*D) -Dflies.projectName=${$(*D)_NAME} -Dflies.projectDesc=${$(*D)_DESC} && touch $@
+	@echo "  [Mvn] Creating project: proj $(*D)"
+	mvn flies:putproject -Dflies.username=admin -Dflies.key=${KEY} -Dflies.project.slug=$(*D) -Dflies.project.name=${$(*D)_NAME} -Dflies.project.desc=${$(*D)_DESC} -Dflies.url=${FLIES_URL} && touch $@
 
 
 $(addsuffix /flies.xml,${MVN_PROJECT_DIRS}):\
     ${SAMPLE_PROJ_DIR}/%/flies.xml:\
-    ${SAMPLE_PROJ_DIR}/%/pot ${SAMPLE_PROJ_DIR}/%/update_po
+    ${SAMPLE_PROJ_DIR}/%/pot ${SAMPLE_PROJ_DIR}/%/${UPDATE_PO_PUBLICAN_STAMP}
 	scripts/generate_flies_xml.sh samples SELinuxGuide trunk ${LANG_LIST}
 
 ReleaseNotes: ${SAMPLE_PROJ_DIR}/ReleaseNotes/f13/${PO_UPLOADED_MVN_STAMP} ${SAMPLE_PROJ_DIR}/ReleaseNotes/f14/${PO_UPLOADED_MVN_STAMP}
@@ -168,7 +169,7 @@ ${SAMPLE_PROJ_DIR}:
 
 $(addprefix ${SAMPLE_PROJ_DIR}/,${PUBLICAN_PROJECTS}): ${SAMPLE_PROJ_DIR}/% : $(call proj_vers,%)
 
-${PUBLICAN_PROJECT_DIRS}: ${SAMPLE_PROJ_DIR}/% : | ${SAMPLE_PROJ_DIR}
+${PUBLICAN_PROJECT_DIRS}: ${SAMPLE_PROJ_DIR}/% : FORCE | ${SAMPLE_PROJ_DIR}
 	@echo "   Get sources of $* $(*D):${$(*D)_NAME}"
 	perl scripts/get_project.pl ${SAMPLE_PROJ_DIR} $(*D) ${$(*D)_REPO_TYPE} $(*F) ${$(*D)_URL_$(*F)}
 
@@ -189,9 +190,9 @@ $(addsuffix /pot,${PUBLICAN_PROJECT_DIRS}):\
     ${SAMPLE_PROJ_DIR}/%/pot: ${SAMPLE_PROJ_DIR}/%/${PUBLICAN_CFG_STAMP}
 	cd $(@D); publican update_pot; touch pot
 
-$(addsuffix /update_po,${PUBLICAN_PROJECT_DIRS}):\
-    ${SAMPLE_PROJ_DIR}/%/update_po: ${SAMPLE_PROJ_DIR}/%/pot
-	cd $(@D); publican update_po --langs "$(LANGS)"
+$(addsuffix /${UPDATE_PO_PUBLICAN_STAMP},${PUBLICAN_PROJECT_DIRS}):\
+    ${SAMPLE_PROJ_DIR}/%/${UPDATE_PO_PUBLICAN_STAMP}: ${SAMPLE_PROJ_DIR}/%/pot
+	cd $(@D); publican update_po --langs "$(LANGS)" && touch $(@F)
 
 
 show:
