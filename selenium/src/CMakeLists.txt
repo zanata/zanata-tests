@@ -2,18 +2,14 @@ cmake_minimum_required(VERSION 2.4)
 ####################################################################
 # Init Definition
 ####################################################################
+PROJECT(flies-test NONE)
 SET(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS ON)
 MESSAGE("CMake version=${CMAKE_VERSION}")
 
 SET(ENV{LC_ALL} "C")
 
-EXECUTE_PROCESS(COMMAND pwd
-    OUTPUT_VARIABLE PWD
-    OUTPUT_STRIP_TRAILING_WHITESPACE)
-SET(CTEST_SOURCE_DIRECTORY  "${PWD}")
-SET(CTEST_BINARY_DIRECTORY  "${CTEST_SOURCE_DIRECTORY}")
-SET(TEST_CFG "test.cfg")
-SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CTEST_SOURCE_DIRECTORY})
+SET(TEST_CFG "${CMAKE_SOURCE_DIR}/test.cfg")
+SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR})
 INCLUDE(ManageVariable)
 
 ####################################################################
@@ -26,22 +22,22 @@ IF (NOT "$ENV{BASE_URL}" STREQUAL "")
     SET(BASE_URL $ENV{BASE_URL})
 ENDIF()
 
-#IF (NOT "$ENV{BROWSERS_TO_TEST}" STREQUAL "")
-#    SET(BROWSERS_TO_TEST $ENV{BROWSERS_TO_TEST})
-#ENDIF()
+IF (NOT "$ENV{BROWSERS_TO_TEST}" STREQUAL "")
+    SET(BROWSERS_TO_TEST $ENV{BROWSERS_TO_TEST})
+ENDIF()
 
-SETTING_FILE_GET_ALL_VARIABLES("${TEST_CFG}" NOREPLACE UNQUOTED)
+SETTING_FILE_GET_ALL_VARIABLES("${TEST_CFG}" NOREPLACE UNQUOTED NOESCAPE_SEMICOLON)
 
 MESSAGE("BASE_URL=${BASE_URL}")
 MESSAGE("FLIES_PATH=${FLIES_PATH}")
 MESSAGE("FLIES_URL=${FLIES_URL}")
-SET(RESULT_DIR "${CTEST_SOURCE_DIRECTORY}/${RESULT_DIR}")
-SET(FUNCTIONS_DIR "${CTEST_SOURCE_DIRECTORY}/${FUNCTIONS_DIR}")
+SET(RESULT_DIR "${CMAKE_SOURCE_DIR}/${RESULT_DIR}")
+SET(FUNCTIONS_DIR "${CMAKE_SOURCE_DIR}/${FUNCTIONS_DIR}")
 
 MESSAGE("BROWSERS_TO_TEST=${BROWSERS_TO_TEST}")
 
-SET(TEST_ROOT_REAL "${CTEST_SOURCE_DIRECTORY}/${TEST_ROOT}")
-SET(PRIVILEGE_TEST_ROOT_REAL "${CTEST_SOURCE_DIRECTORY}/${PRIVILEGE_TEST_ROOT}")
+SET(TEST_ROOT_REAL "${CMAKE_SOURCE_DIR}/${TEST_ROOT}")
+SET(PRIVILEGE_TEST_ROOT_REAL "${CMAKE_SOURCE_DIR}/${PRIVILEGE_TEST_ROOT}")
 SET(TEST_ROLES ADMIN NORMAL)
 
 #===================================================================
@@ -53,14 +49,18 @@ MESSAGE("SELENIUM_SERVER_PORT=${SELENIUM_SERVER_PORT}")
 # Search Paths
 SET(MAVEN_REPOSITORY "$ENV{HOME}/.m2/repository/")
 SET(MAVEN_SELENIUM_SERVER_PATH "${MAVEN_REPOSITORY}/org/seleniumhq/selenium/server/selenium-server/")
-SET(SELENIUM_SEARCH_PATHS $ENV{HOME} ${MAVEN_SELENIUM_SERVER_PATH} /usr/share/java)
+SET(SELENIUM_SEARCH_PATHS $ENV{HOME} ${MAVEN_SELENIUM_SERVER_PATH} /usr/share/java ${PWD})
+SET(firefox_SEARCH_PATHS
+    "/usr/lib64/firefox-3.6;/usr/lib/firefox-3.6;/usr/lib64/firefox-3.5;/usr/lib/firefox-3.5;/usr/lib64/firefox-3*;/usr/lib/firefox-3*;/usr/lib64/firefox*;/usr/lib/firefox*")
+
 
 #===================================================================
 # Macro FIND_FILE_IN_DIRS
 MACRO(FIND_FILE_IN_DIRS var pattern searchPaths)
-    MESSAGE("pattern2=${pattern}")
-    EXECUTE_PROCESS(COMMAND ${CTEST_SOURCE_DIRECTORY}/find_file_in_paths.sh ${pattern} "${searchPaths}"
+    #MESSAGE("pattern=${pattern} searchPaths=${searchPaths}")
+    EXECUTE_PROCESS(COMMAND ${CMAKE_SOURCE_DIR}/find_file_in_paths.sh ${pattern} "${searchPaths}"
 	OUTPUT_VARIABLE _result)
+    #MESSAGE("_result=${_result}")
     IF ( _result STREQUAL "NOT_FOUND")
 	SET(${var} "NOTFOUND")
     ELSE()
@@ -70,7 +70,6 @@ MACRO(FIND_FILE_IN_DIRS var pattern searchPaths)
 ENDMACRO()
 
 MACRO(FIND_FILES_IN_DIR var pattern searchPath)
-    MESSAGE("pattern=${pattern}")
     EXECUTE_PROCESS(COMMAND find ${searchPath} -name "${pattern}" -printf "%p;"
 	OUTPUT_VARIABLE _result)
     IF ( _result STREQUAL "")
@@ -95,7 +94,7 @@ IF(${SELENIUM_SERVER_CMD} STREQUAL "SELENIUM_SERVER_CMD-NOTFOUND")
     IF ("${SELENIUM_SERVER_JAR}" STREQUAL "NOTFOUND")
         MESSAGE(FATAL_ERROR "selenium-server not found, install it please.")
     ENDIF()
-    SET(SELENIUM_SERVER_CMD "java -jar ${SELENIUM_SERVER_JAR}")
+    SET(SELENIUM_SERVER_CMD java -jar ${SELENIUM_SERVER_JAR})
 ENDIF()
 #MESSAGE("SELENIUM_SERVER_CMD=${SELENIUM_SERVER_CMD}")
 
@@ -112,25 +111,47 @@ ENDFOREACH()
 ####################################################################
 # Test Suites.
 ####################################################################
+ENABLE_TESTING()
 
 #===================================================================
 # Generate test suites.
 MESSAGE("TEST_ROOT=${TEST_ROOT}")
-#FILE(GLOB_RECURSE TEST_SUITES_RAW  "${TEST_ROOT}/0-*.html")
 FIND_FILES_IN_DIR(TEST_SUITES_RAW  "0-*.html" "${TEST_ROOT}")
 
 MESSAGE("TEST_SUITES_RAW=${TEST_SUITES_RAW}")
 
-SET(SELENIUM_SERVER_ARG "${SELENIUM_SERVER_ARG} -port ${SELENIUM_SERVER_PORT} -debug")
+LIST(APPEND SELENIUM_SERVER_ARG -port ${SELENIUM_SERVER_PORT} -debug)
+
+## General tests
+MESSAGE("Generate General tests")
+FOREACH(testSuiteRaw ${TEST_SUITES_RAW})
+    GET_FILENAME_COMPONENT(testSuitePath ${testSuiteRaw} PATH)
+    GET_FILENAME_COMPONENT(testSuiteNameOrig ${testSuiteRaw} NAME_WE)
+    STRING(REGEX REPLACE "^0-" "" testSuiteName ${testSuiteNameOrig})
+
+    # Make test rules.
+    #    ADD_OUTPUT_AND_TEST(NORMAL ${testSuitePath} ${testSuiteName})
+    ADD_OUTPUT_AND_TEST(${testSuitePath} ${testSuiteName})
+ENDFOREACH(testSuiteRaw ${TEST_SUITES_RAW})
+
+## Privilege tests
+EXECUTE_PROCESS(COMMAND ${CMAKE_SOURCE_DIR}/generate_privilege_test_suite.sh ${PRIVILEGE_TEST_ROOT_REAL})
+ADD_OUTPUT_FOR_BROWSERS(${PRESIGNIN_TEST_SUITE_NAME} PRE_LOGIN ${PRIVILEGE_TEST_ROOT_REAL}/${PRESIGNIN_TEST_SUITE} )
+ADD_OUTPUT_FOR_BROWSERS(${NORMAL_TEST_SUITE_NAME} NORMAL ${PRIVILEGE_TEST_ROOT_REAL}/${NORMAL_TEST_SUITE_SISO} )
+
+IF(NOT EXISTS ${RESULT_DIR})
+    file(MAKE_DIRECTORY ${RESULT_DIR})
+ENDIF()
 
 MACRO(ADD_OUTPUT_FOR_BROWSERS testSuiteName testRole suiteFile)
     FOREACH(browser ${BROWSERS_TO_TEST})
-	SET(BROWSER_STR "*${browser}\ ${${browser}_BIN}")
-	FILE(APPEND ${CTESTTEST_CMAKE} "ADD_TEST(\"${testSuiteName}.${testRole}.${browser}\"")
-	FILE(APPEND ${CTESTTEST_CMAKE} " ${SELENIUM_SERVER_CMD} ${SELENIUM_SERVER_ARG}")
-	FILE(APPEND ${CTESTTEST_CMAKE} " -log ${RESULT_DIR}/${testSuiteName}.${testRole}.${browser}.${TEST_LOGFILE_POSTFIX}")
-	FILE(APPEND ${CTESTTEST_CMAKE} " -htmlsuite \"${BROWSER_STR}\" ${BASE_URL}  ${suiteFile} ${RESULT_DIR}/${testSuiteName}.${testRole}.${browser}.html")
-	FILE(APPEND ${CTESTTEST_CMAKE} " )\n")
+	SET(BROWSER_STR "*${browser}\\ ${${browser}_BIN}")
+	ADD_TEST("${testSuiteName}.${testRole}.${browser}"
+	    ${SELENIUM_SERVER_CMD} ${SELENIUM_SERVER_ARG} -log
+	    ${RESULT_DIR}/${testSuiteName}.${testRole}.${browser}.${TEST_LOGFILE_POSTFIX}
+	    -java
+	    -htmlsuite ${BROWSER_STR} ${BASE_URL}  ${suiteFile}
+	    ${RESULT_DIR}/${testSuiteName}.${testRole}.${browser}.html)
     ENDFOREACH()
 ENDMACRO()
 
@@ -155,7 +176,7 @@ MACRO(ADD_OUTPUT_AND_TEST testSuitePath testSuiteName)
 		    SET(SI_TEST_TARGET   3-${testSuiteName}.html)
 		    SET(suiteFile ${testSuitePath}/${SISO_TEST_TARGET})
 		ENDIF()
-		EXECUTE_PROCESS(COMMAND ${CTEST_SOURCE_DIRECTORY}/generate_test_suite.sh
+		EXECUTE_PROCESS(COMMAND ${CMAKE_SOURCE_DIR}/generate_test_suite.sh
 		    ${testRole} ${testSuitePath} ${testSuiteName} ${SI_TEST_TARGET} ${SISO_TEST_TARGET} ${TEST_ROOT_REAL}
 		    )
 	    ENDIF()
@@ -167,28 +188,7 @@ ENDMACRO(ADD_OUTPUT_AND_TEST testRole testSuitePath testSuiteName)
 #===================================================================
 # Write CTestTestfile.cmake
 
-SET(CTESTTEST_CMAKE "${CTEST_BINARY_DIRECTORY}/CTestTestfile.cmake")
-FILE(WRITE ${CTESTTEST_CMAKE} "## Generate by CTest\n")
+#SET(CTESTTEST_CMAKE "${CTEST_BINARY_DIRECTORY}/CTestTestfile.cmake")
 
-## General tests
-MESSAGE("Generate General tests")
-FOREACH(testSuiteRaw ${TEST_SUITES_RAW})
-    GET_FILENAME_COMPONENT(testSuitePath ${testSuiteRaw} PATH)
-    GET_FILENAME_COMPONENT(testSuiteNameOrig ${testSuiteRaw} NAME_WE)
-    STRING(REGEX REPLACE "^0-" "" testSuiteName ${testSuiteNameOrig})
-
-    # Make test rules.
-    #    ADD_OUTPUT_AND_TEST(NORMAL ${testSuitePath} ${testSuiteName})
-    ADD_OUTPUT_AND_TEST(${testSuitePath} ${testSuiteName})
-ENDFOREACH(testSuiteRaw ${TEST_SUITES_RAW})
-
-## Privilege tests
-EXECUTE_PROCESS(COMMAND ${CTEST_SOURCE_DIRECTORY}/generate_privilege_test_suite.sh ${PRIVILEGE_TEST_ROOT_REAL})
-ADD_OUTPUT_FOR_BROWSERS(${PRESIGNIN_TEST_SUITE_NAME} PRE_LOGIN ${PRIVILEGE_TEST_ROOT_REAL}/${PRESIGNIN_TEST_SUITE} )
-ADD_OUTPUT_FOR_BROWSERS(${NORMAL_TEST_SUITE_NAME} NORMAL ${PRIVILEGE_TEST_ROOT_REAL}/${NORMAL_TEST_SUITE_SISO} )
-
-IF(NOT EXISTS ${RESULT_DIR})
-    file(MAKE_DIRECTORY ${RESULT_DIR})
-ENDIF()
 
 
