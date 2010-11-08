@@ -41,6 +41,7 @@ IF(NOT DEFINED _MANAGE_STRING_CMAKE_)
 	SET(${var} "")
 	IF (NOT "${ARGN}" STREQUAL "NOUNQUOTE")
 	    # Need not trim a quoted string.
+	    SET(_var "")
 	    STRING_UNQUOTE(_var "${str}")
 	    IF(NOT _var STREQUAL "")
 		# String is quoted
@@ -55,18 +56,6 @@ IF(NOT DEFINED _MANAGE_STRING_CMAKE_)
 	    SET(${var} "${_var_3}")
 	ENDIF(${var} STREQUAL "")
     ENDMACRO(STRING_TRIM var str)
-
-    # Internal macro
-    # Similar to STRING_ESCAPE, but read directly from file,
-    # This avoid the variable substitution
-    # Variable escape is enforced.
-    MACRO(FILE_READ_ESCAPE var filename)
-	# '$' is very tricky.
-	# '$' => '#D'
-	FILE(READ "${filename}" _ret)
-	STRING(REGEX REPLACE "[$]" "#D" _ret "${_ret}")
-	STRING_ESCAPE(${var} "${_ret}" ${ARGN})
-    ENDMACRO(FILE_READ_ESCAPE var filename)
 
     # Internal macro
     # Variable cannot be escaped here, as variable is already substituted
@@ -118,6 +107,8 @@ IF(NOT DEFINED _MANAGE_STRING_CMAKE_)
 	IF(_NOESCAPE_SEMICOLON STREQUAL "")
 	    # ';' => '#S'
 	    STRING(REGEX REPLACE "#S" "\\\\;" _ret "${_ret}")
+	ELSE(_NOESCAPE_SEMICOLON STREQUAL "")
+	    STRING(REGEX REPLACE "#S" ";" _ret "${_ret}")
 	ENDIF(_NOESCAPE_SEMICOLON STREQUAL "")
 	#MESSAGE("STRING_UNESCAPE:var=${var} _ret=${_ret}")
 
@@ -132,7 +123,7 @@ IF(NOT DEFINED _MANAGE_STRING_CMAKE_)
 
 
     MACRO(STRING_UNQUOTE var str)
-	STRING_ESCAPE(_ret ${str} ${ARGN})
+	STRING_ESCAPE(_ret "${str}" ${ARGN})
 	IF(_ret MATCHES "^[ \t\r\n]+")
 	    STRING(REGEX REPLACE "^[ \t\r\n]+" "" _ret "${_ret}")
 	ENDIF(_ret MATCHES "^[ \t\r\n]+")

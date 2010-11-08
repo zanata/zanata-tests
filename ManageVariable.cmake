@@ -124,8 +124,22 @@ IF(NOT DEFINED _MANAGE_VARIABLE_CMAKE_)
 	    ENDIF(_index EQUAL 0)
 	    MATH(EXPR _index ${_index}+1)
 	ENDFOREACH(_token ${_tokens})
-	SET(val ${${value}})
+	#SET(val ${${value}})
+	#MESSAGE("SETTING_FILE_LINE_PARSE: val=${val}")
     ENDMACRO(SETTING_FILE_LINE_PARSE attr value setting_sign str  _noUnQuoted)
+
+    # Internal macro
+    # Similar to STRING_ESCAPE, but read directly from file,
+    # This avoid the variable substitution
+    # Variable escape is enforced.
+    MACRO(FILE_READ_ESCAPE var filename)
+	# '$' is very tricky.
+	# '$' => '#D'
+	GET_FILENAME_COMPONENT(_filename_abs "${filename}" ABSOLUTE)
+	FILE(READ "${_filename_abs}" _ret)
+	STRING(REGEX REPLACE "[$]" "#D" _ret "${_ret}")
+	STRING_ESCAPE(${var} "${_ret}" ${ARGN})
+    ENDMACRO(FILE_READ_ESCAPE var filename)
 
     MACRO(SETTING_FILE_GET_VARIABLES_PATTERN var attr_pattern setting_file)
 	SET(setting_sign "=")
@@ -147,8 +161,8 @@ IF(NOT DEFINED _MANAGE_VARIABLE_CMAKE_)
 	    ENDIF(${_arg} STREQUAL "UNQUOTED")
 	ENDFOREACH(_arg)
 
-	# FILE
-	FILE_READ_ESCAPE(_txt_content "${setting_file}" ${_noEscapeSemicolon})
+	# Escape everything to be safe.
+	FILE_READ_ESCAPE(_txt_content "${setting_file}")
 
 	STRING_SPLIT(_lines "\n" "${_txt_content}")
 	#MESSAGE("_lines=|${_lines}|")
