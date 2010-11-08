@@ -142,8 +142,6 @@ ENDMACRO(ADD_PY_CLIENT_TARGETS  proj)
 #
 MACRO(ADD_MVN_CLIENT_TARGETS proj )
     SET(_projVers "${${proj}_VERS}")
-    MESSAGE("MVN_CLIENT: ${proj} _projVers=${_projVers}")
-    ADD_CUSTOM_TARGET(flies_publican_push_mvn ALL)
 
     FOREACH(_ver ${_projVers})
 	ADD_CUSTOM_TARGET(flies_publican_push_mvn_${proj}_${_ver} ALL
@@ -193,7 +191,6 @@ ENDMACRO(ADD_MVN_CLIENT_TARGETS proj)
 #
 MACRO(ADD_PUBLICAN_PROJECT proj client)
     SET(_projVers "${${proj}_VERS}")
-    ADD_CUSTOM_TARGET(generate_flies_xml ALL)
 
     FOREACH(_ver ${_projVers})
 	ADD_CUSTOM_TARGET(generate_flies_xml_${proj}_${_ver}  ALL
@@ -243,10 +240,8 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    )
     ENDFOREACH(_ver ${_projVers})
 
-    MESSAGE("client=${client}")
     IF("${client}" STREQUAL "mvn")
-	MESSAGE("2client=${client}")
-	ADD_MVN_CLIENT_TARGETS(proj)
+	ADD_MVN_CLIENT_TARGETS(${proj})
     ENDIF("${client}" STREQUAL "mvn")
 ENDMACRO(ADD_PUBLICAN_PROJECT proj client)
 
@@ -257,6 +252,9 @@ ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}
 ####################################################################
 # Retrieve projects
 #
+ADD_CUSTOM_TARGET(generate_flies_xml ALL)
+ADD_CUSTOM_TARGET(flies_publican_push_mvn ALL)
+
 FOREACH(_mvnProj ${MVN_PROJECTS})
     ADD_PUBLICAN_PROJECT(${_mvnProj} mvn)
 ENDFOREACH(_mvnProj ${MVN_PROJECTS})
