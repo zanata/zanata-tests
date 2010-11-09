@@ -6,9 +6,8 @@ MACRO(ADD_OUTPUT_FOR_BROWSERS testSuiteName testRole suiteFile)
 	SET(BROWSER_STR "*${browser}\\ ${${browser}_BIN}")
 	ADD_TEST("${testSuiteName}.${testRole}.${browser}"
 	    ${SELENIUM_SERVER_CMD} ${SELENIUM_SERVER_ARG} -log
-	    ${RESULT_DIR_ABSOLUTE}/${testSuiteName}.${testRole}.${browser}.${TEST_LOGFILE_POSTFIX}
-	    -java
-	    -htmlsuite ${BROWSER_STR} ${BASE_URL}  ${suiteFile}
+	    ${RESULT_DIR_ABSOLUTE}/${testSuiteName}.${testRole}.${browser}.test.log
+	    -htmlsuite ${BROWSER_STR} ${FLIES_URL}  ${suiteFile}
 	    ${RESULT_DIR_ABSOLUTE}/${testSuiteName}.${testRole}.${browser}.html)
     ENDFOREACH()
 ENDMACRO()
@@ -37,12 +36,12 @@ MACRO(GENERATE_TEST_SUITE testRole testSuitePath testSuiteName siOut
 
     ### Write Selenium test files
     FILE(READ ${testSuitePath}/0-${testSuiteName}.html _testSuiteContent)
-    STRING(REGEX REPLACE ${SI_PATTERN_MATCH} ${SI_PATTERN_REPLACE}
-	_testSuiteContent "${_tesetSuiteContent}")
+    STRING(REGEX REPLACE "${SI_PATTERN_MATCH}" "${SI_PATTERN_REPLACE}"
+	_testSuiteContent "${_testSuiteContent}")
     FILE(WRITE ${testSuitePath}/${siOut} "${_testSuiteContent}")
 
     STRING(REGEX REPLACE ${SO_PATTERN_MATCH} ${SO_PATTERN_REPLACE}
-	_testSuiteContent "${_tesetSuiteContent}")
+	_testSuiteContent "${_testSuiteContent}")
     FILE(WRITE ${testSuitePath}/${siSoOut} "${_testSuiteContent}")
 ENDMACRO(GENERATE_TEST_SUITE testRole testSuitePath=$2 testSuiteName siOut
         siSoOut testRoot)

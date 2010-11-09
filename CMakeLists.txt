@@ -41,11 +41,18 @@ SET(PRIVILEGE_TEST_ROOT_ABSOLUTE "${CMAKE_SOURCE_DIR}/${PRIVILEGE_TEST_ROOT}")
 SET(RESULT_DIR_ABSOLUTE "${CMAKE_SOURCE_DIR}/${RESULT_DIR}")
 SET(TEST_ROLES ADMIN NORMAL)
 
+IF(NOT EXISTS ${RESULT_DIR_ABSOLUTE})
+    FILE(MAKE_DIRECTORY "${RESULT_DIR_ABSOLUTE}")
+ELSE()
+    MESSAGE("EXISTS")
+ENDIF()
+
+
 #===================================================================
 # Search Paths
 SET(MAVEN_REPOSITORY "$ENV{HOME}/.m2/repository/")
 SET(MAVEN_SELENIUM_SERVER_PATH "${MAVEN_REPOSITORY}/org/seleniumhq/selenium/server/selenium-server/")
-SET(SELENIUM_SEARCH_PATHS $ENV{HOME} ${MAVEN_SELENIUM_SERVER_PATH} /usr/share/java ${PWD})
+SET(SELENIUM_SEARCH_PATHS ${CMAKE_SOURCE_DIR} ${MAVEN_SELENIUM_SERVER_PATH} /usr/share/java)
 
 
 #===================================================================
@@ -142,6 +149,7 @@ ENDMACRO(ADD_PY_CLIENT_TARGETS  proj)
 #
 MACRO(ADD_MVN_CLIENT_TARGETS proj )
     SET(_projVers "${${proj}_VERS}")
+    SET(_flies_xml_paths "")
 
     FOREACH(_ver ${_projVers})
 	ADD_CUSTOM_TARGET(flies_publican_push_mvn_${proj}_${_ver} ALL
@@ -173,6 +181,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver}"
 	    )
 
+	LIST(APPEND _flies_xml_paths ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml)
+
     ENDFOREACH(_ver ${_projVers})
 
     ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
@@ -180,7 +190,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	-Dflies.project.slug=${proj} -Dflies.project.name=${${proj}_NAME}
 	-Dflies.project.desc=${${proj}_DESC} -Dflies.url=${FLIES_URL}
 	COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
-	DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/flies.xml
+	DEPENDS ${_flies_xml_paths}
 	COMMENT "  [Mvn] Creating proj: proj ${proj}:${${proj}_NAME}"
 	)
 
@@ -201,17 +211,20 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	    COMMAND scripts/generate_flies_xml.sh ${SAMPLE_PROJ_DIR} ${proj}
-	    ${_ver} ${LANGS}
+	    ${_ver} "${LANGS}"
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_PO_PUBLICAN_STAMP}
 	    COMMENT "   Generate ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml"
+	    VERBATIM
 	    )
 
+	STRING(REPLACE ";" "," _langs "${LANGS}")
 	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_PO_PUBLICAN_STAMP}
-	    COMMAND publican update_po --config publican.cfg.striped --langs "${LANGS}"
+	    COMMAND publican update_po --config publican.cfg.striped --langs "${_langs}"
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
 	    DEPENDS  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_POT_PUBLICAN_STAMP}
 	    COMMENT "   Generate ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_PO_PUBLICAN_STAMP}"
+	    VERBATIM
 	    )
 
 	ADD_CUSTOM_COMMAND(OUTPUT  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_POT_PUBLICAN_STAMP}

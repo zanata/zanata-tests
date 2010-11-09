@@ -41,7 +41,6 @@ IF(NOT DEFINED _MANAGE_STRING_CMAKE_)
 	SET(${var} "")
 	IF (NOT "${ARGN}" STREQUAL "NOUNQUOTE")
 	    # Need not trim a quoted string.
-	    SET(_var "")
 	    STRING_UNQUOTE(_var "${str}")
 	    IF(NOT _var STREQUAL "")
 		# String is quoted
