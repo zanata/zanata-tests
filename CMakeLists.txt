@@ -43,8 +43,6 @@ SET(TEST_ROLES ADMIN NORMAL)
 
 IF(NOT EXISTS ${RESULT_DIR_ABSOLUTE})
     FILE(MAKE_DIRECTORY "${RESULT_DIR_ABSOLUTE}")
-ELSE()
-    MESSAGE("EXISTS")
 ENDIF()
 
 
@@ -53,6 +51,7 @@ ENDIF()
 SET(MAVEN_REPOSITORY "$ENV{HOME}/.m2/repository/")
 SET(MAVEN_SELENIUM_SERVER_PATH "${MAVEN_REPOSITORY}/org/seleniumhq/selenium/server/selenium-server/")
 SET(SELENIUM_SEARCH_PATHS ${CMAKE_SOURCE_DIR} ${MAVEN_SELENIUM_SERVER_PATH} /usr/share/java)
+MESSAGE("CMAKE_SOURCE_DIR=${CMAKE_SOURCE_DIR}")
 
 
 #===================================================================
@@ -92,7 +91,7 @@ IF(${SELENIUM_SERVER_CMD} STREQUAL "SELENIUM_SERVER_CMD-NOTFOUND")
     ENDIF()
     SET(SELENIUM_SERVER_CMD java -jar ${SELENIUM_SERVER_JAR})
 ENDIF()
-#MESSAGE("SELENIUM_SERVER_CMD=${SELENIUM_SERVER_CMD}")
+MESSAGE("SELENIUM_SERVER_CMD=${SELENIUM_SERVER_CMD}")
 
 ### Find the browser binary
 FOREACH(_browser ${BROWSERS_TO_TEST})
@@ -163,16 +162,17 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_POT_MVN_STAMP}
 	    COMMAND  mvn flies:publican-push -Dflies.username=admin
 	    -Dflies.key=${KEY} -Dflies.project=${proj}
-	    -Dflies.projectVersion=${_ver} -Dflies.srcDir=${SAMPLE_PROJ_DIR}/${proj}/${_ver} -Dflies.url=${FLIES_URL}
+	    -Dflies.projectVersion=${_ver} -Dflies.src.dir=${SAMPLE_PROJ_DIR}/${proj}/${_ver} -Dflies.url=${FLIES_URL}
 	    COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_PY_STAMP}
 	    COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_POT_PY_STAMP}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/.${_ver}${VER_MVN_STAMP}
 	    COMMENT "  [Mvn] Uploading pot and po for proj ${proj} ver ${_ver}"
+	    VERBATIM
 	    )
 
 	ADD_CUSTOM_COMMAND(OUTPUT
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/.${_ver}${VER_MVN_STAMP}
-	    COMMAND mvn flies:putversion -Dflies.username=admin
+	    COMMAND mvn -e flies:putversion -Dflies.username=admin
 	    -Dflies.key=${KEY} -Dflies.version.slug=${_ver}
 	    -Dflies.version.project=${proj} -Dflies.version.name="Ver ${_ver}"
 	    -Dflies.version.desc="Desc of ${_ver}" -Dflies.url=${FLIES_URL}
@@ -192,6 +192,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
 	DEPENDS ${_flies_xml_paths}
 	COMMENT "  [Mvn] Creating proj: proj ${proj}:${${proj}_NAME}"
+	VERBATIM
 	)
 
 ENDMACRO(ADD_MVN_CLIENT_TARGETS proj)
@@ -234,6 +235,7 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    COMMENT "   Generate
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_POT_PUBLICAN_STAMP}"
+	    VERBATIM
 	    )
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg.striped
@@ -248,8 +250,9 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    COMMAND perl scripts/get_project.pl ${SAMPLE_PROJ_DIR} ${proj}
 	    ${${proj}_REPO_TYPE} ${_ver} ${${proj}_URL_${_ver}}
-	    COMMENT "   Get sources of ${proj} ${_ver}:${${proj}_NAME}"
 	    DEPENDS ${SAMPLE_PROJ_DIR}
+	    COMMENT "   Get sources of ${proj} ${_ver}:${${proj}_NAME}"
+	    VERBATIM
 	    )
     ENDFOREACH(_ver ${_projVers})
 

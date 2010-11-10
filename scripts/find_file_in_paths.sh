@@ -10,7 +10,8 @@ for fileDir in ${SEARCH_PATHS} ;do
     #echo "dirs=${dirs}"
     for fileDirM in $dirs; do
 	#echo "fileDirM=${fileDirM}"
-	filePath=`find $fileDirM -name "${PATTERN}" -type f | head --lines=1`
+	filePath=`find ${fileDirM}/ -name "${PATTERN}" -type f | head --lines=1`
+	#echo "filePath=${filePath}"
 	if [ -n ${filePath} ]; then
 	    echo "${filePath}"
 	    exit 0
