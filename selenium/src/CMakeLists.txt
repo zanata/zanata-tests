@@ -84,7 +84,11 @@ FIND_FILES_IN_DIR(TEST_SUITES_RAW  "0-*.html" "${TEST_ROOT_ABSOLUTE}")
 
 MESSAGE("TEST_SUITES_RAW=${TEST_SUITES_RAW}")
 
-LIST(APPEND SELENIUM_SERVER_ARG -port ${SELENIUM_SERVER_PORT} -debug)
+# Flow control extension
+SET(SELENIUM_EXTENSION "../goto_sel08.js")
+
+LIST(APPEND SELENIUM_SERVER_ARG -port ${SELENIUM_SERVER_PORT} -debug
+    -userExtensions ${SELENIUM_EXTENSION})
 
 ## General tests
 MESSAGE("Generate General tests")

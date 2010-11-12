@@ -132,7 +132,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj)
 	FOREACH(_lang ${langs})
 	    ADD_CUSTOM_COMMAND(OUTPUT
 		${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_PY_STAMP}
-		COMMAND flies publican update --project-id ${proj}--version-id
+		COMMAND flies publican update --project-id ${proj} --version-id
 		${_ver}
 		COMMAND touch
 		${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_PY_STAMP}
@@ -233,8 +233,7 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg.striped
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
-	    COMMENT "   Generate
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_POT_PUBLICAN_STAMP}"
+	    COMMENT "   Generate ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_POT_PUBLICAN_STAMP}"
 	    VERBATIM
 	    )
 
