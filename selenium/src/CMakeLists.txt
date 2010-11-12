@@ -85,7 +85,8 @@ FIND_FILES_IN_DIR(TEST_SUITES_RAW  "0-*.html" "${TEST_ROOT_ABSOLUTE}")
 MESSAGE("TEST_SUITES_RAW=${TEST_SUITES_RAW}")
 
 # Flow control extension
-SET(SELENIUM_EXTENSION "${CMAKE_SOURCE_DIR}/selenium/dependencies/goto_sel08.js")
+SET(SELENIUM_EXTENSION
+    "${CMAKE_SOURCE_DIR}/selenium/dependencies/user-extensions.js")
 
 LIST(APPEND SELENIUM_SERVER_ARG -port ${SELENIUM_SERVER_PORT} -debug
     -userExtensions ${SELENIUM_EXTENSION})
