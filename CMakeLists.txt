@@ -32,6 +32,9 @@ SETTING_FILE_GET_ALL_VARIABLES("${TEST_CFG}" NOREPLACE UNQUOTED NOESCAPE_SEMICOL
 FOREACH(_envVar  ${OVERRIDABLE_VARS})
     SET(_envVal "${${_envVar}}")
     MESSAGE("${_envVar}=${_envVal}")
+    IF("$ENV{${_envVar}}" STREQUAL "")
+	SET($ENV{${_envVar}} "${_envVal}")
+    ENDIF()
 ENDFOREACH()
 
 SET(FUNCTIONS_DIR selenium/src/functions)
@@ -160,9 +163,13 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	ADD_CUSTOM_COMMAND(OUTPUT
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_POT_MVN_STAMP}
-	    COMMAND  mvn flies:publican-push -Dflies.username=admin
+	    COMMAND  mvn flies:publican-push
+	    -Dflies.projectConfig=${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
+	    -Dflies.username=admin
 	    -Dflies.key=${KEY} -Dflies.project=${proj}
-	    -Dflies.projectVersion=${_ver} -Dflies.src.dir=${SAMPLE_PROJ_DIR}/${proj}/${_ver} -Dflies.url=${FLIES_URL}
+	    -Dflies.projectVersion=${_ver}
+	    -Dflies.src.dir=${SAMPLE_PROJ_DIR}/${proj}/${_ver}
+	    -Dflies.url=${FLIES_URL}
 	    COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_PY_STAMP}
 	    COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_POT_PY_STAMP}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/.${_ver}${VER_MVN_STAMP}
@@ -172,10 +179,12 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	ADD_CUSTOM_COMMAND(OUTPUT
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/.${_ver}${VER_MVN_STAMP}
-	    COMMAND mvn -e flies:putversion -Dflies.username=admin
+	    COMMAND mvn -e flies:putversion
+	    -Dflies.username=admin
 	    -Dflies.key=${KEY} -Dflies.version.slug=${_ver}
-	    -Dflies.version.project=${proj} -Dflies.version.name="Ver ${_ver}"
-	    -Dflies.version.desc="Desc of ${_ver}" -Dflies.url=${FLIES_URL}
+	    -Dflies.version.project=${proj}
+	    -Dflies.version.name=\"Ver ${_ver}\"
+	    -Dflies.version.desc=\"Desc of ${_ver}\" -Dflies.url=\"${FLIES_URL}\"
 	    COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/.${_ver}${VER_MVN_STAMP}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
 	    COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver}"
@@ -222,6 +231,7 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	STRING(REPLACE ";" "," _langs "${LANGS}")
 	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_PO_PUBLICAN_STAMP}
 	    COMMAND publican update_po --config publican.cfg.striped --langs "${_langs}"
+	    COMMAND touch  ${UPDATE_PO_PUBLICAN_STAMP}
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
 	    DEPENDS  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_POT_PUBLICAN_STAMP}
 	    COMMENT "   Generate ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_PO_PUBLICAN_STAMP}"
@@ -230,6 +240,7 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 
 	ADD_CUSTOM_COMMAND(OUTPUT  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_POT_PUBLICAN_STAMP}
 	    COMMAND publican update_pot --config publican.cfg.striped
+	    COMMAND touch  ${UPDATE_POT_PUBLICAN_STAMP}
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg.striped
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
