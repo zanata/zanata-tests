@@ -155,7 +155,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
     FOREACH(_ver ${_projVers})
 	ADD_CUSTOM_TARGET(flies_publican_push_mvn_${proj}_${_ver} ALL
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_POT_MVN_STAMP}
+	    DEPENDS
+	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_POT_MVN_STAMP}  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
 	    )
 
 	ADD_DEPENDENCIES(flies_publican_push_mvn
@@ -172,7 +173,9 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    -Dflies.url=${FLIES_URL}
 	    COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_PY_STAMP}
 	    COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_POT_PY_STAMP}
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/.${_ver}${VER_MVN_STAMP}
+	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
+	    DEPENDS
+	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/.${_ver}${VER_MVN_STAMP}  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
 	    COMMENT "  [Mvn] Uploading pot and po for proj ${proj} ver ${_ver}"
 	    VERBATIM
 	    )
@@ -187,7 +190,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    -Dflies.version.name=\"Ver ${_ver}\"
 	    -Dflies.version.desc=\"Desc of ${_ver}\" -Dflies.url=\"${FLIES_URL}\"
 	    COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/.${_ver}${VER_MVN_STAMP}
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
+	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
 	    COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver}"
 	    )
 
@@ -200,7 +204,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	-Dflies.project.slug=${proj} -Dflies.project.name=${${proj}_NAME}
 	-Dflies.project.desc=${${proj}_DESC} -Dflies.url=${FLIES_URL}
 	COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
-	DEPENDS ${_flies_xml_paths}
+	WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/
+	DEPENDS ${_flies_xml_paths}  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
 	COMMENT "  [Mvn] Creating proj: proj ${proj}:${${proj}_NAME}"
 	VERBATIM
 	)
@@ -234,8 +239,15 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    COMMAND publican update_po --config publican.cfg.striped --langs "${_langs}"
 	    COMMAND touch  ${UPDATE_PO_PUBLICAN_STAMP}
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
-	    DEPENDS  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_POT_PUBLICAN_STAMP}
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_POT_PUBLICAN_STAMP}
 	    COMMENT "   Generate ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_PO_PUBLICAN_STAMP}"
+	    VERBATIM
+	    )
+
+	ADD_CUSTOM_COMMAND(OUTPUT  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	    COMMAND ln -s ../../../pom.xml pom.xml
+	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
+	    COMMENT "   link to main pom.xml"
 	    VERBATIM
 	    )
 
@@ -292,6 +304,13 @@ ENDFOREACH(_mvnProj ${MVN_PROJECTS})
 # Test Suites.
 ####################################################################
 ENABLE_TESTING()
+ADD_CUSTOM_TARGET(clean_test_suites
+    COMMAND find selenium/src/test-suites -name '[1-4]*.html' -delete
+    COMMAND find selenium/src/test-suites -type l -name 'SignIn*.html' -delete
+    COMMAND find selenium/src/test-suites -type l -name 'SignOut.html' -delete
+    COMMENT "Cleaning the generated test suite files"
+    VERBATIM
+    )
 
 #===================================================================
 # Generate test suites.
