@@ -21,10 +21,10 @@ _langs=`echo $1 | sed -e 's/;/ /g'`
 for l in ${_langs}; do
     case $l in
 	zh*CN )
-	    echo "        <locale map-from="zh-CN">zh-CN-Hans</locale>" >> ${projDir}/flies.xml
+	    echo "        <locale map-from=\"zh-CN\">zh-CN-Hans</locale>" >> ${projDir}/flies.xml
 	    ;;
 	zh*TW)
-	    echo "        <locale map-from="zh-TW">zh-TW-Hant</locale>" >> ${projDir}/flies.xml
+	    echo "        <locale map-from=\"zh-TW\">zh-TW-Hant</locale>" >> ${projDir}/flies.xml
 	    ;;
 	*)
 	    echo "        <locale>${l}</locale>" >> ${projDir}/flies.xml
