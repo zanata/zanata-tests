@@ -4,7 +4,6 @@ use 5.008_008;
 use strict;
 use Getopt::Std;
 use Pod::Usage;
-use File::Path qw(make_path remove_tree);
 
 my $currDir=`pwd`;
 chomp $currDir;

@@ -13,8 +13,18 @@
 </thead><tbody>
 <!--Remove Page 3 entry 1-->
 <tr>
+	<td>store</td>
+	<td>nth-child(2)</td>
+	<td>row</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target</td>
+	<td></td>
+</tr>
+<tr>
 	<td>click</td>
-	<td>css=tr.TableEditorRow:nth-child(2)&gt;td.TableEditorCell-Target</td>
+	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target</td>
 	<td></td>
 </tr>
 <tr>
@@ -30,17 +40,17 @@
 </tr>
 <tr>
 	<td>keyDown</td>
-	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target&gt;textarea</td>
+	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target textarea</td>
 	<td>\13</td>
 </tr>
 <tr>
 	<td>keyPress</td>
-	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target&gt;textarea</td>
+	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target textarea</td>
 	<td>\13</td>
 </tr>
 <tr>
 	<td>keyUp</td>
-	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target&gt;textarea</td>
+	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target textarea</td>
 	<td>\13</td>
 </tr>
 <tr>
@@ -50,7 +60,7 @@
 </tr>
 <tr>
 	<td>verifyText</td>
-	<td>css=tr.TableEditorRow:nth-child(2)&gt;td.TableEditorCell-Target</td>
+	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target</td>
 	<td></td>
 </tr>
 <!--Move to Previous page (Page 2)-->
@@ -61,18 +71,23 @@
 </tr>
 <!--Clean page 2, last entry.-->
 <tr>
+	<td>store</td>
+	<td>last-child()</td>
+	<td>row</td>
+</tr>
+<tr>
 	<td>waitForElementPresent</td>
-	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target</td>
+	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target</td>
+	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target&gt;textarea</td>
+	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target textarea</td>
 	<td></td>
 </tr>
 <tr>
@@ -88,17 +103,17 @@
 </tr>
 <tr>
 	<td>keyDown</td>
-	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target&gt;textarea</td>
+	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target textarea</td>
 	<td>\13</td>
 </tr>
 <tr>
 	<td>keyPress</td>
-	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target&gt;textarea</td>
+	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target textarea</td>
 	<td>\13</td>
 </tr>
 <tr>
 	<td>keyUp</td>
-	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target&gt;textarea</td>
+	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target textarea</td>
 	<td>\13</td>
 </tr>
 <tr>

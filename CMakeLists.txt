@@ -152,6 +152,7 @@ ENDMACRO(ADD_PY_CLIENT_TARGETS  proj)
 MACRO(ADD_MVN_CLIENT_TARGETS proj )
     SET(_projVers "${${proj}_VERS}")
     SET(_flies_xml_paths "")
+    SET(_pom_xml_paths "")
 
     FOREACH(_ver ${_projVers})
 	ADD_CUSTOM_TARGET(flies_publican_push_mvn_${proj}_${_ver} ALL
@@ -171,17 +172,17 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    -Dflies.key=${KEY} -Dflies.project=${proj}
 	    -Dflies.projectVersion=${_ver}
 	    -Dflies.url=${FLIES_URL}
-	    COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_PY_STAMP}
-	    COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_POT_PY_STAMP}
+	    COMMAND touch ${UPLOADED_PO_PY_STAMP}
+	    COMMAND touch ${UPLOADED_POT_PY_STAMP}
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
-	    DEPENDS
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/.${_ver}${VER_MVN_STAMP}  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${VER_MVN_STAMP}
+	      ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
 	    COMMENT "  [Mvn] Uploading pot and po for proj ${proj} ver ${_ver}"
 	    VERBATIM
 	    )
 
 	ADD_CUSTOM_COMMAND(OUTPUT
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/.${_ver}${VER_MVN_STAMP}
+	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${VER_MVN_STAMP}
 	    COMMAND mvn -e -X flies:putversion
 	    -Dflies.projectConfig=${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	    -Dflies.username=admin
@@ -189,13 +190,24 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    -Dflies.version.project=${proj}
 	    -Dflies.version.name=\"Ver ${_ver}\"
 	    -Dflies.version.desc=\"Desc of ${_ver}\" -Dflies.url=\"${FLIES_URL}\"
-	    COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/.${_ver}${VER_MVN_STAMP}
+	    COMMAND touch ${VER_MVN_STAMP}
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
+	      ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
 	    COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver}"
 	    )
 
+	ADD_CUSTOM_COMMAND(OUTPUT  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	    COMMAND ln -sf ../../../pom.xml pom.xml
+	    COMMAND touch ../../../pom.xml
+	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver} pom.xml
+	    COMMENT "   Link to main pom.xml"
+	    VERBATIM
+	    )
+
 	LIST(APPEND _flies_xml_paths ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml)
+	LIST(APPEND _pom_xml_paths ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml)
 
     ENDFOREACH(_ver ${_projVers})
 
@@ -204,16 +216,16 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	-Dflies.project.slug=${proj} -Dflies.project.name=${${proj}_NAME}
 	-Dflies.project.desc=${${proj}_DESC} -Dflies.url=${FLIES_URL}
 	COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
-	WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/
-	DEPENDS ${_flies_xml_paths}  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	DEPENDS ${_flies_xml_paths}  ${_pom_xml_paths}
 	COMMENT "  [Mvn] Creating proj: proj ${proj}:${${proj}_NAME}"
 	VERBATIM
 	)
 
 ENDMACRO(ADD_MVN_CLIENT_TARGETS proj)
 
+
 #===================================================================
-# Common targets
+# Publican targets
 #
 MACRO(ADD_PUBLICAN_PROJECT proj client)
     SET(_projVers "${${proj}_VERS}")
@@ -244,13 +256,6 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    VERBATIM
 	    )
 
-	ADD_CUSTOM_COMMAND(OUTPUT  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	    COMMAND ln -s ../../../pom.xml pom.xml
-	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
-	    COMMENT "   link to main pom.xml"
-	    VERBATIM
-	    )
-
 	ADD_CUSTOM_COMMAND(OUTPUT  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_POT_PUBLICAN_STAMP}
 	    COMMAND publican update_pot --config publican.cfg.striped
 	    COMMAND touch  ${UPDATE_POT_PUBLICAN_STAMP}
@@ -269,7 +274,9 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    VERBATIM
 	    )
 
-	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg
+	ADD_CUSTOM_COMMAND(OUTPUT
+	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
+	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    COMMAND perl scripts/get_project.pl ${SAMPLE_PROJ_DIR} ${proj}
 	    ${${proj}_REPO_TYPE} ${_ver} ${${proj}_URL_${_ver}}
@@ -294,10 +301,9 @@ ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}
 ADD_CUSTOM_TARGET(generate_flies_xml ALL)
 ADD_CUSTOM_TARGET(flies_publican_push_mvn ALL)
 
-FOREACH(_mvnProj ${MVN_PROJECTS})
-    ADD_PUBLICAN_PROJECT(${_mvnProj} mvn)
-ENDFOREACH(_mvnProj ${MVN_PROJECTS})
-
+FOREACH(_proj ${PUBLICAN_PROJECTS})
+    ADD_PUBLICAN_PROJECT(${_proj} mvn)
+ENDFOREACH(_proj ${PUBLICAN_PROJECTS})
 
 
 ####################################################################
