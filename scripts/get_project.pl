@@ -28,7 +28,7 @@ if (-d "${projDir}/$ver"){
     print "    ${projDir}/$ver does not exist, clone now.\n";
     system("$clone_action $url $projDir/$ver");
     if ($scm eq "git"){
-	system("cd ${projDir}/$ver;git checkout $ver");
+	system("cd ${projDir}/$ver;git checkout --track -b $ver");
     }
 }
 

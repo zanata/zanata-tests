@@ -229,11 +229,15 @@ ENDMACRO(ADD_MVN_CLIENT_TARGETS proj)
 #
 MACRO(ADD_PUBLICAN_PROJECT proj client)
     SET(_projVers "${${proj}_VERS}")
+    SET(_target "")
+    IF(NOT ${ARGN} STREQUAL "")
+       SET(_target "${ARGN}")
+    ENDIF()
 
     FOREACH(_ver ${_projVers})
 	ADD_CUSTOM_TARGET(generate_flies_xml_${proj}_${_ver}  ALL
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
-	    )
+	    	DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
+	    	)
 
 	ADD_DEPENDENCIES(generate_flies_xml generate_flies_xml_${proj}_${_ver})
 
@@ -252,6 +256,7 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    COMMAND touch  ${UPDATE_PO_PUBLICAN_STAMP}
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_POT_PUBLICAN_STAMP}
+               ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg.striped
 	    COMMENT "   Generate ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_PO_PUBLICAN_STAMP}"
 	    VERBATIM
 	    )
@@ -305,6 +310,12 @@ FOREACH(_proj ${PUBLICAN_PROJECTS})
     ADD_PUBLICAN_PROJECT(${_proj} mvn)
 ENDFOREACH(_proj ${PUBLICAN_PROJECTS})
 
+ADD_CUSTOM_TARGET(selenium-data
+	COMMENT "   Preparing projects for selenium tests"
+)
+
+ADD_DEPENDENCIES(selenium-data flies_publican_push_mvn_ReleaseNotes_f13
+flies_publican_push_mvn_SecurityGuide_f13)
 
 ####################################################################
 # Test Suites.
