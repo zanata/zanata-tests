@@ -13,9 +13,9 @@
 
 # CMake
 /Testing/
-/CMakeFiles/
+CMakeFiles
+Makefile
 CMakeCache.txt
-/src/test/Makefile
 /src/test/Testing/
 cmake_install.cmake$
 CTestTestfile.cmake$
