@@ -168,10 +168,11 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    COMMAND  mvn -e -B flies:publican-push
 	    -Dflies.projectConfig=${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	    -Dflies.username=admin
-	    -Dflies.srcDir=${SAMPLE_PROJ_DIR}/${proj}/${_ver}/
+	    -Dflies.srcDir=.
 	    -Dflies.key=${KEY} -Dflies.project=${proj}
 	    -Dflies.projectVersion=${_ver}
 	    -Dflies.url=${FLIES_URL}
+	    -Dflies.importPo
 	    COMMAND touch ${UPLOADED_PO_PY_STAMP}
 	    COMMAND touch ${UPLOADED_POT_PY_STAMP}
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
