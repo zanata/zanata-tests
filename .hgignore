@@ -13,9 +13,9 @@
 
 # CMake
 /Testing/
-/CMakeFiles/
+CMakeFiles/
 CMakeCache.txt
-/src/test/Makefile
+/Makefile$
 /src/test/Testing/
 cmake_install.cmake$
 CTestTestfile.cmake$
@@ -37,5 +37,5 @@ apikey.*
 
 
 # result
-/results/
+results/
 tmpc00
