@@ -11,7 +11,6 @@
         <artifactId>flies-maven-plugin</artifactId>
         <version>1.0.2-SNAPSHOT</version>
         <configuration>
-          <srcDir>.</srcDir>
         </configuration>
       </plugin>
     </plugins>
