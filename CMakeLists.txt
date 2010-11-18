@@ -156,8 +156,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
     FOREACH(_ver ${_projVers})
 	ADD_CUSTOM_TARGET(flies_publican_push_mvn_${proj}_${_ver} ALL
-	    DEPENDS
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_POT_MVN_STAMP}  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_MVN_STAMP}
 	    )
 
 	ADD_DEPENDENCIES(flies_publican_push_mvn
@@ -165,15 +164,16 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	ADD_CUSTOM_COMMAND(OUTPUT
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_POT_MVN_STAMP}
-	    COMMAND  mvn -e -X -B flies:publican-push
+	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_MVN_STAMP}
+	    COMMAND  mvn -e -B flies:publican-push
 	    -Dflies.projectConfig=${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	    -Dflies.username=admin
 	    -Dflies.srcDir=${SAMPLE_PROJ_DIR}/${proj}/${_ver}/
 	    -Dflies.key=${KEY} -Dflies.project=${proj}
 	    -Dflies.projectVersion=${_ver}
 	    -Dflies.url=${FLIES_URL}
-	    COMMAND touch ${UPLOADED_PO_PY_STAMP}
-	    COMMAND touch ${UPLOADED_POT_PY_STAMP}
+	    COMMAND touch ${UPLOADED_PO_MVN_STAMP}
+	    COMMAND touch ${UPLOADED_POT_MVN_STAMP}
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${VER_MVN_STAMP}
 	      ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
@@ -183,7 +183,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	ADD_CUSTOM_COMMAND(OUTPUT
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${VER_MVN_STAMP}
-	    COMMAND mvn -e -X flies:putversion
+	    COMMAND mvn -e flies:putversion
 	    -Dflies.projectConfig=${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	    -Dflies.username=admin
 	    -Dflies.key=${KEY} -Dflies.version.slug=${_ver}
@@ -212,7 +212,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
     ENDFOREACH(_ver ${_projVers})
 
     ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
-	COMMAND mvn -e -X flies:putproject -Dflies.username=admin -Dflies.key=${KEY}
+	COMMAND mvn -e flies:putproject -Dflies.username=admin -Dflies.key=${KEY}
 	-Dflies.project.slug=${proj} -Dflies.project.name=${${proj}_NAME}
 	-Dflies.project.desc=${${proj}_DESC} -Dflies.url=${FLIES_URL}
 	COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
@@ -281,7 +281,7 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    COMMAND perl scripts/get_project.pl ${SAMPLE_PROJ_DIR} ${proj}
 	    ${${proj}_REPO_TYPE} ${_ver} ${${proj}_URL_${_ver}}
 	    DEPENDS ${SAMPLE_PROJ_DIR}
-	    COMMENT "   Get sources of ${proj} ${_ver}:${${proj}_NAME}"
+	    COMMENT "   Get sources of ${proj} ${_ver}:${${proj}_NAME} from ${${proj}_URL_${_ver}}"
 	    VERBATIM
 	    )
     ENDFOREACH(_ver ${_projVers})
