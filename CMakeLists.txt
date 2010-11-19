@@ -109,9 +109,9 @@ ENDFOREACH()
 ####################################################################
 # Stamps
 #
-SET(PUBLICAN_STAMP publican.stamp)
-SET(UPDATE_PO_PUBLICAN_STAMP ".update.po.${PUBLICAN_STAMP}")
-SET(UPDATE_POT_PUBLICAN_STAMP ".update.pot.${PUBLICAN_STAMP}")
+
+# When project is ready (done prepar_project)
+SET(READY_PROJ_STAMP  ".ready.proj.stamp")
 
 SET(PY_STAMP "py.stamp")
 SET(PROJ_PY_STAMP ".proj.${PY_STAMP}")
@@ -245,43 +245,23 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    COMMAND scripts/generate_flies_xml.sh ${SAMPLE_PROJ_DIR} ${proj}
 	    ${_ver} "${LANGS}"
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_PO_PUBLICAN_STAMP}
+	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${READY_PROJ_STAMP}
 	    COMMENT "   Generate ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml"
 	    VERBATIM
 	    )
 
 	STRING(REPLACE ";" "," _langs "${LANGS}")
-	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_PO_PUBLICAN_STAMP}
-	    COMMAND publican update_po --config publican.cfg.striped --langs "${_langs}"
-	    COMMAND touch  ${UPDATE_PO_PUBLICAN_STAMP}
+	ADD_CUSTOM_COMMAND(OUTPUT
+	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${READY_PROJ_STAMP}
+	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/prepare_project.sh "${_langs}" "${READY_PROJ_STAMP}"
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_POT_PUBLICAN_STAMP}
-               ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg.striped
-	    COMMENT "   Generate ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_PO_PUBLICAN_STAMP}"
-	    VERBATIM
-	    )
-
-	ADD_CUSTOM_COMMAND(OUTPUT  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_POT_PUBLICAN_STAMP}
-	    COMMAND publican update_pot --config publican.cfg.striped
-	    COMMAND touch  ${UPDATE_POT_PUBLICAN_STAMP}
-	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg.striped
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
-	    COMMENT "   Generate ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPDATE_POT_PUBLICAN_STAMP}"
-	    VERBATIM
-	    )
-
-	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg.striped
-	    COMMAND sed -e "s/brand:.*//" publican.cfg >  publican.cfg.striped
-	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg
-	    COMMENT "   Generate  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg.striped"
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/
+	    COMMENT "   Preparing project ${proj}/${_ver} "
 	    VERBATIM
 	    )
 
 	ADD_CUSTOM_COMMAND(OUTPUT
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg
+	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    COMMAND perl scripts/get_project.pl ${SAMPLE_PROJ_DIR} ${proj}
 	    ${${proj}_REPO_TYPE} ${_ver} ${${proj}_URL_${_ver}}
