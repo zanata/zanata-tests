@@ -107,6 +107,15 @@ FOREACH(_browser ${BROWSERS_TO_TEST})
 ENDFOREACH()
 
 ####################################################################
+# Configure
+#
+CONFIGURE_FILE(${FUNCTIONS_DIR}/SignInAdmin.html.in
+    ${FUNCTIONS_DIR}/SignInAdmin.html)
+
+CONFIGURE_FILE(${FUNCTIONS_DIR}/SignInNormal.html.in
+    ${FUNCTIONS_DIR}/SignInNormal.html)
+
+####################################################################
 # Stamps
 #
 
@@ -177,7 +186,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${VER_MVN_STAMP}
 	      ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	    COMMENT "  [Mvn] Uploading pot and po for proj ${proj} ver ${_ver}"
+	      ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
+	      COMMENT "  [Mvn] Uploading pot and po for proj ${proj} ver ${_ver}"
 	    VERBATIM
 	    )
 
@@ -194,7 +204,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
 	      ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	    COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver}"
+	      ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
+	      COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver}"
 	    )
 
 	ADD_CUSTOM_COMMAND(OUTPUT  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
@@ -206,8 +217,6 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    VERBATIM
 	    )
 
-	LIST(APPEND _flies_xml_paths ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml)
-	LIST(APPEND _pom_xml_paths ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml)
 
     ENDFOREACH(_ver ${_projVers})
 
@@ -216,7 +225,6 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	-Dflies.project.slug=${proj} -Dflies.project.name=${${proj}_NAME}
 	-Dflies.project.desc=${${proj}_DESC} -Dflies.url=${FLIES_URL}
 	COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
-	DEPENDS ${_flies_xml_paths}  ${_pom_xml_paths}
 	COMMENT "  [Mvn] Creating proj: proj ${proj}:${${proj}_NAME}"
 	VERBATIM
 	)
@@ -255,13 +263,13 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${READY_PROJ_STAMP}
 	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/prepare_project.sh "${_langs}" "${READY_PROJ_STAMP}"
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
 	    COMMENT "   Preparing project ${proj}/${_ver} "
 	    VERBATIM
 	    )
 
 	ADD_CUSTOM_COMMAND(OUTPUT
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/
+	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    COMMAND perl scripts/get_project.pl ${SAMPLE_PROJ_DIR} ${proj}
 	    ${${proj}_REPO_TYPE} ${_ver} ${${proj}_URL_${_ver}}
@@ -294,8 +302,7 @@ ADD_CUSTOM_TARGET(selenium-data
 	COMMENT "   Preparing projects for selenium tests"
 )
 
-ADD_DEPENDENCIES(selenium-data flies_publican_push_mvn_ReleaseNotes_f13
-flies_publican_push_mvn_SecurityGuide_f13)
+ADD_DEPENDENCIES(selenium-data flies_publican_push_mvn_ReleaseNotes_f13 flies_publican_push_mvn_SecurityGuide_f13)
 
 ####################################################################
 # Test Suites.
