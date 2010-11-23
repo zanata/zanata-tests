@@ -207,7 +207,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    )
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	    COMMAND ln -sf ../../../pom.xml ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	    COMMAND cmake -E create_symlink ../../../pom.xml ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    COMMENT "   Link to main pom.xml"
 	    VERBATIM
