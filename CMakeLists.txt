@@ -160,10 +160,9 @@ ENDMACRO(ADD_PY_CLIENT_TARGETS  proj)
 #
 MACRO(ADD_MVN_CLIENT_TARGETS proj )
     SET(_projVers "${${proj}_VERS}")
-    SET(_flies_xml_paths "")
-    SET(_pom_xml_paths "")
 
     FOREACH(_ver ${_projVers})
+	#MESSAGE("[mvn] proj=${proj} ver=${_ver}")
 	ADD_CUSTOM_TARGET(flies_publican_push_mvn_${proj}_${_ver} ALL
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_MVN_STAMP}
 	    )
@@ -191,8 +190,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    VERBATIM
 	    )
 
-	ADD_CUSTOM_COMMAND(OUTPUT
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${VER_MVN_STAMP}
+	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${VER_MVN_STAMP}
 	    COMMAND mvn -e flies:putversion
 	    -Dflies.projectConfig=${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	    -Dflies.username=admin
@@ -208,11 +206,9 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	      COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver}"
 	    )
 
-	ADD_CUSTOM_COMMAND(OUTPUT  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	    COMMAND ln -sf ../../../pom.xml pom.xml
-	    COMMAND touch ../../../pom.xml
-	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver} pom.xml
+	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	    COMMAND ln -sf ../../../pom.xml ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    COMMENT "   Link to main pom.xml"
 	    VERBATIM
 	    )
@@ -243,6 +239,7 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
     ENDIF()
 
     FOREACH(_ver ${_projVers})
+	#MESSAGE("[publican] proj=${proj} ver=${_ver}")
 	ADD_CUSTOM_TARGET(generate_flies_xml_${proj}_${_ver}  ALL
 	    	DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	    	)
@@ -259,18 +256,15 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    )
 
 	STRING(REPLACE ";" "," _langs "${LANGS}")
-	ADD_CUSTOM_COMMAND(OUTPUT
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${READY_PROJ_STAMP}
+	ADD_CUSTOM_COMMAND(OUTPUT  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${READY_PROJ_STAMP}
 	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/prepare_project.sh "${_langs}" "${READY_PROJ_STAMP}"
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    COMMENT "   Preparing project ${proj}/${_ver} "
 	    VERBATIM
 	    )
 
-	ADD_CUSTOM_COMMAND(OUTPUT
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
+	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    COMMAND perl scripts/get_project.pl ${SAMPLE_PROJ_DIR} ${proj}
 	    ${${proj}_REPO_TYPE} ${_ver} ${${proj}_URL_${_ver}}
 	    DEPENDS ${SAMPLE_PROJ_DIR}

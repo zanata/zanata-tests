@@ -9,8 +9,8 @@
       <plugin>
         <groupId>net.openl10n.flies</groupId>
         <artifactId>flies-maven-plugin</artifactId>
-        <version>1.0.2-SNAPSHOT</version>
-        <configuration>
+	<configuration>
+	  <srcDir>.</srcDir>
         </configuration>
       </plugin>
     </plugins>
