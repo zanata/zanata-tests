@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 # Once complete successfully, a file named "$stamp" is touched.
 # If publican.cfg exists, this script does a publican update,
-# otherwise do noting except touching "$stamp"
+# otherwise do noting except linking pom.xml
 langs=$1
-stamp=$2
+#stamp=$2
 
 if [ -e /usr/bin/publican ] ; then
     if [ -e publican.cfg ]; then
@@ -13,5 +13,6 @@ if [ -e /usr/bin/publican ] ; then
     fi
 fi
 
-touch ${stamp}
+#touch ${stamp}
+ln -sf ../../../pom.xml pom.xml
 

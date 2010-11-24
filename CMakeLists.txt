@@ -206,12 +206,15 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	      COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver}"
 	    )
 
-	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	    COMMAND cmake -E create_symlink ../../../pom.xml ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
-	    COMMENT "   Link to main pom.xml"
-	    VERBATIM
-	    )
+	#SET_SOURCE_FILES_PROPERTIES({SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	#    PROPERTIES GENERATED TRUE)
+
+	#	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	#    COMMAND cmake -E create_symlink ../../../pom.xml ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	#    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
+	#    COMMENT "   Link to main pom.xml"
+	#    VERBATIM
+	#    )
 
 
     ENDFOREACH(_ver ${_projVers})
@@ -250,14 +253,14 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    COMMAND scripts/generate_flies_xml.sh ${SAMPLE_PROJ_DIR} ${proj}
 	    ${_ver} "${LANGS}"
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${READY_PROJ_STAMP}
+	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
 	    COMMENT "   Generate ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml"
 	    VERBATIM
 	    )
 
 	STRING(REPLACE ";" "," _langs "${LANGS}")
-	ADD_CUSTOM_COMMAND(OUTPUT  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${READY_PROJ_STAMP}
-	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/prepare_project.sh "${_langs}" "${READY_PROJ_STAMP}"
+	ADD_CUSTOM_COMMAND(OUTPUT  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/prepare_project.sh "${_langs}"
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    COMMENT "   Preparing project ${proj}/${_ver} "
