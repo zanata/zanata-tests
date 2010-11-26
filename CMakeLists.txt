@@ -186,7 +186,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${VER_MVN_STAMP}
 	      ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
 	      ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
-	      COMMENT "  [Mvn] Uploading pot and po for proj ${proj} ver ${_ver}"
+	      COMMENT "  [Mvn] Uploading pot and po for proj ${proj} ver ${_ver} to ${FLIES_URL}"
 	    VERBATIM
 	    )
 
@@ -203,20 +203,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
 	      ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
 	      ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
-	      COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver}"
+	      COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver} to ${FLIES_URL}"
 	    )
-
-	#SET_SOURCE_FILES_PROPERTIES({SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	#    PROPERTIES GENERATED TRUE)
-
-	#	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	#    COMMAND cmake -E create_symlink ../../../pom.xml ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	#    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
-	#    COMMENT "   Link to main pom.xml"
-	#    VERBATIM
-	#    )
-
-
     ENDFOREACH(_ver ${_projVers})
 
     ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
@@ -224,7 +212,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	-Dflies.project.slug=${proj} -Dflies.project.name=${${proj}_NAME}
 	-Dflies.project.desc=${${proj}_DESC} -Dflies.url=${FLIES_URL}
 	COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
-	COMMENT "  [Mvn] Creating proj: proj ${proj}:${${proj}_NAME}"
+	COMMENT "  [Mvn] Creating proj: proj ${proj}:${${proj}_NAME} in ${FLIES_URL}"
 	VERBATIM
 	)
 
