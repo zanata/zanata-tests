@@ -1,24 +1,46 @@
-#!/bin/sh
-# Usage: $0 <testRole> <testSuitePath> <testSuiteName> <siOut> <siSoOut>
+#!/bin/bash
+# Usage: $0 <cfgFile> <testSuitePath> <testSuiteName>
 
-testRole=$1
-testSuitePath=$2
-testSuiteName=$3
-siOut=$4
-siSoOut=$5
-testRoot=$6
+function print_usage(){
+    echo "$0 <cfgFile> <testSuitePath> <testSuiteName>"
+}
+
+for para in cfgFile testSuitePath testSuiteName; do
+    if [ -z $1 ];then
+	print_usage
+	exit -1
+    fi
+
+    eval "$para=$1"
+    shift
+    value=$(eval echo \$$para)
+    echo $para 1=${value}
+done
+
 
 if [ -z ${FLIES_URL} ] || [ -z ${FUNCTIONS_DIR} ]; then
-    source ./test.cfg
+    source ${cfgFile}
 fi
+
+testRoles=`echo ${TEST_ROLES} | sed -e 's/;/ /'`
+echo "testRoles=${testRoles}"
 
 
 SI_PATTERN_MATCH="</b></td></tr>"
 case $testRole in
-        'ADMIN' )
-            SIGN_IN_FILE=${SIGN_IN_FILE_ADMIN}
+        Admin )
+	    PASSWD=admin
             ;;
-        * )
+	Prj ) # Project maintainer
+	    SIGN_IN_FILE=${SIGN_IN_FILE_PROJECt}
+	    ;;
+	Translator )
+	    SIGN_IN_FILE=${SIGN_IN_FILE_ADMIN}
+	    ;;
+	Login )
+	    SIGN_IN_FILE=${SIGN_IN_FILE_ADMIN}
+	    ;;
+	* )
             SIGN_IN_FILE=${SIGN_IN_FILE_NORMAL}
             ;;
 esac

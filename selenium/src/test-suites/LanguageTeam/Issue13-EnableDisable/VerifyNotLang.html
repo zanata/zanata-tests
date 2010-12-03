@@ -4,17 +4,22 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>VerifyZhCnHans</title>
+<title>VerifyNotZhCnHans</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">VerifyZhCnHans</td></tr>
+<tr><td rowspan="1" colspan="3">VerifyNotZhCnHans</td></tr>
 </thead><tbody>
 <tr>
 	<td>store</td>
-	<td>zh-CN-Hans</td>
+	<td>bem</td>
 	<td>lang</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=tr.dr-table-row&gt;td:contains(&quot;${lang}&quot;) ~ td &gt;a</td>
+	<td>Enable</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -27,39 +32,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>verifyElementPresent</td>
+	<td>verifyElementNotPresent</td>
 	<td>css=div#tribe_list_view_item_${lang}</td>
-	<td></td>
-</tr>
-<!--Join the language-->
-<tr>
-	<td>click</td>
-	<td>css=div#tribe_list_view_item_${lang} a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForElementPresent</td>
-	<td>id=Language_team_member_toggle_form</td>
-	<td></td>
-</tr>
-<tr>
-	<td>storeElementPresent</td>
-	<td>id=Language_team_member_toggle_form:Leave</td>
-	<td>Joined</td>
-</tr>
-<tr>
-	<td>gotoIf</td>
-	<td>${Joined}</td>
-	<td>LangJoined</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=Language_team_member_toggle_form:Join</td>
-	<td></td>
-</tr>
-<tr>
-	<td>label</td>
-	<td>LangJoined</td>
 	<td></td>
 </tr>
 <tr>
@@ -68,8 +42,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>verifyElementPresent</td>
-	<td>css=li#Language_zh-CN-Hans</td>
+	<td>verifyElementNotPresent</td>
+	<td>css=li#Language_${lang}</td>
 	<td></td>
 </tr>
 
