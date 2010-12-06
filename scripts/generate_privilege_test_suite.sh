@@ -102,9 +102,9 @@ function test_case_read_line(){
 	    ;;
         PERMISSION )
 	    URL=`echo "${LINE}" | cut -f 2`
-	    echo "PAT=/${FLIES_PATH}${URL}"
-	    print_html_case_item_signin_check ${OUTPUTFILE}.prelogin.html "/${FLIES_PATH}${URL}"
-	    print_html_case_item_permission_deny ${OUTPUTFILE}.normal.html "/${FLIES_PATH}${URL}"
+	    echo "PAT=/${SERVER_PATH}${URL}"
+	    print_html_case_item_signin_check ${OUTPUTFILE}.prelogin.html "/${SERVER_PATH}${URL}"
+	    print_html_case_item_permission_deny ${OUTPUTFILE}.normal.html "/${SERVER_PATH}${URL}"
 	    ;;
         TEXT_PRESENT )
 	    TEXT=`echo "${LINE}" | cut -f 2`

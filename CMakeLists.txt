@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.4)
 ####################################################################
 # Init Definition
 ####################################################################
-PROJECT(flies-test NONE)
+PROJECT(flies-tests NONE)
 SET(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS ON)
 MESSAGE("CMake version=${CMAKE_VERSION}")
 
@@ -19,7 +19,7 @@ SET(PROJECT_DESCRIPTION "Test system for flies.openl10n.net")
 
 
 ### Override with environment variables
-SET(OVERRIDABLE_VARS "BASE_URL" "FLIES_URL" "BROWSERS_TO_TEST" "SELENIUM_SERVER_PORT")
+SET(OVERRIDABLE_VARS "SERVER_BASE" "SERVER_PATH" "FLIES_URL" "BROWSERS_TO_TEST" "SELENIUM_SERVER_PORT")
 FOREACH(_envVar  ${OVERRIDABLE_VARS})
     IF(NOT "$ENV{${_envVar}}" STREQUAL "")
 	SET(${_envVar} "$ENV{${_envVar}}")
@@ -134,6 +134,12 @@ SET(VER_MVN_STAMP ".ver.${MVN_STAMP}")
 SET(UPLOADED_POT_MVN_STAMP ".upload.pot.${MVN_STAMP}")
 SET(UPLOADED_PO_MVN_STAMP ".upload.po.${MVN_STAMP}")
 
+
+ADD_CUSTOM_TARGET(all_data
+    COMMENT "   Preparing all projects"
+    )
+
+
 #===================================================================
 # Python targets
 #
@@ -169,6 +175,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	ADD_DEPENDENCIES(flies_publican_push_mvn
 	    flies_publican_push_mvn_${proj}_${_ver})
+
+	ADD_DEPENDENCIES(all_data flies_publican_push_mvn)
 
 	ADD_CUSTOM_COMMAND(OUTPUT
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_POT_MVN_STAMP}
@@ -283,11 +291,13 @@ FOREACH(_proj ${PUBLICAN_PROJECTS})
     ADD_PUBLICAN_PROJECT(${_proj} mvn)
 ENDFOREACH(_proj ${PUBLICAN_PROJECTS})
 
-ADD_CUSTOM_TARGET(selenium-data
+ADD_CUSTOM_TARGET(selenium_data
 	COMMENT "   Preparing projects for selenium tests"
 )
+ADD_DEPENDENCIES(selenium_data flies_publican_push_mvn_ReleaseNotes_f13 flies_publican_push_mvn_SecurityGuide_f13)
 
-ADD_DEPENDENCIES(selenium-data flies_publican_push_mvn_ReleaseNotes_f13 flies_publican_push_mvn_SecurityGuide_f13)
+ADD_DEPENDENCIES(all_data flies_publican_push_mvn_ReleaseNotes_f13 flies_publican_push_mvn_SecurityGuide_f13)
+
 
 ####################################################################
 # Test Suites.
