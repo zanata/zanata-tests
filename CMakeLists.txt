@@ -150,10 +150,8 @@ MACRO(ADD_PY_CLIENT_TARGETS proj)
 	FOREACH(_lang ${langs})
 	    ADD_CUSTOM_COMMAND(OUTPUT
 		${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_PY_STAMP}
-		COMMAND flies publican update --project-id ${proj} --version-id
-		${_ver}
-		COMMAND touch
-		${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_PY_STAMP}
+		COMMAND flies publican update --project-id ${proj} --version-id	${_ver}
+		COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_PY_STAMP}
 		DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_POT_PY_STAMP}
 		COMMENT "  [Python] Uploading po for proj ${proj} ver ${_ver}"
 		)
@@ -169,7 +167,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
     FOREACH(_ver ${_projVers})
 	#MESSAGE("[mvn] proj=${proj} ver=${_ver}")
-	ADD_CUSTOM_TARGET(flies_publican_push_mvn_${proj}_${_ver} ALL
+	ADD_CUSTOM_TARGET(flies_publican_push_mvn_${proj}_${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_MVN_STAMP}
 	    )
 
@@ -239,7 +237,7 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 
     FOREACH(_ver ${_projVers})
 	#MESSAGE("[publican] proj=${proj} ver=${_ver}")
-	ADD_CUSTOM_TARGET(generate_flies_xml_${proj}_${_ver}  ALL
+	ADD_CUSTOM_TARGET(generate_flies_xml_${proj}_${_ver}
 	    	DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	    	)
 
@@ -284,8 +282,9 @@ ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}
 ####################################################################
 # Retrieve projects
 #
-ADD_CUSTOM_TARGET(generate_flies_xml ALL)
-ADD_CUSTOM_TARGET(flies_publican_push_mvn ALL)
+
+ADD_CUSTOM_TARGET(flies_publican_push_mvn)
+ADD_CUSTOM_TARGET(generate_flies_xml)
 
 FOREACH(_proj ${PUBLICAN_PROJECTS})
     ADD_PUBLICAN_PROJECT(${_proj} mvn)
@@ -296,7 +295,7 @@ ADD_CUSTOM_TARGET(selenium_data
 )
 ADD_DEPENDENCIES(selenium_data flies_publican_push_mvn_ReleaseNotes_f13 flies_publican_push_mvn_SecurityGuide_f13)
 
-ADD_DEPENDENCIES(all_data flies_publican_push_mvn_ReleaseNotes_f13 flies_publican_push_mvn_SecurityGuide_f13)
+ADD_DEPENDENCIES(all_data flies_publican_push_mvn)
 
 
 ####################################################################
@@ -304,7 +303,7 @@ ADD_DEPENDENCIES(all_data flies_publican_push_mvn_ReleaseNotes_f13 flies_publica
 ####################################################################
 ENABLE_TESTING()
 ADD_CUSTOM_TARGET(clean_test_suites
-    COMMAND find selenium/src/test-suites -name '[1-4]*.html' -delete
+    COMMAND find selenium/src/test-suites -name '[1-9]*.html' -delete
     COMMAND find selenium/src/test-suites -type l -name 'SignIn*.html' -delete
     COMMAND find selenium/src/test-suites -type l -name 'SignOut.html' -delete
     COMMENT "Cleaning the generated test suite files"

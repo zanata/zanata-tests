@@ -51,9 +51,12 @@ case $testRole in
 	;;
 esac
 
+HOME_PAGE_FILE="HomePage.html"
 SIGN_IN_FILE="SignIn${testRole}.html"
 SI_PATTERN_MATCH="</b></td></tr>"
-SI_PATTERN_REPLACE="${SI_PATTERN_MATCH}\n<tr><td><a href=\"${SIGN_IN_FILE}\">${testRole} Sign In</a></td></tr>"
+SI_PATTERN_REPLACE="${SI_PATTERN_MATCH}\n\
+    <tr><td><a href=\"${HOME_PAGE_FILE}\">Home Page</a></td></tr>\n\
+    <tr><td><a href=\"${SIGN_IN_FILE}\">${testRole} Sign In</a></td></tr>"
 
 SIGN_OUT_FILE="SignOut.html"
 SO_PATTERN_MATCH="</tbody>"
@@ -63,7 +66,7 @@ SO_PATTERN_REPLACE="<tr><td><a href=\"${SIGN_OUT_FILE}\">Sign Out</a></td></tr>\
 siSuite=${testSuiteDir}/${SI}-${testSuiteName}.html
 cat ${testSuiteDir}/0-${testSuiteName}.html | sed -e "s|${SI_PATTERN_MATCH}|${SI_PATTERN_REPLACE}|" > ${siSuite}
 
-sisoSuite=${testSuiteDir}/${SISO}-${testSuiteName}.html
+siSoSuite=${testSuiteDir}/${SISO}-${testSuiteName}.html
 cat ${siSuite} | sed -e "s|${SO_PATTERN_MATCH}|${SO_PATTERN_REPLACE}|" > ${siSoSuite}
 
 ############################################################
@@ -112,11 +115,6 @@ cat >> ${SIGN_IN_PATH} <<END
 	    <tr><td rowspan="1" colspan="3">SignIn${testRole}</td></tr>
 	</thead>
 	<tbody>
-	    <tr>
-		<td>open</td>
-		<td>${BASE_PATH}</td>
-		<td></td>
-	    </tr>
 	    <tr>
 		<td>clickAndWait</td>
 		<td>Sign_in</td>
