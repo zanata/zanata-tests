@@ -47,35 +47,46 @@ ENDMACRO(GENERATE_TEST_SUITE testRole testSuitePath=$2 testSuiteName siOut
         siSoOut testRoot)
 
 
-MACRO(ADD_OUTPUT_AND_TEST testSuitePath testSuiteName)
-    IF (EXISTS "${testSuitePath}/TEST_PRELOGIN")
+MACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
+    IF (EXISTS "${testSuiteDir}/TEST_PRELOGIN")
 	SET(_testRoles ${TEST_ROLES} PRELOGIN)
     ELSE()
 	SET(_testRoles ${TEST_ROLES})
     ENDIF()
-    MESSAGE("testPath=${testSuitePath}")
+    MESSAGE("testPath=${testSuiteDir}")
     FOREACH(testRole ${_testRoles})
-	IF (NOT EXISTS "${testSuitePath}/NO_${testRole}" )
-	    IF ( ${testRole} STREQUAL "PRELOGIN" )
-		SET(suiteFile ${testSuitePath}/0-${testSuiteName}.html)
+	IF(NOT EXISTS "${testSuiteDir}/NO_${testRole}" )
+	    IF( ${testRole} STREQUAL "Prelogin" )
+		SET(_suiteFile ${testSuiteDir}/0-${testSuiteName}.html)
 	    ELSE()
-		IF ( ${testRole} STREQUAL "ADMIN" )
-		    SET(SISO_TEST_TARGET 2-${testSuiteName}.html)
-		    SET(SI_TEST_TARGET   1-${testSuiteName}.html)
-		    SET(suiteFile ${testSuitePath}/${SISO_TEST_TARGET})
-		ELSE()
-		    SET(SISO_TEST_TARGET 4-${testSuiteName}.html)
-		    SET(SI_TEST_TARGET   3-${testSuiteName}.html)
-		    SET(suiteFile ${testSuitePath}/${SISO_TEST_TARGET})
+		IF( ${testRole} STREQUAL "Admin" )
+		    SET(suiteFiles ${testSuiteDir}/1-${testSuiteName}.html
+			${testSuiteDir}/2-${testSuiteName}.html)
+		ELSEIF( ${testRole} STREQUAL "Prjmant" )
+		    SET(suiteFiles ${testSuiteDir}/3-${testSuiteName}.html
+			${testSuiteDir}/4-${testSuiteName}.html)
+		ELSEIF( ${testRole} STREQUAL "Trans" )
+		    SET(suiteFiles ${testSuiteDir}/5-${testSuiteName}.html
+			${testSuiteDir}/6-${testSuiteName}.html)
+		ELSEIF( ${testRole} STREQUAL "Login" )
+		    SET(suiteFiles ${testSuiteDir}/7-${testSuiteName}.html
+			${testSuiteDir}/8-${testSuiteName}.html)
 		ENDIF()
-		GENERATE_TEST_SUITE(${testRole} ${testSuitePath}
-		    ${testSuiteName} ${SI_TEST_TARGET} ${SISO_TEST_TARGET}
-		    ${TEST_ROOT_ABSOLUTE})
+		SET(_generateTestCases ${testSuiteDir}/SignIn${testRole}.html
+		    ${testSuiteDir}/SignOut.html
+		    ${testSuiteDir}/HomePage.html )
+
+		# Generate test suite
+		ADD_CUSTOM_COMMAND(OUTPUT ${suiteFiles} ${_generateTestCases}
+		    COMMAND ${CMAKE_SOURCE_DIR}/scripts/generate_test_suite.sh
+		    ${CMAKE_SOURCE_DIR}/test.cfg ${testRole} ${testSuiteDir} ${testSuiteName}
+		    COMMENT "Generate test suite ${testSuiteName} ${testRole}
+		    )
 	    ENDIF()
 	    ADD_OUTPUT_FOR_BROWSERS(${testSuiteName} "${testRole}" ${suiteFile} )
 	ENDIF()
     ENDFOREACH()
-ENDMACRO(ADD_OUTPUT_AND_TEST testRole testSuitePath testSuiteName)
+ENDMACRO(ADD_OUTPUT_AND_TEST testRole testSuiteDir testSuiteName)
 
 #===================================================================
 # Generate test suites.

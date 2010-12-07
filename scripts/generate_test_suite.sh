@@ -39,12 +39,12 @@ case $testRole in
 	SI=3
 	SISO=4
 	;;
-    trans )
+    Trans )
         USR=autotrans
 	SI=5
 	SISO=6
 	;;
-    login )
+    Login )
 	USR=autologin
 	SI=7
 	SISO=8
