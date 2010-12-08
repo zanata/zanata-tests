@@ -14,7 +14,7 @@ for para in cfgFile testRole testSuiteDir testSuiteName; do
     eval "$para=$1"
     shift
     value=$(eval echo \$$para)
-    echo $para=${value}
+    #echo $para=${value}
 done
 
 
@@ -134,6 +134,11 @@ cat >> ${SIGN_IN_PATH} <<END
 		<td>clickAndWait</td>
 		<td>login:Sign_in</td>
         	<td></td>
+	    </tr>
+	    <tr>
+		<td>assertElementPresent</td>
+		<td>css=ul#message&gt;li:contains("Welcome")</td>
+		<td></td>
 	    </tr>
 	</tbody>
     </table>

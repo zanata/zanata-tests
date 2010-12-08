@@ -42,7 +42,6 @@ SET(FUNCTIONS_DIR_ABSOLUTE ${CMAKE_SOURCE_DIR}/selenium/src/functions)
 SET(TEST_ROOT_ABSOLUTE "${CMAKE_SOURCE_DIR}/${TEST_ROOT}")
 SET(PRIVILEGE_TEST_ROOT_ABSOLUTE "${CMAKE_SOURCE_DIR}/${PRIVILEGE_TEST_ROOT}")
 SET(RESULT_DIR_ABSOLUTE "${CMAKE_SOURCE_DIR}/${RESULT_DIR}")
-SET(TEST_ROLES ADMIN NORMAL)
 
 IF(NOT EXISTS ${RESULT_DIR_ABSOLUTE})
     FILE(MAKE_DIRECTORY "${RESULT_DIR_ABSOLUTE}")
@@ -303,9 +302,9 @@ ADD_DEPENDENCIES(all_data flies_publican_push_mvn)
 ####################################################################
 ENABLE_TESTING()
 ADD_CUSTOM_TARGET(clean_test_suites
-    COMMAND find selenium/src/test-suites -name '[1-9]*.html' -delete
-    COMMAND find selenium/src/test-suites -type l -name 'SignIn*.html' -delete
-    COMMAND find selenium/src/test-suites -type l -name 'SignOut.html' -delete
+    COMMAND find selenium/src/test-suites -name "[1-9]*.html" -delete
+    COMMAND find selenium/src/test-suites -type l -name "SignIn*.html" -delete
+    COMMAND find selenium/src/test-suites -type l -name "SignOut.html" -delete
     COMMENT "Cleaning the generated test suite files"
     VERBATIM
     )
