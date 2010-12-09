@@ -21,8 +21,8 @@ done
 if [ -z ${FLIES_URL} ] || [ -z ${FUNCTIONS_DIR} ]; then
     source ${cfgFile}
 fi
-HOME_PAGE_PATH="${testSuiteDir}/${HOME_PAGE_FILE}"
 HOME_PAGE_FILE="HomePage.html"
+HOME_PAGE_PATH="${testSuiteDir}/${HOME_PAGE_FILE}"
 SIGN_IN_FILE="SignIn${testRole}.html"
 SIGN_IN_PATH="${testSuiteDir}/${SIGN_IN_FILE}"
 SIGN_OUT_FILE="SignOut.html"
@@ -40,8 +40,8 @@ case $testRole in
 	SI=1
 	SISO=2
 	;;
-    Projmant ) # Project maintainer
-	USR=autoprojmant
+    Prjmant ) # Project maintainer
+	USR=autoprjmant
 	SI=3
 	SISO=4
 	;;
@@ -80,19 +80,19 @@ function print_header(){
     SERVER_BASE=$2
     TITLE=$3
 
-    cat >> ${flie} <<END
+    cat >> ${file} <<END
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="selenium.base" href="${SERVER_BASE}" />
+    <link rel="selenium.base" href="" />
     <title>${TITLE}</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-    <tr><td rowspan="1" colspan="3">${TITLE}</td></tr>
+<tr><td rowspan="1" colspan="3">${TITLE}</td></tr>
 </thead>
 <tbody>
 END
@@ -101,7 +101,7 @@ END
 function print_footer(){
     file=$1
 
-    cat >> ${flie} <<END
+    cat >> ${file} <<END
 </tbody>
 </table>
 </body>
@@ -110,58 +110,60 @@ END
 }
 
 ### Print HomePage.html
-print_header ${HOME_PAGE_PATH} ${SERVER_BASE} "Home Page"
-cat >> ${HOME_PAGE_PATH} <<END
-<tbody>
-    <tr>
-	<td>open</td>
-	<td>${SERVER_PATH}</td>
-	<td></td>
-    </tr>
-</tbody>
+if [ ! -e  ${HOME_PAGE_PATH} ]; then
+    print_header ${HOME_PAGE_PATH} ${SERVER_BASE} "Home Page"
+    cat >> ${HOME_PAGE_PATH} <<END
+<tr>
+    <td>open</td>
+    <td>${SERVER_PATH}</td>
+    <td></td>
+</tr>
 END
-print_footer ${HOME_PAGE_PATH}
+    print_footer ${HOME_PAGE_PATH}
+fi
 
 ### Print SignIn${testRole}.html
 print_header ${SIGN_IN_PATH} ${SERVER_BASE} "SignIn${testRole}"
 cat >> ${SIGN_IN_PATH} <<END
-    <tr>
-	<td>clickAndWait</td>
-	<td>Sign_in</td>
-	<td></td>
-    </tr>
-    <tr>
-	<td>type</td>
-	<td>login:usernameField:username</td>
-	<td>${USR}</td>
-    </tr>
-    <tr>
-	<td>type</td>
-	<td>login:passwordField:password</td>
-	<td>${USR}</td>
-    </tr>
-    <tr>
-	<td>clickAndWait</td>
-	<td>login:Sign_in</td>
-	<td></td>
-    </tr>
-    <tr>
-	<td>assertElementPresent</td>
-	<td>css=ul#message&gt;li:contains("Welcome")</td>
-	<td></td>
-    </tr>
+<tr>
+    <td>clickAndWait</td>
+    <td>Sign_in</td>
+    <td></td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>login:usernameField:username</td>
+    <td>${USR}</td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>login:passwordField:password</td>
+    <td>${USR}</td>
+</tr>
+<tr>
+    <td>clickAndWait</td>
+    <td>login:Sign_in</td>
+    <td></td>
+</tr>
+<tr>
+    <td>assertElementPresent</td>
+    <td>css=ul#message&gt;li:contains("Welcome")</td>
+    <td></td>
+</tr>
 END
 print_footer ${SIGN_IN_PATH}
 
 ### Print SignOut.html
-print_header ${SIGN_OUT_PATH} ${SERVER_BASE} "SignOut"
-cat >> ${SIGN_OUT_PATH} <<END
+if [ ! -e  ${SIGN_OUT_PATH} ]; then
+    print_header ${SIGN_OUT_PATH} ${SERVER_BASE} "SignOut"
+    cat >> ${SIGN_OUT_PATH} <<END
     <tr>
 	<td>clickAndWait</td>
 	<td>link=Sign Out</td>
 	<td></td>
     </tr>
 END
-print_footer ${SIGN_OUT_PATH}
+    print_footer ${SIGN_OUT_PATH}
+fi
 
 
