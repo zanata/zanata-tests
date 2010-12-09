@@ -24,6 +24,7 @@ CTestTestfile.cmake$
 /src/.*test-suites.*/[1-9]-.*\.html$
 /src/.*test-suites.*/SignIn.*.html$
 /src/.*test-suites.*/SignOut.html$
+/src/.*test-suites.*/HomePage.html$
 
 # Privilege specific
 /src/privilege-test-suites/0-.*\.html$
