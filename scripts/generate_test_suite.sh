@@ -147,7 +147,7 @@ cat >> ${SIGN_IN_PATH} <<END
 </tr>
 <tr>
     <td>assertElementPresent</td>
-    <td>css=ul#message&gt;li:contains("Welcome")</td>
+    <td>css=ul#messages&gt;li:contains("Welcome")</td>
     <td></td>
 </tr>
 END
