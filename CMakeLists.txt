@@ -180,7 +180,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_MVN_STAMP}
 	    COMMAND  mvn -e -B flies:publican-push
 	    -Dflies.projectConfig=${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
-	    -Dflies.username=admin
+	    -Dflies.username=${ADMIN_USER}
 	    -Dflies.srcDir=.
 	    -Dflies.key=${KEY} -Dflies.project=${proj}
 	    -Dflies.projectVersion=${_ver}
@@ -198,7 +198,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${VER_MVN_STAMP}
 	    COMMAND mvn -e flies:putversion
 	    -Dflies.projectConfig=${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
-	    -Dflies.username=admin
+	    -Dflies.username=${ADMIN_USER}
 	    -Dflies.key=${KEY} -Dflies.version.slug=${_ver}
 	    -Dflies.version.project=${proj}
 	    -Dflies.version.name=\"Ver ${_ver}\"
@@ -213,7 +213,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
     ENDFOREACH(_ver ${_projVers})
 
     ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
-	COMMAND mvn -e flies:putproject -Dflies.username=admin -Dflies.key=${KEY}
+	COMMAND mvn -e flies:putproject -Dflies.username=${ADMIN_USER} -Dflies.key=${KEY}
 	-Dflies.project.slug=${proj} -Dflies.project.name=${${proj}_NAME}
 	-Dflies.project.desc=${${proj}_DESC} -Dflies.url=${FLIES_URL}
 	COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
