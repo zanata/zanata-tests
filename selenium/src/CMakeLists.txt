@@ -59,37 +59,29 @@ MACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
 	    IF( ${_testRole} STREQUAL "Prelogin" )
 		SET(_suiteFile ${testSuiteDir}/0-${testSuiteName}.html)
 	    ELSE()
-		IF( ${_testRole} STREQUAL "Admin" )
-		    SET(_suiteFile ${testSuiteDir}/2-${testSuiteName}.html)
-		    SET(_suiteFiles ${testSuiteDir}/1-${testSuiteName}.html
+		IF(NOT "${${_testRole}_SISO}" STREQUAL "")
+		    SET(_suiteFile ${testSuiteDir}/${${_testRole}_SISO}-${testSuiteName}.html)
+		    MATH(EXPR _si "${${_testRole}_SISO}-1")
+
+		    SET(_suiteFiles ${testSuiteDir}/${_si}-${testSuiteName}.html
 			${_suiteFile})
-		ELSEIF( ${_testRole} STREQUAL "Prjmant" )
-		    SET(_suiteFile ${testSuiteDir}/4-${testSuiteName}.html)
-		    SET(_suiteFiles ${testSuiteDir}/3-${testSuiteName}.html
-			${_suiteFile})
-		ELSEIF( ${_testRole} STREQUAL "Trans" )
-		    SET(_suiteFile ${testSuiteDir}/6-${testSuiteName}.html)
-		    SET(_suiteFiles ${testSuiteDir}/5-${testSuiteName}.html
-			${_suiteFile})
-		ELSEIF( ${_testRole} STREQUAL "Login" )
-		    SET(_suiteFile ${testSuiteDir}/8-${testSuiteName}.html)
-		    SET(_suiteFiles ${testSuiteDir}/7-${testSuiteName}.html
-			${_suiteFile})
+		    SET(_generateTestCases ${testSuiteDir}/SignIn${_testRole}.html
+			${testSuiteDir}/SignOut.html
+			${testSuiteDir}/HomePage.html )
+
+		    # Generate test suite
+		    ADD_CUSTOM_COMMAND(OUTPUT ${_suiteFiles} ${_generateTestCases}
+			COMMAND ${CMAKE_SOURCE_DIR}/scripts/generate_test_suite.sh
+			${_testRole} ${testSuiteDir} ${testSuiteName}
+			${SERVER_BASE} ${SERVER_PATH}
+			${${_testRole}_USER} ${${_testRole}_USER} ${${_testRole}_SISO}
+			COMMENT "Generate test suite ${testSuiteName} for ${_testRole}"
+			)
+
+		    ADD_CUSTOM_TARGET(generate_test_suite_${testSuiteName}_${_testRole}  ALL
+			DEPENDS ${_suiteFiles} ${_generateTestCases}
+			)
 		ENDIF()
-		SET(_generateTestCases ${testSuiteDir}/SignIn${_testRole}.html
-		    ${testSuiteDir}/SignOut.html
-		    ${testSuiteDir}/HomePage.html )
-
-		# Generate test suite
-		ADD_CUSTOM_COMMAND(OUTPUT ${_suiteFiles} ${_generateTestCases}
-		    COMMAND ${CMAKE_SOURCE_DIR}/scripts/generate_test_suite.sh
-		    ${CMAKE_SOURCE_DIR}/test.cfg ${_testRole} ${testSuiteDir} ${testSuiteName}
-		    COMMENT "Generate test suite ${testSuiteName} for ${_testRole}"
-		    )
-
-		ADD_CUSTOM_TARGET(generate_test_suite_${testSuiteName}_${_testRole}  ALL
-		    DEPENDS ${_suiteFiles} ${_generateTestCases}
-		    )
 	    ENDIF()
 	    ADD_OUTPUT_FOR_BROWSERS(${testSuiteName} ${_testRole} ${_suiteFile} )
 	ENDIF()

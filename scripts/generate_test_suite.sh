@@ -1,11 +1,11 @@
 #!/bin/bash
-# Usage: $0 <cfgFile> <testRole> <testSuiteDir> <testSuiteName>
+# Usage: $0 <testRole> <testSuiteDir> <testSuiteName> <serverBase> <serverPath> <testUser> <testPass> <sisoIndex>
 
 function print_usage(){
-    echo "$0 <cfgFile> <testRole> <testSuiteDir> <testSuiteName>"
+echo "$0 <testRole> <testSuiteDir> <testSuiteName> <serverBase> <serverPath> <testUser> <testPass> <sisoIndex>"
 }
 
-for para in cfgFile testRole testSuiteDir testSuiteName; do
+for para in testRole testSuiteDir testSuiteName serverBase serverPath testUser testPass sisoIndex; do
     if [ -z $1 ];then
 	print_usage
 	exit -1
@@ -17,13 +17,9 @@ for para in cfgFile testRole testSuiteDir testSuiteName; do
     #echo $para=${value}
 done
 
-
-if [ -z ${FLIES_URL} ] || [ -z ${FUNCTIONS_DIR} ]; then
-    source ${cfgFile}
-fi
 HOME_PAGE_FILE="HomePage.html"
 HOME_PAGE_PATH="${testSuiteDir}/${HOME_PAGE_FILE}"
-SIGN_IN_FILE="SignIn${testRole}.html"
+SIGN_IN_FILE="SignIn${testUser}.html"
 SIGN_IN_PATH="${testSuiteDir}/${SIGN_IN_FILE}"
 SIGN_OUT_FILE="SignOut.html"
 SIGN_OUT_PATH="${testSuiteDir}/${SIGN_OUT_FILE}"
@@ -34,33 +30,14 @@ SIGN_OUT_PATH="${testSuiteDir}/${SIGN_OUT_FILE}"
 # SI: Suite with Sign In
 # SISO: Suite with Sign In and Sign Out
 
-case $testRole in
-    Admin )
-	USR=admin
-	SI=1
-	SISO=2
-	;;
-    Prjmant ) # Project maintainer
-	USR=autoprjmant
-	SI=3
-	SISO=4
-	;;
-    Trans )
-        USR=autotrans
-	SI=5
-	SISO=6
-	;;
-    Login )
-	USR=autologin
-	SI=7
-	SISO=8
-	;;
-esac
+SISO=$sisoIndex
+SI=`expr $sisoIndex - 1`
+SIGN_IN_TITLE="${testUser} Sign In"
 
 SI_PATTERN_MATCH="</b></td></tr>"
 SI_PATTERN_REPLACE="${SI_PATTERN_MATCH}\n\
     <tr><td><a href=\"${HOME_PAGE_FILE}\">Home Page</a></td></tr>\n\
-    <tr><td><a href=\"${SIGN_IN_FILE}\">${testRole} Sign In</a></td></tr>"
+    <tr><td><a href=\"${SIGN_IN_FILE}\">${SIGN_IN_TITLE}</a></td></tr>"
 
 SO_PATTERN_MATCH="</tbody>"
 SO_PATTERN_REPLACE="<tr><td><a href=\"${SIGN_OUT_FILE}\">Sign Out</a></td></tr>\n${SO_PATTERN_MATCH}"
@@ -77,7 +54,7 @@ cat ${siSuite} | sed -e "s|${SO_PATTERN_MATCH}|${SO_PATTERN_REPLACE}|" > ${siSoS
 
 function print_header(){
     file=$1
-    SERVER_BASE=$2
+    serverBase=$2
     TITLE=$3
 
     cat >> ${file} <<END
@@ -111,11 +88,11 @@ END
 
 ### Print HomePage.html
 if [ ! -e  ${HOME_PAGE_PATH} ]; then
-    print_header ${HOME_PAGE_PATH} ${SERVER_BASE} "Home Page"
+    print_header ${HOME_PAGE_PATH} ${serverBase} "Home Page"
     cat >> ${HOME_PAGE_PATH} <<END
 <tr>
     <td>open</td>
-    <td>${SERVER_PATH}</td>
+    <td>${serverPath}</td>
     <td></td>
 </tr>
 END
@@ -123,7 +100,7 @@ END
 fi
 
 ### Print SignIn${testRole}.html
-print_header ${SIGN_IN_PATH} ${SERVER_BASE} "SignIn${testRole}"
+print_header ${SIGN_IN_PATH} ${serverBase} "${SIGN_IN_TITLE}"
 cat >> ${SIGN_IN_PATH} <<END
 <tr>
     <td>clickAndWait</td>
@@ -133,12 +110,12 @@ cat >> ${SIGN_IN_PATH} <<END
 <tr>
     <td>type</td>
     <td>login:usernameField:username</td>
-    <td>${USR}</td>
+    <td>${testUser}</td>
 </tr>
 <tr>
     <td>type</td>
     <td>login:passwordField:password</td>
-    <td>${USR}</td>
+    <td>${testPass}</td>
 </tr>
 <tr>
     <td>clickAndWait</td>
@@ -155,7 +132,7 @@ print_footer ${SIGN_IN_PATH}
 
 ### Print SignOut.html
 if [ ! -e  ${SIGN_OUT_PATH} ]; then
-    print_header ${SIGN_OUT_PATH} ${SERVER_BASE} "SignOut"
+    print_header ${SIGN_OUT_PATH} ${serverBase} "SignOut"
     cat >> ${SIGN_OUT_PATH} <<END
     <tr>
 	<td>clickAndWait</td>
