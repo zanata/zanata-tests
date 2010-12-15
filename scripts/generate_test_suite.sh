@@ -1,25 +1,29 @@
 #!/bin/bash
 # Usage: $0 <testRole> <testSuiteDir> <testSuiteName> <serverBase> <serverPath> <testUser> <testPass> <sisoIndex>
 
-function print_usage(){
-echo "$0 <testRole> <testSuiteDir> <testSuiteName> <serverBase> <serverPath> <testUser> <testPass> <sisoIndex>"
-}
+_scriptDir=`dirname $0`
+PARAMS="testRole testSuiteDir testSuiteName serverBase serverPath testUser testPass sisoIndex"
+source ${_scriptDir}/test-common-func.sh
 
-for para in testRole testSuiteDir testSuiteName serverBase serverPath testUser testPass sisoIndex; do
-    if [ -z $1 ];then
-	print_usage
-	exit -1
-    fi
+#function print_usage(){
+#    echo "$0 <testRole> <testSuiteDir> <testSuiteName> <serverBase> <serverPath> <testUser> <testPass> <sisoIndex>"
+#}
 
-    eval "$para=$1"
-    shift
-    value=$(eval echo \$$para)
-    #echo $para=${value}
-done
+#for para in testRole testSuiteDir testSuiteName serverBase serverPath testUser testPass sisoIndex; do
+#    if [ -z $1 ];then
+#	print_usage
+#	exit -1
+#    fi
+
+#    eval "$para=$1"
+#    shift
+#    value=$(eval echo \$$para)
+#    #echo $para=${value}
+#done
 
 HOME_PAGE_FILE="HomePage.html"
 HOME_PAGE_PATH="${testSuiteDir}/${HOME_PAGE_FILE}"
-SIGN_IN_FILE="SignIn${testUser}.html"
+SIGN_IN_FILE="SignIn${testRole}.html"
 SIGN_IN_PATH="${testSuiteDir}/${SIGN_IN_FILE}"
 SIGN_OUT_FILE="SignOut.html"
 SIGN_OUT_PATH="${testSuiteDir}/${SIGN_OUT_FILE}"
@@ -100,8 +104,9 @@ END
 fi
 
 ### Print SignIn${testRole}.html
-print_header ${SIGN_IN_PATH} ${serverBase} "${SIGN_IN_TITLE}"
-cat >> ${SIGN_IN_PATH} <<END
+if [ ! -e  ${SIGN_IN_PATH} ]; then
+    print_header ${SIGN_IN_PATH} ${serverBase} "${SIGN_IN_TITLE}"
+    cat >> ${SIGN_IN_PATH} <<END
 <tr>
     <td>clickAndWait</td>
     <td>Sign_in</td>
@@ -128,7 +133,8 @@ cat >> ${SIGN_IN_PATH} <<END
     <td></td>
 </tr>
 END
-print_footer ${SIGN_IN_PATH}
+    print_footer ${SIGN_IN_PATH}
+fi
 
 ### Print SignOut.html
 if [ ! -e  ${SIGN_OUT_PATH} ]; then
