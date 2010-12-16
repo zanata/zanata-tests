@@ -13,7 +13,7 @@ for para in ${PARAMS}; do
     eval "$para=$1"
     shift
     value=$(eval echo \$$para)
-    echo $para=${value}
+#    echo $para=${value}
 done
 
 
