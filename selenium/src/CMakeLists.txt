@@ -53,38 +53,37 @@ MACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
     ELSE()
 	SET(_testRoles ${TEST_ROLES})
     ENDIF()
-    MESSAGE("testPath=${testSuiteDir}")
     FOREACH(_testRole ${_testRoles})
 	IF(NOT EXISTS "${testSuiteDir}/NO_${_testRole}" )
+
 	    IF( ${_testRole} STREQUAL "Prelogin" )
-		SET(_suiteFile ${testSuiteDir}/0-${testSuiteName}.html)
-	    ELSE()
-		IF(NOT "${${_testRole}_SISO}" STREQUAL "")
-		    SET(_suiteFile ${testSuiteDir}/${${_testRole}_SISO}-${testSuiteName}.html)
-		    MATH(EXPR _si "${${_testRole}_SISO}-1")
+		SET(_suiteFile "${testSuiteDir}/0-${testSuiteName}.html")
+	    ELSEIF(NOT "${${_testRole}_SISO}" STREQUAL "")
+		SET(_suiteFile
+		    "${testSuiteDir}/${${_testRole}_SISO}-${testSuiteName}.html")
+		MATH(EXPR _si "${${_testRole}_SISO}-1")
 
-		    SET(_suiteFiles ${testSuiteDir}/${_si}-${testSuiteName}.html
-			${_suiteFile})
-		    SET(_generateTestCases ${testSuiteDir}/SignIn${_testRole}.html
-			${testSuiteDir}/SignOut.html
-			${testSuiteDir}/HomePage.html )
+		SET(_suiteFiles ${testSuiteDir}/${_si}-${testSuiteName}.html
+		    ${_suiteFile})
+		SET(_generateTestCases ${testSuiteDir}/SignIn${_testRole}.html
+		    ${testSuiteDir}/SignOut.html
+		    ${testSuiteDir}/HomePage.html )
 
-		    # Generate test suite
-		    ADD_CUSTOM_COMMAND(OUTPUT ${_suiteFiles} ${_generateTestCases}
-			COMMAND ${CMAKE_SOURCE_DIR}/scripts/generate_test_suite.sh
-			${_testRole} ${testSuiteDir} ${testSuiteName}
-			${SERVER_BASE} ${SERVER_PATH}
-			${${_testRole}_USER} ${${_testRole}_USER} ${${_testRole}_SISO}
-			COMMENT "Generate test suite ${testSuiteName} for ${_testRole}"
-			)
+		# Generate test suite
+		ADD_CUSTOM_COMMAND(OUTPUT ${_suiteFiles} ${_generateTestCases}
+		    COMMAND ${CMAKE_SOURCE_DIR}/scripts/generate_test_suite.sh
+		    ${_testRole} ${testSuiteDir} ${testSuiteName}
+		    ${SERVER_BASE} ${SERVER_PATH}
+		    ${${_testRole}_USER} ${${_testRole}_USER} ${${_testRole}_SISO}
+		    COMMENT "Generate test suite ${testSuiteName} for ${_testRole}"
+		    )
 
-		    ADD_CUSTOM_TARGET(generate_test_suite_${testSuiteName}_${_testRole}  ALL
-			DEPENDS ${_suiteFiles} ${_generateTestCases}
-			)
-		ENDIF()
-	    ENDIF()
+		ADD_CUSTOM_TARGET(generate_test_suite_${testSuiteName}_${_testRole}  ALL
+		    DEPENDS ${_suiteFiles} ${_generateTestCases}
+		    )
+	    ENDIF( ${_testRole} STREQUAL "Prelogin" )
 	    ADD_OUTPUT_FOR_BROWSERS(${testSuiteName} ${_testRole} ${_suiteFile} )
-	ENDIF()
+	ENDIF(NOT EXISTS "${testSuiteDir}/NO_${_testRole}" )
     ENDFOREACH()
 ENDMACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
 
@@ -110,7 +109,7 @@ FOREACH(testSuiteRaw ${TEST_SUITES_RAW})
     STRING(REGEX REPLACE "^0-" "" testSuiteName ${testSuiteNameOrig})
 
     # Make test rules.
-    #    ADD_OUTPUT_AND_TEST(NORMAL ${testSuitePath} ${testSuiteName})
+    MESSAGE("  testSuitePath=${testSuitePath} testSuiteName=${testSuiteName}")
     ADD_OUTPUT_AND_TEST(${testSuitePath} ${testSuiteName})
 ENDFOREACH(testSuiteRaw ${TEST_SUITES_RAW})
 
