@@ -11,20 +11,42 @@
 <thead>
 <tr><td rowspan="1" colspan="3">Save On Entry 02</td></tr>
 </thead><tbody>
+<!--Get stored variables-->
+<tr>
+	<td>storeCookieByName</td>
+	<td>saveString</td>
+	<td>saveString</td>
+</tr>
+<tr>
+	<td>storeCookieByName</td>
+	<td>entryNo</td>
+	<td>entryNo</td>
+</tr>
+<!--Define-->
+<tr>
+	<td>store</td>
+	<td>css=tr.TableEditorRow:${entryNo}&gt;td.TableEditorCell-Target</td>
+	<td>tdCell</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>${tdCell} textarea</td>
+	<td>tdArea</td>
+</tr>
 <!--Save entry number $entryNo with ${saveString}-->
 <tr>
 	<td>waitForElementPresent</td>
-	<td>css=tr.TableEditorRow:${entryNo}&gt;td.TableEditorCell-Target</td>
+	<td>${tdCell}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=tr.TableEditorRow:${entryNo}&gt;td.TableEditorCell-Target</td>
+	<td>${tdCell}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>css=tr.TableEditorRow:${entryNo}&gt;td.TableEditorCell-Target&gt;textarea</td>
+	<td>${tdArea}</td>
 	<td>${saveString}</td>
 </tr>
 <tr>
@@ -34,17 +56,17 @@
 </tr>
 <tr>
 	<td>keyDown</td>
-	<td>css=tr.TableEditorRow:${entryNo}&gt;td.TableEditorCell-Target&gt;textarea</td>
+	<td>${tdArea}</td>
 	<td>\13</td>
 </tr>
 <tr>
 	<td>keyPress</td>
-	<td>css=tr.TableEditorRow:${entryNo}&gt;td.TableEditorCell-Target&gt;textarea</td>
+	<td>${tdArea}</td>
 	<td>\13</td>
 </tr>
 <tr>
 	<td>keyUp</td>
-	<td>css=tr.TableEditorRow:${entryNo}&gt;td.TableEditorCell-Target&gt;textarea</td>
+	<td>${tdArea}</td>
 	<td>\13</td>
 </tr>
 <tr>
@@ -54,12 +76,12 @@
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>css=tr.TableEditorRow:${entryNo}&gt;td.TableEditorCell-Target&gt;div</td>
+	<td>${tdCell}&gt;div</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyText</td>
-	<td>css=tr.TableEditorRow:${entryNo}&gt;td.TableEditorCell-Target&gt;div</td>
+	<td>${tdCell}&gt;div</td>
 	<td>${saveString}</td>
 </tr>
 

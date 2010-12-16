@@ -4,26 +4,31 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>Prev Entry</title>
+<title>SetForEntry03</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Prev Entry</td></tr>
+<tr><td rowspan="1" colspan="3">SetForEntry03</td></tr>
 </thead><tbody>
 <tr>
-	<td>click</td>
-	<td>css=img[title~=Prev Entry]</td>
+	<td>store</td>
+	<td></td>
+	<td>saveString</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>nth-child(4)</td>
+	<td>entryNo</td>
+</tr>
+<tr>
+	<td>createCookie</td>
+	<td>saveString=${saveString}</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForElementPresent</td>
-	<td>css=tr.TableEditorRow:nth-child(8)&gt;td.TableEditorCell-Target</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyElementPresent</td>
-	<td>css=tr.TableEditorRow:nth-child(8)&gt;td.TableEditorCell-Target&gt;div&gt;textarea</td>
+	<td>createCookie</td>
+	<td>entryNo=${entryNo}</td>
 	<td></td>
 </tr>
 
