@@ -152,7 +152,7 @@ ADD_CUSTOM_TARGET(all_data
 #===================================================================
 # Python targets
 #
-SET(FLIES_PY_CLIENT_COMMON_OPTS --username ${ADMIN_USER} --apikey ${ADMIN_KEY}
+SET(FLIES_PY_CLIENT_COMMON_ADMIN_OPTS --username ${ADMIN_USER} --apikey ${ADMIN_KEY}
     --url ${FLIES_URL} --user-config ${CMAKE_SOURCE_DIR}/flies.ini)
 
 MACRO(ADD_PY_CLIENT_TARGETS proj )
@@ -171,7 +171,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_POT_PY_STAMP}
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_PY_STAMP}
 	    COMMAND  flies publican push
-	    ${FLIES_PY_CLIENT_COMMON_OPTS}
+	    ${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    --project-id=${proj}
 	    --project-version=${_ver}
 	    --importPo=true
@@ -186,7 +186,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${VER_PY_STAMP}
 	    COMMAND  flies version create ${_ver}
-	    ${FLIES_PY_CLIENT_COMMON_OPTS}
+	    ${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    --project-id=${proj}
 	    --version-name=\"Ver ${_ver}\"
 	    --version-desc=\"Desc of ${_ver}\"
@@ -201,7 +201,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 
     ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_PY_STAMP}
 	COMMAND flies create ${proj}
-	${FLIES_PY_CLIENT_COMMON_OPTS}
+	${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
 	--project-name=\"${${proj}_NAME}\"
 	--project-desc=\"${${proj}_DESC}\"
 	COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_PY_STAMP}
@@ -215,11 +215,23 @@ ENDMACRO(ADD_PY_CLIENT_TARGETS proj)
 #===================================================================
 # Maven targets
 #
+
+
+SET(FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS
+    -Dflies.url=${FLIES_URL} -Dflies.userConfig=${CMAKE_SOURCE_DIR}/flies.ini
+    -Dflies.username=${ADMIN_USER} -Dflies.key=${ADMIN_KEY}
+    )
+
 MACRO(ADD_MVN_CLIENT_TARGETS proj )
     SET(_projVers "${${proj}_VERS}")
 
     FOREACH(_ver ${_projVers})
 	#MESSAGE("[mvn] proj=${proj} ver=${_ver}")
+	SET(FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS
+	    -Dflies.projectConfig=flies.xml
+	    -Dflies.projectVersion=${_ver}
+	    )
+
 	ADD_CUSTOM_TARGET(flies_publican_push_mvn_${proj}_${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_MVN_STAMP}
 	    )
@@ -231,12 +243,9 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_POT_MVN_STAMP}
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_MVN_STAMP}
 	    COMMAND  mvn -e -B flies:publican-push
-	    -Dflies.projectConfig=${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
-	    -Dflies.username=${ADMIN_USER}
+	    ${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
+	    ${FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS}
 	    -Dflies.srcDir=.
-	    -Dflies.key=${ADMIN_KEY} -Dflies.project=${proj}
-	    -Dflies.projectVersion=${_ver}
-	    -Dflies.url=${FLIES_URL}
 	    -Dflies.importPo
 	    COMMAND touch ${UPLOADED_PO_MVN_STAMP}
 	    COMMAND touch ${UPLOADED_POT_MVN_STAMP}
@@ -250,12 +259,12 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${VER_MVN_STAMP}
 	    COMMAND mvn -e flies:putversion
-	    -Dflies.projectConfig=${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
-	    -Dflies.username=${ADMIN_USER}
-	    -Dflies.key=${ADMIN_KEY} -Dflies.version.slug=${_ver}
+	    ${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
+	    ${FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS}
+	    -Dflies.version.slug=${_ver}
 	    -Dflies.version.project=${proj}
 	    -Dflies.version.name=\"Ver ${_ver}\"
-	    -Dflies.version.desc=\"Desc of ${_ver}\" -Dflies.url=\"${FLIES_URL}\"
+	    -Dflies.version.desc=\"Desc of ${_ver}\"
 	    COMMAND touch ${VER_MVN_STAMP}
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
@@ -267,8 +276,10 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
     ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
 	COMMAND mvn -e flies:putproject -Dflies.username=${ADMIN_USER} -Dflies.key=${ADMIN_KEY}
-	-Dflies.project.slug=${proj} -Dflies.project.name=${${proj}_NAME}
-	-Dflies.project.desc=${${proj}_DESC} -Dflies.url=${FLIES_URL}
+	${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
+	-Dflies.project.slug=${proj}
+	-Dflies.project.name=${${proj}_NAME}
+	-Dflies.project.desc=${${proj}_DESC}
 	COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
 	COMMENT "  [Mvn] Creating proj: proj ${proj}:${${proj}_NAME} in ${FLIES_URL}"
 	VERBATIM
@@ -347,18 +358,59 @@ FOREACH(_proj ${MVN_PROJECTS})
 ENDFOREACH(_proj ${MVN_PROJECTS})
 
 FOREACH(_proj ${PY_PROJECTS})
-    ADD_PUBLICAN_PROJECT(${_proj} py)
+    #    ADD_PUBLICAN_PROJECT(${_proj} py)
+    ADD_PUBLICAN_PROJECT(${_proj} mvn)
 ENDFOREACH(_proj ${PY_PROJECTS})
 
 ADD_CUSTOM_TARGET(selenium_data
 	COMMENT "   Preparing projects for selenium tests"
 )
-ADD_DEPENDENCIES(selenium_data flies_publican_push_py_ReleaseNotes_f13
-    flies_publican_push_mvn_SecurityGuide_f13)
-#ADD_DEPENDENCIES(selenium_data flies_publican_push_mvn_ReleaseNotes_f13
+#ADD_DEPENDENCIES(selenium_data flies_publican_push_py_ReleaseNotes_f13
 #    flies_publican_push_mvn_SecurityGuide_f13)
+ADD_DEPENDENCIES(selenium_data flies_publican_push_mvn_ReleaseNotes_f13
+    flies_publican_push_mvn_SecurityGuide_f13)
 
 ADD_DEPENDENCIES(all_data flies_publican_push_mvn)
+
+####################################################################
+# Put users
+#
+
+ADD_CUSTOM_TARGET(putusers
+    COMMENT "Create users in flies server: ${FLIES_URL}"
+    )
+
+MACRO(PUT_TEST_USER user)
+    STRING(REGEX REPLACE ";" "," _lang  "${LANGS}")
+    STRING(REGEX REPLACE "zh.CN" "zh-Hans-CN" _lang  "${_lang}")
+    STRING(REGEX REPLACE "zh.TW" "zh-Hant-TW" _lang  "${_lang}")
+    IF("${${user}_ROLES}" STREQUAL "")
+	SET(ROLE_ASSIGN "-Dflies.user.roles=\"user\"")
+    ELSE("${${user}_ROLES}" STREQUAL "")
+	SET(ROLE_ASSIGN "-Dflies.user.roles=\"${${user}_ROLES}\"")
+    ENDIF("${${user}_ROLES}" STREQUAL "")
+    ADD_CUSTOM_TARGET(putuser_${user}
+	COMMAND mvn -e flies:putuser
+	${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
+	${ROLE_ASSIGN}
+	-Dflies.user.disabled=false
+	-Dflies.user.email="${${user}_USER}@localhost.org"
+	-Dflies.user.key="${${user}_KEY}"
+	-Dflies.user.langs="${_lang}"
+	-Dflies.user.name="${${user}_NAME}"
+	-Dflies.user.passwordhash="${${user}_PASSWD_HASH}"
+	-Dflies.user.username="${${user}_USER}"
+	COMMENT "Create user ${${user}_USER} for ${user}"
+	)
+    ADD_DEPENDENCIES(putusers putuser_${user})
+ENDMACRO(PUT_TEST_USER user)
+
+FOREACH(_role ${TEST_ROLES})
+    IF(NOT _role STREQUAL "ADMIN")
+	PUT_TEST_USER("${_role}")
+    ENDIF(NOT _role STREQUAL "ADMIN")
+ENDFOREACH(_role ${TEST_ROLES})
+
 
 
 ####################################################################
