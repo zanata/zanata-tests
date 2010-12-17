@@ -385,9 +385,9 @@ MACRO(PUT_TEST_USER user)
     STRING(REGEX REPLACE "zh.CN" "zh-Hans-CN" _lang  "${_lang}")
     STRING(REGEX REPLACE "zh.TW" "zh-Hant-TW" _lang  "${_lang}")
     IF("${${user}_ROLES}" STREQUAL "")
-	SET(ROLE_ASSIGN "-Dflies.user.roles=\"user\"")
+    	SET(ROLE_ASSIGN "-Dflies.user.roles=\"user\"")
     ELSE("${${user}_ROLES}" STREQUAL "")
-	SET(ROLE_ASSIGN "-Dflies.user.roles=\"${${user}_ROLES}\"")
+    	SET(ROLE_ASSIGN "-Dflies.user.roles=\"${${user}_ROLES}\"")
     ENDIF("${${user}_ROLES}" STREQUAL "")
     ADD_CUSTOM_TARGET(putuser_${user}
 	COMMAND mvn -e flies:putuser
