@@ -144,10 +144,6 @@ SET(VER_MVN_STAMP ".ver.${MVN_STAMP}")
 SET(UPLOADED_POT_MVN_STAMP ".upload.pot.${MVN_STAMP}")
 SET(UPLOADED_PO_MVN_STAMP ".upload.po.${MVN_STAMP}")
 
-ADD_CUSTOM_TARGET(all_data
-    COMMENT "   Preparing all projects"
-    )
-
 
 #===================================================================
 # Python targets
@@ -304,7 +300,7 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    	DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	    	)
 
-	ADD_DEPENDENCIES(generate_flies_xml generate_flies_xml_${proj}_${_ver})
+	ADD_DEPENDENCIES(generate_flies_xml_all_projects generate_flies_xml_${proj}_${_ver})
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	    COMMAND scripts/generate_flies_xml.sh ${SAMPLE_PROJ_DIR} ${proj}
@@ -331,6 +327,7 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    COMMENT "   Get sources of ${proj} ${_ver}:${${proj}_NAME} from ${${proj}_URL_${_ver}}"
 	    VERBATIM
 	    )
+
     ENDFOREACH(_ver ${_projVers})
 
     IF("${client}" STREQUAL "mvn")
@@ -348,10 +345,18 @@ ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}
 # Retrieve projects
 #
 
+ADD_CUSTOM_TARGET(all_projects
+    COMMENT "   Preparing all projects"
+    )
+
 ADD_CUSTOM_TARGET(flies_publican_push_mvn)
 ADD_CUSTOM_TARGET(flies_publican_push_py)
-ADD_DEPENDENCIES(all_data flies_publican_push_mvn flies_publican_push_py)
-ADD_CUSTOM_TARGET(generate_flies_xml)
+ADD_DEPENDENCIES(all_projects flies_publican_push_mvn flies_publican_push_py)
+
+ADD_CUSTOM_TARGET(generate_flies_xml_all_projects
+    COMMENT "   Generate flies.xml for all projects"
+    )
+ADD_DEPENDENCIES(all_projects generate_flies_xml_all_projects)
 
 FOREACH(_proj ${MVN_PROJECTS})
     ADD_PUBLICAN_PROJECT(${_proj} mvn)
@@ -362,15 +367,20 @@ FOREACH(_proj ${PY_PROJECTS})
     ADD_PUBLICAN_PROJECT(${_proj} mvn)
 ENDFOREACH(_proj ${PY_PROJECTS})
 
-ADD_CUSTOM_TARGET(selenium_data
+ADD_CUSTOM_TARGET(selenium_projects
 	COMMENT "   Preparing projects for selenium tests"
 )
-#ADD_DEPENDENCIES(selenium_data flies_publican_push_py_ReleaseNotes_f13
-#    flies_publican_push_mvn_SecurityGuide_f13)
-ADD_DEPENDENCIES(selenium_data flies_publican_push_mvn_ReleaseNotes_f13
+
+ADD_CUSTOM_TARGET(generate_flies_xml_selenium_projects
+    COMMENT "   Generate flies.xml for selenium testing projects"
+    )
+
+ADD_DEPENDENCIES(generate_flies_xml_selenium_projects
+    generate_flies_xml_ReleaseNotes_f13 generate_flies_xml_SecurityGuide_f13)
+
+ADD_DEPENDENCIES(selenium_projects flies_publican_push_mvn_ReleaseNotes_f13
     flies_publican_push_mvn_SecurityGuide_f13)
 
-ADD_DEPENDENCIES(all_data flies_publican_push_mvn)
 
 ####################################################################
 # Put users

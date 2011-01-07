@@ -7,7 +7,7 @@ shift 3;
 function findLangDir(){
     projDir=$1
     langNameTemplate=$2
-    basename `find $projDir -type d -name "${langNameTemplate}"`
+    basename $(dirname `find ${projDir}  -wholename '*/ja*/*.po' | head --lines=1 `)
 }
 
 projDir=${baseDir}/${proj}/${ver}
@@ -27,15 +27,15 @@ _langs=`echo $1 | sed -e 's/;/ /g'`
 for l in ${_langs}; do
     case $l in
 	ja* )
-	    lDir=findLangDir $projDir "ja*"
+	    lDir=`findLangDir $projDir "ja*"`
 	    echo "        <locale map-from=\"$lDir\">ja</locale>" >> ${projDir}/flies.xml
 	    ;;
 	zh*CN )
-	    lDir=findLangDir $projDir "zh*CN"
+	    lDir=`findLangDir $projDir "zh*CN"`
 	    echo "        <locale map-from=\"$lDir\">zh-Hans-CN</locale>" >> ${projDir}/flies.xml
 	    ;;
 	zh*TW)
-	    lDir=findLangDir $projDir "zh*TW"
+	    lDir=`findLangDir $projDir "zh*TW"`
 	    echo "        <locale map-from=\"$l\">zh-Hant-TW</locale>" >> ${projDir}/flies.xml
 	    ;;
 	*)
