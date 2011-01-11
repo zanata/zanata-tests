@@ -19,7 +19,8 @@ SET(PROJECT_DESCRIPTION "Test system for flies.openl10n.net")
 
 
 ### Override with environment variables
-SET(OVERRIDABLE_VARS  "FLIES_URL" "BROWSERS_TO_TEST" "SELENIUM_SERVER_PORT")
+SET(OVERRIDABLE_VARS  "FLIES_URL" "BROWSERS_TO_TEST" "SELENIUM_SERVER_PORT"
+    "SAMPLE_PROJ_DIR")
 FOREACH(_envVar  ${OVERRIDABLE_VARS})
     IF(NOT "$ENV{${_envVar}}" STREQUAL "")
 	SET(${_envVar} "$ENV{${_envVar}}")
