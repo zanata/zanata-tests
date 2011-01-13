@@ -1,10 +1,19 @@
 #===================================================================
 # Test generating macros
 
+# ADD_OUTPUT_FOR_BROWSERS testSuiteName testRole suiteFile
 MACRO(ADD_OUTPUT_FOR_BROWSERS testSuiteName testRole suiteFile)
+    SET(_pendingPrefix "")
+    FOREACH(_arg ${ARGN})
+	IF(_arg STREQUAL "PENDING")
+	    SET(_pendingPrefix "NC-")
+       ENDIF(_arg STREQUAL "PENDING")
+    ENDFOREACH(_arg ${ARGN})
+
     FOREACH(browser ${BROWSERS_TO_TEST})
 	SET(BROWSER_STR "*${browser}\\ ${${browser}_BIN}")
-	ADD_TEST("${testSuiteName}.${testRole}.${browser}"
+
+	ADD_TEST("${_pendingPrefix}${testSuiteName}.${testRole}.${browser}"
 	    ${SELENIUM_SERVER_CMD} ${SELENIUM_SERVER_ARG} -log
 	    ${RESULT_DIR_ABSOLUTE}/${testSuiteName}.${testRole}.${browser}.test.log
 	    -htmlsuite ${BROWSER_STR} ${FLIES_URL}  ${suiteFile}
@@ -48,11 +57,17 @@ ENDMACRO()
 #
 
 MACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
-    IF (EXISTS "${testSuiteDir}/TEST_Prelogin")
+    IF(EXISTS "${testSuiteDir}/TEST_Prelogin")
 	SET(_testRoles ${TEST_ROLES} Prelogin)
     ELSE()
 	SET(_testRoles ${TEST_ROLES})
     ENDIF()
+    IF(EXISTS "${testSuiteDir}/PENDING")
+	SET(_pending "PENDING")
+    ELSE()
+	SET(_pending "")
+    ENDIF()
+
     FOREACH(_testRole ${_testRoles})
 	IF(NOT EXISTS "${testSuiteDir}/NO_${_testRole}" )
 
@@ -82,7 +97,8 @@ MACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
 		    DEPENDS ${_suiteFiles} ${_generateTestCases}
 		    )
 	    ENDIF( ${_testRole} STREQUAL "Prelogin" )
-	    ADD_OUTPUT_FOR_BROWSERS(${testSuiteName} ${_testRole} ${_suiteFile} )
+	    ADD_OUTPUT_FOR_BROWSERS(${testSuiteName} ${_testRole}
+		${_suiteFile} ${_pending})
 	ENDIF(NOT EXISTS "${testSuiteDir}/NO_${_testRole}" )
     ENDFOREACH()
 ENDMACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
