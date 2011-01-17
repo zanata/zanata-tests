@@ -93,6 +93,8 @@ MACRO(FIND_FILES_IN_DIR var pattern searchPath)
     ENDIF()
 ENDMACRO()
 
+SET(FLIES_MVN_GOAL_PREFIX  "net.openl10n.flies:flies-maven-plugin")
+
 ####################################################################
 # Dependencies
 ####################################################################
@@ -239,7 +241,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	ADD_CUSTOM_COMMAND(OUTPUT
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_POT_MVN_STAMP}
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_MVN_STAMP}
-	    COMMAND  mvn -e -B flies:publican-push
+	    COMMAND  mvn -e -B ${FLIES_MVN_GOAL_PREFIX}:publican-push
+
 	    ${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS}
 	    -Dflies.srcDir=.
@@ -255,7 +258,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    )
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${VER_MVN_STAMP}
-	    COMMAND mvn -e flies:putversion
+	    COMMAND mvn -e ${FLIES_MVN_GOAL_PREFIX}:putversion
 	    ${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS}
 	    -Dflies.version.slug=${_ver}
@@ -272,7 +275,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
     ENDFOREACH(_ver ${_projVers})
 
     ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
-	COMMAND mvn -e flies:putproject -Dflies.username=${ADMIN_USER} -Dflies.key=${ADMIN_KEY}
+	COMMAND mvn -e ${FLIES_MVN_GOAL_PREFIX}:putproject -Dflies.username=${ADMIN_USER} -Dflies.key=${ADMIN_KEY}
 	${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	-Dflies.project.slug=${proj}
 	-Dflies.project.name=${${proj}_NAME}
