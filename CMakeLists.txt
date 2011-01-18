@@ -304,8 +304,6 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    	DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	    	)
 
-	ADD_DEPENDENCIES(generate_flies_xml_all_projects generate_flies_xml_${proj}_${_ver})
-
 	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	    COMMAND scripts/generate_flies_xml.sh ${SAMPLE_PROJ_DIR} ${proj}
 	    ${_ver} "${LANGS}"
@@ -316,8 +314,25 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    )
 
 	STRING(REPLACE ";" "," _langs "${LANGS}")
+
+	ADD_CUSTOM_TARGET(generate_pom_xml_${proj}_${_ver}
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	    )
+
+	# Prepare project: generate flies.xml and pom.xml
+	ADD_CUSTOM_TARGET(prepare_${proj}_${_ver})
+
+	ADD_DEPENDENCIES(prepare_${proj}_${_ver}
+	    generate_flies_xml_${proj}_${_ver}
+	    generate_pom_xml_${proj}_${_ver}
+	    )
+
+	ADD_DEPENDENCIES(prepare_all_projects prepare_${proj}_${_ver})
+
+
+
 	ADD_CUSTOM_COMMAND(OUTPUT  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/prepare_project.sh "${_langs}"
+	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/prepare_project.sh "${_langs}" ${CMAKE_SOURCE_DIR}
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    COMMENT "   Preparing project ${proj}/${_ver} "
@@ -332,6 +347,7 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    VERBATIM
 	    )
 
+	ADD_DEPENDENCIES(prepare_all_projects generate_pom_xml_${proj}_${_ver})
     ENDFOREACH(_ver ${_projVers})
 
     IF("${client}" STREQUAL "mvn")
@@ -357,10 +373,10 @@ ADD_CUSTOM_TARGET(flies_publican_push_mvn)
 ADD_CUSTOM_TARGET(flies_publican_push_py)
 ADD_DEPENDENCIES(all_projects flies_publican_push_mvn flies_publican_push_py)
 
-ADD_CUSTOM_TARGET(generate_flies_xml_all_projects
-    COMMENT "   Generate flies.xml for all projects"
+ADD_CUSTOM_TARGET(prepare_all_projects
     )
-ADD_DEPENDENCIES(all_projects generate_flies_xml_all_projects)
+ADD_DEPENDENCIES(all_projects prepare_all_projects)
+
 
 FOREACH(_proj ${MVN_PROJECTS})
     ADD_PUBLICAN_PROJECT(${_proj} mvn)
@@ -375,12 +391,12 @@ ADD_CUSTOM_TARGET(selenium_projects
 	COMMENT "   Preparing projects for selenium tests"
 )
 
-ADD_CUSTOM_TARGET(generate_flies_xml_selenium_projects
+ADD_CUSTOM_TARGET(prepare_selenium_projects
     COMMENT "   Generate flies.xml for selenium testing projects"
     )
 
-ADD_DEPENDENCIES(generate_flies_xml_selenium_projects
-    generate_flies_xml_ReleaseNotes_f13 generate_flies_xml_SecurityGuide_f13)
+ADD_DEPENDENCIES(prepare_selenium_projects
+    prepare_ReleaseNotes_f13 prepare_SecurityGuide_f13)
 
 ADD_DEPENDENCIES(selenium_projects flies_publican_push_mvn_ReleaseNotes_f13
     flies_publican_push_mvn_SecurityGuide_f13)

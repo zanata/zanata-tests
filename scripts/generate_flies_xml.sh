@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+scriptDir=`dirname $0`
 baseDir=$1
 proj=$2
 ver=$3
@@ -30,25 +31,9 @@ END
 _langs=`echo $1 | sed -e 's/;/ /g'`
 
 for l in ${_langs}; do
-    case $l in
-	ja* )
-	    lDir=`findLangDir $projDir "ja*"`
-           tagContent="ja"
-	    ;;
-	zh*CN )
-	    lDir=`findLangDir $projDir "zh*CN"`
-           tagContent="zh-Hans-CN"
-	    ;;
-	zh*TW)
-	    lDir=`findLangDir $projDir "zh*TW"`
-           tagContent="zh-Hant-TW"
-	    ;;
-	*)
-           tagContent=$l
-	    ;;
-    esac
+    lDir=`${scriptDir}/find_valid_lang_dir.sh "$projDir" $l`
     if [ -n "$lDir" ]; then
-	    echo "        <locale map-from=\"$lDir\">$tagContent</locale>" >> ${projDir}/flies.xml
+	    echo "        <locale map-from=\"$lDir\">$l</locale>" >> ${projDir}/flies.xml
     fi
 done
 
