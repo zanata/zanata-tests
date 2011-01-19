@@ -5,16 +5,6 @@ proj=$2
 ver=$3
 shift 3;
 
-function findLangDir(){
-    projDir=$1
-    langNameTemplate=$2
-    dirFound=`find ${projDir}  -wholename "*/$langNameTemplate/*.po"`
-    if [ -n "${dirFound}" ]; then
-       basename $(dirname `echo "${dirFound}" | head --lines=1`)
-    else
-        echo "findLangDir(): $langNameTemplate is not found in $projDir" > /dev/stderr
-    fi
-}
 
 projDir=${baseDir}/${proj}/${ver}
 

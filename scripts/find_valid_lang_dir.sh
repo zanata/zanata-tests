@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # Usage: $0 <baseDir> <lang>
-# Outputs: Relative path to correspond dir;
+# Outputs: Find correspond relative path dir;
 #   or none if the <lang> does not exists.
 
 baseDir=$1
@@ -11,7 +11,7 @@ function findLangDir(){
     langNameTemplate=$2
     dirFound=`find ${bDir}  -wholename "*/$langNameTemplate/*.po"`
     if [ -n "${dirFound}" ]; then
-       basename $(dirname `echo "${dirFound}" | head --lines=1`)
+       echo $(dirname `echo "${dirFound}" | head --lines=1`) | sed -e "s!${baseDir}!!" | sed -e "s!^/!!"
     else
         echo "findLangDir(): $langNameTemplate is not found in $Dir" > /dev/stderr
     fi
@@ -25,7 +25,7 @@ case $lang in
 	findLangDir $baseDir "zh*TW"
 	;;
     * )
-	findLangDir $baseDir "${lang}*"
+	findLangDir $baseDir "${lang}-?*"
 	;;
 esac
 

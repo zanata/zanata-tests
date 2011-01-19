@@ -308,19 +308,22 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    COMMAND scripts/generate_flies_xml.sh ${SAMPLE_PROJ_DIR} ${proj}
 	    ${_ver} "${LANGS}"
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	    COMMENT "   Generate ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml"
+            COMMENT "   Generate ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml"
 	    VERBATIM
 	    )
 
-	STRING(REPLACE ";" "," _langs "${LANGS}")
 
 	ADD_CUSTOM_TARGET(generate_pom_xml_${proj}_${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	       ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg.striped
 	    )
 
 	# Prepare project: generate flies.xml and pom.xml
 	ADD_CUSTOM_TARGET(prepare_${proj}_${_ver})
+	#	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	#    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg.striped
+	#    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
+	#    )
 
 	ADD_DEPENDENCIES(prepare_${proj}_${_ver}
 	    generate_flies_xml_${proj}_${_ver}
@@ -329,10 +332,11 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 
 	ADD_DEPENDENCIES(prepare_all_projects prepare_${proj}_${_ver})
 
-
+	#STRING(REPLACE ";" "," _langs "${LANGS}")
 
 	ADD_CUSTOM_COMMAND(OUTPUT  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/prepare_project.sh "${_langs}" ${CMAKE_SOURCE_DIR}
+	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg.striped
+	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/prepare_project.sh "${LANGS}" ${CMAKE_SOURCE_DIR}
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    COMMENT "   Preparing project ${proj}/${_ver} "

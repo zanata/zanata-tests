@@ -7,6 +7,12 @@ use Pod::Usage;
 
 my $currDir=`pwd`;
 chomp $currDir;
+my $update=0;
+
+if ($ARGV[0] eq "-u"){
+    $update=1;
+    shift;
+}
 
 my ($projBase, $proj, $scm, $ver, $url)=@ARGV;
 my $projDir="$projBase/$proj";
@@ -22,8 +28,10 @@ if ($scm eq "git"){
 }
 
 if (-d "${projDir}/$ver"){
-    print "    ${projDir}/$ver exists, updating.\n";
-    system("cd ${projDir}/$ver;$update_action");
+    if ($update == 1){
+	print "    ${projDir}/$ver exists, updating.\n";
+	system("cd ${projDir}/$ver;$update_action");
+    }
 }else{
     print "    ${projDir}/$ver does not exist, clone now.\n";
     system("$clone_action $url $projDir/$ver");
