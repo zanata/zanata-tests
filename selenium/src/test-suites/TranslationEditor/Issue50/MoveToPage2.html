@@ -12,31 +12,35 @@
 <tr><td rowspan="1" colspan="3">Move To First Page</td></tr>
 </thead><tbody>
 <tr>
-	<td>waitForElementPresent</td>
+	<td>store</td>
 	<td>css=a[title~=&quot;Previous Page&quot;]+img+input</td>
+	<td>PageNum</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>${PageNum}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>css=a[title~=&quot;Previous Page&quot;]+img+input</td>
+	<td>${PageNum}</td>
 	<td>2</td>
 </tr>
 <tr>
 	<td>keyDown</td>
-	<td>css=a[title~=&quot;Previous Page&quot;]+img+input</td>
+	<td>${PageNum}</td>
 	<td>\13</td>
 </tr>
 <tr>
 	<td>keyPress</td>
-	<td>css=a[title~=&quot;Previous Page&quot;]+img+input</td>
+	<td>${PageNum}</td>
 	<td>\13</td>
 </tr>
 <tr>
 	<td>keyUp</td>
-	<td>css=a[title~=&quot;Previous Page&quot;]+img+input</td>
+	<td>${PageNum}</td>
 	<td>\13</td>
 </tr>
-
 </tbody></table>
 </body>
 </html>

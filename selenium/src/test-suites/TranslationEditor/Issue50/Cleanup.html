@@ -14,22 +14,27 @@
 <!--Remove Page 3 entry 1-->
 <tr>
 	<td>store</td>
-	<td>nth-child(2)</td>
-	<td>row</td>
+	<td>css=tr.TableEditorRow:nth-child(2)&gt;td.TableEditorCell-Target</td>
+	<td>row1</td>
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target</td>
+	<td>${row1}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target</td>
+	<td>${row1}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>${row1} textarea</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>css=textarea[class='TableEditorContent-Edit']</td>
+	<td>css=textarea.TableEditorContent-Edit</td>
 	<td></td>
 </tr>
 <!--Simulate Save Hotkey (Ctrl-Enter)-->
@@ -40,17 +45,17 @@
 </tr>
 <tr>
 	<td>keyDown</td>
-	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target textarea</td>
+	<td>${row1} textarea</td>
 	<td>\13</td>
 </tr>
 <tr>
 	<td>keyPress</td>
-	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target textarea</td>
+	<td>${row1} textarea</td>
 	<td>\13</td>
 </tr>
 <tr>
 	<td>keyUp</td>
-	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target textarea</td>
+	<td>${row1} textarea</td>
 	<td>\13</td>
 </tr>
 <tr>
@@ -60,7 +65,7 @@
 </tr>
 <tr>
 	<td>verifyText</td>
-	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target</td>
+	<td>${row1}</td>
 	<td></td>
 </tr>
 <!--Move to Previous page (Page 2)-->
@@ -68,31 +73,36 @@
 	<td>click</td>
 	<td>css=a[title~=&quot;Previous Page&quot;]</td>
 	<td></td>
+</tr>
+<tr>
+	<td>waitForValue</td>
+	<td>css=a[title~=&quot;Previous Page&quot;]+img+input</td>
+	<td>2</td>
 </tr>
 <!--Clean page 2, last entry.-->
 <tr>
 	<td>store</td>
-	<td>last-child</td>
-	<td>row</td>
+	<td>css=tr.TableEditorRow:last-child&gt;td.TableEditorCell-Target</td>
+	<td>rowLast</td>
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target</td>
+	<td>${rowLast}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target</td>
+	<td>${rowLast}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target textarea</td>
+	<td>${rowLast} textarea</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>css=textarea[class='TableEditorContent-Edit']</td>
+	<td>${rowLast} textarea</td>
 	<td></td>
 </tr>
 <!--Simulate Save Hotkey (Ctrl-Enter)-->
@@ -103,17 +113,17 @@
 </tr>
 <tr>
 	<td>keyDown</td>
-	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target textarea</td>
+	<td>${rowLast} textarea</td>
 	<td>\13</td>
 </tr>
 <tr>
 	<td>keyPress</td>
-	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target textarea</td>
+	<td>${rowLast} textarea</td>
 	<td>\13</td>
 </tr>
 <tr>
 	<td>keyUp</td>
-	<td>css=tr.TableEditorRow:${row}&gt;td.TableEditorCell-Target textarea</td>
+	<td>${rowLast} textarea</td>
 	<td>\13</td>
 </tr>
 <tr>
@@ -128,8 +138,13 @@
 	<td></td>
 </tr>
 <tr>
+	<td>waitForValue</td>
+	<td>css=a[title~=&quot;Previous Page&quot;]+img+input</td>
+	<td>2</td>
+</tr>
+<tr>
 	<td>verifyText</td>
-	<td>css=tr.TableEditorRow:last-child()&gt;td.TableEditorCell-Target</td>
+	<td>${rowLast}</td>
 	<td></td>
 </tr>
 </tbody></table>

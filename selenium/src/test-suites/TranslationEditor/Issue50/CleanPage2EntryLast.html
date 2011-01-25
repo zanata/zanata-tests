@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://flies-devel.englab.bne.redhat.com/" />
+<title>Clean Page2 Entry Last</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Clean Page2 Entry Last</td></tr>
+</thead><tbody>
+<!--Move to Previous page (Page 2)-->
+<tr>
+	<td>click</td>
+	<td>css=a[title~=&quot;Previous Page&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForValue</td>
+	<td>css=a[title~=&quot;Previous Page&quot;]+img+input</td>
+	<td>2</td>
+</tr>
+<!--Clean page 2, last entry.-->
+<tr>
+	<td>store</td>
+	<td>css=tr.TableEditorRow:last-child&gt;td.TableEditorCell-Target</td>
+	<td>rowLast</td>
+</tr>
+<!--Remove Page 3 entry 1-->
+<tr>
+	<td>createCookie</td>
+	<td>saveString=</td>
+	<td></td>
+</tr>
+<tr>
+	<td>createCookie</td>
+	<td>entryNo=last-child</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

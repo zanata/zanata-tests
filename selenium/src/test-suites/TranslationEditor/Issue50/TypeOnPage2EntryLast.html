@@ -12,23 +12,28 @@
 <tr><td rowspan="1" colspan="3">TypeOnPage2EntryLast</td></tr>
 </thead><tbody>
 <tr>
-	<td>waitForElementPresent</td>
+	<td>store</td>
 	<td>css=tr.TableEditorRow:last-child&gt;td.TableEditorCell-Target</td>
+	<td>lastEntry</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>${lastEntry}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=tr.TableEditorRow:last-child&gt;td.TableEditorCell-Target</td>
+	<td>${lastEntry}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>css=tr.TableEditorRow:last-child&gt;td.TableEditorCell-Target textarea</td>
+	<td>${lastEntry} textarea</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>css=tr.TableEditorRow:last-child&gt;td.TableEditorCell-Target textarea</td>
+	<td>${lastEntry} textarea</td>
 	<td>Test</td>
 </tr>
 <!--Simulate Save Hotkey (Ctrl-Enter)-->
@@ -39,17 +44,17 @@
 </tr>
 <tr>
 	<td>keyDown</td>
-	<td>css=tr.TableEditorRow:last-child&gt;td.TableEditorCell-Target textarea</td>
+	<td>${lastEntry} textarea</td>
 	<td>\13</td>
 </tr>
 <tr>
 	<td>keyPress</td>
-	<td>css=tr.TableEditorRow:last-child&gt;td.TableEditorCell-Target textarea</td>
+	<td>${lastEntry} textarea</td>
 	<td>\13</td>
 </tr>
 <tr>
 	<td>keyUp</td>
-	<td>css=tr.TableEditorRow:last-child&gt;td.TableEditorCell-Target textarea</td>
+	<td>${lastEntry} textarea</td>
 	<td>\13</td>
 </tr>
 <tr>
@@ -60,13 +65,18 @@
 <!--Should be on Page3  Entry 1-->
 <tr>
 	<td>waitForElementPresent</td>
-	<td>css=tr.TableEditorRow:nth-child(2)&gt;td.TableEditorCell-Target</td>
+	<td>css=a[title~=&quot;Previous Page&quot;]+img+input</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyElementPresent</td>
 	<td>css=tr.TableEditorRow:nth-child(2)&gt;td.TableEditorCell-Target textarea</td>
 	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>css=a[title~=&quot;Previous Page&quot;]+img+input</td>
+	<td>3</td>
 </tr>
 </tbody></table>
 </body>
