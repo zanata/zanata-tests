@@ -20,7 +20,7 @@ SET(PROJECT_DESCRIPTION "Test system for flies.openl10n.net")
 
 ### Override with environment variables
 SET(OVERRIDABLE_VARS  "FLIES_URL" "BROWSERS_TO_TEST" "SELENIUM_SERVER_PORT"
-    "SAMPLE_PROJ_DIR")
+    "SAMPLE_PROJ_DIR" "PULL_DEST_DIR")
 FOREACH(_envVar  ${OVERRIDABLE_VARS})
     IF(NOT "$ENV{${_envVar}}" STREQUAL "")
 	SET(${_envVar} "$ENV{${_envVar}}")
@@ -93,7 +93,8 @@ MACRO(FIND_FILES_IN_DIR var pattern searchPath)
     ENDIF()
 ENDMACRO()
 
-SET(FLIES_MVN_GOAL_PREFIX  "net.openl10n.flies:flies-maven-plugin")
+#SET(FLIES_MVN_GOAL_PREFIX  "net.openl10n.flies:flies-maven-plugin")
+SET(FLIES_MVN_GOAL_PREFIX  "flies")
 
 ####################################################################
 # Dependencies
@@ -138,14 +139,15 @@ SET(READY_PROJ_STAMP  ".ready.proj.stamp")
 SET(PY_STAMP "py.stamp")
 SET(PROJ_PY_STAMP ".proj.${PY_STAMP}")
 SET(VER_PY_STAMP ".ver.${PY_STAMP}")
-SET(UPLOADED_POT_PY_STAMP ".upload.pot.${PY_STAMP}")
-SET(UPLOADED_PO_PY_STAMP ".upload.po.${PY_STAMP}")
+SET(UPLOADED_POT_PY_STAMP ".uploaded.pot.${PY_STAMP}")
+SET(UPLOADED_PO_PY_STAMP ".uploaded.po.${PY_STAMP}")
 
 SET(MVN_STAMP "mvn.stamp")
 SET(PROJ_MVN_STAMP ".proj.${MVN_STAMP}")
 SET(VER_MVN_STAMP ".ver.${MVN_STAMP}")
-SET(UPLOADED_POT_MVN_STAMP ".upload.pot.${MVN_STAMP}")
-SET(UPLOADED_PO_MVN_STAMP ".upload.po.${MVN_STAMP}")
+SET(UPLOADED_POT_MVN_STAMP ".uploaded.pot.${MVN_STAMP}")
+SET(UPLOADED_PO_MVN_STAMP ".uploaded.po.${MVN_STAMP}")
+SET(PULLED_PO_MVN_STAMP ".pulled.po.${MVN_STAMP}")
 
 
 #===================================================================
@@ -227,10 +229,11 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
     FOREACH(_ver ${_projVers})
 	#MESSAGE("[mvn] proj=${proj} ver=${_ver}")
 	SET(FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS
-	    -Dflies.projectConfig=flies.xml
+	    -Dflies.projectConfig=${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	    -Dflies.projectVersion=${_ver}
 	    )
 
+	# Publican push
 	ADD_CUSTOM_TARGET(flies_publican_push_mvn_${proj}_${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_MVN_STAMP}
 	    )
@@ -272,6 +275,29 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	      ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	      COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver} to ${FLIES_URL}"
 	    )
+
+	# Publican pull
+	ADD_CUSTOM_TARGET(flies_publican_pull_mvn_${proj}_${_ver}
+	    DEPENDS ${PULL_DEST_DIR}/${proj}/${_ver}/${PULLED_PO_MVN_STAMP}
+	    )
+
+	ADD_DEPENDENCIES(flies_publican_pull_mvn
+	    flies_publican_pull_mvn_${proj}_${_ver})
+
+	ADD_CUSTOM_COMMAND(OUTPUT
+	    ${PULL_DEST_DIR}/${proj}/${_ver}/${PULLED_PO_MVN_STAMP}
+	    COMMAND  mvn -e -B ${FLIES_MVN_GOAL_PREFIX}:publican-pull
+
+	    ${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
+	    ${FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS}
+	    -Dflies.dstDir=${PULL_DEST_DIR}/${proj}/${_ver}
+	    -Dflies.exportPot
+	    COMMAND touch ${PULLED_PO_MVN_STAMP}
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
+	    COMMENT "  [Mvn] Pulling pot and po for proj ${proj} ver ${_ver} from  ${FLIES_URL}"
+	    VERBATIM
+	    )
+
     ENDFOREACH(_ver ${_projVers})
 
     ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
@@ -286,6 +312,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	)
 
 ENDMACRO(ADD_MVN_CLIENT_TARGETS proj)
+
 
 
 #===================================================================
@@ -313,35 +340,38 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    )
 
 
-	ADD_CUSTOM_TARGET(generate_pom_xml_${proj}_${_ver}
+	ADD_CUSTOM_TARGET(link_pom_xml_${proj}_${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	       ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg.striped
 	    )
 
-	# Prepare project: generate flies.xml and pom.xml
-	ADD_CUSTOM_TARGET(prepare_${proj}_${_ver})
-	#	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	#    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg.striped
-	#    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
-	#    )
-
-	ADD_DEPENDENCIES(prepare_${proj}_${_ver}
-	    generate_flies_xml_${proj}_${_ver}
-	    generate_pom_xml_${proj}_${_ver}
+	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	    COMMAND script/link_pom_xml.sh ${CMAKE_SOURCE_DIR}
+	    COMMENT "   Link pom.xml for project ${proj}/${_ver} "
 	    )
 
-	ADD_DEPENDENCIES(prepare_all_projects prepare_${proj}_${_ver})
+	ADD_CUSTOM_TARGET(preprocess_publican_${proj}_${_ver}
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg.striped
+	    )
 
-	#STRING(REPLACE ";" "," _langs "${LANGS}")
-
-	ADD_CUSTOM_COMMAND(OUTPUT  ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg.striped
-	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/prepare_project.sh "${LANGS}" ${CMAKE_SOURCE_DIR}
+	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg.striped
+	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/prepare_project.sh "${LANGS}"
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    COMMENT "   Preparing project ${proj}/${_ver} "
 	    VERBATIM
 	    )
+
+	# Prepare project: generate flies.xml and pom.xml
+	ADD_CUSTOM_TARGET(prepare_${proj}_${_ver})
+
+	ADD_DEPENDENCIES(prepare_${proj}_${_ver}
+	    generate_flies_xml_${proj}_${_ver}
+	    link_pom_xml_${proj}_${_ver}
+	    preprocess_publican_${proj}_${_ver}
+	    )
+
+	ADD_DEPENDENCIES(prepare_all_projects prepare_${proj}_${_ver})
+
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    COMMAND perl scripts/get_project.pl ${SAMPLE_PROJ_DIR} ${proj}
@@ -352,6 +382,11 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    )
 
 	ADD_DEPENDENCIES(prepare_all_projects generate_pom_xml_${proj}_${_ver})
+
+	ADD_CUSTOM_COMMAND(OUTPUT ${PULL_DEST_DIR}/${proj}/${_ver}
+	    COMMAND cmake -E make_directory ${PULL_DEST_DIR}/${proj}/${_ver}
+	    COMMENT "   Mkdir for pulling ${proj}/${_ver}/ to ${PULL_DEST_DIR}"
+	    )
     ENDFOREACH(_ver ${_projVers})
 
     IF("${client}" STREQUAL "mvn")
@@ -374,8 +409,11 @@ ADD_CUSTOM_TARGET(all_projects
     )
 
 ADD_CUSTOM_TARGET(flies_publican_push_mvn)
+ADD_CUSTOM_TARGET(flies_publican_pull_mvn)
 ADD_CUSTOM_TARGET(flies_publican_push_py)
-ADD_DEPENDENCIES(all_projects flies_publican_push_mvn flies_publican_push_py)
+ADD_DEPENDENCIES(all_projects
+    flies_publican_push_mvn flies_publican_pull_mvn
+    flies_publican_push_py )
 
 ADD_CUSTOM_TARGET(prepare_all_projects
     )

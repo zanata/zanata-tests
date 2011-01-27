@@ -39,4 +39,5 @@ apikey.*
 
 # result
 results/
+pulled/
 tmpc00

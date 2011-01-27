@@ -1,9 +1,8 @@
 #!/usr/bin/env sh
 # If publican.cfg exists, this script does a publican update,
-# otherwise do noting except linking pom.xml
+# otherwise do nothing.
 scriptDir=`dirname $0`
 langs=$1
-cmake_home_dir=$2
 
 _langs=`echo $langs | sed -e 's/;/ /g'`
 _first=1
@@ -36,6 +35,4 @@ else
     touch publican.cfg.striped
 fi
 
-touch $cmake_home_dir/pom.xml
-ln -sf $cmake_home_dir/pom.xml pom.xml
 
