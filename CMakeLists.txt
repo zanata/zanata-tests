@@ -345,7 +345,8 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    )
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	    COMMAND script/link_pom_xml.sh ${CMAKE_SOURCE_DIR}
+	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/link_pom_xml.sh ${CMAKE_SOURCE_DIR}
+	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
 	    COMMENT "   Link pom.xml for project ${proj}/${_ver} "
 	    )
 
@@ -354,7 +355,7 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    )
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/publican.cfg.striped
-	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/prepare_project.sh "${LANGS}"
+	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/preprocess_publican.sh "${LANGS}"
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    COMMENT "   Preparing project ${proj}/${_ver} "
