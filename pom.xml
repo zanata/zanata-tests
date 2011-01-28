@@ -3,6 +3,11 @@
   <groupId>null</groupId>
   <artifactId>null</artifactId>
   <version>0</version>
+  <properties>
+      <flies.srcDir>.</flies.srcDir>
+      <flies.srcDirPot>pot</flies.srcDirPot>
+      <flies.dstDir>.</flies.dstDir>
+  </properties>
 
   <build>
     <plugins>
@@ -11,7 +16,9 @@
         <artifactId>flies-maven-plugin</artifactId>
 	<version>1.2-SNAPSHOT</version>
 	<configuration>
-	  <srcDir>.</srcDir>
+	    <srcDir>${flies.srcDir}</srcDir>
+	    <srcDirPot>${flies.srcDirPot}</srcDirPot>
+	    <dstDir>${flies.dstDir}</dstDir>
         </configuration>
       </plugin>
     </plugins>
