@@ -7,7 +7,7 @@
 _scriptDir=`dirname $0`
 #PARAMS=(testRole testSuiteDir testSuiteName browser)
 PARAMS="testRole testSuiteDir testSuiteName browser"
-source ${_scriptDir}/test-common-func.sh
+source ${_scriptDir}/test_common_func.sh
 
 
 HOME_PAGE_PATH="${testSuiteDir}/${HOME_PAGE_FILE}"

@@ -3,7 +3,7 @@
 
 _scriptDir=`dirname $0`
 PARAMS="testRole testSuiteDir testSuiteName serverBase serverPath testUser testPass sisoIndex"
-source ${_scriptDir}/test-common-func.sh
+source ${_scriptDir}/test_common_func.sh
 
 #function print_usage(){
 #    echo "$0 <testRole> <testSuiteDir> <testSuiteName> <serverBase> <serverPath> <testUser> <testPass> <sisoIndex>"
