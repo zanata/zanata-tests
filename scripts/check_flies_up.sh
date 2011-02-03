@@ -5,7 +5,7 @@ function print_usage(){
     echo "Usage: $0 <FLIES_SERVER_URL>"
 }
 
-UP_PATTERN='id="Sign_in"'
+UP_PATTERN='<h1>Welcome'
 FLIES_SERVER_URL=$1
 DOWNLOAD_FILE=index.html.tmp
 
