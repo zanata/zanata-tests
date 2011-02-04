@@ -3,17 +3,17 @@
 
 # ADD_OUTPUT_FOR_BROWSERS testSuiteName testRole suiteFile
 MACRO(ADD_OUTPUT_FOR_BROWSERS testSuiteName testRole suiteFile)
-    SET(_pendingPrefix "")
+    SET(_unstablePrefix "")
     FOREACH(_arg ${ARGN})
-	IF(_arg STREQUAL "PENDING")
-	    SET(_pendingPrefix "NC-")
-       ENDIF(_arg STREQUAL "PENDING")
+	IF(_arg STREQUAL "UNSTABLE")
+	    SET(_unstablePrefix "US-")
+       ENDIF(_arg STREQUAL "UNSTABLE")
     ENDFOREACH(_arg ${ARGN})
 
     FOREACH(browser ${BROWSERS_TO_TEST})
 	SET(BROWSER_STR "*${browser}\\ ${${browser}_BIN}")
 
-	ADD_TEST("${_pendingPrefix}${testSuiteName}.${testRole}.${browser}"
+	ADD_TEST("${_unstablePrefix}${testSuiteName}.${testRole}.${browser}"
 	    ${SELENIUM_SERVER_CMD} ${SELENIUM_SERVER_ARG} -log
 	    ${RESULT_DIR_ABSOLUTE}/${testSuiteName}.${testRole}.${browser}.test.log
 	    -htmlsuite ${BROWSER_STR} ${FLIES_URL}  ${suiteFile}
@@ -62,10 +62,10 @@ MACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
     ELSE()
 	SET(_testRoles ${TEST_ROLES})
     ENDIF()
-    IF(EXISTS "${testSuiteDir}/PENDING")
-	SET(_pending "PENDING")
+    IF(EXISTS "${testSuiteDir}/UNSTABLE")
+	SET(_unstable "UNSTABLE")
     ELSE()
-	SET(_pending "")
+	SET(_unstable "")
     ENDIF()
 
     FOREACH(_testRole ${_testRoles})
@@ -98,7 +98,7 @@ MACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
 		    )
 	    ENDIF( ${_testRole} STREQUAL "Prelogin" )
 	    ADD_OUTPUT_FOR_BROWSERS(${testSuiteName} ${_testRole}
-		${_suiteFile} ${_pending})
+		${_suiteFile} ${_unstable})
 	ENDIF(NOT EXISTS "${testSuiteDir}/NO_${_testRole}" )
     ENDFOREACH()
 ENDMACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
