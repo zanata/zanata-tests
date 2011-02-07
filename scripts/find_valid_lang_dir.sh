@@ -18,10 +18,10 @@ function findLangDir(){
 }
 
 case $lang in
-    zh*CN )
+    zh*CN | zh*Hans )
 	findLangDir $baseDir "zh*CN"
 	;;
-    zh*TW )
+    zh*TW | zh*Hant )
 	findLangDir $baseDir "zh*TW"
 	;;
     * )

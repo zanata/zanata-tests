@@ -472,8 +472,8 @@ ADD_CUSTOM_TARGET(putusers
 
 MACRO(PUT_TEST_USER user)
     STRING(REGEX REPLACE ";" "," _lang  "${LANGS}")
-    STRING(REGEX REPLACE "zh.CN" "zh-Hans-CN" _lang  "${_lang}")
-    STRING(REGEX REPLACE "zh.TW" "zh-Hant-TW" _lang  "${_lang}")
+    STRING(REGEX REPLACE "zh.CN" "zh-Hans" _lang  "${_lang}")
+    STRING(REGEX REPLACE "zh.TW" "zh-Hant" _lang  "${_lang}")
     IF("${${user}_ROLES}" STREQUAL "")
     	SET(ROLE_ASSIGN "-Dflies.user.roles=\"user\"")
     ELSE("${${user}_ROLES}" STREQUAL "")
