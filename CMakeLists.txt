@@ -444,6 +444,23 @@ ADD_DEPENDENCIES(prepare_selenium_projects
 ADD_DEPENDENCIES(selenium_projects flies_publican_push_mvn_ReleaseNotes_f13
     flies_publican_push_mvn_SecurityGuide_f13)
 
+####################################################################
+# Initial server setup
+#
+SET(BROWSER_STR "*firefox\\ ${firefox_BIN}")
+
+SET(INITIAL_SETUP_SCRIPT_DIR selenium/src/initial_setup)
+CONFIGURE_FILE(${INITIAL_SETUP_SCRIPT_DIR}/ServerConfiguration.html.in
+    ${INITIAL_SETUP_SCRIPT_DIR}/ServerConfiguration.html @ONLY)
+
+ADD_CUSTOM_TARGET(initial_setup
+     ${SELENIUM_SERVER_CMD} ${SELENIUM_SERVER_ARG} -log
+    ${RESULT_DIR_ABSOLUTE}/initial_setup.test.log
+    -htmlsuite "*firefox\ ${firefox_BIN}" ${FLIES_URL}  ${INITIAL_SETUP_SCRIPT_DIR}/00-InitSetup.html
+    ${RESULT_DIR_ABSOLUTE}/initial_setup.html
+    VERBATIM
+)
+
 
 ####################################################################
 # Put users
