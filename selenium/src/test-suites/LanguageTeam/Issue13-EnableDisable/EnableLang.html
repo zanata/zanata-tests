@@ -17,8 +17,13 @@
 	<td>lang</td>
 </tr>
 <tr>
+	<td>store</td>
+	<td>css=td:contains(&quot;${lang}&quot;)</td>
+	<td>langRow</td>
+</tr>
+<tr>
 	<td>storeElementPresent</td>
-	<td>css=tr.dr-table-row&gt;td:contains(&quot;${lang}&quot;)</td>
+	<td>${langRow}</td>
 	<td>langExists</td>
 </tr>
 <tr>
@@ -50,13 +55,13 @@
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>css=tr.dr-table-row&gt;td:contains(&quot;${lang}&quot;)</td>
+	<td>${langRow}</td>
 	<td></td>
 </tr>
 <!--Enable language-->
 <tr>
 	<td>storeElementPresent</td>
-	<td>css=tr.dr-table-row&gt;td:contains(&quot;${lang}&quot;) ~ td &gt;a:contains(&quot;Disable&quot;)</td>
+	<td>${langRow} ~ td &gt;a:contains(&quot;Disable&quot;)</td>
 	<td>langEnabled</td>
 </tr>
 <tr>
@@ -66,7 +71,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=tr.dr-table-row&gt;td:contains(&quot;${lang}&quot;) ~ td &gt;a:contains(&quot;Enable&quot;)</td>
+	<td>${langRpw} ~ td &gt;a:contains(&quot;Enable&quot;)</td>
 	<td></td>
 </tr>
 <tr>
@@ -84,7 +89,6 @@
 	<td>End</td>
 	<td></td>
 </tr>
-
 </tbody></table>
 </body>
 </html>
