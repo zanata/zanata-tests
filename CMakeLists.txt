@@ -479,26 +479,28 @@ MACRO(PUT_TEST_USER user)
     ELSE("${${user}_ROLES}" STREQUAL "")
     	SET(ROLE_ASSIGN "-Dflies.user.roles=\"${${user}_ROLES}\"")
     ENDIF("${${user}_ROLES}" STREQUAL "")
-    ADD_CUSTOM_TARGET(putuser_${user}
-	COMMAND mvn -e flies:putuser
-	${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
-	${ROLE_ASSIGN}
-	-Dflies.user.disabled=false
+
+    SET(OPTS -Dflies.user.disabled=false
 	-Dflies.user.email="${${user}_USER}@localhost.org"
 	-Dflies.user.key="${${user}_KEY}"
 	-Dflies.user.langs="${_lang}"
 	-Dflies.user.name="${${user}_NAME}"
-	-Dflies.user.passwordhash="${${user}_PASSWD_HASH}"
 	-Dflies.user.username="${${user}_USER}"
+	-Dflies.user.passwordhash="${${user}_PASSWD_HASH}"
+	)
+
+    ADD_CUSTOM_TARGET(putuser_${user}
+	COMMAND mvn -e flies:putuser
+	${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
+	${ROLE_ASSIGN}
+	${OPTS}
 	COMMENT "Create user ${${user}_USER} for ${user}"
 	)
     ADD_DEPENDENCIES(putusers putuser_${user})
 ENDMACRO(PUT_TEST_USER user)
 
 FOREACH(_role ${TEST_ROLES})
-    IF(NOT _role STREQUAL "ADMIN")
-	PUT_TEST_USER("${_role}")
-    ENDIF(NOT _role STREQUAL "ADMIN")
+    PUT_TEST_USER("${_role}")
 ENDFOREACH(_role ${TEST_ROLES})
 
 
