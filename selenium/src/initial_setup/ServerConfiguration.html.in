@@ -54,7 +54,7 @@
 <tr>
 	<td>type</td>
 	<td>j_id68:helpField:url</td>
-	<td>${SERVER_URL}/help</td>
+	<td>http://code.google.com/p/flies/wiki/Introduction</td>
 </tr>
 <tr>
 	<td>click</td>
