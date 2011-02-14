@@ -454,8 +454,9 @@ CONFIGURE_FILE(${INITIAL_SETUP_SCRIPT_DIR}/ServerConfiguration.html.in
     ${INITIAL_SETUP_SCRIPT_DIR}/ServerConfiguration.html @ONLY)
 
 ADD_CUSTOM_TARGET(initial_setup
-     ${SELENIUM_SERVER_CMD} ${SELENIUM_SERVER_ARG} -log
-    ${RESULT_DIR_ABSOLUTE}/initial_setup.test.log
+    ${SELENIUM_SERVER_CMD} ${SELENIUM_SERVER_ARG}
+    -port ${SELENIUM_SERVER_PORT}
+     -log ${RESULT_DIR_ABSOLUTE}/initial_setup.test.log
     -htmlsuite "*firefox\ ${firefox_BIN}" ${FLIES_URL}  ${INITIAL_SETUP_SCRIPT_DIR}/00-InitSetup.html
     ${RESULT_DIR_ABSOLUTE}/initial_setup.html
     VERBATIM
