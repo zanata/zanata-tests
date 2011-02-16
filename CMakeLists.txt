@@ -123,32 +123,6 @@ ENDFOREACH()
 ####################################################################
 # Configure
 #
-CONFIGURE_FILE(${FUNCTIONS_DIR}/SignInAdmin.html.in
-    ${FUNCTIONS_DIR}/SignInAdmin.html)
-
-CONFIGURE_FILE(${FUNCTIONS_DIR}/SignInNormal.html.in
-    ${FUNCTIONS_DIR}/SignInNormal.html)
-
-####################################################################
-# Stamps
-#
-
-# When project is ready (done prepar_project)
-SET(READY_PROJ_STAMP  ".ready.proj.stamp")
-
-SET(PY_STAMP "py.stamp")
-SET(PROJ_PY_STAMP ".proj.${PY_STAMP}")
-SET(VER_PY_STAMP ".ver.${PY_STAMP}")
-SET(UPLOADED_POT_PY_STAMP ".uploaded.pot.${PY_STAMP}")
-SET(UPLOADED_PO_PY_STAMP ".uploaded.po.${PY_STAMP}")
-
-SET(MVN_STAMP "mvn.stamp")
-SET(PROJ_MVN_STAMP ".proj.${MVN_STAMP}")
-SET(VER_MVN_STAMP ".ver.${MVN_STAMP}")
-SET(UPLOADED_POT_MVN_STAMP ".uploaded.pot.${MVN_STAMP}")
-SET(UPLOADED_PO_MVN_STAMP ".uploaded.po.${MVN_STAMP}")
-SET(PULLED_PO_MVN_STAMP ".pulled.po.${MVN_STAMP}")
-
 
 #===================================================================
 # Python targets
@@ -226,6 +200,16 @@ SET(FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS
 MACRO(ADD_MVN_CLIENT_TARGETS proj )
     SET(_projVers "${${proj}_VERS}")
 
+    ADD_CUSTOM_TARGET(flies_putproject_mvn_${proj}
+	COMMAND mvn -e ${FLIES_MVN_GOAL_PREFIX}:putproject -Dflies.username=${ADMIN_USER} -Dflies.key=${ADMIN_KEY}
+	${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
+	-Dflies.project.slug=${proj}
+	-Dflies.project.name=${${proj}_NAME}
+	-Dflies.project.desc=${${proj}_DESC}
+	COMMENT "  [Mvn] Creating proj: proj ${proj}:${${proj}_NAME} in ${FLIES_URL}"
+	VERBATIM
+	)
+
     FOREACH(_ver ${_projVers})
 	#MESSAGE("[mvn] proj=${proj} ver=${_ver}")
 	SET(FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS
@@ -233,34 +217,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    -Dflies.projectVersion=${_ver}
 	    )
 
-	# Publican push
-	ADD_CUSTOM_TARGET(flies_publican_push_mvn_${proj}_${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_MVN_STAMP}
-	    )
-
-	ADD_DEPENDENCIES(flies_publican_push_mvn
-	    flies_publican_push_mvn_${proj}_${_ver})
-
-	ADD_CUSTOM_COMMAND(OUTPUT
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_POT_MVN_STAMP}
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_MVN_STAMP}
-	    COMMAND  mvn -e -B ${FLIES_MVN_GOAL_PREFIX}:publican-push
-
-	    ${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
-	    ${FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS}
-	    -Dflies.srcDir=.
-	    -Dflies.importPo
-	    COMMAND touch ${UPLOADED_PO_MVN_STAMP}
-	    COMMAND touch ${UPLOADED_POT_MVN_STAMP}
-	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${VER_MVN_STAMP}
-	      ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	      ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
-	      COMMENT "  [Mvn] Uploading pot and po for proj ${proj} ver ${_ver} to ${FLIES_URL}"
-	    VERBATIM
-	    )
-
-	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${VER_MVN_STAMP}
+	# Put version
+	ADD_CUSTOM_TARGET(flies_putversion_mvn_${proj}_${_ver}
 	    COMMAND mvn -e ${FLIES_MVN_GOAL_PREFIX}:putversion
 	    ${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS}
@@ -268,48 +226,52 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    -Dflies.version.project=${proj}
 	    -Dflies.version.name=\"Ver ${_ver}\"
 	    -Dflies.version.desc=\"Desc of ${_ver}\"
-	    COMMAND touch ${VER_MVN_STAMP}
-	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
-	      ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	      ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
-	      COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver} to ${FLIES_URL}"
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
+	    COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver} to ${FLIES_URL}"
 	    )
+
+	ADD_DEPENDENCIES(flies_putversion_mvn_${proj}_${_ver} flies_putproject_mvn_${proj})
+
+	# Publican push
+	ADD_CUSTOM_TARGET(flies_publican_push_mvn_${proj}_${_ver}
+	    COMMAND  mvn -e -B ${FLIES_MVN_GOAL_PREFIX}:publican-push
+	    ${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
+	    ${FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS}
+	    -Dflies.srcDir=.
+	    -Dflies.importPo
+	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
+	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
+	    COMMENT "  [Mvn] Pushing pot and po for proj ${proj} ver ${_ver} to ${FLIES_URL}"
+	    VERBATIM
+	    )
+
+	ADD_DEPENDENCIES(flies_publican_push_mvn_${proj}_${_ver} flies_putversion_mvn_${proj}_${_ver})
+	ADD_DEPENDENCIES(flies_publican_push_mvn_all_projects
+	    flies_publican_push_mvn_${proj}_${_ver})
 
 	# Publican pull
 	ADD_CUSTOM_TARGET(flies_publican_pull_mvn_${proj}_${_ver}
-	    DEPENDS ${PULL_DEST_DIR}/${proj}/${_ver}/${PULLED_PO_MVN_STAMP}
-	    )
-
-	ADD_DEPENDENCIES(flies_publican_pull_mvn
-	    flies_publican_pull_mvn_${proj}_${_ver})
-
-	ADD_CUSTOM_COMMAND(OUTPUT
-	    ${PULL_DEST_DIR}/${proj}/${_ver}/${PULLED_PO_MVN_STAMP}
 	    COMMAND  mvn -e -B ${FLIES_MVN_GOAL_PREFIX}:publican-pull
-
 	    ${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS}
 	    -Dflies.dstDir=${PULL_DEST_DIR}/${proj}/${_ver}
 	    -Dflies.exportPot
-	    COMMAND touch ${PULLED_PO_MVN_STAMP}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	    COMMENT "  [Mvn] Pulling pot and po for proj ${proj} ver ${_ver} from  ${FLIES_URL}"
 	    VERBATIM
 	    )
 
+	ADD_DEPENDENCIES(flies_publican_pull_mvn_${proj}_${_ver}
+	    flies_publican_push_mvn_${proj}_${_ver} flies_putversion_mvn_${proj}_${_ver})
+
+	ADD_DEPENDENCIES(flies_publican_pull_mvn_all_projects
+	    flies_publican_pull_mvn_${proj}_${_ver})
+
+
     ENDFOREACH(_ver ${_projVers})
 
-    ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
-	COMMAND mvn -e ${FLIES_MVN_GOAL_PREFIX}:putproject -Dflies.username=${ADMIN_USER} -Dflies.key=${ADMIN_KEY}
-	${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
-	-Dflies.project.slug=${proj}
-	-Dflies.project.name=${${proj}_NAME}
-	-Dflies.project.desc=${${proj}_DESC}
-	COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_MVN_STAMP}
-	COMMENT "  [Mvn] Creating proj: proj ${proj}:${${proj}_NAME} in ${FLIES_URL}"
-	VERBATIM
-	)
 
 ENDMACRO(ADD_MVN_CLIENT_TARGETS proj)
 
@@ -405,21 +367,30 @@ ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}
 # Retrieve projects
 #
 
-ADD_CUSTOM_TARGET(all_projects
-    COMMENT "   Preparing all projects"
-    )
-
-ADD_CUSTOM_TARGET(flies_publican_push_mvn)
-ADD_CUSTOM_TARGET(flies_publican_pull_mvn)
-ADD_CUSTOM_TARGET(flies_publican_push_py)
-ADD_DEPENDENCIES(all_projects
-    flies_publican_push_mvn flies_publican_pull_mvn
-    flies_publican_push_py )
-
 ADD_CUSTOM_TARGET(prepare_all_projects
+    COMMENT "Prepare all projects"
     )
-ADD_DEPENDENCIES(all_projects prepare_all_projects)
+ADD_CUSTOM_TARGET(flies_publican_push_mvn_all_projects
+    COMMENT "[MVN] publican push all projects"
+    )
+ADD_CUSTOM_TARGET(flies_publican_pull_mvn_all_projects
+    COMMENT "[MVN] publican pull all projects"
+    )
 
+ADD_CUSTOM_TARGET(flies_publican_push_py_all_projects
+    COMMENT "[PY] publican push all projects"
+    )
+
+ADD_CUSTOM_TARGET(flies_publican_pull_py_all_projects
+    COMMENT "[PY] publican pull all projects"
+    )
+
+
+ADD_CUSTOM_TARGET(all_projects)
+
+ADD_DEPENDENCIES(all_projects
+    flies_publican_pull_mvn_all_projects
+    flies_publican_push_py_all_projects )
 
 FOREACH(_proj ${MVN_PROJECTS})
     ADD_PUBLICAN_PROJECT(${_proj} mvn)
@@ -449,7 +420,7 @@ ADD_DEPENDENCIES(selenium_projects flies_publican_push_mvn_ReleaseNotes_f13
 #
 SET(BROWSER_STR "*firefox\\ ${firefox_BIN}")
 
-SET(INITIAL_SETUP_SCRIPT_DIR selenium/src/initial_setup)
+SET(INITIAL_SETUP_SCRIPT_DIR ${SELENIUM_SRC_DIR}/initial_setup)
 CONFIGURE_FILE(${INITIAL_SETUP_SCRIPT_DIR}/ServerConfiguration.html.in
     ${INITIAL_SETUP_SCRIPT_DIR}/ServerConfiguration.html @ONLY)
 
