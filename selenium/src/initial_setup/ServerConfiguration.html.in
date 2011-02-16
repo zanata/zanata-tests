@@ -28,47 +28,47 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>j_id68:helpField:url</td>
+	<td>j_id69:urlField:url</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>j_id68:helpField:url</td>
+	<td>j_id69:urlField:url</td>
 	<td>${SERVER_URL}</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>j_id68:registerField:url</td>
+	<td>j_id69:registerField:url</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>j_id68:registerField:url</td>
+	<td>j_id69:registerField:url</td>
 	<td>${SERVER_URL}/register</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>j_id68:helpField:url</td>
+	<td>j_id69:helpField:url</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>j_id68:helpField:url</td>
+	<td>j_id69:helpField:url</td>
 	<td>http://code.google.com/p/flies/wiki/Introduction</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>j_id68:emailDomainField:url</td>
+	<td>j_id69:emailDomainField:url</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>j_id68:emailDomainField:url</td>
+	<td>j_id69:emailDomainField:url</td>
 	<td>redhat.com</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>css=input[type=&quot;submit&quot;]</td>
+	<td>css=input[value=&quot;Save&quot;]</td>
 	<td></td>
 </tr>
 
