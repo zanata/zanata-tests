@@ -412,6 +412,46 @@ ADD_DEPENDENCIES(prepare_selenium_projects
 ADD_DEPENDENCIES(selenium_projects flies_publican_push_mvn_ReleaseNotes_f13
     flies_publican_push_mvn_SecurityGuide_f13)
 
+#===================================================================
+# Put users
+#
+ADD_CUSTOM_TARGET(putusers
+    COMMENT "Create users in flies server: ${FLIES_URL}"
+    )
+
+MACRO(PUT_TEST_USER user)
+    STRING(REGEX REPLACE ";" "," _lang  "${LANGS}")
+    STRING(REGEX REPLACE "zh.CN" "zh-Hans" _lang  "${_lang}")
+    STRING(REGEX REPLACE "zh.TW" "zh-Hant" _lang  "${_lang}")
+    IF("${${user}_ROLES}" STREQUAL "")
+	SET(ROLE_ASSIGN "-Dflies.user.roles=\"user\"")
+    ELSE("${${user}_ROLES}" STREQUAL "")
+	SET(ROLE_ASSIGN "-Dflies.user.roles=\"${${user}_ROLES}\"")
+    ENDIF("${${user}_ROLES}" STREQUAL "")
+
+    SET(OPTS -Dflies.user.disabled=false
+	-Dflies.user.email="${${user}_USER}@localhost.org"
+	-Dflies.user.key="${${user}_KEY}"
+	-Dflies.user.langs="${_lang}"
+	-Dflies.user.name="${${user}_NAME}"
+	-Dflies.user.username="${${user}_USER}"
+	-Dflies.user.passwordhash="${${user}_PASSWD_HASH}"
+	)
+
+    ADD_CUSTOM_TARGET(putuser_${user}
+	COMMAND mvn -e ${FLIES_MVN_GOAL_PREFIX}:putuser
+	${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
+	${ROLE_ASSIGN}
+	${OPTS}
+	COMMENT "Create user ${${user}_USER} for ${user}"
+	)
+    ADD_DEPENDENCIES(putusers putuser_${user})
+ENDMACRO(PUT_TEST_USER user)
+
+FOREACH(_role ${TEST_ROLES})
+    PUT_TEST_USER("${_role}")
+ENDFOREACH(_role ${TEST_ROLES})
+
 ####################################################################
 # Test Suites.
 ####################################################################
