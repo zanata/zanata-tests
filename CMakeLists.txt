@@ -20,7 +20,7 @@ SET(PROJECT_DESCRIPTION "Test system for flies.openl10n.net")
 
 ### Override with environment variables
 SET(OVERRIDABLE_VARS  "FLIES_URL" "BROWSERS_TO_TEST" "SELENIUM_SERVER_PORT"
-    "SAMPLE_PROJ_DIR" "PULL_DEST_DIR" "FLIES_PROFILE")
+    "SAMPLE_PROJ_DIR" "PULL_DEST_DIR" "FLIES_PROFILE" "MVN_CLIENT_VER")
 FOREACH(_envVar  ${OVERRIDABLE_VARS})
     IF(NOT "$ENV{${_envVar}}" STREQUAL "")
 	SET(${_envVar} "$ENV{${_envVar}}")
@@ -187,6 +187,7 @@ ENDMACRO(ADD_PY_CLIENT_TARGETS proj)
 #===================================================================
 # Maven targets
 #
+CONFIGURE_FILE(pom.xml.in pom.xml @ONLY)
 
 
 SET(FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS
