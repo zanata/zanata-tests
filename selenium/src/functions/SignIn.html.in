@@ -13,7 +13,7 @@
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>/@SERVER_PATH@</td>
+	<td>@SERVER_PATH@</td>
 	<td></td>
 </tr>
 <tr>
@@ -29,7 +29,7 @@
 <tr>
 	<td>type</td>
 	<td>login:passwordField:password</td>
-	<td>@SIGN_IN_USER@</td>
+	<td>@SIGN_IN_PASSWD@</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>

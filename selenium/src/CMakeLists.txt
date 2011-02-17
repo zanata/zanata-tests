@@ -1,5 +1,74 @@
+####################################################################
+# Maintenance targets and macros
+#
 #===================================================================
+# Initial server setup
+SET(BROWSER_STR "*firefox\\ ${firefox_BIN}")
+
+SET(INITIAL_SETUP_SCRIPT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/initial_setup)
+CONFIGURE_FILE(${INITIAL_SETUP_SCRIPT_DIR}/ServerConfiguration.html.in
+    ${INITIAL_SETUP_SCRIPT_DIR}/ServerConfiguration.html @ONLY)
+
+SET(SIGN_IN_USER "${ADMIN_USER}")
+SET(SIGN_IN_PASSWD "${ADMIN_PASSWD}")
+
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/functions/SignIn.html.in
+    ${INITIAL_SETUP_SCRIPT_DIR}/SignInAdmin.html @ONLY)
+
+ADD_CUSTOM_TARGET(initial_setup
+    ${SELENIUM_SERVER_CMD} ${SELENIUM_SERVER_ARG}
+    -port ${SELENIUM_SERVER_PORT}
+    -log ${RESULT_DIR_ABSOLUTE}/initial_setup.test.log
+    -htmlsuite "*firefox\ ${firefox_BIN}" ${FLIES_URL}  ${INITIAL_SETUP_SCRIPT_DIR}/00-InitSetup.html
+    ${RESULT_DIR_ABSOLUTE}/initial_setup.html
+    VERBATIM
+    )
+
+
+#===================================================================
+# Put users
+#
+
+ADD_CUSTOM_TARGET(putusers
+    COMMENT "Create users in flies server: ${FLIES_URL}"
+    )
+
+MACRO(PUT_TEST_USER user)
+    STRING(REGEX REPLACE ";" "," _lang  "${LANGS}")
+    STRING(REGEX REPLACE "zh.CN" "zh-Hans" _lang  "${_lang}")
+    STRING(REGEX REPLACE "zh.TW" "zh-Hant" _lang  "${_lang}")
+    IF("${${user}_ROLES}" STREQUAL "")
+	SET(ROLE_ASSIGN "-Dflies.user.roles=\"user\"")
+    ELSE("${${user}_ROLES}" STREQUAL "")
+	SET(ROLE_ASSIGN "-Dflies.user.roles=\"${${user}_ROLES}\"")
+    ENDIF("${${user}_ROLES}" STREQUAL "")
+
+    SET(OPTS -Dflies.user.disabled=false
+	-Dflies.user.email="${${user}_USER}@localhost.org"
+	-Dflies.user.key="${${user}_KEY}"
+	-Dflies.user.langs="${_lang}"
+	-Dflies.user.name="${${user}_NAME}"
+	-Dflies.user.username="${${user}_USER}"
+	-Dflies.user.passwordhash="${${user}_PASSWD_HASH}"
+	)
+
+    ADD_CUSTOM_TARGET(putuser_${user}
+	COMMAND mvn -e flies:putuser
+	${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
+	${ROLE_ASSIGN}
+	${OPTS}
+	COMMENT "Create user ${${user}_USER} for ${user}"
+	)
+    ADD_DEPENDENCIES(putusers putuser_${user})
+ENDMACRO(PUT_TEST_USER user)
+
+FOREACH(_role ${TEST_ROLES})
+    PUT_TEST_USER("${_role}")
+ENDFOREACH(_role ${TEST_ROLES})
+
+####################################################################
 # Test generating macros
+#
 
 # ADD_OUTPUT_FOR_BROWSERS testSuiteName testRole suiteFile
 MACRO(ADD_OUTPUT_FOR_BROWSERS testSuiteName testRole suiteFile)
