@@ -90,8 +90,8 @@ MACRO(FIND_FILES_IN_DIR var pattern searchPath)
     ENDIF()
 ENDMACRO()
 
-#SET(FLIES_MVN_GOAL_PREFIX  "net.openl10n.flies:flies-maven-plugin")
-SET(FLIES_MVN_GOAL_PREFIX  "flies")
+SET(FLIES_MVN_GOAL_PREFIX  "net.openl10n.flies:flies-maven-plugin")
+#SET(FLIES_MVN_GOAL_PREFIX  "flies")
 
 ####################################################################
 # Dependencies
