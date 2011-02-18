@@ -117,6 +117,11 @@ FOREACH(_browser ${BROWSERS_TO_TEST})
     ENDIF()
 ENDFOREACH()
 
+FIND_PROGRAM(FLIES_PY_CMD flies)
+IF(${FLIES_PY_CMD} STREQUAL "FLIES_PY_CMD-NOTFOUND")
+    MESSAGE("flies python client (flies) is not installed!")
+ENDIF()
+
 ####################################################################
 # Configure
 #
@@ -129,66 +134,78 @@ SET(FLIES_PY_CLIENT_COMMON_ADMIN_OPTS --username ${ADMIN_USER} --apikey ${ADMIN_
 
 MACRO(ADD_PY_CLIENT_TARGETS proj )
     SET(_projVers "${${proj}_VERS}")
-
-    FOREACH(_ver ${_projVers})
-	#MESSAGE("[py] proj=${proj} ver=${_ver}")
-	ADD_CUSTOM_TARGET(flies_publican_push_py_${proj}_${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_PY_STAMP}
-	    )
-
-	ADD_DEPENDENCIES(flies_publican_push_py
-	    flies_publican_push_py_${proj}_${_ver})
-
-	ADD_CUSTOM_COMMAND(OUTPUT
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_POT_PY_STAMP}
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${UPLOADED_PO_PY_STAMP}
-	    COMMAND  flies publican push
-	    ${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
-	    --project-id=${proj}
-	    --project-version=${_ver}
-	    --importPo=true
-	    COMMAND touch ${UPLOADED_PO_PY_STAMP}
-	    COMMAND touch ${UPLOADED_POT_PY_STAMP}
-	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${VER_PY_STAMP}
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	    COMMENT "  [Py] Uploading pot and po for proj ${proj} ver ${_ver} to ${FLIES_URL}"
-	    VERBATIM
-	    )
-
-	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/${VER_PY_STAMP}
-	    COMMAND  flies version create ${_ver}
-	    ${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
-	    --project-id=${proj}
-	    --version-name=\"Ver ${_ver}\"
-	    --version-desc=\"Desc of ${_ver}\"
-	    COMMAND touch ${VER_PY_STAMP}
-	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_PY_STAMP}
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
-	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
-	    COMMENT "  [Py] Creating version: proj ${proj} ver ${_ver} to ${FLIES_URL}"
-	    )
-    ENDFOREACH(_ver ${_projVers})
-
-    ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_PY_STAMP}
-	COMMAND flies create ${proj}
+    ADD_CUSTOM_TARGET(flies_putproject_py_${proj}
+	COMMAND ${FLIES_PY_CMD} create ${proj}
 	${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
-	--project-name=\"${${proj}_NAME}\"
-	--project-desc=\"${${proj}_DESC}\"
-	COMMAND touch ${SAMPLE_PROJ_DIR}/${proj}/${PROJ_PY_STAMP}
+	--project-name=${${proj}_NAME}
+	--project-desc=${${proj}_DESC}
 	COMMENT "  [Py] Creating proj: proj ${proj}:${${proj}_NAME} in ${FLIES_URL}"
 	VERBATIM
 	)
 
-ENDMACRO(ADD_PY_CLIENT_TARGETS proj)
+    FOREACH(_ver ${_projVers})
+	#MESSAGE("[py] proj=${proj} ver=${_ver}")
+	SET(FLIES_PY_CLIENT_PRJ_ADMIN_OPTS
+	    -Dflies.projectConfig=${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
+	    -Dflies.projectVersion=${_ver}
+	    )
 
+	# Put version
+	ADD_CUSTOM_TARGET(flies_putversion_py_${proj}_${_ver}
+	    COMMAND  ${FLIES_PY_CMD} version create ${_ver}
+	    ${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
+	    --project-id=${proj}
+	    --version-name=Ver\ ${_ver}
+	    --version-desc=Desc\ of\ ${_ver}
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
+	    COMMENT "  [Py] Creating version: proj ${proj} ver ${_ver} to ${FLIES_URL}"
+	    VERBATIM
+	    )
+
+	ADD_DEPENDENCIES(flies_putversion_py_${proj}_${_ver} flies_putproject_py_${proj})
+
+	# Publican push
+	ADD_CUSTOM_TARGET(flies_publican_push_py_${proj}_${_ver}
+	    COMMAND ${FLIES_PY_CMD} publican push
+	    ${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
+	    --project-id=${proj}
+	    --project-version=${_ver}
+	    --importPo
+	    --srcDir=.
+	    --transDir=.
+	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
+	    COMMENT "  [Py] Uploading pot and po for proj ${proj} ver ${_ver} to ${FLIES_URL}"
+	    VERBATIM
+	    )
+
+	ADD_DEPENDENCIES(flies_publican_push_py_${proj}_${_ver} flies_putversion_py_${proj}_${_ver})
+	ADD_DEPENDENCIES(flies_publican_push_py_all_projects
+	    flies_publican_push_py_${proj}_${_ver})
+
+	# Publican pull
+	ADD_CUSTOM_TARGET(flies_publican_pull_py_${proj}_${_ver}
+	    COMMAND ${FLIES_PY_CMD} publican pull
+	    ${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
+	    --project-id=${proj}
+	    --project-version=${_ver}
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
+	    COMMENT "  [Py] Pulling pot and po for proj ${proj} ver ${_ver} from  ${FLIES_URL}"
+	    VERBATIM
+	    )
+
+	ADD_DEPENDENCIES(flies_publican_pull_py_${proj}_${_ver}
+	    flies_publican_push_py_${proj}_${_ver} flies_putversion_py_${proj}_${_ver})
+
+	ADD_DEPENDENCIES(flies_publican_pull_py_all_projects
+	    flies_publican_pull_py_${proj}_${_ver})
+    ENDFOREACH(_ver ${_projVers})
+ENDMACRO(ADD_PY_CLIENT_TARGETS proj)
 
 #===================================================================
 # Maven targets
 #
 CONFIGURE_FILE(pom.xml.in pom.xml @ONLY)
-
 
 SET(FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS
     -Dflies.url=${FLIES_URL} -Dflies.userConfig=${CMAKE_SOURCE_DIR}/flies.ini
@@ -222,11 +239,12 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    ${FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS}
 	    -Dflies.version.slug=${_ver}
 	    -Dflies.version.project=${proj}
-	    -Dflies.version.name=\"Ver ${_ver}\"
-	    -Dflies.version.desc=\"Desc of ${_ver}\"
+	    -Dflies.version.name=Ver\ ${_ver}
+	    -Dflies.version.desc=Desc\ of\ ${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
 	    ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	    COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver} to ${FLIES_URL}"
+	    VERBATIM
 	    )
 
 	ADD_DEPENDENCIES(flies_putversion_mvn_${proj}_${_ver} flies_putproject_mvn_${proj})
@@ -266,14 +284,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	ADD_DEPENDENCIES(flies_publican_pull_mvn_all_projects
 	    flies_publican_pull_mvn_${proj}_${_ver})
-
-
     ENDFOREACH(_ver ${_projVers})
-
-
 ENDMACRO(ADD_MVN_CLIENT_TARGETS proj)
-
-
 
 #===================================================================
 # Publican targets
@@ -298,7 +310,6 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
             COMMENT "   Generate ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml"
 	    VERBATIM
 	    )
-
 
 	ADD_CUSTOM_TARGET(link_pom_xml_${proj}_${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pom.xml
@@ -332,7 +343,6 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    )
 
 	ADD_DEPENDENCIES(prepare_all_projects prepare_${proj}_${_ver})
-
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    COMMAND perl scripts/get_project.pl ${SAMPLE_PROJ_DIR} ${proj}
@@ -395,8 +405,7 @@ FOREACH(_proj ${MVN_PROJECTS})
 ENDFOREACH(_proj ${MVN_PROJECTS})
 
 FOREACH(_proj ${PY_PROJECTS})
-    #    ADD_PUBLICAN_PROJECT(${_proj} py)
-    ADD_PUBLICAN_PROJECT(${_proj} mvn)
+    ADD_PUBLICAN_PROJECT(${_proj} py)
 ENDFOREACH(_proj ${PY_PROJECTS})
 
 ADD_CUSTOM_TARGET(selenium_projects
@@ -431,12 +440,12 @@ MACRO(PUT_TEST_USER user)
     ENDIF("${${user}_ROLES}" STREQUAL "")
 
     SET(OPTS -Dflies.user.disabled=false
-	-Dflies.user.email="${${user}_USER}@localhost.org"
-	-Dflies.user.key="${${user}_KEY}"
-	-Dflies.user.langs="${_lang}"
-	-Dflies.user.name="${${user}_NAME}"
-	-Dflies.user.username="${${user}_USER}"
-	-Dflies.user.passwordhash="${${user}_PASSWD_HASH}"
+	-Dflies.user.email=${${user}_USER}@localhost.org
+	-Dflies.user.key=${${user}_KEY}
+	-Dflies.user.langs=${_lang}
+	-Dflies.user.name=${${user}_NAME}
+	-Dflies.user.username=${${user}_USER}
+	-Dflies.user.passwordhash=${${user}_PASSWD_HASH}
 	)
 
     ADD_CUSTOM_TARGET(putuser_${user}
@@ -445,6 +454,7 @@ MACRO(PUT_TEST_USER user)
 	${ROLE_ASSIGN}
 	${OPTS}
 	COMMENT "Create user ${${user}_USER} for ${user}"
+	VERBATIM
 	)
     ADD_DEPENDENCIES(putusers putuser_${user})
 ENDMACRO(PUT_TEST_USER user)
