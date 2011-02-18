@@ -11,6 +11,16 @@
 <thead>
 <tr><td rowspan="1" colspan="3">CloneOnPage3Entry1</td></tr>
 </thead><tbody>
+<tr>
+	<td>click</td>
+	<td>css=tr.TableEditorRow:nth-child(2)&gt;td.TableEditorCell-Target</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=tr.TableEditorRow:nth-child(2)&gt;td.TableEditorCell-Target textarea</td>
+	<td></td>
+</tr>
 <!--Simulate Clone+Save Hotkey (Ctrl-End)-->
 <tr>
 	<td>controlKeyDown</td>
