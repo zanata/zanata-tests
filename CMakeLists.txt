@@ -439,9 +439,9 @@ MACRO(PUT_TEST_USER user)
     STRING(REGEX REPLACE "zh.CN" "zh-Hans" _lang  "${_lang}")
     STRING(REGEX REPLACE "zh.TW" "zh-Hant" _lang  "${_lang}")
     IF("${${user}_ROLES}" STREQUAL "")
-	SET(ROLE_ASSIGN "-Dflies.user.roles=\"user\"")
+	SET(ROLE_ASSIGN -Dflies.user.roles=user)
     ELSE("${${user}_ROLES}" STREQUAL "")
-	SET(ROLE_ASSIGN "-Dflies.user.roles=\"${${user}_ROLES}\"")
+	SET(ROLE_ASSIGN -Dflies.user.roles=${${user}_ROLES})
     ENDIF("${${user}_ROLES}" STREQUAL "")
 
     SET(OPTS -Dflies.user.disabled=false
