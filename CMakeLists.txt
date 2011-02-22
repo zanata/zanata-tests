@@ -119,8 +119,8 @@ ENDFOREACH()
 
 FIND_PROGRAM(FLIES_PY_CMD flies)
 IF(${FLIES_PY_CMD} STREQUAL "FLIES_PY_CMD-NOTFOUND")
-    MESSAGE("flies python client (flies) is not installed!")
-ENDIF()
+    MESSAGE("flies python client (flies) is not installed! Python tests  disabled")
+ENDIF(${FLIES_PY_CMD} STREQUAL "FLIES_PY_CMD-NOTFOUND")
 
 ####################################################################
 # Configure
@@ -290,24 +290,26 @@ ENDMACRO(ADD_MVN_CLIENT_TARGETS proj)
 #===================================================================
 # Publican targets
 #
-MACRO(ADD_PUBLICAN_PROJECT proj client)
+MACRO(ADD_PUBLICAN_PROJECT proj)
     SET(_projVers "${${proj}_VERS}")
     SET(_target "")
     IF(NOT ${ARGN} STREQUAL "")
        SET(_target "${ARGN}")
     ENDIF()
 
+    ADD_CUSTOM_TARGET(prepare_${proj})
+    ADD_DEPENDENCIES(prepare_all_projects prepare_${proj})
+
     FOREACH(_ver ${_projVers})
-	#MESSAGE("[publican] proj=${proj} ver=${_ver}")
 	ADD_CUSTOM_TARGET(generate_flies_xml_${proj}_${_ver}
-	    	DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
-	    	)
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
+	    )
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	    COMMAND scripts/generate_flies_xml.sh ${SAMPLE_PROJ_DIR} ${proj}
 	    ${_ver} "${LANGS}"
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
-            COMMENT "   Generate ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml"
+	    COMMENT "   Generate ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml"
 	    VERBATIM
 	    )
 
@@ -342,7 +344,7 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    preprocess_publican_${proj}_${_ver}
 	    )
 
-	ADD_DEPENDENCIES(prepare_all_projects prepare_${proj}_${_ver})
+	ADD_DEPENDENCIES(prepare_${proj} prepare_${proj}_${_ver})
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    COMMAND perl scripts/get_project.pl ${SAMPLE_PROJ_DIR} ${proj}
@@ -359,13 +361,7 @@ MACRO(ADD_PUBLICAN_PROJECT proj client)
 	    COMMENT "   Mkdir for pulling ${proj}/${_ver}/ to ${PULL_DEST_DIR}"
 	    )
     ENDFOREACH(_ver ${_projVers})
-
-    IF("${client}" STREQUAL "mvn")
-	ADD_MVN_CLIENT_TARGETS(${proj})
-    ELSEIF("${client}" STREQUAL "py")
-	ADD_PY_CLIENT_TARGETS(${proj})
-    ENDIF("${client}" STREQUAL "mvn")
-ENDMACRO(ADD_PUBLICAN_PROJECT proj client)
+ENDMACRO(ADD_PUBLICAN_PROJECT proj)
 
 ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}
     COMMAND mkdir -p ${SAMPLE_PROJ_DIR}
@@ -401,12 +397,21 @@ ADD_DEPENDENCIES(all_projects
     flies_publican_push_py_all_projects )
 
 FOREACH(_proj ${MVN_PROJECTS})
-    ADD_PUBLICAN_PROJECT(${_proj} mvn)
+    ADD_PUBLICAN_PROJECT(${_proj})
+    ADD_MVN_CLIENT_TARGETS(${_proj})
 ENDFOREACH(_proj ${MVN_PROJECTS})
 
-FOREACH(_proj ${PY_PROJECTS})
-    ADD_PUBLICAN_PROJECT(${_proj} py)
-ENDFOREACH(_proj ${PY_PROJECTS})
+IF(NOT ${FLIES_PY_CMD} STREQUAL "FLIES_PY_CMD-NOTFOUND")
+    FOREACH(_proj ${PY_PROJECTS})
+	# Check whether the projects are prepared already
+	GET_TARGET_PROPERTY(_target_location prepare_${_proj} LOCATION)
+	IF(_target_location STREQUAL "NOTFOUND")
+	    ADD_PUBLICAN_PROJECT(${_proj})
+	ENDIF(_target_location STREQUAL "NOTFOUND")
+	ADD_PY_CLIENT_TARGETS(${_proj})
+    ENDFOREACH(_proj ${PY_PROJECTS})
+ENDIF(NOT ${FLIES_PY_CMD} STREQUAL "FLIES_PY_CMD-NOTFOUND")
+
 
 ADD_CUSTOM_TARGET(selenium_projects
 	COMMENT "   Preparing projects for selenium tests"
