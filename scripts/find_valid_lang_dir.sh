@@ -13,7 +13,7 @@ function findLangDir(){
     if [ -n "${dirFound}" ]; then
        echo $(dirname `echo "${dirFound}" | head --lines=1`) | sed -e "s!${baseDir}!!" | sed -e "s!^/!!"
     else
-        echo "findLangDir(): $langNameTemplate is not found in $Dir" > /dev/stderr
+        echo "findLangDir(): $langNameTemplate is not found in $bDir" > /dev/stderr
     fi
 }
 

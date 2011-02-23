@@ -4,7 +4,7 @@ baseDir=$1
 proj=$2
 ver=$3
 fliesUrl=$4
-shift 3;
+shift 4;
 
 
 projDir=${baseDir}/${proj}/${ver}
