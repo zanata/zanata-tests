@@ -3,6 +3,7 @@ scriptDir=`dirname $0`
 baseDir=$1
 proj=$2
 ver=$3
+fliesUrl=$4
 shift 3;
 
 
@@ -12,7 +13,7 @@ rm -f ${projDir}/flies.xml
 cat >> ${projDir}/flies.xml << END
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <config xmlns="http://flies.openl10n.net/config/v1/">
-    <url>${FLIES_URL}</url>
+    <url>${fliesUrl}</url>
     <project>${proj}</project>
     <project-version>${ver}</project-version>
     <locales>

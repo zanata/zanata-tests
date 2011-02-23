@@ -216,7 +216,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
     SET(_projVers "${${proj}_VERS}")
 
     ADD_CUSTOM_TARGET(flies_putproject_mvn_${proj}
-	COMMAND mvn -e ${FLIES_MVN_GOAL_PREFIX}:putproject -Dflies.username=${ADMIN_USER} -Dflies.key=${ADMIN_KEY}
+	COMMAND mvn -e ${FLIES_MVN_GOAL_PREFIX}:putproject
 	${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	-Dflies.project.slug=${proj}
 	-Dflies.project.name=${${proj}_NAME}
@@ -307,7 +307,7 @@ MACRO(ADD_PUBLICAN_PROJECT proj)
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	    COMMAND scripts/generate_flies_xml.sh ${SAMPLE_PROJ_DIR} ${proj}
-	    ${_ver} "${LANGS}"
+	    ${_ver} "${LANGS}" ${FLIES_URL}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/pot
 	    COMMENT "   Generate ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml"
 	    VERBATIM
