@@ -7,6 +7,7 @@
 .*\.log$
 /tmp.*$
 /\.cache/
+pom\.xml$
 
 # vim
 \.swp$
@@ -19,6 +20,11 @@ Makefile$
 /src/test/Testing/
 cmake_install.cmake$
 CTestTestfile.cmake$
+
+# Generated files
+/selenium/src/initial_setup/ServerConfiguration.html$
+/selenium/src/initial_setup/SignInAdmin.html$
+
 
 # Generated tests
 /src/.*test-suites.*/[1-9]-.*\.html$
