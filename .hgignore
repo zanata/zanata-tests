@@ -6,7 +6,7 @@
 .*~$
 .*\.log$
 /tmp.*$
-/\.cache/
+\.cache/
 pom\.xml$
 
 # vim
@@ -22,8 +22,8 @@ cmake_install.cmake$
 CTestTestfile.cmake$
 
 # Generated files
-/selenium/src/initial_setup/ServerConfiguration.html$
-/selenium/src/initial_setup/SignInAdmin.html$
+selenium/src/initial_setup/ServerConfiguration.html$
+selenium/src/initial_setup/SignInAdmin.html$
 
 
 # Generated tests
