@@ -27,13 +27,18 @@
 	<td></td>
 </tr>
 <tr>
+	<td>store</td>
+	<td>Language_team_member_toggle_form</td>
+	<td>teamMemberToggleForm</td>
+</tr>
+<tr>
 	<td>verifyElementPresent</td>
-	<td>Language_team_member_toggle_form:Leave</td>
+	<td>${teamMemberToggleForm}:Leave</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>id=Language_team_member_toggle_form:Leave</td>
+	<td>id=${teamMemberToggleForm}:Leave</td>
 	<td></td>
 </tr>
 <tr>
@@ -42,16 +47,30 @@
 	<td></td>
 </tr>
 <tr>
+	<td>waitForElementPresent</td>
+	<td>id=${teamMemberToggleForm}:Join</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=${teamMemberToggleForm}:Join</td>
+	<td></td>
+</tr>
+<tr>
 	<td>mouseOver</td>
 	<td>css=span:contains(&quot;Languages&quot;)</td>
 	<td></td>
 </tr>
 <tr>
-	<td>verifyElementPresent</td>
-	<td>id=Language_team_member_toggle_form:Leave</td>
+	<td>waitForElementPresent</td>
+	<td>css=div#tribesTabDiv&gt;ul&gt;li</td>
 	<td></td>
 </tr>
-
+<tr>
+	<td>verifyElementNotPresent</td>
+	<td>id=Language_de</td>
+	<td></td>
+</tr>
 </tbody></table>
 </body>
 </html>
