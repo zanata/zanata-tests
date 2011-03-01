@@ -254,6 +254,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    COMMAND  mvn -e -B ${FLIES_MVN_GOAL_PREFIX}:publican-push
 	    ${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS}
+	    -Dflies.copyTrans=false
 	    -Dflies.srcDir=.
 	    -Dflies.importPo
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
