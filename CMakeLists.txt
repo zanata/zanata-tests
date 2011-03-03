@@ -275,8 +275,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	# Publican push
 	ADD_CUSTOM_TARGET(flies_publican_push_mvn_${proj}_${_ver}
-	    COMMAND yes
-	    COMMAND  mvn -e ${FLIES_MVN_GOAL_PREFIX}:publican-push
+	    COMMAND ${FLIES_MVN_CMD} -e -B ${FLIES_MVN_GOAL_PREFIX}:publican-push
 	    ${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS}
 	    -Dflies.srcDir=.
@@ -295,7 +294,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	# Publican pull
 	ADD_CUSTOM_TARGET(flies_publican_pull_mvn_${proj}_${_ver}
-	    COMMAND  mvn -e -B ${FLIES_MVN_GOAL_PREFIX}:publican-pull
+	    COMMAND ${FLIES_MVN_CMD} -e -B ${FLIES_MVN_GOAL_PREFIX}:publican-pull
 	    ${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS}
 	    -Dflies.dstDir=${PULL_DEST_DIR}/${proj}/${_ver}
@@ -357,7 +356,6 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 
 	# Publican push
 	ADD_CUSTOM_TARGET(flies_publican_push_py_${proj}_${_ver}
-	    COMMAND yes
 	    COMMAND ${FLIES_PY_CMD} publican push
 	    ${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    ${FLIES_PY_CLIENT_PRJ_ADMIN_OPTS}
