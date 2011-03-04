@@ -356,7 +356,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 
 	# Publican push
 	ADD_CUSTOM_TARGET(flies_publican_push_py_${proj}_${_ver}
-	    COMMAND ${FLIES_PY_CMD} publican push
+	    COMMAND yes | ${FLIES_PY_CMD} publican push
 	    ${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    ${FLIES_PY_CLIENT_PRJ_ADMIN_OPTS}
 	    --import-po
@@ -436,7 +436,7 @@ FIND_PROGRAM(FLIES_MVN_CMD mvn)
 GENERATE_REST_TEST_CLIENT_TARGETS(mvn)
 
 # FLIES_PY_PATH: location of flies if is not in default search path
-FIND_PROGRAM(FLIES_PY_CMD flies HINTS $ENV{FLIES_PY_PATH})
+FIND_PROGRAM(FLIES_PY_CMD flies HINTS $ENV{FLIES_PY_PATH} /usr/bin /bin NO_DEFAULT_PATH)
 GENERATE_REST_TEST_CLIENT_TARGETS(py)
 
 #===================================================================
