@@ -325,7 +325,7 @@ SET(FLIES_PY_CLIENT_COMMON_ADMIN_OPTS --username ${ADMIN_USER} --apikey ${ADMIN_
 MACRO(ADD_PY_CLIENT_TARGETS proj )
     SET(_projVers "${${proj}_VERS}")
     ADD_CUSTOM_TARGET(flies_putproject_py_${proj}
-	COMMAND ${FLIES_PY_CMD} create ${proj}
+	COMMAND ${FLIES_PY_CMD} project create ${proj}
 	${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
 	--project-name=${${proj}_NAME}
 	--project-desc=${${proj}_DESC}
