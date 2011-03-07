@@ -324,16 +324,19 @@ SET(FLIES_PY_CLIENT_COMMON_ADMIN_OPTS --username ${ADMIN_USER} --apikey ${ADMIN_
 
 MACRO(ADD_PY_CLIENT_TARGETS proj )
     SET(_projVers "${${proj}_VERS}")
-    ADD_CUSTOM_TARGET(flies_putproject_py_${proj}
-	COMMAND ${FLIES_PY_CMD} project create ${proj}
-	${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
-	--project-name=${${proj}_NAME}
-	--project-desc=${${proj}_DESC}
-	COMMENT "  [Py] Creating proj: proj ${proj}:${${proj}_NAME} in ${FLIES_URL}"
-	VERBATIM
-	)
 
     FOREACH(_ver ${_projVers})
+	ADD_CUSTOM_TARGET(flies_project_create_py_${proj}_${_ver}
+	    COMMAND ${FLIES_PY_CMD} project create ${proj}
+	    ${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
+	    --project-name=${${proj}_NAME}
+	    --project-desc=${${proj}_DESC}
+	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
+	    COMMENT "  [Py] Creating proj: proj ${proj}:${${proj}_NAME} in ${FLIES_URL}"
+	    VERBATIM
+	    )
+
 	#MESSAGE("[py] proj=${proj} ver=${_ver}")
 	SET(FLIES_PY_CLIENT_PRJ_ADMIN_OPTS
 	    --project-id=${proj}
@@ -341,7 +344,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    )
 
 	# Put version
-	ADD_CUSTOM_TARGET(flies_putversion_py_${proj}_${_ver}
+	ADD_CUSTOM_TARGET(flies_version_create_py_${proj}_${_ver}
 	    COMMAND  ${FLIES_PY_CMD} version create ${_ver}
 	    ${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    --version-name=Ver\ ${_ver}
@@ -352,7 +355,8 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    VERBATIM
 	    )
 
-	ADD_DEPENDENCIES(flies_putversion_py_${proj}_${_ver} flies_putproject_py_${proj})
+	ADD_DEPENDENCIES(flies_version_create_py_${proj}_${_ver}
+	    flies_project_create_py_${proj}_${_ver})
 
 	# Publican push
 	ADD_CUSTOM_TARGET(flies_publican_push_py_${proj}_${_ver}
@@ -368,7 +372,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    VERBATIM
 	    )
 
-	ADD_DEPENDENCIES(flies_publican_push_py_${proj}_${_ver} flies_putversion_py_${proj}_${_ver})
+	ADD_DEPENDENCIES(flies_publican_push_py_${proj}_${_ver} flies_version_create_py_${proj}_${_ver})
 	ADD_DEPENDENCIES(flies_publican_push_py_all_projects
 	    flies_publican_push_py_${proj}_${_ver})
 
@@ -385,7 +389,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    )
 
 	ADD_DEPENDENCIES(flies_publican_pull_py_${proj}_${_ver}
-	    flies_publican_push_py_${proj}_${_ver}  flies_putversion_py_${proj}_${_ver})
+	    flies_publican_push_py_${proj}_${_ver}  flies_version_create_py_${proj}_${_ver})
 	ADD_DEPENDENCIES(flies_publican_pull_py_all_projects
 	    flies_publican_pull_py_${proj}_${_ver})
 
