@@ -316,7 +316,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	ADD_DEPENDENCIES(rest_test_mvn rest_test_mvn_${proj}_${_ver})
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${PULL_DEST_DIR}/mvn/${proj}/${_ver}
-	    COMMAND ${CMAKE} -E make_directory
+	    COMMAND ${CMAKE_COMMAND} -E make_directory
 	    ${PULL_DEST_DIR}/py/${proj}/${_ver}
 	    )
     ENDFOREACH(_ver ${_projVers})
@@ -407,7 +407,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	ADD_DEPENDENCIES(rest_test_py rest_test_py_${proj}_${_ver})
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${PULL_DEST_DIR}/py/${proj}/${_ver}
-	    COMMAND ${CMAKE} -E make_directory
+	    COMMAND ${CMAKE_COMMAND} -E make_directory
 	    ${PULL_DEST_DIR}/py/${proj}/${_ver}
 	    )
     ENDFOREACH(_ver ${_projVers})
