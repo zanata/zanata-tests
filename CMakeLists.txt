@@ -251,6 +251,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
     FOREACH(_ver ${_projVers})
 	#MESSAGE("[mvn] proj=${proj} ver=${_ver}")
+	SET(_pull_dest_dir_mvn ${PULL_DEST_DIR}/mvn/${proj}/${_ver})
 	SET(FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS
 	    -Dflies.projectConfig=${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
 	    -Dflies.projectVersion=${_ver}
@@ -297,10 +298,9 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    COMMAND ${FLIES_MVN_CMD} -e -B ${FLIES_MVN_GOAL_PREFIX}:publican-pull
 	    ${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS}
-	    -Dflies.dstDir=${PULL_DEST_DIR}/${proj}/${_ver}
-	    -Dflies.exportPot
+	    -Dflies.dstDir=${_pull_dest_dir_mvn}
 	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
-	    ${PULL_DEST_DIR}/${proj}/${_ver}
+	    ${_pull_dest_dir_mvn}
 	    COMMENT "  [Mvn] Pulling pot and po for proj ${proj} ver ${_ver} from  ${FLIES_URL}"
 	    VERBATIM
 	    )
@@ -315,9 +315,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	ADD_DEPENDENCIES(rest_test_mvn_${proj}_${_ver} flies_publican_pull_mvn_${proj}_${_ver})
 	ADD_DEPENDENCIES(rest_test_mvn rest_test_mvn_${proj}_${_ver})
 
-	ADD_CUSTOM_COMMAND(OUTPUT ${PULL_DEST_DIR}/${proj}/${_ver}
-	    COMMAND ${CMAKE_COMMAND} -E make_directory
-	    ${PULL_DEST_DIR}/${proj}/${_ver}
+	ADD_CUSTOM_COMMAND(OUTPUT ${_pull_dest_dir_mvn}
+	    COMMAND ${CMAKE_COMMAND} -E make_directory ${_pull_dest_dir_mvn}
 	    )
     ENDFOREACH(_ver ${_projVers})
 ENDMACRO(ADD_MVN_CLIENT_TARGETS proj)
@@ -331,8 +330,9 @@ SET(FLIES_PY_CLIENT_COMMON_ADMIN_OPTS --username ${ADMIN_USER} --apikey ${ADMIN_
 MACRO(ADD_PY_CLIENT_TARGETS proj )
     SET(_projVers "${${proj}_VERS}")
 
-
     FOREACH(_ver ${_projVers})
+	SET(_pull_dest_dir_py ${PULL_DEST_DIR}/py/${proj}/${_ver})
+
 	ADD_CUSTOM_TARGET(flies_project_create_py_${proj}_${_ver}
 	    COMMAND ${FLIES_PY_CMD} project create ${proj}
 	    ${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
@@ -388,9 +388,8 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    COMMAND ${FLIES_PY_CMD} publican pull
 	    ${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    ${FLIES_PY_CLIENT_PRJ_ADMIN_OPTS}
-	    --dstdir=${PULL_DEST_DIR}/${proj}/${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml
-	    ${PULL_DEST_DIR}/${proj}/${_ver}
+	    --dstdir=${_pull_dest_dir_py}
+	    DEPENDS ${SAMPLE_PROJ_DIR}/${proj}/${_ver}/flies.xml ${_pull_dest_dir_py}
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR}/${proj}/${_ver}
 	    COMMENT "  [Py] Pulling pot and po for proj ${proj} ver ${_ver} from  ${FLIES_URL}"
 	    VERBATIM
@@ -406,9 +405,8 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	ADD_DEPENDENCIES(rest_test_py_${proj}_${_ver} flies_publican_pull_py_${proj}_${_ver})
 	ADD_DEPENDENCIES(rest_test_py rest_test_py_${proj}_${_ver})
 
-	ADD_CUSTOM_COMMAND(OUTPUT ${PULL_DEST_DIR}/${proj}/${_ver}
-	    COMMAND ${CMAKE_COMMAND} -E make_directory
-	    ${PULL_DEST_DIR}/${proj}/${_ver}
+	ADD_CUSTOM_COMMAND(OUTPUT ${_pull_dest_dir_py}
+	    COMMAND ${CMAKE_COMMAND} -E make_directory ${_pull_dest_dir_py}
 	    )
     ENDFOREACH(_ver ${_projVers})
 ENDMACRO(ADD_PY_CLIENT_TARGETS proj)
