@@ -299,6 +299,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    -Dflies.version.desc=Desc\ of\ ${_ver}
 	    DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}/pom.xml
 	    ${_flies_xml_path}
+	    ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}/publican.cfg.striped
 	    COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver} to ${FLIES_URL}"
 	    VERBATIM
 	    )
@@ -388,6 +389,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    --version-desc=Desc\ of\ ${_ver}
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}
 	    DEPENDS ${_flies_xml_path}
+	    ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}/publican.cfg.striped
 	    COMMENT "  [Py] Creating version: proj ${proj} ver ${_ver} to ${FLIES_URL}"
 	    VERBATIM
 	    )
@@ -401,7 +403,6 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    ${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    ${FLIES_PY_CLIENT_PRJ_ADMIN_OPTS}
 	    --import-po
-	    --srcdir=.
 	    --transdir=.
 	    DEPENDS ${_flies_xml_path}
 	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}
