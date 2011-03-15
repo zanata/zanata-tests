@@ -6,14 +6,20 @@
 baseDir=$1
 lang=$2
 
+# Using dirFound=`find ${bDir}  -wholename "*/$langNameTemplate/*.po"`
+# sometimes finds an incorrect subdirectory.
 function findLangDir(){
     bDir=$1
     langNameTemplate=$2
-    dirFound=`find ${bDir}  -wholename "*/$langNameTemplate/*.po"`
-    if [ -n "${dirFound}" ]; then
-       echo $(dirname `echo "${dirFound}" | head --lines=1`) | sed -e "s!${baseDir}!!" | sed -e "s!^/!!"
+
+    if [ -d ${bDir}/$langNameTemplate ];then
+	if ls -1 ${bDir}/$langNameTemplate/*.po > /dev/null;then
+	    echo $(dirname `ls -1 ${bDir}/$langNameTemplate/*.po | head --lines=1` )
+	else
+	    echo "findLangDir(): $langNameTemplate does not have any .po files!" > /dev/stderr
+	fi
     else
-        echo "findLangDir(): $langNameTemplate is not found in $bDir" > /dev/stderr
+	echo "findLangDir(): $langNameTemplate is not found in $bDir" > /dev/stderr
     fi
 }
 
@@ -25,7 +31,7 @@ case $lang in
 	findLangDir $baseDir "zh*TW"
 	;;
     * )
-	findLangDir $baseDir "${lang}-?*"
+	findLangDir $baseDir "${lang}*"
 	;;
 esac
 

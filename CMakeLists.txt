@@ -191,7 +191,8 @@ MACRO(ADD_PUBLICAN_PROJECT proj)
     SET_TARGET_PROPERTIES(prepare_${proj} PROPERTIES EXISTS TRUE)
 
     FOREACH(_ver ${_projVers})
-	SET(_flies_xml_path ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}/flies.xml)
+	SET(_sample_proj_dir_absolute ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver})
+	SET(_flies_xml_path ${_sample_proj_dir_absolute}/flies.xml)
 
 	ADD_CUSTOM_TARGET(generate_flies_xml_${proj}_${_ver}
 	    DEPENDS ${_flies_xml_path}
@@ -200,29 +201,29 @@ MACRO(ADD_PUBLICAN_PROJECT proj)
 	ADD_CUSTOM_COMMAND(OUTPUT ${_flies_xml_path}
 	    COMMAND scripts/generate_flies_xml.sh ${SAMPLE_PROJ_DIR_ABSOLUTE} ${proj}
 	    ${_ver} ${FLIES_URL} "${LANGS}"
-	    DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}/pot
+	    DEPENDS ${_sample_proj_dir_absolute}/pot
 	    COMMENT "   Generate ${_flies_xml_path}"
 	    VERBATIM
 	    )
 
 	ADD_CUSTOM_TARGET(link_pom_xml_${proj}_${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}/pom.xml
+	    DEPENDS ${_sample_proj_dir_absolute}/pom.xml
 	    )
 
-	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}/pom.xml
+	ADD_CUSTOM_COMMAND(OUTPUT ${_sample_proj_dir_absolute}/pom.xml
 	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/link_pom_xml.sh ${CMAKE_SOURCE_DIR}
-	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}
+	    WORKING_DIRECTORY ${_sample_proj_dir_absolute}
 	    COMMENT "   Link pom.xml for project ${proj}/${_ver} "
 	    )
 
 	ADD_CUSTOM_TARGET(preprocess_publican_${proj}_${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}/publican.cfg.striped
+	    DEPENDS ${_sample_proj_dir_absolute}/publican.cfg.striped
 	    )
 
-	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}/publican.cfg.striped
+	ADD_CUSTOM_COMMAND(OUTPUT ${_sample_proj_dir_absolute}/publican.cfg.striped
 	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/preprocess_publican.sh "${LANGS}"
-	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}/pot
+	    WORKING_DIRECTORY ${_sample_proj_dir_absolute}
+	    DEPENDS ${_sample_proj_dir_absolute}/pot
 	    COMMENT "   Preparing project ${proj}/${_ver} "
 	    VERBATIM
 	    )
@@ -238,7 +239,7 @@ MACRO(ADD_PUBLICAN_PROJECT proj)
 
 	ADD_DEPENDENCIES(prepare_${proj} prepare_${proj}_${_ver})
 
-	ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}/pot
+	ADD_CUSTOM_COMMAND(OUTPUT ${_sample_proj_dir_absolute}/pot
 	    COMMAND perl scripts/get_project.pl ${SAMPLE_PROJ_DIR_ABSOLUTE} ${proj}
 	    ${${proj}_REPO_TYPE} ${_ver} ${${proj}_URL_${_ver}}
 	    DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}
@@ -246,12 +247,6 @@ MACRO(ADD_PUBLICAN_PROJECT proj)
 	    VERBATIM
 	    )
 
-	ADD_DEPENDENCIES(prepare_all_projects generate_pom_xml_${proj}_${_ver})
-
-	ADD_CUSTOM_COMMAND(OUTPUT ${PULL_DEST_DIR_ABSOLUTE}/${proj}/${_ver}
-	    COMMAND cmake -E make_directory ${PULL_DEST_DIR_ABSOLUTE}/${proj}/${_ver}
-	    COMMENT "   Mkdir for pulling ${proj}/${_ver}/ to ${PULL_DEST_DIR_ABSOLUTE}"
-	    )
     ENDFOREACH(_ver ${_projVers})
 ENDMACRO(ADD_PUBLICAN_PROJECT proj)
 
@@ -281,7 +276,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
     FOREACH(_ver ${_projVers})
 	#MESSAGE("[mvn] proj=${proj} ver=${_ver}")
 	SET(_pull_dest_dir_mvn ${PULL_DEST_DIR_ABSOLUTE}/mvn/${proj}/${_ver})
-	SET(_flies_xml_path ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}/flies.xml)
+	SET(_sample_proj_dir_absolute ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver})
+	SET(_flies_xml_path ${_sample_proj_dir_absolute}/flies.xml)
 
 	SET(FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS
 	    -Dflies.projectConfig=${_flies_xml_path}
@@ -297,9 +293,9 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    -Dflies.version.project=${proj}
 	    -Dflies.version.name=Ver\ ${_ver}
 	    -Dflies.version.desc=Desc\ of\ ${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}/pom.xml
+	    DEPENDS ${_sample_proj_dir_absolute}/pom.xml
 	    ${_flies_xml_path}
-	    ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}/publican.cfg.striped
+	    ${_sample_proj_dir_absolute}/publican.cfg.striped
 	    COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver} to ${FLIES_URL}"
 	    VERBATIM
 	    )
@@ -313,8 +309,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    ${FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS}
 	    -Dflies.srcDir=.
 	    -Dflies.importPo
-	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}
-	    DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}/pom.xml
+	    WORKING_DIRECTORY ${_sample_proj_dir_absolute}
+	    DEPENDS ${_sample_proj_dir_absolute}/pom.xml
 	    ${_flies_xml_path}
 	    COMMENT "  [Mvn] Pushing pot and po for proj ${proj} ver ${_ver} to ${FLIES_URL}"
 	    VERBATIM
@@ -373,7 +369,8 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 
     FOREACH(_ver ${_projVers})
 	SET(_pull_dest_dir_py ${PULL_DEST_DIR_ABSOLUTE}/py/${proj}/${_ver})
-	SET(_flies_xml_path ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}/flies.xml)
+	SET(_sample_proj_dir_absolute ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver})
+	SET(_flies_xml_path ${_sample_proj_dir_absolute}/flies.xml)
 
 	#MESSAGE("[py] proj=${proj} ver=${_ver}")
 	SET(FLIES_PY_CLIENT_PRJ_ADMIN_OPTS
@@ -387,9 +384,9 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    ${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    --version-name=Ver\ ${_ver}
 	    --version-desc=Desc\ of\ ${_ver}
-	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}
+	    WORKING_DIRECTORY ${_sample_proj_dir_absolute}
 	    DEPENDS ${_flies_xml_path}
-	    ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}/publican.cfg.striped
+	    ${_sample_proj_dir_absolute}/publican.cfg.striped
 	    COMMENT "  [Py] Creating version: proj ${proj} ver ${_ver} to ${FLIES_URL}"
 	    VERBATIM
 	    )
@@ -405,7 +402,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    --import-po
 	    --transdir=.
 	    DEPENDS ${_flies_xml_path}
-	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}
+	    WORKING_DIRECTORY ${_sample_proj_dir_absolute}
 	    COMMENT "  [Py] Uploading pot and po for proj ${proj} ver ${_ver} to ${FLIES_URL}"
 	    VERBATIM
 	    )
@@ -421,7 +418,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    ${FLIES_PY_CLIENT_PRJ_ADMIN_OPTS}
 	    --dstdir=${_pull_dest_dir_py}
 	    DEPENDS ${_flies_xml_path} ${_pull_dest_dir_py}
-	    WORKING_DIRECTORY ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver}
+	    WORKING_DIRECTORY ${_sample_proj_dir_absolute}
 	    COMMENT "  [Py] Pulling pot and po for proj ${proj} ver ${_ver} from  ${FLIES_URL}"
 	    VERBATIM
 	    )
