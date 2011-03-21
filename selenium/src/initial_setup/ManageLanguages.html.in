@@ -23,7 +23,7 @@
 </tr>
 <tr>
     <td>store</td>
-    <td>j_id68:localeField:selectLocale</td>
+    <td>@CONFIG_LANG_ID_PREFIX@:localeField:selectLocale</td>
     <td>SELECT_LOCALE_PULLDOWN</td>
 </tr>
 <tr>
