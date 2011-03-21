@@ -11,12 +11,12 @@ for fileDir in ${SEARCH_PATHS} ;do
     for fileDirM in $dirs; do
 	#echo "fileDirM=${fileDirM}"
 	filePath=`find ${fileDirM}/ -name "${PATTERN}" -type f | head --lines=1`
-	#echo "filePath=${filePath}"
-	if [ -n ${filePath} ]; then
+	#echo "filePath=|${filePath}|"
+	if [ -n "${filePath}" ]; then
 	    echo "${filePath}"
 	    exit 0
 	fi
     done
 done
-echo "NOT_FOUND"
+echo "NOTFOUND"
 
