@@ -33,7 +33,7 @@ function check_connection(){
 	QUIET=""
     fi
     wget ${QUIET} -O $DOWNLOAD_FILE $FLIES_SERVER_URL
-    if grep $UP_PATTERN $DOWNLOAD_FILE; then
+    if grep -e "$UP_PATTERN" $DOWNLOAD_FILE; then
 	UP=1
 	if [ $VERBOSE -ge 1 ]; then
 	    echo "Flies server on $FLIES_SERVER_URL is [UP]"
@@ -53,7 +53,7 @@ function check_connection(){
     return 0;
 }
 
-UP_PATTERN='<h1>Welcome'
+UP_PATTERN='Running version'
 
 # Retry interval: Default: 30 sec
 INTERVAL=30
