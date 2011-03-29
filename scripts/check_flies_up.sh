@@ -53,7 +53,7 @@ function check_connection(){
     return 0;
 }
 
-UP_PATTERN='Running version'
+UP_PATTERN="id=\"Projects\""
 
 # Retry interval: Default: 30 sec
 INTERVAL=30
@@ -93,7 +93,6 @@ fi
 
 DOWNLOAD_FILE=index.html.tmp
 
-
 if check_connection; then
     exit 0;
 fi
@@ -102,7 +101,7 @@ retries=0
 up=0
 until [ "$retries" = "$RETRIES" ]; do
     let retries++
-    echo "retries $retries in $INTERVAL seconds"
+    echo "Checking pattern: $UP_PATTERN, retries $retries in $INTERVAL seconds"
     sleep $INTERVAL
     if check_connection; then
 	exit 0;
