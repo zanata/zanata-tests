@@ -48,16 +48,6 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>@CONFIG_SERVER_ID_PREFIX@:helpField:url</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>@CONFIG_SERVER_ID_PREFIX@:helpField:url</td>
-	<td>http://code.google.com/p/flies/wiki/Introduction</td>
-</tr>
-<tr>
-	<td>click</td>
 	<td>@CONFIG_SERVER_ID_PREFIX@:emailDomainField:url</td>
 	<td></td>
 </tr>
