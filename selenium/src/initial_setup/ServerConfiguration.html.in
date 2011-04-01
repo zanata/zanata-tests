@@ -13,17 +13,22 @@
 </thead><tbody>
 <tr>
 	<td>store</td>
-	<td>@FLIES_URL@</td>
+	<td>@ZANATA_URL@</td>
 	<td>SERVER_URL</td>
 </tr>
 <tr>
 	<td>open</td>
-	<td>${SERVER_URL}/admin/</td>
+	<td>@SERVER_PATH@admin/</td>
 	<td></td>
 </tr>
 <tr>
+        <td>mouseOver</td>
+        <td>id=Administration</td>
+        <td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
-	<td>Admin_Server_configuration_a</td>
+	<td>id=Admin_Server_configuration_a</td>
 	<td></td>
 </tr>
 <tr>
