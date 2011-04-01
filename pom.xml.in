@@ -12,8 +12,8 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>net.openl10n.flies</groupId>
-        <artifactId>flies-maven-plugin</artifactId>
+        <groupId>org.zanata</groupId>
+        <artifactId>zanata-maven-plugin</artifactId>
 	<version>@MVN_CLIENT_VER@</version>
 	<configuration>
 	    <srcDir>${flies.srcDir}</srcDir>

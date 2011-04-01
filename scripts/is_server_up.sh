@@ -1,12 +1,12 @@
 #!/bin/sh
-# Test whether the flies server is up.
+# Test whether the zanata server is up.
 
 function print_usage(){
     cat << END
-Usage: $0 [-i interval] [-r retries] [-p up_pattern] [-v verboseLevel] <FLIES_SERVER_URL>
+Usage: $0 [-i interval] [-r retries] [-p up_pattern] [-v verboseLevel] <ZANATA_SERVER_URL>
        $0 -h
 
-FLIES_SERVER_URL: URL to flise server
+ZANATA_SERVER_URL: URL to flise server
 
 Options:
     -h: Show usage
@@ -20,8 +20,8 @@ Options:
 	3: wget message as well.
 
 Return value:
-    0: Flies server is up eventually.
-    1: Flies server is still down after the retries.
+    0: Zanata server is up eventually.
+    1: Zanata server is still down after the retries.
 END
 }
 
@@ -32,16 +32,16 @@ function check_connection(){
     else
 	QUIET=""
     fi
-    wget ${QUIET} -O $DOWNLOAD_FILE $FLIES_SERVER_URL
+    wget ${QUIET} -O $DOWNLOAD_FILE $ZANATA_SERVER_URL
     if grep -e "$UP_PATTERN" $DOWNLOAD_FILE; then
 	UP=1
 	if [ $VERBOSE -ge 1 ]; then
-	    echo "Flies server on $FLIES_SERVER_URL is [UP]"
+	    echo "Zanata server on $ZANATA_SERVER_URL is [UP]"
 	fi
     else
 	UP=0
 	if [ $VERBOSE -ge 2 ]; then
-	    echo "Flies server on $FLIES_SERVER_URL is [DOWN]"
+	    echo "Zanata server on $ZANATA_SERVER_URL is [DOWN]"
 	fi
     fi
 
@@ -84,9 +84,9 @@ while getopts "hi:r:p:v:" opt; do
 done
 shift $((OPTIND-1));
 
-FLIES_SERVER_URL=$1
+ZANATA_SERVER_URL=$1
 
-if [ -z $FLIES_SERVER_URL ]; then
+if [ -z $ZANATA_SERVER_URL ]; then
     print_usage
     exit -1
 fi
@@ -108,7 +108,7 @@ until [ "$retries" = "$RETRIES" ]; do
     fi
 done
 if [ $VERBOSE -ge 1 ]; then
-    echo "Flies server on $FLIES_SERVER_URL is still [DOWN] after $retries retries"
+    echo "Zanata server on $ZANATA_SERVER_URL is still [DOWN] after $retries retries"
 fi
 exit 1;
 

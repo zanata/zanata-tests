@@ -17,14 +17,14 @@ esac
 shift
 
 LANGUS=
-FLIES_URL=
+ZANATA_URL=
 ROLES=
 EMAIL=
 for opt in $*;do
 	case $opt in
-		--flies)
+		--zanata)
 			shift
-			FLIES_URL=$1
+			ZANATA_URL=$1
 			shift
 			;;
 		--email)
@@ -50,12 +50,12 @@ for opt in $*;do
 	esac
 done
 
-if [ -z ${FLIES_PUBLICAN} ];then
-	FLIES_PUBLICAN=flies-publican
+if [ -z ${ZANATA_PUBLICAN} ];then
+	ZANATA_PUBLICAN=zanata-publican
 fi
 
 
-if [ -z "$FLIES_URL" ]; then
+if [ -z "$ZANATA_URL" ]; then
     source ./test.cfg
 fi
 
@@ -95,7 +95,7 @@ fi
 echo "USER=$USER NAME=$NAME"
 echo "APIKEY_USER=${APIKEY_USER}"
 
-CMD="$FLIES_PUBLICAN putuser -e --debug --user admin --key \"${APIKEY_admin}\" --flies \"${FLIES_URL}\"  --name \"${NAME}\" --username \"${USER}\" --email \"${EMAIL}\" --passwordhash \"${HASH}\" --userkey \"${APIKEY_USER}\" --roles \"${ROLES}\" --langs \"${LANGUS}\""
+CMD="$ZANATA_PUBLICAN putuser -e --debug --user admin --key \"${APIKEY_admin}\" --zanata \"${ZANATA_URL}\"  --name \"${NAME}\" --username \"${USER}\" --email \"${EMAIL}\" --passwordhash \"${HASH}\" --userkey \"${APIKEY_USER}\" --roles \"${ROLES}\" --langs \"${LANGUS}\""
 echo "CMD=$CMD"
 eval "$CMD"
 

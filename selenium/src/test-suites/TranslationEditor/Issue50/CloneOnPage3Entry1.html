@@ -12,13 +12,18 @@
 <tr><td rowspan="1" colspan="3">CloneOnPage3Entry1</td></tr>
 </thead><tbody>
 <tr>
-	<td>click</td>
+	<td>store</td>
 	<td>css=tr.TableEditorRow:nth-child(2)&gt;td.TableEditorCell-Target</td>
+	<td>entry1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>${entry1}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>css=tr.TableEditorRow:nth-child(2)&gt;td.TableEditorCell-Target textarea</td>
+	<td>${entry1} textarea</td>
 	<td></td>
 </tr>
 <!--Simulate Clone+Save Hotkey (Ctrl-End)-->
@@ -29,17 +34,17 @@
 </tr>
 <tr>
 	<td>keyDown</td>
-	<td>css=tr.TableEditorRow:nth-child(2)&gt;td.TableEditorCell-Target textarea</td>
+	<td>${entry1} textarea</td>
 	<td>\35</td>
 </tr>
 <tr>
 	<td>keyPress</td>
-	<td>css=tr.TableEditorRow:nth-child(2)&gt;td.TableEditorCell-Target textarea</td>
+	<td>${entry1} textarea</td>
 	<td>\35</td>
 </tr>
 <tr>
 	<td>keyUp</td>
-	<td>css=tr.TableEditorRow:nth-child(2)&gt;td.TableEditorCell-Target textarea</td>
+	<td>${entry1} textarea</td>
 	<td>\35</td>
 </tr>
 <tr>
@@ -55,7 +60,7 @@
 </tr>
 <tr>
 	<td>verifyText</td>
-	<td>css=tr.TableEditorRow:nth-child(2)&gt;td.TableEditorCell-Target</td>
+	<td>${entry1}</td>
 	<td>Refer to the &lt;filename&gt;pam_timestamp_check&lt;/filename&gt; man page for more information about destroying the timestamp file using &lt;command&gt;pam_timestamp_check&lt;/command&gt;.</td>
 </tr>
 </tbody></table>

@@ -22,7 +22,7 @@ ADD_CUSTOM_TARGET(initial_setup
     ${SELENIUM_SERVER_CMD} ${SELENIUM_SERVER_ARG}
     -port ${SELENIUM_SERVER_PORT}
     -log ${RESULT_DIR_ABSOLUTE}/initial_setup.test.log
-    -htmlsuite "*firefox\ ${firefox_BIN}" ${FLIES_URL}  ${INITIAL_SETUP_SCRIPT_DIR}/00-InitSetup.html
+    -htmlsuite "*firefox\ ${firefox_BIN}" ${ZANATA_URL}  ${INITIAL_SETUP_SCRIPT_DIR}/00-InitSetup.html
     ${RESULT_DIR_ABSOLUTE}/initial_setup.html
     VERBATIM
     )
@@ -46,7 +46,7 @@ MACRO(ADD_OUTPUT_FOR_BROWSERS testSuiteName testRole suiteFile)
 	ADD_TEST("${_unstablePrefix}${testSuiteName}.${testRole}.${browser}"
 	    ${SELENIUM_SERVER_CMD} ${SELENIUM_SERVER_ARG} -log
 	    ${RESULT_DIR_ABSOLUTE}/${testSuiteName}.${testRole}.${browser}.test.log
-	    -htmlsuite ${BROWSER_STR} ${FLIES_URL}  ${suiteFile}
+	    -htmlsuite ${BROWSER_STR} ${ZANATA_URL}  ${suiteFile}
 	    ${RESULT_DIR_ABSOLUTE}/${testSuiteName}.${testRole}.${browser}.html)
     ENDFOREACH()
 ENDMACRO()

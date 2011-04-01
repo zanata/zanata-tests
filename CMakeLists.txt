@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.4)
 ####################################################################
 # Init Definition
 ####################################################################
-PROJECT(flies-tests NONE)
+PROJECT(zanata-tests NONE)
 SET(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS ON)
 MESSAGE("CMake version=${CMAKE_VERSION}")
 
@@ -15,7 +15,7 @@ INCLUDE(ManageVariable)
 ####################################################################
 # Project specific definition
 ####################################################################
-SET(PROJECT_DESCRIPTION "Test system for flies.openl10n.net")
+SET(PROJECT_DESCRIPTION "Test system for zanata.openl10n.net")
 
 ####################################################################
 # Macros
@@ -36,9 +36,9 @@ ENDMACRO(REAL_PATH var path)
 # Settings
 ####################################################################
 ### Override with environment variables
-SET(OVERRIDABLE_VARS  "FLIES_URL" "BROWSERS_TO_TEST" "SELENIUM_SERVER_PORT"
-    "SAMPLE_PROJ_DIR" "PULL_DEST_DIR" "FLIES_PROFILE" "MVN_CLIENT_VER"
-    "FLIES_PY_PATH")
+SET(OVERRIDABLE_VARS  "ZANATA_URL" "BROWSERS_TO_TEST" "SELENIUM_SERVER_PORT"
+    "SAMPLE_PROJ_DIR" "PULL_DEST_DIR" "ZANATA_PROFILE" "MVN_CLIENT_VER"
+    "ZANATA_PY_PATH")
 FOREACH(_envVar  ${OVERRIDABLE_VARS})
     IF(NOT "$ENV{${_envVar}}" STREQUAL "")
 	SET(${_envVar} "$ENV{${_envVar}}")
@@ -48,16 +48,16 @@ ENDFOREACH()
 SETTING_FILE_GET_ALL_VARIABLES("${TEST_CFG}" NOREPLACE UNQUOTED NOESCAPE_SEMICOLON)
 
 # Assign PROFILE
-MESSAGE("FLIES_PROFILE=${FLIES_PROFILE}")
+MESSAGE("ZANATA_PROFILE=${ZANATA_PROFILE}")
 SET(PROFILE_VARIABLES SERVER_BASE SERVER_PATH ADMIN_USER ADMIN_KEY TEST_ROLES KERBEROS
     CONFIG_SERVER_ID_PREFIX CONFIG_LANG_ID_PREFIX)
 FOREACH(_var ${PROFILE_VARIABLES})
-    IF(DEFINED ${FLIES_PROFILE}_${_var})
-	SET(${_var} "${${FLIES_PROFILE}_${_var}}")
-	MESSAGE("Profile ${FLIES_PROFILE} specific: ${_var}=${${FLIES_PROFILE}_${_var}}")
-    ENDIF(DEFINED ${FLIES_PROFILE}_${_var})
+    IF(DEFINED ${ZANATA_PROFILE}_${_var})
+	SET(${_var} "${${ZANATA_PROFILE}_${_var}}")
+	MESSAGE("Profile ${ZANATA_PROFILE} specific: ${_var}=${${ZANATA_PROFILE}_${_var}}")
+    ENDIF(DEFINED ${ZANATA_PROFILE}_${_var})
 ENDFOREACH()
-SET(FLIES_URL ${SERVER_BASE}${SERVER_PATH})
+SET(ZANATA_URL ${SERVER_BASE}${SERVER_PATH})
 
 ### Print variables
 FOREACH(_envVar  ${OVERRIDABLE_VARS})
@@ -75,6 +75,10 @@ REAL_PATH(PULL_DEST_DIR_ABSOLUTE "${PULL_DEST_DIR}")
 SET(TEST_ROOT_ABSOLUTE "${CMAKE_SOURCE_DIR}/${TEST_ROOT}")
 SET(PRIVILEGE_TEST_ROOT_ABSOLUTE "${CMAKE_SOURCE_DIR}/${PRIVILEGE_TEST_ROOT}")
 SET(RESULT_DIR_ABSOLUTE "${CMAKE_SOURCE_DIR}/${RESULT_DIR}")
+
+# Maven
+SET(MVN_GOAL_PREFIX "org.zanata:zanata-maven-plugin")
+
 
 IF(NOT EXISTS ${RESULT_DIR_ABSOLUTE})
     FILE(MAKE_DIRECTORY "${RESULT_DIR_ABSOLUTE}")
@@ -108,9 +112,6 @@ MACRO(FIND_FILES_IN_DIR var pattern searchPath)
 	SET(${var} ${_result})
     ENDIF()
 ENDMACRO()
-
-SET(FLIES_MVN_GOAL_PREFIX  "net.openl10n.flies:flies-maven-plugin")
-#SET(FLIES_MVN_GOAL_PREFIX  "flies")
 
 
 ####################################################################
@@ -160,14 +161,14 @@ ADD_CUSTOM_TARGET(selenium_projects
     )
 
 ADD_CUSTOM_TARGET(prepare_selenium_projects
-    COMMENT "   Generate flies.xml for selenium testing projects"
+    COMMENT "   Generate zanata.xml for selenium testing projects"
     )
 
 ADD_DEPENDENCIES(prepare_selenium_projects
     prepare_ReleaseNotes_f13 prepare_SecurityGuide_f13)
 
-ADD_DEPENDENCIES(selenium_projects flies_publican_push_mvn_ReleaseNotes_f13
-    flies_publican_push_mvn_SecurityGuide_f13)
+ADD_DEPENDENCIES(selenium_projects zanata_publican_push_mvn_ReleaseNotes_f13
+    zanata_publican_push_mvn_SecurityGuide_f13)
 
 
 #===================================================================
@@ -186,17 +187,17 @@ MACRO(ADD_PUBLICAN_PROJECT proj)
 
     FOREACH(_ver ${_projVers})
 	SET(_sample_proj_dir_absolute ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver})
-	SET(_flies_xml_path ${_sample_proj_dir_absolute}/flies.xml)
+	SET(_zanata_xml_path ${_sample_proj_dir_absolute}/zanata.xml)
 
-	ADD_CUSTOM_TARGET(generate_flies_xml_${proj}_${_ver}
-	    DEPENDS ${_flies_xml_path}
+	ADD_CUSTOM_TARGET(generate_zanata_xml_${proj}_${_ver}
+	    DEPENDS ${_zanata_xml_path}
 	    )
 
-	ADD_CUSTOM_COMMAND(OUTPUT ${_flies_xml_path}
-	    COMMAND scripts/generate_flies_xml.sh ${SAMPLE_PROJ_DIR_ABSOLUTE} ${proj}
-	    ${_ver} ${FLIES_URL} "${LANGS}"
+	ADD_CUSTOM_COMMAND(OUTPUT ${_zanata_xml_path}
+	    COMMAND scripts/generate_zanata_xml.sh ${SAMPLE_PROJ_DIR_ABSOLUTE} ${proj}
+	    ${_ver} ${ZANATA_URL} "${LANGS}"
 	    DEPENDS ${_sample_proj_dir_absolute}/pot
-	    COMMENT "   Generate ${_flies_xml_path}"
+	    COMMENT "   Generate ${_zanata_xml_path}"
 	    VERBATIM
 	    )
 
@@ -222,11 +223,11 @@ MACRO(ADD_PUBLICAN_PROJECT proj)
 	    VERBATIM
 	    )
 
-	# Prepare project: generate flies.xml and pom.xml
+	# Prepare project: generate zanata.xml and pom.xml
 	ADD_CUSTOM_TARGET(prepare_${proj}_${_ver})
 
 	ADD_DEPENDENCIES(prepare_${proj}_${_ver}
-	    generate_flies_xml_${proj}_${_ver}
+	    generate_zanata_xml_${proj}_${_ver}
 	    link_pom_xml_${proj}_${_ver}
 	    preprocess_publican_${proj}_${_ver}
 	    )
@@ -249,21 +250,21 @@ ENDMACRO(ADD_PUBLICAN_PROJECT proj)
 #
 CONFIGURE_FILE(pom.xml.in pom.xml @ONLY)
 
-SET(FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS
-    -Dflies.url=${FLIES_URL} -Dflies.userConfig=${CMAKE_SOURCE_DIR}/flies.ini
-    -Dflies.username=${ADMIN_USER} -Dflies.key=${ADMIN_KEY}
+SET(ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS
+    -Dzanata.url=${ZANATA_URL} -Dzanata.userConfig=${CMAKE_SOURCE_DIR}/zanata.ini
+    -Dzanata.username=${ADMIN_USER} -Dzanata.key=${ADMIN_KEY}
     )
 
 MACRO(ADD_MVN_CLIENT_TARGETS proj )
     SET(_projVers "${${proj}_VERS}")
 
-    ADD_CUSTOM_TARGET(flies_putproject_mvn_${proj}
-	COMMAND ${FLIES_MVN_CMD} -e ${FLIES_MVN_GOAL_PREFIX}:putproject
-	${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
-	-Dflies.project.slug=${proj}
-	-Dflies.project.name=${${proj}_NAME}
-	-Dflies.project.desc=${${proj}_DESC}
-	COMMENT "  [Mvn] Creating proj: proj ${proj}:${${proj}_NAME} in ${FLIES_URL}"
+    ADD_CUSTOM_TARGET(zanata_putproject_mvn_${proj}
+	COMMAND ${ZANATA_MVN_CMD} -e ${MVN_GOAL_PREFIX}:putproject
+	${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
+	-Dzanata.project.slug=${proj}
+	-Dzanata.project.name=${${proj}_NAME}
+	-Dzanata.project.desc=${${proj}_DESC}
+	COMMENT "  [Mvn] Creating proj: proj ${proj}:${${proj}_NAME} in ${ZANATA_URL}"
 	VERBATIM
 	)
 
@@ -271,70 +272,70 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	#MESSAGE("[mvn] proj=${proj} ver=${_ver}")
 	SET(_pull_dest_dir_mvn ${PULL_DEST_DIR_ABSOLUTE}/mvn/${proj}/${_ver})
 	SET(_sample_proj_dir_absolute ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver})
-	SET(_flies_xml_path ${_sample_proj_dir_absolute}/flies.xml)
+	SET(_zanata_xml_path ${_sample_proj_dir_absolute}/zanata.xml)
 
-	SET(FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS
-	    -Dflies.projectConfig=${_flies_xml_path}
-	    -Dflies.projectVersion=${_ver}
+	SET(ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS
+	    -Dzanata.projectConfig=${_zanata_xml_path}
+	    -Dzanata.projectVersion=${_ver}
 	    )
 
 	# Put version
-	ADD_CUSTOM_TARGET(flies_putversion_mvn_${proj}_${_ver}
-	    COMMAND ${FLIES_MVN_CMD} -e ${FLIES_MVN_GOAL_PREFIX}:putversion
-	    ${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
-	    ${FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS}
-	    -Dflies.version.slug=${_ver}
-	    -Dflies.version.project=${proj}
-	    -Dflies.version.name=Ver\ ${_ver}
-	    -Dflies.version.desc=Desc\ of\ ${_ver}
+	ADD_CUSTOM_TARGET(zanata_putversion_mvn_${proj}_${_ver}
+	    COMMAND ${ZANATA_MVN_CMD} -e ${MVN_GOAL_PREFIX}:putversion
+	    ${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
+	    ${ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS}
+	    -Dzanata.version.slug=${_ver}
+	    -Dzanata.version.project=${proj}
+	    -Dzanata.version.name=Ver\ ${_ver}
+	    -Dzanata.version.desc=Desc\ of\ ${_ver}
 	    DEPENDS ${_sample_proj_dir_absolute}/pom.xml
-	    ${_flies_xml_path}
+	    ${_zanata_xml_path}
 	    ${_sample_proj_dir_absolute}/publican.cfg.striped
-	    COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver} to ${FLIES_URL}"
+	    COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver} to ${ZANATA_URL}"
 	    VERBATIM
 	    )
 
-	ADD_DEPENDENCIES(flies_putversion_mvn_${proj}_${_ver} flies_putproject_mvn_${proj})
+	ADD_DEPENDENCIES(zanata_putversion_mvn_${proj}_${_ver} zanata_putproject_mvn_${proj})
 
 	# Publican push
-	ADD_CUSTOM_TARGET(flies_publican_push_mvn_${proj}_${_ver}
-	    COMMAND ${FLIES_MVN_CMD} -e -B ${FLIES_MVN_GOAL_PREFIX}:publican-push
-	    ${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
-	    ${FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS}
-	    -Dflies.srcDir=.
-	    -Dflies.importPo
+	ADD_CUSTOM_TARGET(zanata_publican_push_mvn_${proj}_${_ver}
+	    COMMAND ${ZANATA_MVN_CMD} -e -B ${MVN_GOAL_PREFIX}:publican-push
+	    ${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
+	    ${ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS}
+	    -Dzanata.srcDir=.
+	    -Dzanata.importPo
 	    WORKING_DIRECTORY ${_sample_proj_dir_absolute}
 	    DEPENDS ${_sample_proj_dir_absolute}/pom.xml
-	    ${_flies_xml_path}
-	    COMMENT "  [Mvn] Pushing pot and po for proj ${proj} ver ${_ver} to ${FLIES_URL}"
+	    ${_zanata_xml_path}
+	    COMMENT "  [Mvn] Pushing pot and po for proj ${proj} ver ${_ver} to ${ZANATA_URL}"
 	    VERBATIM
 	    )
 
-	ADD_DEPENDENCIES(flies_publican_push_mvn_${proj}_${_ver} flies_putversion_mvn_${proj}_${_ver})
-	ADD_DEPENDENCIES(flies_publican_push_mvn_all_projects
-	    flies_publican_push_mvn_${proj}_${_ver})
+	ADD_DEPENDENCIES(zanata_publican_push_mvn_${proj}_${_ver} zanata_putversion_mvn_${proj}_${_ver})
+	ADD_DEPENDENCIES(zanata_publican_push_mvn_all_projects
+	    zanata_publican_push_mvn_${proj}_${_ver})
 
 
 	# Publican pull
-	ADD_CUSTOM_TARGET(flies_publican_pull_mvn_${proj}_${_ver}
-	    COMMAND ${FLIES_MVN_CMD} -e -B ${FLIES_MVN_GOAL_PREFIX}:publican-pull
-	    ${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
-	    ${FLIES_MVN_CLIENT_PRJ_ADMIN_OPTS}
-	    -Dflies.dstDir=${_pull_dest_dir_mvn}
-	    DEPENDS ${_flies_xml_path}
+	ADD_CUSTOM_TARGET(zanata_publican_pull_mvn_${proj}_${_ver}
+	    COMMAND ${ZANATA_MVN_CMD} -e -B ${MVN_GOAL_PREFIX}:publican-pull
+	    ${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
+	    ${ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS}
+	    -Dzanata.dstDir=${_pull_dest_dir_mvn}
+	    DEPENDS ${_zanata_xml_path}
 	    ${_pull_dest_dir_mvn}
-	    COMMENT "  [Mvn] Pulling pot and po for proj ${proj} ver ${_ver} from  ${FLIES_URL}"
+	    COMMENT "  [Mvn] Pulling pot and po for proj ${proj} ver ${_ver} from  ${ZANATA_URL}"
 	    VERBATIM
 	    )
 
-	ADD_DEPENDENCIES(flies_publican_pull_mvn_${proj}_${_ver}
-	    flies_publican_push_mvn_${proj}_${_ver}  flies_putversion_mvn_${proj}_${_ver})
-	ADD_DEPENDENCIES(flies_publican_pull_mvn_all_projects
-	    flies_publican_pull_mvn_${proj}_${_ver})
+	ADD_DEPENDENCIES(zanata_publican_pull_mvn_${proj}_${_ver}
+	    zanata_publican_push_mvn_${proj}_${_ver}  zanata_putversion_mvn_${proj}_${_ver})
+	ADD_DEPENDENCIES(zanata_publican_pull_mvn_all_projects
+	    zanata_publican_pull_mvn_${proj}_${_ver})
 
 	# REST test targets
 	ADD_CUSTOM_TARGET(rest_test_mvn_${proj}_${_ver})
-	ADD_DEPENDENCIES(rest_test_mvn_${proj}_${_ver} flies_publican_pull_mvn_${proj}_${_ver})
+	ADD_DEPENDENCIES(rest_test_mvn_${proj}_${_ver} zanata_publican_pull_mvn_${proj}_${_ver})
 	ADD_DEPENDENCIES(rest_test_mvn rest_test_mvn_${proj}_${_ver})
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${_pull_dest_dir_mvn}
@@ -346,85 +347,85 @@ ENDMACRO(ADD_MVN_CLIENT_TARGETS proj)
 #===================================================================
 # Python targets
 #
-SET(FLIES_PY_CLIENT_COMMON_ADMIN_OPTS --username ${ADMIN_USER} --apikey ${ADMIN_KEY}
-    --url ${FLIES_URL} --user-config ${CMAKE_SOURCE_DIR}/flies.ini)
+SET(ZANATA_PY_CLIENT_COMMON_ADMIN_OPTS --username ${ADMIN_USER} --apikey ${ADMIN_KEY}
+    --url ${ZANATA_URL} --user-config ${CMAKE_SOURCE_DIR}/zanata.ini)
 
 MACRO(ADD_PY_CLIENT_TARGETS proj )
     SET(_projVers "${${proj}_VERS}")
 
-    ADD_CUSTOM_TARGET(flies_project_create_py_${proj}
-	COMMAND ${FLIES_PY_CMD} project create ${proj}
-	${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
+    ADD_CUSTOM_TARGET(zanata_project_create_py_${proj}
+	COMMAND ${ZANATA_PY_CMD} project create ${proj}
+	${ZANATA_PY_CLIENT_COMMON_ADMIN_OPTS}
 	--project-name=${${proj}_NAME}
 	--project-desc=${${proj}_DESC}
-	COMMENT "  [Py] Creating proj: proj ${proj}:${${proj}_NAME} in ${FLIES_URL}"
+	COMMENT "  [Py] Creating proj: proj ${proj}:${${proj}_NAME} in ${ZANATA_URL}"
 	VERBATIM
 	)
 
     FOREACH(_ver ${_projVers})
 	SET(_pull_dest_dir_py ${PULL_DEST_DIR_ABSOLUTE}/py/${proj}/${_ver})
 	SET(_sample_proj_dir_absolute ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver})
-	SET(_flies_xml_path ${_sample_proj_dir_absolute}/flies.xml)
+	SET(_zanata_xml_path ${_sample_proj_dir_absolute}/zanata.xml)
 
 	#MESSAGE("[py] proj=${proj} ver=${_ver}")
-	SET(FLIES_PY_CLIENT_PRJ_ADMIN_OPTS
+	SET(ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS
 	    --project-id=${proj}
 	    --project-version=${_ver}
 	    )
 
 	# Put version
-	ADD_CUSTOM_TARGET(flies_version_create_py_${proj}_${_ver}
-	    COMMAND  ${FLIES_PY_CMD} version create ${_ver}
-	    ${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
+	ADD_CUSTOM_TARGET(zanata_version_create_py_${proj}_${_ver}
+	    COMMAND  ${ZANATA_PY_CMD} version create ${_ver}
+	    ${ZANATA_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    --version-name=Ver\ ${_ver}
 	    --version-desc=Desc\ of\ ${_ver}
 	    WORKING_DIRECTORY ${_sample_proj_dir_absolute}
-	    DEPENDS ${_flies_xml_path}
+	    DEPENDS ${_zanata_xml_path}
 	    ${_sample_proj_dir_absolute}/publican.cfg.striped
-	    COMMENT "  [Py] Creating version: proj ${proj} ver ${_ver} to ${FLIES_URL}"
+	    COMMENT "  [Py] Creating version: proj ${proj} ver ${_ver} to ${ZANATA_URL}"
 	    VERBATIM
 	    )
 
-	ADD_DEPENDENCIES(flies_version_create_py_${proj}_${_ver}
-	    flies_project_create_py_${proj})
+	ADD_DEPENDENCIES(zanata_version_create_py_${proj}_${_ver}
+	    zanata_project_create_py_${proj})
 
 	# Publican push
-	ADD_CUSTOM_TARGET(flies_publican_push_py_${proj}_${_ver}
-	    COMMAND yes | ${FLIES_PY_CMD} publican push
-	    ${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
-	    ${FLIES_PY_CLIENT_PRJ_ADMIN_OPTS}
+	ADD_CUSTOM_TARGET(zanata_publican_push_py_${proj}_${_ver}
+	    COMMAND yes | ${ZANATA_PY_CMD} publican push
+	    ${ZANATA_PY_CLIENT_COMMON_ADMIN_OPTS}
+	    ${ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS}
 	    --import-po
 	    --transdir=.
-	    DEPENDS ${_flies_xml_path}
+	    DEPENDS ${_zanata_xml_path}
 	    WORKING_DIRECTORY ${_sample_proj_dir_absolute}
-	    COMMENT "  [Py] Uploading pot and po for proj ${proj} ver ${_ver} to ${FLIES_URL}"
+	    COMMENT "  [Py] Uploading pot and po for proj ${proj} ver ${_ver} to ${ZANATA_URL}"
 	    VERBATIM
 	    )
 
-	ADD_DEPENDENCIES(flies_publican_push_py_${proj}_${_ver} flies_version_create_py_${proj}_${_ver})
-	ADD_DEPENDENCIES(flies_publican_push_py_all_projects
-	    flies_publican_push_py_${proj}_${_ver})
+	ADD_DEPENDENCIES(zanata_publican_push_py_${proj}_${_ver} zanata_version_create_py_${proj}_${_ver})
+	ADD_DEPENDENCIES(zanata_publican_push_py_all_projects
+	    zanata_publican_push_py_${proj}_${_ver})
 
 	# Publican pull
-	ADD_CUSTOM_TARGET(flies_publican_pull_py_${proj}_${_ver}
-	    COMMAND ${FLIES_PY_CMD} publican pull
-	    ${FLIES_PY_CLIENT_COMMON_ADMIN_OPTS}
-	    ${FLIES_PY_CLIENT_PRJ_ADMIN_OPTS}
+	ADD_CUSTOM_TARGET(zanata_publican_pull_py_${proj}_${_ver}
+	    COMMAND ${ZANATA_PY_CMD} publican pull
+	    ${ZANATA_PY_CLIENT_COMMON_ADMIN_OPTS}
+	    ${ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS}
 	    --dstdir=${_pull_dest_dir_py}
-	    DEPENDS ${_flies_xml_path} ${_pull_dest_dir_py}
+	    DEPENDS ${_zanata_xml_path} ${_pull_dest_dir_py}
 	    WORKING_DIRECTORY ${_sample_proj_dir_absolute}
-	    COMMENT "  [Py] Pulling pot and po for proj ${proj} ver ${_ver} from  ${FLIES_URL}"
+	    COMMENT "  [Py] Pulling pot and po for proj ${proj} ver ${_ver} from  ${ZANATA_URL}"
 	    VERBATIM
 	    )
 
-	ADD_DEPENDENCIES(flies_publican_pull_py_${proj}_${_ver}
-	    flies_publican_push_py_${proj}_${_ver}  flies_version_create_py_${proj}_${_ver})
-	ADD_DEPENDENCIES(flies_publican_pull_py_all_projects
-	    flies_publican_pull_py_${proj}_${_ver})
+	ADD_DEPENDENCIES(zanata_publican_pull_py_${proj}_${_ver}
+	    zanata_publican_push_py_${proj}_${_ver}  zanata_version_create_py_${proj}_${_ver})
+	ADD_DEPENDENCIES(zanata_publican_pull_py_all_projects
+	    zanata_publican_pull_py_${proj}_${_ver})
 
 	# REST test targets
 	ADD_CUSTOM_TARGET(rest_test_py_${proj}_${_ver})
-	ADD_DEPENDENCIES(rest_test_py_${proj}_${_ver} flies_publican_pull_py_${proj}_${_ver})
+	ADD_DEPENDENCIES(rest_test_py_${proj}_${_ver} zanata_publican_pull_py_${proj}_${_ver})
 	ADD_DEPENDENCIES(rest_test_py rest_test_py_${proj}_${_ver})
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${_pull_dest_dir_py}
@@ -439,14 +440,14 @@ ENDMACRO(ADD_PY_CLIENT_TARGETS proj)
 
 MACRO(GENERATE_REST_TEST_CLIENT_TARGETS clientId)
     STRING(TOUPPER "${clientId}" _clientDisplay)
-    IF("${FLIES_${_clientDisplay}_CMD}" STREQUAL "FLIES_${_clientDisplay}_CMD-NOTFOUND")
-	MESSAGE("flies ${clientId} is not installed! ${clientId} tests disabled.")
-    ELSE("${FLIES_${_clientDisplay}_CMD}" STREQUAL "FLIES_${_clientDisplay}_CMD-NOTFOUND")
-	MESSAGE("[${_clientDisplay}] client is ${FLIES_${_clientDisplay}_CMD}")
-	ADD_CUSTOM_TARGET(flies_publican_push_${clientId}_all_projects
+    IF("${ZANATA_${_clientDisplay}_CMD}" STREQUAL "ZANATA_${_clientDisplay}_CMD-NOTFOUND")
+	MESSAGE("zanata ${clientId} is not installed! ${clientId} tests disabled.")
+    ELSE("${ZANATA_${_clientDisplay}_CMD}" STREQUAL "ZANATA_${_clientDisplay}_CMD-NOTFOUND")
+	MESSAGE("[${_clientDisplay}] client is ${ZANATA_${_clientDisplay}_CMD}")
+	ADD_CUSTOM_TARGET(zanata_publican_push_${clientId}_all_projects
 	    COMMENT "[${_clientDisplay}] publican push all projects."
 	    )
-	ADD_CUSTOM_TARGET(flies_publican_pull_${clientId}_all_projects
+	ADD_CUSTOM_TARGET(zanata_publican_pull_${clientId}_all_projects
 	    COMMENT "[${_clientDisplay}] publican pull all projects."
 	    )
 
@@ -466,28 +467,28 @@ MACRO(GENERATE_REST_TEST_CLIENT_TARGETS clientId)
 		ADD_MVN_CLIENT_TARGETS(${_proj})
 	    ENDIF("${clientId}" STREQUAL "py")
 	ENDFOREACH(_proj ${${_clientDisplay}_PROJECTS})
-    ENDIF("${FLIES_${_clientDisplay}_CMD}" STREQUAL "FLIES_${_clientDisplay}_CMD-NOTFOUND")
+    ENDIF("${ZANATA_${_clientDisplay}_CMD}" STREQUAL "ZANATA_${_clientDisplay}_CMD-NOTFOUND")
 ENDMACRO(GENERATE_REST_TEST_CLIENT_TARGETS clientId)
 
-FIND_PROGRAM(FLIES_MVN_CMD mvn)
+FIND_PROGRAM(ZANATA_MVN_CMD mvn)
 GENERATE_REST_TEST_CLIENT_TARGETS(mvn)
 
-# FLIES_PY_PATH: location of flies if is not in default search path
-IF(NOT "${FLIES_PY_PATH}" STREQUAL "")
-    IF(NOT EXISTS ${FLIES_PY_PATH})
-	FILE(MAKE_DIRECTORY ${FLIES_PY_PATH})
-	EXECUTE_PROCESS(COMMAND git clone ${PYTHON_CLIENT_REPO} ${FLIES_PY_PATH})
-    ENDIF(NOT EXISTS ${FLIES_PY_PATH})
-ENDIF(NOT "${FLIES_PY_PATH}" STREQUAL "")
+# ZANATA_PY_PATH: location of zanta if is not in default search path
+IF(NOT "${ZANATA_PY_PATH}" STREQUAL "")
+    IF(NOT EXISTS ${ZANATA_PY_PATH})
+	FILE(MAKE_DIRECTORY ${ZANATA_PY_PATH})
+	EXECUTE_PROCESS(COMMAND git clone ${PYTHON_CLIENT_REPO} ${ZANATA_PY_PATH})
+    ENDIF(NOT EXISTS ${ZANATA_PY_PATH})
+ENDIF(NOT "${ZANATA_PY_PATH}" STREQUAL "")
 
-FIND_PROGRAM(FLIES_PY_CMD flies HINTS ${FLIES_PY_PATH} /usr/bin /bin NO_DEFAULT_PATH)
+FIND_PROGRAM(ZANATA_PY_CMD zanata HINTS ${ZANATA_PY_PATH} /usr/bin /bin NO_DEFAULT_PATH)
 GENERATE_REST_TEST_CLIENT_TARGETS(py)
 
 #===================================================================
 # Put users
 #
 ADD_CUSTOM_TARGET(putusers
-    COMMENT "Create users in flies server: ${FLIES_URL}"
+    COMMENT "Create users in zanata server: ${ZANATA_URL}"
     )
 
 MACRO(PUT_TEST_USER user)
@@ -495,23 +496,23 @@ MACRO(PUT_TEST_USER user)
     STRING(REGEX REPLACE "zh.CN" "zh-Hans" _lang  "${_lang}")
     STRING(REGEX REPLACE "zh.TW" "zh-Hant" _lang  "${_lang}")
     IF("${${user}_ROLES}" STREQUAL "")
-	SET(ROLE_ASSIGN -Dflies.user.roles=user)
+	SET(ROLE_ASSIGN -Dzanata.user.roles=user)
     ELSE("${${user}_ROLES}" STREQUAL "")
-	SET(ROLE_ASSIGN -Dflies.user.roles=${${user}_ROLES})
+	SET(ROLE_ASSIGN -Dzanata.user.roles=${${user}_ROLES})
     ENDIF("${${user}_ROLES}" STREQUAL "")
 
-    SET(OPTS -Dflies.user.disabled=false
-	-Dflies.user.email=${${user}_USER}@localhost.org
-	-Dflies.user.key=${${user}_KEY}
-	-Dflies.user.langs=${_lang}
-	-Dflies.user.name=${${user}_NAME}
-	-Dflies.user.username=${${user}_USER}
-	-Dflies.user.passwordhash=${${user}_PASSWD_HASH}
+    SET(OPTS -Dzanata.user.disabled=false
+	-Dzanata.user.email=${${user}_USER}@localhost.org
+	-Dzanata.user.key=${${user}_KEY}
+	-Dzanata.user.langs=${_lang}
+	-Dzanata.user.name=${${user}_NAME}
+	-Dzanata.user.username=${${user}_USER}
+	-Dzanata.user.passwordhash=${${user}_PASSWD_HASH}
 	)
 
     ADD_CUSTOM_TARGET(putuser_${user}
-	COMMAND mvn -e ${FLIES_MVN_GOAL_PREFIX}:putuser
-	${FLIES_MVN_CLIENT_COMMON_ADMIN_OPTS}
+	COMMAND mvn -e ${MVN_GOAL_PREFIX}:putuser
+	${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	${ROLE_ASSIGN}
 	${OPTS}
 	COMMENT "Create user ${${user}_USER} for ${user}"
