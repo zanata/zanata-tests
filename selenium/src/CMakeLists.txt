@@ -98,6 +98,9 @@ MACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
 	SET(_unstable "")
     ENDIF()
 
+    SET(_TITLE "Home Page")
+    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/templates/HomePage.html.in
+	${testSuiteDir}/HomePage.html @ONLY)
     FOREACH(_testRole ${_testRoles})
 	IF(NOT EXISTS "${testSuiteDir}/NO_${_testRole}" )
 
@@ -118,9 +121,10 @@ MACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
 		ADD_CUSTOM_COMMAND(OUTPUT ${_suiteFiles} ${_generateTestCases}
 		    COMMAND ${CMAKE_SOURCE_DIR}/scripts/generate_test_suite.sh
 		    ${_testRole} ${testSuiteDir} ${testSuiteName}
-		    ${SERVER_BASE} ${SERVER_PATH}
+		    ${SERVER_BASE} "${SERVER_PATH}"
 		    ${${_testRole}_USER} ${${_testRole}_USER} ${${_testRole}_SISO}
 		    COMMENT "Generate test suite ${testSuiteName} for ${_testRole}"
+		    VERBATIM
 		    )
 
 		ADD_CUSTOM_TARGET(generate_test_suite_${testSuiteName}_${_testRole}  ALL

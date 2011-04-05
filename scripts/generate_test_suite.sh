@@ -5,24 +5,8 @@ _scriptDir=`dirname $0`
 PARAMS="testRole testSuiteDir testSuiteName serverBase serverPath testUser testPass sisoIndex"
 source ${_scriptDir}/test_common_func.sh
 
-#function print_usage(){
-#    echo "$0 <testRole> <testSuiteDir> <testSuiteName> <serverBase> <serverPath> <testUser> <testPass> <sisoIndex>"
-#}
-
-#for para in testRole testSuiteDir testSuiteName serverBase serverPath testUser testPass sisoIndex; do
-#    if [ -z $1 ];then
-#	print_usage
-#	exit -1
-#    fi
-
-#    eval "$para=$1"
-#    shift
-#    value=$(eval echo \$$para)
-#    #echo $para=${value}
-#done
-
-HOME_PAGE_FILE="HomePage.html"
-HOME_PAGE_PATH="${testSuiteDir}/${HOME_PAGE_FILE}"
+#HOME_PAGE_FILE="HomePage.html"
+#HOME_PAGE_PATH="${testSuiteDir}/${HOME_PAGE_FILE}"
 SIGN_IN_FILE="SignIn${testRole}.html"
 SIGN_IN_PATH="${testSuiteDir}/${SIGN_IN_FILE}"
 SIGN_OUT_FILE="SignOut.html"
@@ -91,21 +75,22 @@ END
 }
 
 ### Print HomePage.html
-if [ ! -e  ${HOME_PAGE_PATH} ]; then
-    print_header ${HOME_PAGE_PATH} ${serverBase} "Home Page"
-    cat >> ${HOME_PAGE_PATH} <<END
-<tr>
-    <td>open</td>
-    <td>${serverPath}</td>
-    <td></td>
-</tr>
-END
-    print_footer ${HOME_PAGE_PATH}
-fi
+#echo "serverPath=${serverPath}"
+#if [ ! -e  ${HOME_PAGE_PATH} ]; then
+#    print_header ${HOME_PAGE_PATH} "${serverBase}" "Home Page"
+#    cat >> ${HOME_PAGE_PATH} <<END
+#<tr>
+#    <td>open</td>
+#    <td>${serverPath}</td>
+#    <td></td>
+#</tr>
+#END
+#    print_footer ${HOME_PAGE_PATH}
+#fi
 
 ### Print SignIn${testRole}.html
 if [ ! -e  ${SIGN_IN_PATH} ]; then
-    print_header ${SIGN_IN_PATH} ${serverBase} "${SIGN_IN_TITLE}"
+    print_header ${SIGN_IN_PATH} "${serverBase}" "${SIGN_IN_TITLE}"
     cat >> ${SIGN_IN_PATH} <<END
 <tr>
     <td>clickAndWait</td>
@@ -138,7 +123,7 @@ fi
 
 ### Print SignOut.html
 if [ ! -e  ${SIGN_OUT_PATH} ]; then
-    print_header ${SIGN_OUT_PATH} ${serverBase} "SignOut"
+    print_header ${SIGN_OUT_PATH} "${serverBase}" "SignOut"
     cat >> ${SIGN_OUT_PATH} <<END
     <tr>
 	<td>clickAndWait</td>
