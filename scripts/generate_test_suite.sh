@@ -5,7 +5,7 @@ _scriptDir=`dirname $0`
 PARAMS="testRole testSuiteDir testSuiteName serverBase serverPath testUser testPass sisoIndex"
 source ${_scriptDir}/test_common_func.sh
 
-#HOME_PAGE_FILE="HomePage.html"
+HOME_PAGE_FILE="HomePage.html"
 #HOME_PAGE_PATH="${testSuiteDir}/${HOME_PAGE_FILE}"
 SIGN_IN_FILE="SignIn${testRole}.html"
 SIGN_IN_PATH="${testSuiteDir}/${SIGN_IN_FILE}"
