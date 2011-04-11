@@ -17,11 +17,6 @@
 	<td>SERVER_URL</td>
 </tr>
 <tr>
-	<td>open</td>
-	<td>@SERVER_PATH@admin/</td>
-	<td></td>
-</tr>
-<tr>
         <td>mouseOver</td>
         <td>id=Administration</td>
         <td></td>
