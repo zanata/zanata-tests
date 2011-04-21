@@ -51,7 +51,7 @@ SETTING_FILE_GET_ALL_VARIABLES("${TEST_CFG}" NOREPLACE UNQUOTED NOESCAPE_SEMICOL
 MESSAGE("ZANATA_PROFILE=${ZANATA_PROFILE}")
 SET(PROFILE_VARIABLES SERVER_BASE SERVER_PATH ADMIN_USER ADMIN_KEY TEST_ROLES KERBEROS
     CONFIG_LANG_ADD_NEW_LANG_ID_PREFIX CONFIG_SERVER_ID_PREFIX CONFIG_LANG_ID_PREFIX
-    LOGIN_FIELD_ID PASSWORD_FIELD_ID)
+    AUTH_METHOD LOGIN_FIELD_ID PASSWORD_FIELD_ID)
 FOREACH(_var ${PROFILE_VARIABLES})
     IF(DEFINED ${ZANATA_PROFILE}_${_var})
 	SET(${_var} "${${ZANATA_PROFILE}_${_var}}")
@@ -532,8 +532,8 @@ ENDFOREACH(_role ${TEST_ROLES})
 ENABLE_TESTING()
 ADD_CUSTOM_TARGET(clean_test_suites
     COMMAND find selenium/src/test-suites -name "[1-9]*.html" -delete
-    COMMAND find selenium/src/test-suites -type l -name "SignIn*.html" -delete
-    COMMAND find selenium/src/test-suites -type l -name "SignOut.html" -delete
+    COMMAND find selenium/src/test-suites -name "SignIn*.html" -delete
+    COMMAND find selenium/src/test-suites -name "SignOut.html" -delete
     COMMENT "Cleaning the generated test suite files"
     VERBATIM
     )

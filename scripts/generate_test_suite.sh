@@ -4,8 +4,7 @@
 # <passwordFieldId>
 
 _scriptDir=`dirname $0`
-PARAMS="testRole testSuiteDir testSuiteName serverBase serverPath testUser
-testPass sisoIndex authMethod loginFieldId passwordFieldId"
+PARAMS="testRole testSuiteDir testSuiteName serverBase serverPath testUser testPass sisoIndex authMethod loginFieldId passwordFieldId"
 source ${_scriptDir}/test_common_func.sh
 
 HOME_PAGE_FILE="HomePage.html"
@@ -105,16 +104,16 @@ END
 cat >> ${SIGN_IN_PATH} <<END
 <tr>
     <td>type</td>
-    <td>${LOGIN_FIELD_ID}</td>
+    <td>${loginFieldId}</td>
     <td>${testUser}</td>
 </tr>
 END
 
-if [ ! "${PASSWORD_FIELD_ID}" = "NONE" ]; then
+if [ ! "${passwordFieldId}" = "NONE" ]; then
     cat >> ${SIGN_IN_PATH} <<END
 <tr>
     <td>type</td>
-    <td>login:passwordField:password</td>
+    <td>${passwordFieldId}</td>
     <td>${testPass}</td>
 </tr>
 END
