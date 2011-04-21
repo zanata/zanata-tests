@@ -123,6 +123,7 @@ MACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
 		    ${_testRole} ${testSuiteDir} ${testSuiteName}
 		    ${SERVER_BASE} "${SERVER_PATH}"
 		    ${${_testRole}_USER} ${${_testRole}_USER} ${${_testRole}_SISO}
+		    ${AUTH_METHOD} ${LOGIN_FIELD_ID} ${PASSWORD_FIELD_ID}
 		    COMMENT "Generate test suite ${testSuiteName} for ${_testRole}"
 		    VERBATIM
 		    )

@@ -1,8 +1,11 @@
 #!/bin/bash
-# Usage: $0 <testRole> <testSuiteDir> <testSuiteName> <serverBase> <serverPath> <testUser> <testPass> <sisoIndex>
+# Usage: $0 <testRole> <testSuiteDir> <testSuiteName> <serverBase>
+# <serverPath> <testUser> <testPass> <sisoIndex> <authMethod> <loginFieldId>
+# <passwordFieldId>
 
 _scriptDir=`dirname $0`
-PARAMS="testRole testSuiteDir testSuiteName serverBase serverPath testUser testPass sisoIndex"
+PARAMS="testRole testSuiteDir testSuiteName serverBase serverPath testUser
+testPass sisoIndex authMethod loginFieldId passwordFieldId"
 source ${_scriptDir}/test_common_func.sh
 
 HOME_PAGE_FILE="HomePage.html"
@@ -97,16 +100,27 @@ if [ ! -e  ${SIGN_IN_PATH} ]; then
     <td>Sign_in</td>
     <td></td>
 </tr>
+END
+
+cat >> ${SIGN_IN_PATH} <<END
 <tr>
     <td>type</td>
-    <td>login:usernameField:username</td>
+    <td>${LOGIN_FIELD_ID}</td>
     <td>${testUser}</td>
 </tr>
+END
+
+if [ ! "${PASSWORD_FIELD_ID}" = "NONE" ]; then
+    cat >> ${SIGN_IN_PATH} <<END
 <tr>
     <td>type</td>
     <td>login:passwordField:password</td>
     <td>${testPass}</td>
 </tr>
+END
+fi
+
+cat >> ${SIGN_IN_PATH} <<END
 <tr>
     <td>clickAndWait</td>
     <td>login:Sign_in</td>
