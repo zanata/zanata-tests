@@ -1,8 +1,8 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>null</groupId>
+  <groupId>org.zanata</groupId>
   <artifactId>null</artifactId>
-  <version>0</version>
+  <version>@MVN_CLIENT_VER@</version>
   <properties>
       <flies.srcDir>.</flies.srcDir>
       <flies.srcDirPot>pot</flies.srcDirPot>
@@ -25,9 +25,9 @@
   </build>
   <pluginRepositories>
     <pluginRepository>
-      <id>openl10n-public-repository-group</id>
-      <name>OpenL10n Public Repository Group</name>
-      <url>http://nexus.openl10n.net/content/groups/public</url>
+	<id>snapshot-repository-zanata.forge.cloudbees.com</id>
+	<name>snapshot-repository-zanata.forge.cloudbees.com</name>
+      <url>https://repository-zanata.forge.cloudbees.com/snapshot/</url>
       <releases>
         <enabled>true</enabled>
       </releases>
@@ -35,5 +35,16 @@
         <enabled>true</enabled>
       </snapshots>
     </pluginRepository>
-  </pluginRepositories>
+    <pluginRepository>
+	<id>release-repository-zanata.forge.cloudbees.com</id>
+	<name>release-repository-zanata.forge.cloudbees.com</name>
+	<url>https://repository-zanata.forge.cloudbees.com/release/</url>
+	<releases>
+	    <enabled>true</enabled>
+	</releases>
+	<snapshots>
+	    <enabled>true</enabled>
+	</snapshots>
+    </pluginRepository>
+</pluginRepositories>
 </project>

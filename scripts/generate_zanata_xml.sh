@@ -12,7 +12,7 @@ projDir=${baseDir}/${proj}/${ver}
 rm -f ${projDir}/zanata.xml
 cat >> ${projDir}/zanata.xml << END
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<config xmlns="http://flies.openl10n.net/config/v1/">
+<config xmlns="http://zanata.org/namespace/config/">
     <url>${zanataUrl}</url>
     <project>${proj}</project>
     <project-version>${ver}</project-version>
