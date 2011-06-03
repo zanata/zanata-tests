@@ -27,7 +27,7 @@
     <pluginRepository>
 	<id>snapshot-repository-zanata.forge.cloudbees.com</id>
 	<name>snapshot-repository-zanata.forge.cloudbees.com</name>
-      <url>https://repository-zanata.forge.cloudbees.com/snapshot/</url>
+      <url>http://repository-zanata.forge.cloudbees.com/snapshot/</url>
       <releases>
         <enabled>true</enabled>
       </releases>
@@ -38,7 +38,7 @@
     <pluginRepository>
 	<id>release-repository-zanata.forge.cloudbees.com</id>
 	<name>release-repository-zanata.forge.cloudbees.com</name>
-	<url>https://repository-zanata.forge.cloudbees.com/release/</url>
+	<url>http://repository-zanata.forge.cloudbees.com/release/</url>
 	<releases>
 	    <enabled>true</enabled>
 	</releases>
