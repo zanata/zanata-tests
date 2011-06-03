@@ -32,7 +32,7 @@ function check_connection(){
     else
 	QUIET=""
     fi
-    wget ${QUIET} -O $DOWNLOAD_FILE $ZANATA_SERVER_URL
+    wget --no-check-certificate ${QUIET} -O $DOWNLOAD_FILE $ZANATA_SERVER_URL
     if grep -e "$UP_PATTERN" $DOWNLOAD_FILE; then
 	UP=1
 	if [ $VERBOSE -ge 1 ]; then
