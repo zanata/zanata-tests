@@ -51,7 +51,7 @@ SETTING_FILE_GET_ALL_VARIABLES("${TEST_CFG}" NOREPLACE UNQUOTED NOESCAPE_SEMICOL
 MESSAGE("ZANATA_PROFILE=${ZANATA_PROFILE}")
 SET(PROFILE_VARIABLES SERVER_BASE SERVER_PATH ADMIN_USER ADMIN_KEY TEST_ROLES KERBEROS
     CONFIG_LANG_ADD_NEW_LANG_ID_PREFIX CONFIG_SERVER_ID_PREFIX CONFIG_LANG_ID_PREFIX
-    AUTH_METHOD LOGIN_FIELD_ID PASSWORD_FIELD_ID)
+    AUTH_METHOD LOGIN_FIELD_ID PASSWORD_FIELD_ID MVN_CLIENT_VER)
 FOREACH(_var ${PROFILE_VARIABLES})
     IF(DEFINED ${ZANATA_PROFILE}_${_var})
 	SET(${_var} "${${ZANATA_PROFILE}_${_var}}")
@@ -79,7 +79,6 @@ SET(RESULT_DIR_ABSOLUTE "${CMAKE_SOURCE_DIR}/${RESULT_DIR}")
 
 # Maven
 SET(MVN_GOAL_PREFIX "org.zanata:zanata-maven-plugin")
-
 
 IF(NOT EXISTS ${RESULT_DIR_ABSOLUTE})
     FILE(MAKE_DIRECTORY "${RESULT_DIR_ABSOLUTE}")
@@ -141,15 +140,14 @@ ENDFOREACH()
 
 
 ####################################################################
-# Generate targets
+# REST tests
 ####################################################################
-
 #===================================================================
-# Retrieve projects
+# Base requirement
 #
 
 ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR_ABSOLUTE}
-    COMMAND mkdir -p ${SAMPLE_PROJ_DIR_ABSOLUTE}
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${SAMPLE_PROJ_DIR_ABSOLUTE}
     )
 
 ADD_CUSTOM_TARGET(prepare_all_projects
@@ -157,30 +155,31 @@ ADD_CUSTOM_TARGET(prepare_all_projects
     )
 
 
-ADD_CUSTOM_TARGET(selenium_projects
-    COMMENT "   Preparing projects for selenium tests"
-    )
-
-ADD_CUSTOM_TARGET(prepare_selenium_projects
-    COMMENT "   Generate zanata.xml for selenium testing projects"
-    )
-
-ADD_DEPENDENCIES(prepare_selenium_projects
-    prepare_ReleaseNotes_f13 prepare_SecurityGuide_f13)
-
-ADD_DEPENDENCIES(selenium_projects zanata_publican_push_mvn_ReleaseNotes_f13
-    zanata_publican_push_mvn_SecurityGuide_f13)
-
-
 #===================================================================
-# Publican targets
+# Source project targets
 #
-MACRO(ADD_PUBLICAN_PROJECT proj)
+MACRO(ADD_SOURCE_PROJECT proj)
     SET(_projVers "${${proj}_VERS}")
     SET(_target "")
     IF(NOT ${ARGN} STREQUAL "")
 	SET(_target "${ARGN}")
     ENDIF()
+
+    # Project wide zanata.xml (means: no ver info yet)
+    SET(_sample_proj_dir_absolute ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj})
+    SET(_zanata_xml_path ${_sample_proj_dir_absolute}/zanata.xml)
+
+    ADD_CUSTOM_COMMAND(OUTPUT ${_zanata_xml_path}
+	COMMAND scripts/generate_zanata_xml.sh ${SAMPLE_PROJ_DIR_ABSOLUTE}
+	${ZANATA_URL} ${proj}
+	DEPENDS ${_sample_proj_dir_absolute}
+	COMMENT "   Generate ${_zanata_xml_path}"
+	VERBATIM
+	)
+    ADD_CUSTOM_COMMAND(OUTPUT ${_sample_proj_dir_absolute}
+	COMMAND ${CMAKE_COMMAND} -E make_directory ${_sample_proj_dir_absolute}
+	DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}
+	)
 
     ADD_CUSTOM_TARGET(prepare_${proj})
     ADD_DEPENDENCIES(prepare_all_projects prepare_${proj})
@@ -193,49 +192,46 @@ MACRO(ADD_PUBLICAN_PROJECT proj)
 	ADD_CUSTOM_TARGET(generate_zanata_xml_${proj}_${_ver}
 	    DEPENDS ${_zanata_xml_path}
 	    )
-
 	ADD_CUSTOM_COMMAND(OUTPUT ${_zanata_xml_path}
-	    COMMAND scripts/generate_zanata_xml.sh ${SAMPLE_PROJ_DIR_ABSOLUTE} ${proj}
-	    ${_ver} ${ZANATA_URL} "${LANGS}"
-	    DEPENDS ${_sample_proj_dir_absolute}/pot
+	    COMMAND scripts/generate_zanata_xml.sh ${SAMPLE_PROJ_DIR_ABSOLUTE}
+	    ${ZANATA_URL} ${proj} ${_ver}  "${LANGS}"
+	    DEPENDS ${_sample_proj_dir_absolute}
 	    COMMENT "   Generate ${_zanata_xml_path}"
 	    VERBATIM
 	    )
 
-	ADD_CUSTOM_TARGET(link_pom_xml_${proj}_${_ver}
-	    DEPENDS ${_sample_proj_dir_absolute}/pom.xml
-	    )
-
+	#	ADD_CUSTOM_TARGET(link_pom_xml_${proj}_${_ver}
+	#    DEPENDS ${_sample_proj_dir_absolute}/pom.xml
+	#    )
 	ADD_CUSTOM_COMMAND(OUTPUT ${_sample_proj_dir_absolute}/pom.xml
 	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/link_pom_xml.sh ${CMAKE_SOURCE_DIR}
 	    WORKING_DIRECTORY ${_sample_proj_dir_absolute}
+	    DEPENDS ${_zanata_xml_path}
 	    COMMENT "   Link pom.xml for project ${proj}/${_ver} "
 	    )
 
 	ADD_CUSTOM_TARGET(preprocess_publican_${proj}_${_ver}
 	    DEPENDS ${_sample_proj_dir_absolute}/publican.cfg.striped
 	    )
-
 	ADD_CUSTOM_COMMAND(OUTPUT ${_sample_proj_dir_absolute}/publican.cfg.striped
 	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/preprocess_publican.sh "${LANGS}"
 	    WORKING_DIRECTORY ${_sample_proj_dir_absolute}
-	    DEPENDS ${_sample_proj_dir_absolute}/pot
+	    DEPENDS ${_zanata_xml_path}
 	    COMMENT "   Preparing project ${proj}/${_ver} "
 	    VERBATIM
 	    )
 
 	# Prepare project: generate zanata.xml and pom.xml
-	ADD_CUSTOM_TARGET(prepare_${proj}_${_ver})
+	ADD_CUSTOM_TARGET(prepare_${proj}_${_ver}
+	    DEPENDS ${_zanata_xml_path} ${_sample_proj_dir_absolute}/pom.xml)
 
 	ADD_DEPENDENCIES(prepare_${proj}_${_ver}
-	    generate_zanata_xml_${proj}_${_ver}
-	    link_pom_xml_${proj}_${_ver}
 	    preprocess_publican_${proj}_${_ver}
 	    )
 
 	ADD_DEPENDENCIES(prepare_${proj} prepare_${proj}_${_ver})
 
-	ADD_CUSTOM_COMMAND(OUTPUT ${_sample_proj_dir_absolute}/pot
+	ADD_CUSTOM_COMMAND(OUTPUT ${_sample_proj_dir_absolute}
 	    COMMAND perl scripts/get_project.pl ${SAMPLE_PROJ_DIR_ABSOLUTE} ${proj}
 	    ${${proj}_REPO_TYPE} ${_ver} ${${proj}_URL_${_ver}}
 	    DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}
@@ -244,7 +240,7 @@ MACRO(ADD_PUBLICAN_PROJECT proj)
 	    )
 
     ENDFOREACH(_ver ${_projVers})
-ENDMACRO(ADD_PUBLICAN_PROJECT proj)
+ENDMACRO(ADD_SOURCE_PROJECT proj)
 
 #===================================================================
 # Maven targets
@@ -265,6 +261,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	-Dzanata.project.slug=${proj}
 	-Dzanata.project.name=${${proj}_NAME}
 	-Dzanata.project.desc=${${proj}_DESC}
+	DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/zanata.xml
 	COMMENT "  [Mvn] Creating proj: proj ${proj}:${${proj}_NAME} in ${ZANATA_URL}"
 	VERBATIM
 	)
@@ -296,7 +293,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    VERBATIM
 	    )
 
-	ADD_DEPENDENCIES(zanata_putversion_mvn_${proj}_${_ver} zanata_putproject_mvn_${proj})
+	ADD_DEPENDENCIES(zanata_putversion_mvn_${proj}_${_ver} zanata_putproject_mvn_${proj}
+	    generate_zanata_xml_${proj}_${_ver})
 
 	# Publican push
 	ADD_CUSTOM_TARGET(zanata_publican_push_mvn_${proj}_${_ver}
@@ -359,7 +357,9 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	${ZANATA_PY_CLIENT_COMMON_ADMIN_OPTS}
 	--project-name=${${proj}_NAME}
 	--project-desc=${${proj}_DESC}
+	DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/zanata.xml
 	COMMENT "  [Py] Creating proj: proj ${proj}:${${proj}_NAME} in ${ZANATA_URL}"
+	WORKING_DIRECTORY ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}
 	VERBATIM
 	)
 
@@ -459,7 +459,7 @@ MACRO(GENERATE_REST_TEST_CLIENT_TARGETS clientId)
 	FOREACH(_proj ${${_clientDisplay}_PROJECTS})
 	    GET_TARGET_PROPERTY(_target_exist prepare_${_proj} EXISTS)
 	    IF(_target_exist STREQUAL "_target_exist-NOTFOUND")
-		ADD_PUBLICAN_PROJECT(${_proj})
+		ADD_SOURCE_PROJECT(${_proj})
 	    ENDIF(_target_exist STREQUAL "_target_exist-NOTFOUND")
 	    IF("${clientId}" STREQUAL "py")
 		ADD_PY_CLIENT_TARGETS(${_proj})
@@ -485,6 +485,23 @@ ENDIF(NOT "${ZANATA_PY_PATH}" STREQUAL "")
 
 FIND_PROGRAM(ZANATA_PY_CMD zanata HINTS ${ZANATA_PY_PATH} /usr/bin /bin NO_DEFAULT_PATH)
 GENERATE_REST_TEST_CLIENT_TARGETS(py)
+
+#===================================================================
+# Targets to process only projects that have selenium tests associated.
+#
+ADD_CUSTOM_TARGET(selenium_projects
+    COMMENT "   Preparing projects for selenium tests"
+    )
+
+ADD_CUSTOM_TARGET(prepare_selenium_projects
+    COMMENT "   Generate zanata.xml for selenium testing projects"
+    )
+
+ADD_DEPENDENCIES(prepare_selenium_projects
+    prepare_ReleaseNotes_f13 prepare_SecurityGuide_f13)
+
+ADD_DEPENDENCIES(selenium_projects zanata_publican_push_mvn_ReleaseNotes_f13
+    zanata_publican_push_mvn_SecurityGuide_f13)
 
 #===================================================================
 # Put users
