@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://flies-devel.englab.bne.redhat.com/" />
+<title>CreateProject</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">CreateProject</td></tr>
+</thead><tbody>
+<tr>
+	<td>store</td>
+	<td>ibus chewing</td>
+	<td>projectName</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=Projects</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Create project</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=projectForm:nameField:name</td>
+	<td>${projectName}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=projectForm:slugField:slug</td>
+	<td>ibus-chewing6</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=projectForm:descriptionField:description</td>
+	<td>Chewing input method for IBus</td>
+</tr>
+<!--Need to enter iframe to input in RichText-->
+<tr>
+	<td>selectFrame</td>
+	<td>id=projectForm:homeContentField:homeContentTextArea_ifr</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=tinymce</td>
+	<td></td>
+</tr>
+<tr>
+	<td>typeKeys</td>
+	<td>id=tinymce</td>
+	<td>Chewing is an input method</td>
+</tr>
+<tr>
+	<td>keyPress</td>
+	<td>id=tinymce</td>
+	<td>\13</td>
+</tr>
+<tr>
+	<td>typeKeys</td>
+	<td>id=tinymce</td>
+	<td>that supports Zhu</td>
+</tr>
+<tr>
+	<td>keyPress</td>
+	<td>id=tinymce</td>
+	<td>\13</td>
+</tr>
+<!--Back to the main frame-->
+<tr>
+	<td>selectFrame</td>
+	<td>relative=top</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[name=&quot;projectForm:save&quot;]</td>
+	<td></td>
+</tr>
+<!--Verify-->
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Successfully created</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>${projectName}</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
