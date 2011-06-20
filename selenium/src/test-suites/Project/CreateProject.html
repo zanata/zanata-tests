@@ -34,7 +34,7 @@
 <tr>
 	<td>type</td>
 	<td>id=projectForm:slugField:slug</td>
-	<td>ibus-chewing6</td>
+	<td>ibus-chewing</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -42,6 +42,11 @@
 	<td>Chewing input method for IBus</td>
 </tr>
 <!--Need to enter iframe to input in RichText-->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>id=projectForm:homeContentField:homeContentTextArea_ifr</td>
+	<td></td>
+</tr>
 <tr>
 	<td>selectFrame</td>
 	<td>id=projectForm:homeContentField:homeContentTextArea_ifr</td>
@@ -79,7 +84,7 @@
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
+	<td>clickAndWait</td>
 	<td>css=input[name=&quot;projectForm:save&quot;]</td>
 	<td></td>
 </tr>
@@ -94,7 +99,6 @@
 	<td>${projectName}</td>
 	<td></td>
 </tr>
-
 </tbody></table>
 </body>
 </html>
