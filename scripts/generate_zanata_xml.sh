@@ -30,7 +30,7 @@ if [ -n "$ver" ]; then
     _langs=`echo $1 | sed -e 's/;/ /g'`
 
     for l in ${_langs}; do
-	lDir=`${scriptDir}/find_valid_lang_dir.sh "$projDir" $l`
+	lDir=`basename $(${scriptDir}/find_valid_lang_dir.sh "$projDir" $l)`
 	if [ -n "$lDir" ]; then
 	    echo "        <locale map-from=\"$lDir\">$l</locale>" >> ${projDir}/zanata.xml
 	fi

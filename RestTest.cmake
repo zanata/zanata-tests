@@ -99,6 +99,13 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	    )
 
     ENDFOREACH(_ver ${_projVers})
+    IF(NOT DEFINED ${${proj}_PROJECT_TYPE})
+	SET(${proj}_PROJECT_TYPE ${PROJECT_TYPE_DEFAULT})
+    ENDIF(NOT DEFINED ${${proj}_PROJECT_TYPE})
+
+    IF(NOT DEFINED ${${proj}_SRC_DIR})
+	SET(${proj}_SRC_DIR ${SRC_DIR_DEFAULT})
+    ENDIF(NOT DEFINED ${${proj}_SRC_DIR})
 ENDMACRO(ADD_SOURCE_PROJECT proj)
 
 #===================================================================
@@ -108,7 +115,6 @@ CONFIGURE_FILE(pom.xml.in pom.xml @ONLY)
 
 SET(ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS
     -Dzanata.url=${ZANATA_URL} -Dzanata.userConfig=${CMAKE_SOURCE_DIR}/zanata.ini
-    -Dzanata.username=${ADMIN_USER} -Dzanata.key=${ADMIN_KEY}
     )
 
 MACRO(ADD_MVN_CLIENT_TARGETS proj )
@@ -134,6 +140,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	SET(ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS
 	    -Dzanata.projectConfig=${_zanata_xml_path}
 	    -Dzanata.projectVersion=${_ver}
+	    -Dzanata.projectType=${${proj}_PROJECT_TYPE}
 	    )
 
 	# Put version
@@ -143,8 +150,6 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    ${ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS}
 	    -Dzanata.version.slug=${_ver}
 	    -Dzanata.version.project=${proj}
-	    -Dzanata.version.name=Ver\ ${_ver}
-	    -Dzanata.version.desc=Desc\ of\ ${_ver}
 	    DEPENDS ${_sample_proj_dir_absolute}/pom.xml
 	    ${_zanata_xml_path}
 	    ${_sample_proj_dir_absolute}/publican.cfg.striped
@@ -156,12 +161,12 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    generate_zanata_xml_${proj}_${_ver})
 
 	# Publican push
-	ADD_CUSTOM_TARGET(zanata_publican_push_mvn_${proj}_${_ver}
-	    COMMAND ${ZANATA_MVN_CMD} -e -B ${MVN_GOAL_PREFIX}:publican-push
+	ADD_CUSTOM_TARGET(zanata_push_mvn_${proj}_${_ver}
+	    COMMAND ${ZANATA_MVN_CMD} -e -B ${MVN_GOAL_PREFIX}:push
 	    ${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS}
-	    -Dzanata.srcDir=.
-	    -Dzanata.importPo
+	    -Dzanata.srcDir=${${proj}_SRC_DIR}
+	    -Dzanata.pushTrans
 	    WORKING_DIRECTORY ${_sample_proj_dir_absolute}
 	    DEPENDS ${_sample_proj_dir_absolute}/pom.xml
 	    ${_zanata_xml_path}
@@ -169,31 +174,29 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    VERBATIM
 	    )
 
-	ADD_DEPENDENCIES(zanata_publican_push_mvn_${proj}_${_ver} zanata_putversion_mvn_${proj}_${_ver})
-	ADD_DEPENDENCIES(zanata_publican_push_mvn_all_projects
-	    zanata_publican_push_mvn_${proj}_${_ver})
+	ADD_DEPENDENCIES(zanata_push_mvn_${proj}_${_ver} zanata_putversion_mvn_${proj}_${_ver})
 
 
 	# Publican pull
-	ADD_CUSTOM_TARGET(zanata_publican_pull_mvn_${proj}_${_ver}
-	    COMMAND ${ZANATA_MVN_CMD} -e -B ${MVN_GOAL_PREFIX}:publican-pull
+	ADD_CUSTOM_TARGET(zanata_pull_mvn_${proj}_${_ver}
+	    COMMAND ${ZANATA_MVN_CMD} -e -B ${MVN_GOAL_PREFIX}:pull
 	    ${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS}
-	    -Dzanata.dstDir=${_pull_dest_dir_mvn}
+	    -Dzanata.transDir=${_pull_dest_dir_mvn}
 	    DEPENDS ${_zanata_xml_path}
 	    ${_pull_dest_dir_mvn}
 	    COMMENT "  [Mvn] Pulling pot and po for proj ${proj} ver ${_ver} from  ${ZANATA_URL}"
 	    VERBATIM
 	    )
 
-	ADD_DEPENDENCIES(zanata_publican_pull_mvn_${proj}_${_ver}
-	    zanata_publican_push_mvn_${proj}_${_ver}  zanata_putversion_mvn_${proj}_${_ver})
-	ADD_DEPENDENCIES(zanata_publican_pull_mvn_all_projects
-	    zanata_publican_pull_mvn_${proj}_${_ver})
+	#ADD_CUSTOM_TARGET(zanata_push_pull_check
+
+	ADD_DEPENDENCIES(zanata_pull_mvn_${proj}_${_ver}
+	    zanata_push_mvn_${proj}_${_ver}  zanata_putversion_mvn_${proj}_${_ver})
 
 	# REST test targets
 	ADD_CUSTOM_TARGET(rest_test_mvn_${proj}_${_ver})
-	ADD_DEPENDENCIES(rest_test_mvn_${proj}_${_ver} zanata_publican_pull_mvn_${proj}_${_ver})
+	ADD_DEPENDENCIES(rest_test_mvn_${proj}_${_ver} zanata_pull_mvn_${proj}_${_ver})
 	ADD_DEPENDENCIES(rest_test_mvn rest_test_mvn_${proj}_${_ver})
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${_pull_dest_dir_mvn}
@@ -250,7 +253,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    zanata_project_create_py_${proj})
 
 	# Publican push
-	ADD_CUSTOM_TARGET(zanata_publican_push_py_${proj}_${_ver}
+	ADD_CUSTOM_TARGET(zanata_push_py_${proj}_${_ver}
 	    COMMAND yes | ${ZANATA_PY_CMD} publican push
 	    ${ZANATA_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS}
@@ -262,12 +265,10 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    VERBATIM
 	    )
 
-	ADD_DEPENDENCIES(zanata_publican_push_py_${proj}_${_ver} zanata_version_create_py_${proj}_${_ver})
-	ADD_DEPENDENCIES(zanata_publican_push_py_all_projects
-	    zanata_publican_push_py_${proj}_${_ver})
+	ADD_DEPENDENCIES(zanata_push_py_${proj}_${_ver} zanata_version_create_py_${proj}_${_ver})
 
 	# Publican pull
-	ADD_CUSTOM_TARGET(zanata_publican_pull_py_${proj}_${_ver}
+	ADD_CUSTOM_TARGET(zanata_pull_py_${proj}_${_ver}
 	    COMMAND ${ZANATA_PY_CMD} publican pull
 	    ${ZANATA_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS}
@@ -278,14 +279,12 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    VERBATIM
 	    )
 
-	ADD_DEPENDENCIES(zanata_publican_pull_py_${proj}_${_ver}
-	    zanata_publican_push_py_${proj}_${_ver}  zanata_version_create_py_${proj}_${_ver})
-	ADD_DEPENDENCIES(zanata_publican_pull_py_all_projects
-	    zanata_publican_pull_py_${proj}_${_ver})
+	ADD_DEPENDENCIES(zanata_pull_py_${proj}_${_ver}
+	    zanata_push_py_${proj}_${_ver}  zanata_version_create_py_${proj}_${_ver})
 
 	# REST test targets
 	ADD_CUSTOM_TARGET(rest_test_py_${proj}_${_ver})
-	ADD_DEPENDENCIES(rest_test_py_${proj}_${_ver} zanata_publican_pull_py_${proj}_${_ver})
+	ADD_DEPENDENCIES(rest_test_py_${proj}_${_ver} zanata_pull_py_${proj}_${_ver})
 	ADD_DEPENDENCIES(rest_test_py rest_test_py_${proj}_${_ver})
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${_pull_dest_dir_py}
@@ -304,13 +303,6 @@ MACRO(GENERATE_REST_TEST_CLIENT_TARGETS clientId)
 	MESSAGE("zanata ${clientId} is not installed! ${clientId} tests disabled.")
     ELSE("${ZANATA_${_clientDisplay}_CMD}" STREQUAL "ZANATA_${_clientDisplay}_CMD-NOTFOUND")
 	MESSAGE("[${_clientDisplay}] client is ${ZANATA_${_clientDisplay}_CMD}")
-	ADD_CUSTOM_TARGET(zanata_publican_push_${clientId}_all_projects
-	    COMMENT "[${_clientDisplay}] publican push all projects."
-	    )
-	ADD_CUSTOM_TARGET(zanata_publican_pull_${clientId}_all_projects
-	    COMMENT "[${_clientDisplay}] publican pull all projects."
-	    )
-
 	ADD_CUSTOM_TARGET(rest_test_${clientId}
 	    COMMENT "[${_clientDisplay}] REST API tests."
 	    )
@@ -359,6 +351,6 @@ ADD_CUSTOM_TARGET(prepare_selenium_projects
 ADD_DEPENDENCIES(prepare_selenium_projects
     prepare_ReleaseNotes_f13 prepare_SecurityGuide_f13)
 
-ADD_DEPENDENCIES(selenium_projects zanata_publican_push_mvn_ReleaseNotes_f13
-    zanata_publican_push_mvn_SecurityGuide_f13)
+ADD_DEPENDENCIES(selenium_projects zanata_push_mvn_ReleaseNotes_f13
+    zanata_push_mvn_SecurityGuide_f13)
 

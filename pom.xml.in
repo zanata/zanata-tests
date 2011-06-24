@@ -4,9 +4,9 @@
   <artifactId>null</artifactId>
   <version>@MVN_CLIENT_VER@</version>
   <properties>
-      <flies.srcDir>.</flies.srcDir>
-      <flies.srcDirPot>pot</flies.srcDirPot>
-      <flies.dstDir>.</flies.dstDir>
+      <zanata.srcDir>.</zanata.srcDir>
+      <zanata.srcDirPot>pot</zanata.srcDirPot>
+      <zanata.dstDir>.</zanata.dstDir>
   </properties>
 
   <build>
@@ -16,9 +16,9 @@
         <artifactId>zanata-maven-plugin</artifactId>
 	<version>@MVN_CLIENT_VER@</version>
 	<configuration>
-	    <srcDir>${flies.srcDir}</srcDir>
-	    <srcDirPot>${flies.srcDirPot}</srcDirPot>
-	    <dstDir>${flies.dstDir}</dstDir>
+	    <srcDir>${zanata.srcDir}</srcDir>
+	    <srcDirPot>${zanata.srcDirPot}</srcDirPot>
+	    <transDir>${zanata.dstDir}</transDir>
         </configuration>
       </plugin>
     </plugins>
