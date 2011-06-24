@@ -189,7 +189,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    VERBATIM
 	    )
 
-	#ADD_CUSTOM_TARGET(zanata_push_pull_check
+	#ADD_CUSTOM_TARGET(zanata_rest_verify _${proj}_${_ver}
 
 	ADD_DEPENDENCIES(zanata_pull_mvn_${proj}_${_ver}
 	    zanata_push_mvn_${proj}_${_ver}  zanata_putversion_mvn_${proj}_${_ver})

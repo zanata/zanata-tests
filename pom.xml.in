@@ -5,8 +5,7 @@
   <version>@MVN_CLIENT_VER@</version>
   <properties>
       <zanata.srcDir>.</zanata.srcDir>
-      <zanata.srcDirPot>pot</zanata.srcDirPot>
-      <zanata.dstDir>.</zanata.dstDir>
+      <zanata.transDir>.</zanata.transDir>
   </properties>
 
   <build>
@@ -17,8 +16,7 @@
 	<version>@MVN_CLIENT_VER@</version>
 	<configuration>
 	    <srcDir>${zanata.srcDir}</srcDir>
-	    <srcDirPot>${zanata.srcDirPot}</srcDirPot>
-	    <transDir>${zanata.dstDir}</transDir>
+	    <transDir>${zanata.transDir}</transDir>
         </configuration>
       </plugin>
     </plugins>
