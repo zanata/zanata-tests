@@ -12,6 +12,7 @@ if [ -n "$1" ];then
 else
     ver=
 fi
+langList=$1
 
 projDir=${baseDir}/${proj}/${ver}
 
@@ -27,12 +28,12 @@ if [ -n "$ver" ]; then
     echo "    <project-version>${ver}</project-version>" >> ${projDir}/zanata.xml
     echo "    <locales>" >> ${projDir}/zanata.xml
 
-    _langs=`echo $1 | sed -e 's/;/ /g'`
+    _langs=`echo $langList | sed -e 's/;/ /g'`
 
-    for l in ${_langs}; do
-	lDir=`basename $(${scriptDir}/find_valid_lang_dir.sh "$projDir" $l)`
-	if [ -n "$lDir" ]; then
-	    echo "        <locale map-from=\"$lDir\">$l</locale>" >> ${projDir}/zanata.xml
+    for _l in ${_langs}; do
+	_lDir=`${scriptDir}/find_valid_lang_dir.sh "$projDir" $_l`
+	if [ -n ${_lDir} ]; then
+	    echo "        <locale map-from=\"${_lDir}\">$_l</locale>" >> ${projDir}/zanata.xml
 	fi
     done
     echo "    </locales>" >> ${projDir}/zanata.xml
