@@ -33,7 +33,7 @@ function findLangDirs(){
 	_rDir=`${scriptDir}/relative_path.sh ${bDir} ${_lDirA[0]}`
 	_ret=${_rDir%%/}
 	if [ ${_multiple} -eq 1 ];then
-	    for((_i=1; $_i < ${#_lDirA}; _i++ )); do
+	    for((_i=1; $_i < ${#_lDirA[*]}; _i++ )); do
 		_rDir=`${scriptDir}/relative_path.sh ${bDir} ${_lDirA[$_i]}`
 		_ret="$_ret$_separator${_rDir%%/}"
 	    done
@@ -70,11 +70,10 @@ scriptDir=`dirname $0`
 baseDir=$1
 langList=$2
 
-_langA=(`echo $langList | sed -e 's/;/ /g'`)
+_langA=(`echo "$langList" | sed -e 's/;/ /g'`)
 _out=
 
-for(( _i=0 ;$_i < ${#_langA}; _i++)); do
-    echo "_i=$_i"
+for(( _i=0 ;$_i < ${#_langA[*]}; _i++)); do
     case ${_langA[$_i]} in
 	zh*CN | zh*Hans )
 	    _ret=`findLangDirs $baseDir "zh*CN"`

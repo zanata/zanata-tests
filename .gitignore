@@ -18,6 +18,7 @@ SignOut.html
 
 /samples/
 /results/
+/pulled/
 
 *.swp
 *.xml

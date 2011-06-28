@@ -32,7 +32,7 @@ if [ -n "$ver" ]; then
 
     for _l in ${_langs}; do
 	_lDir=`${scriptDir}/find_valid_lang_dir.sh "$projDir" $_l`
-	if [ -n ${_lDir} ]; then
+	if [ -n "${_lDir}" ]; then
 	    echo "        <locale map-from=\"${_lDir}\">$_l</locale>" >> ${projDir}/zanata.xml
 	fi
     done

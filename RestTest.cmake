@@ -189,16 +189,22 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    VERBATIM
 	    )
 
-	ADD_CUSTOM_TARGET(zanata_rest_verify_mvn_${proj}_${_ver}
-	    COMMAND scripts/compare_translation.sh
-	    )
-
 	ADD_DEPENDENCIES(zanata_pull_mvn_${proj}_${_ver}
 	    zanata_push_mvn_${proj}_${_ver}  zanata_putversion_mvn_${proj}_${_ver})
 
+	ADD_CUSTOM_TARGET(zanata_rest_verify_mvn_${proj}_${_ver}
+	    COMMAND scripts/compare_translation_dir.sh
+	    ${_sample_proj_dir_absolute}/pot ${_sample_proj_dir_absolute} ${_pull_dest_dir_mvn} "${LANGS}"
+	    COMMENT "  [Mvn] Verifying the pulled contents with original translation."
+	    VERBATIM
+	    )
+
+	ADD_DEPENDENCIES(zanata_rest_verify_mvn_${proj}_${_ver}
+	    zanata_pull_mvn_${proj}_${_ver})
+
 	# REST test targets
 	ADD_CUSTOM_TARGET(rest_test_mvn_${proj}_${_ver})
-	ADD_DEPENDENCIES(rest_test_mvn_${proj}_${_ver} zanata_pull_mvn_${proj}_${_ver})
+	ADD_DEPENDENCIES(rest_test_mvn_${proj}_${_ver} zanata_rest_verify_mvn_${proj}_${_ver})
 	ADD_DEPENDENCIES(rest_test_mvn rest_test_mvn_${proj}_${_ver})
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${_pull_dest_dir_mvn}
@@ -284,9 +290,20 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	ADD_DEPENDENCIES(zanata_pull_py_${proj}_${_ver}
 	    zanata_push_py_${proj}_${_ver}  zanata_version_create_py_${proj}_${_ver})
 
+	ADD_CUSTOM_TARGET(zanata_rest_verify_py_${proj}_${_ver}
+	    COMMAND scripts/compare_translation_dir.sh
+	    ${_sample_proj_dir_absolute}/pot ${_sample_proj_dir_absolute} ${_pull_dest_dir_py} "${LANGS}"
+	    COMMENT "  [Py] Verifying the pulled contents with original translation."
+	    VERBATIM
+	    )
+
+	ADD_DEPENDENCIES(zanata_rest_verify_py_${proj}_${_ver}
+	    zanata_pull_py_${proj}_${_ver})
+
+
 	# REST test targets
 	ADD_CUSTOM_TARGET(rest_test_py_${proj}_${_ver})
-	ADD_DEPENDENCIES(rest_test_py_${proj}_${_ver} zanata_pull_py_${proj}_${_ver})
+	ADD_DEPENDENCIES(rest_test_py_${proj}_${_ver} zanata_rest_verify_py_${proj}_${_ver})
 	ADD_DEPENDENCIES(rest_test_py rest_test_py_${proj}_${_ver})
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${_pull_dest_dir_py}

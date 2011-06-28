@@ -7,9 +7,11 @@
 function print_usage(){
     cat <<END
     $0 - Whether po files under 2 directories are equivalent.
-Usage: $0 [options] potDir dir1 dir2 [langList]
+Usage: $0 [options] potDir dir1 dir2 langList
 Options:
+    potDir: Directory that contains pot files.
     dir1, dir2: 2 directories to be compared.
+    langList: list of languages, separated by ';'
 END
 }
 
@@ -22,9 +24,7 @@ function compare_dirs(){
     if [ "$_fileList1" = "$_fileList2" ]; then
 	_fileA1=(`echo $_fileList1 | xargs`)
 	_fileA2=(`echo $_fileList2 | xargs`)
-	_i=0
-	_len=${#_fileA1}
-	while [ $_i -lt $_len ]; do
+	for((_i=0; $_i < ${#_fileA1[*]}; _i++));do
 	    _bf=`basename ${_fileA1[$_i]} .po`
 	    _d1=`dirname ${_fileA1[$_i]}`
 	    _d2=`dirname ${_fileA2[$_i]}`
@@ -35,30 +35,34 @@ function compare_dirs(){
 	done
 
     fi
-    echo "Files of $_dir1 and $_dir2 are different!"
-    return -1
+    echo "Files of $_dir1 and $_dir2 are equivalent."
+    return
 
 }
+
+if [ $# -ne 4 ]; then
+    print_usage
+    exit 0
+fi
 
 scriptDir=`dirname $0`
 potDir=$1
 dir1=$2
 dir2=$3
-shift 3
-if [ -n $1 ];then
-    langList=$1
-else
-    langList=
-fi
+langList=$4
+shift 4
 
 if [ -n $langList ]; then
-    _postFix1=(`$scriptDir/find_valid_locale_dir.sh $dir1 $langList`)
-    _postFix2=(`$scriptDir/find_valid_locale_dir.sh $dir2 $langList`)
-    if [ ${#_postFix1} -ne ${#_postFix2} ]; then
-	echo "Error: [compare_translation_dir.sh] $dir1 contains ${#_postFix1}	valid locale, but $dir2 contains ${#_postFix2}"  > /dev/stderr
-	exit -1
+    _postFix1=(`$scriptDir/find_valid_lang_dir.sh -m $dir1 $langList`)
+    _postFix2=(`$scriptDir/find_valid_lang_dir.sh -m $dir2 $langList`)
+    if [ ${#_postFix1[*]} -ne ${#_postFix2[*]} ]; then
+	echo "Error: [compare_translation_dir.sh] $dir1 contains ${#_postFix1[*]} valid locales, but $dir2 contains ${#_postFix2[*]}"  > /dev/stderr
+	exit 1
     fi
-    for
-
+    for((_i=0; $_i < ${#_postFix1[*]} ; _i++));do
+	if ! compare_dirs $potDir $dir1/${_postFix1[$_i]} $dir2/${_postFix2[$_i]}; then
+	    exit 1
+	fi
+    done
 fi
 
