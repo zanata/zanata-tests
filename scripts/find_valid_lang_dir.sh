@@ -12,6 +12,7 @@ cat <<END
         -h: Print this help.
 	-m: Allow multiple finding per lang.
 	-s separator: Output sepration charactor. Default is ' '.
+	-p potDir: Directory that contains pot files.
 
     Parameters:
 	baseDir: base dir
@@ -23,32 +24,48 @@ END
 }
 
 function findLangDirs(){
-    bDir=$1
-    langNameTemplate=$2
+    langNameTemplate=$1
+#    echo "langNameTemplate=${langNameTemplate}"
     _ret=
-
-    _lDirA=(`find $bDir -wholename "*/$langNameTemplate/*.po" -exec dirname '{}' \; | sort -u`)
-    if [ ${#_lDirA} -gt 0 ];then
-	#echo "_lDirA[0]=${_lDirA[0]}"
-	_rDir=`${scriptDir}/relative_path.sh ${bDir} ${_lDirA[0]}`
-	_ret=${_rDir%%/}
-	if [ ${_multiple} -eq 1 ];then
-	    for((_i=1; $_i < ${#_lDirA[*]}; _i++ )); do
-		_rDir=`${scriptDir}/relative_path.sh ${bDir} ${_lDirA[$_i]}`
-		_ret="$_ret$_separator${_rDir%%/}"
-	    done
+    _lDirA=(`find $baseDir -wholename "*/$langNameTemplate/*.po" -exec dirname '{}' \; | sort -u`)
+#    echo "_lDirA[*]=${_lDirA[*]}"
+    if [ ${#_lDirA[*]} -gt 0 ];then
+	for((_i=0; $_i < ${#_lDirA[*]}; _i++ )); do
+	    _rDir=`${scriptDir}/relative_path.sh ${baseDir} ${_lDirA[$_i]}`
+#	    echo "_rDir=$_rDir _tDir=$_potDir/${_rDir#$langNameTemplate/}"
+	    if [ -d $_potDir/${_rDir#$langNameTemplate/} ]; then
+		# Has corresponding pot directory
+		if [  -z "$_ret" ];then
+		    _ret=${_rDir%%/}
+		else
+		    _ret="$_ret$_separator${_rDir%%/}"
+		fi
+		if [ ${_multiple} -eq 0 ];then
+		    break
+		fi
+	    fi
+	done
+	if [ -n "$_ret" ];then
+	    echo "$_ret"
+	else
+	    echo "findLangDirs(): pot directory does not contains corresponding  subdirectories of $baseDir" > /dev/stderr
 	fi
     else
-	echo "findLangDir(): non-empty $langNameTemplate is not found in $bDir" > /dev/stderr
+	echo "findLangDirs(): non-empty $langNameTemplate is not found in $baseDir" > /dev/stderr
     fi
-
-    echo "$_ret"
 }
+
+if [ $# -lt 2 ]; then
+    print_usage
+    exit 1
+fi
+
 
 _separator=' '
 _multiple=0
+_potDir=.
 
-while getopts "hms:" opt; do
+while getopts "hms:p:" opt; do
     case $opt in
 	h)
 	    print_usage
@@ -60,6 +77,9 @@ while getopts "hms:" opt; do
 	s)
 	    _separator=$OPTARG
 	    ;;
+	p)
+	    _potDir=$OPTARG
+	    ;;
 	*)
 	;;
     esac
@@ -68,24 +88,27 @@ shift $((OPTIND-1));
 
 scriptDir=`dirname $0`
 baseDir=$1
+#echo baseDir=$baseDir
 langList=$2
+#echo langList=$langList
 
 _langA=(`echo "$langList" | sed -e 's/;/ /g'`)
+#echo "_langA[*]=${_langA[*]}"
 _out=
 
 for(( _i=0 ;$_i < ${#_langA[*]}; _i++)); do
     case ${_langA[$_i]} in
 	zh*CN | zh*Hans )
-	    _ret=`findLangDirs $baseDir "zh*CN"`
+	    _ret=`findLangDirs "zh*CN"`
 	    ;;
 	zh*TW | zh*Hant )
-	    _ret=`findLangDirs $baseDir "zh*TW"`
+	    _ret=`findLangDirs "zh*TW"`
 	    ;;
 	* )
-	    _ret=`findLangDirs $baseDir "${_langA[$_i]}*"`
+	    _ret=`findLangDirs "${_langA[$_i]}*"`
 	    ;;
     esac
-    if [ $_i -gt 0 ];then
+    if [ -n "$_out" ];then
 	_out="$_out$_separator$_ret"
     else
 	_out="$_ret"
