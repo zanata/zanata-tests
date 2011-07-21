@@ -282,6 +282,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	ADD_CUSTOM_TARGET(zanata_version_create_py_${proj}_${_ver}
 	    COMMAND  ${ZANATA_PY_CMD} version create ${_ver}
 	    ${ZANATA_PY_CLIENT_COMMON_ADMIN_OPTS}
+	    ${ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS}
 	    --version-name=Ver\ ${_ver}
 	    --version-desc=Desc\ of\ ${_ver}
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
