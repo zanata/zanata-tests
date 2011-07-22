@@ -33,6 +33,11 @@
 	<td>${tdCell} textarea</td>
 	<td>tdArea</td>
 </tr>
+<tr>
+	<td>store</td>
+	<td>Click here to start translating</td>
+	<td>emptyDisplay</td>
+</tr>
 <!--Save entry number $entryNo with ${saveString}-->
 <tr>
 	<td>waitForElementPresent</td>
@@ -79,10 +84,41 @@
 	<td>${tdCell}&gt;div</td>
 	<td></td>
 </tr>
+<!--Verify whether the result is saved. Note that empty fields may be showing "Click here to start translating"-->
+<tr>
+	<td>storeEval</td>
+	<td>storedVars['saveString'] == &quot;&quot;</td>
+	<td>isSavingEmpty</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>${isSavingEmpty}</td>
+	<td>SavingEmpty</td>
+</tr>
 <tr>
 	<td>verifyText</td>
 	<td>${tdCell}&gt;div</td>
 	<td>${saveString}</td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>End</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>SavingEmpty</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${tdCell}&gt;div</td>
+	<td>${emptyDisplay}</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>End</td>
+	<td></td>
 </tr>
 </tbody></table>
 </body>
