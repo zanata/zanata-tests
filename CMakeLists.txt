@@ -15,7 +15,7 @@ INCLUDE(ManageVariable)
 ####################################################################
 # Project specific definition
 ####################################################################
-SET(PROJECT_DESCRIPTION "Test system for zanata.openl10n.net")
+SET(PROJECT_DESCRIPTION "Test system for project Zanata")
 
 ####################################################################
 # Macros
