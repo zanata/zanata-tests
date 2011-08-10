@@ -12,16 +12,20 @@
 <tr><td rowspan="1" colspan="3">Launch Virtualization</td></tr>
 </thead><tbody>
 <tr>
+	<td>store</td>
+	<td>css=table.DocumentListTable td&gt;div&gt;div&gt;div:contains(AmateurRadio)</td>
+	<td>actionElement</td>
+</tr>
+<tr>
 	<td>waitForElementPresent</td>
-	<td>css=div[id|=doc] div:contains(AmateurRadio)</td>
+	<td>${actionElement}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=div[id|=doc] div:contains(AmateurRadio)</td>
+	<td>${actionElement}</td>
 	<td></td>
 </tr>
-
 </tbody></table>
 </body>
 </html>
