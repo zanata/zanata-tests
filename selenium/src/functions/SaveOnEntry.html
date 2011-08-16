@@ -4,7 +4,7 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>Save On Entry 02</title>
+<title>Save On Entry</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
@@ -22,6 +22,18 @@
 	<td>entryNo</td>
 	<td>entryNo</td>
 </tr>
+<!-- Save types: ""-implict, "Approved"-Approved, "NeedReview"-fuzzy -->
+<tr>
+        <td>storeCookieByName</td>
+        <td>saveType</td>
+	<td>saveType</td>
+</tr>
+<!-- If hotKey=="" then assume mouse, otherwise use the specified hotkey-->
+<tr>
+	<td>storeCookieByName</td>
+	<td>hotKey</td>
+	<td>hotKey</td>
+</tr>
 <!--Define-->
 <tr>
 	<td>store</td>
@@ -37,6 +49,38 @@
 	<td>store</td>
 	<td>Click here to start translating</td>
 	<td>emptyDisplay</td>
+</tr>
+<!-- Save as Approve hot keys-->
+<tr>
+        <td>store</td>
+	<td>\13</td>
+	<td>SaveAsApproveKey</td>
+</tr>
+<tr>
+        <td>store</td>
+        <td>1</td>
+        <td>SaveAsApproveKeyHasCtrl</td>
+</tr>
+<tr>
+        <td>store</td>
+        <td>0</td>
+        <td>SaveAsApproveKeyHasAlt</td>
+</tr>
+<!-- Save as Fuzzy hot keys-->
+<tr>
+         <td>store</td>
+         <td>S</td>
+         <td>SaveAsNeedReviewKey</td>
+</tr>
+<tr>
+         <td>store</td>
+         <td>1</td>
+	 <td>SaveAsNeedReviewKeyHasCtrl</td>
+</tr>
+<tr>
+         <td>store</td>
+         <td>0</td>
+         <td>SaveAsNeedReviewKeyHasAlt</td>
 </tr>
 <!--Save entry number $entryNo with ${saveString}-->
 <tr>
