@@ -115,7 +115,6 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	    COMMENT "   Get sources of ${proj} ${_ver}:${${proj}_NAME} from ${${proj}_URL_${_ver}}"
 	    VERBATIM
 	    )
-
     ENDFOREACH(_ver ${_projVers})
     IF(NOT DEFINED ${${proj}_PROJECT_TYPE})
 	SET(${proj}_PROJECT_TYPE ${PROJECT_TYPE_DEFAULT})
@@ -168,6 +167,14 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    -Dzanata.projectType=${${proj}_PROJECT_TYPE}
 	    )
 
+	IF("${${proj}_PROJECT_TYPE}" STREQUAL "publican")
+	    LIST(APPEND ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS "-Dzanata.projectType=podir")
+	ELSEIF("${${proj}_PROJECT_TYPE}" STREQUAL "software")
+	    LIST(APPEND ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS "-Dzanata.projectType=podir")
+        ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "publican")
+	    LIST(APPEND $ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS "-Dzanata.projectType=properties")
+	ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "publican")
+
 	# Put version
 	ADD_CUSTOM_TARGET(zanata_putversion_mvn_${proj}_${_ver}
 	    COMMAND ${ZANATA_MVN_CMD} -e ${MVN_GOAL_PREFIX}:putversion
@@ -186,7 +193,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	ADD_DEPENDENCIES(zanata_putversion_mvn_${proj}_${_ver} zanata_putproject_mvn_${proj}
 	    generate_zanata_xml_${proj}_${_ver})
 
-	# Publican push
+	# Generic push
 	ADD_CUSTOM_TARGET(zanata_push_mvn_${proj}_${_ver}
 	    COMMAND ${ZANATA_MVN_CMD} -e -B ${MVN_GOAL_PREFIX}:push
 	    ${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
@@ -202,7 +209,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	ADD_DEPENDENCIES(zanata_push_mvn_${proj}_${_ver} zanata_putversion_mvn_${proj}_${_ver})
 
-	# Publican pull
+	# Generic pull
 	ADD_CUSTOM_TARGET(zanata_pull_mvn_${proj}_${_ver}
 	    COMMAND ${ZANATA_MVN_CMD} -e -B ${MVN_GOAL_PREFIX}:pull
 	    ${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
@@ -278,6 +285,15 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    --project-config=${_zanata_xml_path}
 	    )
 
+	IF("${${proj}_PROJECT_TYPE}" STREQUAL "publican")
+	    LIST(APPEND ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS "--project-type=${${proj}_PROJECT_TYPE}")
+	ELSEIF("${${proj}_PROJECT_TYPE}" STREQUAL "software")
+	    LIST(APPEND ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS "--project-type=${${proj}_PROJECT_TYPE}")
+	ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "publican")
+	    LIST(APPEND ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS	"--project-type=publican")
+	ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "publican")
+
+
 	# Put version
 	ADD_CUSTOM_TARGET(zanata_version_create_py_${proj}_${_ver}
 	    COMMAND  ${ZANATA_PY_CMD} version create ${_ver}
@@ -296,9 +312,9 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	ADD_DEPENDENCIES(zanata_version_create_py_${proj}_${_ver}
 	    zanata_project_create_py_${proj})
 
-	# Publican push
+	# Generic push
 	ADD_CUSTOM_TARGET(zanata_push_py_${proj}_${_ver}
-	    COMMAND yes | ${ZANATA_PY_CMD} publican push
+	    COMMAND yes | ${ZANATA_PY_CMD} push
 	    ${ZANATA_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS}
 	    --import-po
@@ -311,9 +327,9 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 
 	ADD_DEPENDENCIES(zanata_push_py_${proj}_${_ver} zanata_version_create_py_${proj}_${_ver})
 
-	# Publican pull
+	# Generic pull
 	ADD_CUSTOM_TARGET(zanata_pull_py_${proj}_${_ver}
-	    COMMAND ${ZANATA_PY_CMD} publican pull
+	    COMMAND ${ZANATA_PY_CMD} pull
 	    ${ZANATA_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS}
 	    --dstdir=${_pull_dest_dir_py}
