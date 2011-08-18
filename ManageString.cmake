@@ -1,4 +1,8 @@
 # - Collection of String utility macros.
+#
+# Included by:
+#   ManageVarible
+#
 # Defines the following macros:
 #   STRING_TRIM(var str [NOUNQUOTE])
 #   - Trim a string by removing the leading and trailing spaces,
@@ -13,6 +17,7 @@
 #
 #   STRING_UNQUOTE(var str)
 #   - Remove double quote marks and quote marks around a string.
+#     If the string is not quoted, then it returns an empty string.
 #     * Parameters:
 #       + var: A variable that stores the result.
 #       + str: A string.
@@ -50,7 +55,7 @@ IF(NOT DEFINED _MANAGE_STRING_CMAKE_)
 
 	IF(${var} STREQUAL "")
 	    SET(_var_1 "${str}")
-	    STRING(REGEX REPLACE  "^[ \t\r\n]+" "" _var_2 "${_var_1}" )
+	    STRING(REGEX REPLACE  "^[ \t\r\n]+" "" _var_2 "${str}" )
 	    STRING(REGEX REPLACE  "[ \t\r\n]+$" "" _var_3 "${_var_2}" )
 	    SET(${var} "${_var_3}")
 	ENDIF(${var} STREQUAL "")
@@ -64,18 +69,23 @@ IF(NOT DEFINED _MANAGE_STRING_CMAKE_)
 	# '#' => '#H'
 	# '\' => '#B'
 	# ';' => '#S'
-	SET(_ESCAPE_VARIABLE "")
 	SET(_NOESCAPE_SEMICOLON "")
-	SET(_ret "${str}")
-	STRING(REGEX REPLACE "#" "#H" _ret "${str}")
+	SET(_NOESCAPE_HASH "")
+
 	FOREACH(_arg ${ARGN})
 	    IF(${_arg} STREQUAL "NOESCAPE_SEMICOLON")
 		SET(_NOESCAPE_SEMICOLON "NOESCAPE_SEMICOLON")
-	    ELSEIF(${_arg} STREQUAL "ESCAPE_VARIABLE")
-		SET(_ESCAPE_VARIABLE "ESCAPE_VARIABLE")
-		STRING(REGEX REPLACE "[$]" "#D" _ret "${_ret}")
+	    ELSEIF(${_arg} STREQUAL "NOESCAPE_HASH")
+		SET(_NOESCAPE_HASH "NOESCAPE_HASH")
 	    ENDIF(${_arg} STREQUAL "NOESCAPE_SEMICOLON")
 	ENDFOREACH(_arg)
+
+	IF(_NOESCAPE_HASH STREQUAL "")
+	    STRING(REGEX REPLACE "#" "#H" _ret "${str}")
+	ELSE(_NOESCAPE_HASH STREQUAL "")
+	    SET(_ret "${str}")
+	ENDIF(_NOESCAPE_HASH STREQUAL "")
+
 	STRING(REGEX REPLACE "\\\\" "#B" _ret "${_ret}")
 	IF(_NOESCAPE_SEMICOLON STREQUAL "")
 	    STRING(REGEX REPLACE ";" "#S" _ret "${_ret}")
