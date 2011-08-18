@@ -1,4 +1,13 @@
 # - Get or set variables from various sources.
+#
+# Includes:
+#   ManageString
+#
+# Included by:
+#   ManageVersion
+#   PackRPM
+#
+#
 # Defines the following macros:
 #   COMMAND_OUTPUT_TO_VARIABLE(var cmd)
 #     - Store command output to a variable, without new line characters (\n and \r).
@@ -136,9 +145,17 @@ IF(NOT DEFINED _MANAGE_VARIABLE_CMAKE_)
 	# '$' is very tricky.
 	# '$' => '#D'
 	GET_FILENAME_COMPONENT(_filename_abs "${filename}" ABSOLUTE)
-	FILE(READ "${_filename_abs}" _ret)
-	STRING(REGEX REPLACE "[$]" "#D" _ret "${_ret}")
-	STRING_ESCAPE(${var} "${_ret}" ${ARGN})
+	EXECUTE_PROCESS(COMMAND cat ${filename}
+	    COMMAND sed -e "s/#/#H/g"
+	    COMMAND sed -e "s/[$]/#D/g"
+	    COMMAND sed -e "s/;/#S/g"
+	    COMMAND sed -e "s/[\\]/#B/g"
+	    OUTPUT_VARIABLE _ret
+	    OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+	STRING(REGEX REPLACE "\n" ";" _ret "${_ret}")
+	#MESSAGE("_ret=|${_ret}|")
+	SET(${var} "${_ret}")
     ENDMACRO(FILE_READ_ESCAPE var filename)
 
     MACRO(SETTING_FILE_GET_VARIABLES_PATTERN var attr_pattern setting_file)
@@ -162,33 +179,52 @@ IF(NOT DEFINED _MANAGE_VARIABLE_CMAKE_)
 	ENDFOREACH(_arg)
 
 	# Escape everything to be safe.
-	FILE_READ_ESCAPE(_txt_content "${setting_file}")
+	FILE_READ_ESCAPE(_lines "${setting_file}")
 
-	STRING_SPLIT(_lines "\n" "${_txt_content}")
+	#STRING_SPLIT(_lines "\n" "${_txt_content}")
 	#MESSAGE("_lines=|${_lines}|")
+	SET(_actual_line "")
+	SET(_join_next 0)
 	FOREACH(_line ${_lines})
 	    #MESSAGE("_line=|${_line}|")
-	    IF(_line MATCHES "[ \\t]*${attr_pattern}[ \\t]*${setting_sign}")
-		#MESSAGE("*** matched_line=|${_line}|")
-		SETTING_FILE_LINE_PARSE(_attr _value ${setting_sign}
-		    "${_line}" "${_noUnQuoted}" )
-		IF(_noReplace STREQUAL "" OR NOT DEFINED ${_attr})
-		    # Unencoding
-		    # Note content is escaped twice.
-		    STRING_UNESCAPE(_value "${_value}" ${_noEscapeSemicolon} ESCAPE_VARIABLE)
-		    STRING_UNESCAPE(_value "${_value}" ${_noEscapeSemicolon} ESCAPE_VARIABLE)
-		    IF(_escapeVariable STREQUAL "")
-			# Variable should not be escaped
-			# i.e. need substitution
-			_MANAGE_VARIABLE_SET(_value "${_value}")
-		    ENDIF(_escapeVariable STREQUAL "")
-		    IF("${var}" STREQUAL "")
-			SET(${_attr} "${_value}")
-		    ELSE("${var}" STREQUAL "")
-			SET(${var} "${_value}")
-		    ENDIF("${var}" STREQUAL "")
-		ENDIF(_noReplace STREQUAL "" OR NOT DEFINED ${_attr})
-	    ENDIF(_line MATCHES "[ \\t]*${attr_pattern}[ \\t]*${setting_sign}")
+	    IF(NOT _line MATCHES "^[ \\t]*#H")
+		# Not a comment line.
+		IF(_join_next EQUAL 1)
+		    SET(_actual_line "${_actual_line}${_line}" )
+		ELSE(_join_next EQUAL 1)
+		    SET(_actual_line "${_line}")
+		ENDIF(_join_next EQUAL 1)
+		#MESSAGE("_actual_line=|${_actual_line}|")
+
+		IF(_actual_line MATCHES "#B$")
+		    #Join the lines that end with \\
+		    SET(_join_next 1)
+		    STRING(REGEX REPLACE "#B$" "" _actual_line "${_actual_line}")
+		ELSE(_actual_line MATCHES "#B$")
+		    SET(_join_next 0)
+		    IF(_actual_line MATCHES "[ \\t]*${attr_pattern}[ \\t]*${setting_sign}")
+			#MESSAGE("*** matched_line=|${_line}|")
+			SETTING_FILE_LINE_PARSE(_attr _value ${setting_sign}
+			    "${_actual_line}" "${_noUnQuoted}" )
+			IF(_noReplace STREQUAL "" OR NOT DEFINED ${_attr})
+			    # Unencoding
+			    STRING_UNESCAPE(_value "${_value}" ${_noEscapeSemicolon} ESCAPE_VARIABLE)
+			    IF(_escapeVariable STREQUAL "")
+				# Variable should not be escaped
+				# i.e. need substitution
+				_MANAGE_VARIABLE_SET(_value "${_value}")
+			    ENDIF(_escapeVariable STREQUAL "")
+			    IF("${var}" STREQUAL "")
+				SET(${_attr} "${_value}")
+			    ELSE("${var}" STREQUAL "")
+				SET(${var} "${_value}")
+			    ENDIF("${var}" STREQUAL "")
+			ENDIF(_noReplace STREQUAL "" OR NOT DEFINED ${_attr})
+		    ENDIF(_actual_line MATCHES "[ \\t]*${attr_pattern}[ \\t]*${setting_sign}")
+
+		ENDIF(_actual_line MATCHES "#B$")
+
+	    ENDIF(NOT _line MATCHES "^[ \\t]*#H")
 	ENDFOREACH(_line ${_lines})
 	#SET(${var} "${_value}")
 
