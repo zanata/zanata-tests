@@ -320,16 +320,17 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	ADD_DEPENDENCIES(zanata_version_create_py_${proj}_${_ver}
 	    zanata_project_create_py_${proj})
 
-	IF(DEFINED ${${proj}_SRC_DIR})
-	    SET(_srcdir_opt "-srcdir=${${proj}_SRC_DIR}")
-	ELSE(DEFINED ${${proj}_SRC_DIR})
+	IF("${${proj}_SRC_DIR}" STREQUAL "")
 	    SET(_srcdir_opt "")
-	ENDIF(DEFINED ${${proj}_SRC_DIR})
-	IF(DEFINED ${${proj}_TRANS_DIR})
-	    SET(_transdir_opt "-transdir=${${proj}_TRANS_DIR}")
-	ELSE(DEFINED ${${proj}_TRANS_DIR})
+	ELSE("${${proj}_SRC_DIR}" STREQUAL "")
+	    SET(_srcdir_opt "--srcdir=${${proj}_SRC_DIR}")
+	ENDIF("${${proj}_SRC_DIR}" STREQUAL "")
+
+	IF("${${proj}_TRANS_DIR}" STREQUAL "")
 	    SET(_transdir_opt "")
-	ENDIF(DEFINED ${${proj}_TRANS_DIR})
+	ELSE("${${proj}_TRANS_DIR}" STREQUAL "")
+	    SET(_transdir_opt "--transdir=${${proj}_TRANS_DIR}")
+	ENDIF("${${proj}_TRANS_DIR}" STREQUAL "")
 
 	# Generic push
 	ADD_CUSTOM_TARGET(zanata_push_py_${proj}_${_ver}
