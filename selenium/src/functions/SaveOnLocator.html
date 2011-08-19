@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head profile="http://selenium-ide.openqa.org/profiles/test-case">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="selenium.base" href="" />
+	<title>Save Entry By Locator</title>
+    </head>
+    <body>
+	<table cellpadding="1" cellspacing="1" border="1">
+	    <thead>
+		<tr><td rowspan="1" colspan="3">Save Entry By Locator</td></tr>
+		</thead><tbody>
+		<!--Get stored variables-->
+<tr>
+	<td>storeCookieByName</td>
+	<td>saveString</td>
+	<td>saveString</td>
+</tr>
+<tr>
+	<td>storeCookieByName</td>
+	<td>entryRow</td>
+	<td>entryRow</td>
+</tr>
+<!-- Save types: ""-implict, "Approved"-Approved, "NeedReview"-fuzzy -->
+<tr>
+	<td>storeCookieByName</td>
+	<td>saveType</td>
+	<td>saveType</td>
+</tr>
+<!-- If hotKey=="" then assume mouse, otherwise use the	defined hotkey-->
+<tr>
+	<td>storeCookieByName</td>
+	<td>hotKey</td>
+	<td>hotKey</td>
+</tr>
+<!--Define-->
+<tr>
+	<td>store</td>
+	<td>css=${entryRow}&gt;td.TableEditorCell-Target</td>
+	<td>entryLocator</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>${entryLocator} textarea</td>
+	<td>entryEdit</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>Click here to start translating</td>
+	<td>emptyDisplay</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>Saved change to Translation Unit</td>
+	<td>savePrompt</td>
+</tr>
+<!-- Save as Approved hot keys-->
+<tr>
+	<td>store</td>
+	<td>\13</td>
+	<td>SaveAsApproveKey</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>SaveAsApproveKeyHasCtrl</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>SaveAsApproveKeyHasAlt</td>
+</tr>
+<!-- Save as Fuzzy hot keys-->
+<tr>
+	<td>store</td>
+	<td>S</td>
+	<td>SaveAsNeedReviewKey</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>SaveAsNeedReviewKeyHasCtrl</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>SaveAsNeedReviewKeyHasAlt</td>
+</tr>
+<!--Save entry on locator-->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>${entryLocator}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>${entryLocator}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>${entryEdit}</td>
+	<td>${saveString}</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['hotKey']==&quot;&quot;</td>
+	<td>MouseClick</td>
+</tr>
+<!-- Save with hotkey -->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['saveType'] == &quot;Approved&quot;</td>
+	<td>HotKeyApproved</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['saveType'] == &quot;NeedReview&quot;</td>
+	<td>HotKeyNeedReview</td>
+</tr>
+<!-- Implicit Save with hotkey -->
+<!-- Apply Save Approved hot keys-->
+<tr>
+	<td>label</td>
+	<td>HotKeyApproved</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>HotKeyBase</td>
+	<td>${SaveAsApproveKey}</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>HotKeyHasCtrl</td>
+	<td>${SaveAsApproveKeyHasCtrl}</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>HotKeyHasAlt</td>
+	<td>${SaveAsApproveKeyHasAlt}</td>
+</tr>
+<tr>
+	<td>goto</td>
+	<td>HotKeyStart</td>
+	<td></td>
+</tr>
+<!-- Apply Save NeedReview hot keys-->
+<tr>
+	<td>label</td>
+	<td>HotKeyNeedReview</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>HotKeyBase</td>
+	<td>${SaveAsNeedReviewKey}</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>HotKeyHasCtrl</td>
+	<td>${SaveAsNeedReviewKeyHasCtrl}</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>HotKeyHasAlt</td>
+	<td>${SaveAsNeedReviewKeyHasAlt}</td>
+</tr>
+<tr>
+	<td>goto</td>
+	<td>HotKeyStart</td>
+	<td></td>
+</tr>
+<!-- Start pressing hotkeys-->
+<!-- Modifier Keydown-->
+<tr>
+	<td>label</td>
+	<td>HotKeyStart</td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>${HotKeyHasCtrl} == 0</td>
+	<td>HotKeyIsAlt</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>HotKeyIsCtrl</td>
+	<td></td>
+</tr>
+<tr>
+	<td>controlKeyDown</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>HotKeyIsAlt</td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>${HotKeyHasAlt} == 0</td>
+	<td>HotKeyPressBase</td>
+</tr>
+<tr>
+	<td>altKeyDown</td>
+	<td></td>
+	<td></td>
+</tr>
+<!-- Press Base Key-->
+<tr>
+	<td>label</td>
+	<td>HotKeyPressBase</td>
+	<td></td>
+</tr>
+<tr>
+	<td>keyDown</td>
+	<td>${entryEdit}</td>
+	<td>${HotKeyBase}</td>
+</tr>
+<tr>
+	<td>keyPress</td>
+	<td>${entryEdit}</td>
+	<td>${HotKeyBase}</td>
+</tr>
+<tr>
+	<td>keyUp</td>
+	<td>${entryEdit}</td>
+	<td>${HotKeyBase}</td>
+</tr>
+<!-- Modifier Keyup-->
+<tr>
+	<td>label</td>
+	<td>HotKeyKeyUpAlt</td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>${HotKeyHasAlt} == 0</td>
+	<td>HotKeyKeyUpCtrl</td>
+</tr>
+<tr>
+	<td>altKeyUp</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>HotKeyKeyUpCtrl</td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>${HotKeyHasCtrl} == 0</td>
+	<td>HotKeyIsAlt</td>
+</tr>
+<tr>
+	<td>controlKeyUp</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['saveType'] == &quot;NeedReview&quot;</td>
+	<td>HotKeyNeedReview</td>
+</tr>
+<!-- End Save with hotkey -->
+<!-- Save with mouse click -->
+<tr>
+	<td>label</td>
+	<td>MouseClick</td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['saveType'] == &quot;Approved&quot;</td>
+	<td>MouseClickApproved</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['saveType'] == &quot;NeedReview&quot;</td>
+	<td>MouseClickNeedReview</td>
+</tr>
+<!-- Implicit Save with mouse click -->
+<!-- Apply Save Approved mouse click -->
+<tr>
+	<td>label</td>
+	<td>MouseClickApproved</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=img[title~=&quot;Approved&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>goto</td>
+	<td>MouseClickEnd</td>
+	<td></td>
+</tr>
+<!-- Apply Save NeedReview hot keys-->
+<tr>
+	<td>label</td>
+	<td>MouseClickNeedReview</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=img[title~=&quot;Save as Fuzzy&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>goto</td>
+	<td>MouseClickEnd</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>MouseClickEnd</td>
+	<td></td>
+</tr>
+<!-- End Save with mouse click -->
+<tr>
+	<td>waitForTextPresent</td>
+	<td>${savePrompt}</td>
+	<td></td>
+</tr>
+<!--Verify whether the result is saved. Note that empty fields may be showing "Click here to start translating"-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['saveType'] == &quot;NeedReview&quot;</td>
+	<td>SaveAsNeedReview</td>
+</tr>
+<!--Verify Approved-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['saveString'] == &quot;&quot;</td>
+	<td>SavingEmpty</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>css=${entryRow}.ApprovedStateDecoration</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${entryLocator}</td>
+	<td>${saveString}</td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>End</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>SavingEmpty</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>css=${entryRow}.NewStateDecoration</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${entryLocator}</td>
+	<td>${emptyDisplay}</td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>End</td>
+	<td></td>
+</tr>
+<!--Verify NeedReview-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>css=${entryRow}.FuzzyStateDecoration</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>SaveAsNeedReview</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${entryLocator}</td>
+	<td>${saveString}</td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>End</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>End</td>
+	<td></td>
+</tr>
+</tbody></table>
+    </body>
+</html>
+
