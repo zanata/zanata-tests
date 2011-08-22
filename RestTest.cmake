@@ -306,6 +306,8 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 
 	IF(NOT "${${proj}_PROJECT_TYPE}" STREQUAL "")
 	    LIST(APPEND ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS "--project-type=${${proj}_PROJECT_TYPE}")
+	ELSE(NOT "${${proj}_PROJECT_TYPE}" STREQUAL "")
+	    LIST(APPEND ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS "--project-type=podir")
 	ENDIF(NOT "${${proj}_PROJECT_TYPE}" STREQUAL "")
 
 	# Put version
