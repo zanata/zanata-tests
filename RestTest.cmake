@@ -67,13 +67,30 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	    DEPENDS ${_zanata_xml_path}
 	    )
 
+	IF("${${proj}_PROJECT_TYPE}" STREQUAL "gettext")
+	    SET(gettext_opt "-g")
+	ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "gettext")
+	    SET(gettext_opt "")
+	ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "gettext")
+
 	ADD_CUSTOM_COMMAND(OUTPUT ${_zanata_xml_path}
-	    COMMAND scripts/generate_zanata_xml.sh -v ${_ver}  -l "${LANGS}"
+	    COMMAND scripts/generate_zanata_xml.sh ${gettext_opt}
+	    -v ${_ver}  -l "${LANGS}"
 	    -z ${_zanata_xml_path} ${_proj_ver_base_dir_absolute} ${ZANATA_URL} ${proj}
 	    DEPENDS ${_proj_ver_dir_absolute}
 	    COMMENT "   Generate ${_zanata_xml_path}"
 	    VERBATIM
 	    )
+
+	IF(NOT "${${proj}_POT_GEN_CMD}" STREQUAL "")
+	    ADD_CUSTOM_TARGET(generate_pot_${proj}_${_ver}
+		COMMAND eval "${${proj}_POT_GEN_CMD}"
+		WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
+		COMMENT "   Generate pot for ${proj} ${_ver}"
+		VERBATIM
+		)
+	    ADD_DEPENDENCIES(generate_zanata_xml_${proj}_${_ver} generate_pot_${proj}_${_ver})
+	ENDIF(NOT "${${proj}_POT_GEN_CMD}" STREQUAL "")
 
 	#	ADD_CUSTOM_TARGET(link_pom_xml_${proj}_${_ver}
 	#    DEPENDS ${_proj_ver_base_dir_absolute}/pom.xml
@@ -116,9 +133,6 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	    VERBATIM
 	    )
     ENDFOREACH(_ver ${_projVers})
-    IF(NOT DEFINED ${${proj}_PROJECT_TYPE})
-	SET(${proj}_PROJECT_TYPE ${PROJECT_TYPE_DEFAULT})
-    ENDIF(NOT DEFINED ${${proj}_PROJECT_TYPE})
 
 ENDMACRO(ADD_SOURCE_PROJECT proj)
 
@@ -164,13 +178,9 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    -Dzanata.projectType=${${proj}_PROJECT_TYPE}
 	    )
 
-	IF("${${proj}_PROJECT_TYPE}" STREQUAL "publican")
-	    LIST(APPEND ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS "-Dzanata.projectType=podir")
-	ELSEIF("${${proj}_PROJECT_TYPE}" STREQUAL "software")
-	    LIST(APPEND ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS "-Dzanata.projectType=podir")
-        ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "publican")
-	    LIST(APPEND $ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS "-Dzanata.projectType=properties")
-	ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "publican")
+	IF(NOT "${${proj}_PROJECT_TYPE}" STREQUAL "")
+	    LIST(APPEND ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS "-Dzanata.projectType=${${proj}_PROJECT_TYPE}")
+	ENDIF(NOT "${${proj}_PROJECT_TYPE}" STREQUAL "")
 
 	# Put version
 	ADD_CUSTOM_TARGET(zanata_putversion_mvn_${proj}_${_ver}
@@ -294,13 +304,9 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    --project-config=${_zanata_xml_path}
 	    )
 
-	IF("${${proj}_PROJECT_TYPE}" STREQUAL "publican")
-	    LIST(APPEND ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS "--project-type=${${proj}_PROJECT_TYPE}")
-	ELSEIF("${${proj}_PROJECT_TYPE}" STREQUAL "software")
-	    LIST(APPEND ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS "--project-type=${${proj}_PROJECT_TYPE}")
-	ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "publican")
-	    LIST(APPEND ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS	"--project-type=publican")
-	ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "publican")
+	IF(NOT "${${proj}_PROJECT_TYPE}" STREQUAL "")
+	    LIST(APPEND ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS "--project-type=${${proj}_PROJECT_TYPE}")
+	ENDIF(NOT "${${proj}_PROJECT_TYPE}" STREQUAL "")
 
 	# Put version
 	ADD_CUSTOM_TARGET(zanata_version_create_py_${proj}_${_ver}
@@ -338,7 +344,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    ${ZANATA_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS}
 	    ${_srcdir_opt} ${_transdir_opt}
-	    --import-po
+	    --push-trans
 	    DEPENDS ${_zanata_xml_path}
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
 	    COMMENT "  [Py] Uploading pot and po for proj ${proj} ver ${_ver} to ${ZANATA_URL}"

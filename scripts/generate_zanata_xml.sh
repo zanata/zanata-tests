@@ -10,6 +10,7 @@ Options:
  -v [ver]: specify version
  -l [langList]: Specify language list, split by ';'
  -z [PathTo_zanata.xml]: path to zanata.xml from current dir, or absolute path.
+ -g gettext mode
 Parameters:
  baseDir: Base working dir.
  zanataUrl: URL to Zanata server
@@ -20,11 +21,15 @@ END
 ver=
 langList=
 zanata_xml=
-while getopts "hv:l:z:" opt; do
+gettext_mode=0
+while getopts "hv:l:z:g" opt; do
     case $opt in
 	h)
 	    print_usage
 	    exit 0
+	    ;;
+	g)
+	    gettext_mode=1
 	    ;;
 	v)
 	    ver=$OPTARG
@@ -47,6 +52,23 @@ if [ -z "$zanata_xml" ]; then
     zanata_xml=${baseDir}/zanata.xml
 fi
 
+function find_valid_lang_file(){
+    base=$1
+    case $2 in
+	zh*CN | zh*Hans* )
+	    l="zh*CN"
+	    ;;
+	zh*TW | zh*Hant* )
+	    l="zh*TW"
+	    ;;
+	* )
+	    l=$2
+	    ;;
+    esac
+
+    find $base -name "${l}*.po" -exec echo '{}' \;
+}
+
 rm -f ${zanata_xml}
 cat > ${zanata_xml} << END
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -62,9 +84,19 @@ if [ -n "$ver" ]; then
     _langs=`echo $langList | sed -e 's/;/ /g'`
 
     for _l in ${_langs}; do
-	_lDir=`${scriptDir}/find_valid_lang_dir.sh "$baseDir" $_l`
-	if [ -n "${_lDir}" ]; then
-	    echo "        <locale map-from=\"${_lDir}\">$_l</locale>" >> $zanata_xml
+	_lRet=
+	if [ $gettext_mode -eq 1 ]; then
+	    _lFile=`find_valid_lang_file $baseDir $_l`
+	    echo "_lFile=|${_lFile}|"
+	    if [ -n "$_lFile" ]; then
+		_lRet=`${scriptDir}/relative_path.sh ${baseDir} $_lFile | sed -e 's/.po$//'`
+#		echo "_lRet=|${_lRet}|"
+	    fi
+	else
+	    _lRet=`${scriptDir}/find_valid_lang_dir.sh "$baseDir" $_l`
+	fi
+	if [ -n "${_lRet}" ]; then
+	    echo "        <locale map-from=\"${_lRet}\">$_l</locale>" >> $zanata_xml
 	fi
     done
     echo "    </locales>" >> $zanata_xml
