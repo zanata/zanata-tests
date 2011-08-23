@@ -55,7 +55,7 @@ SETTING_FILE_GET_ALL_VARIABLES("${TEST_CFG}" NOREPLACE UNQUOTED NOESCAPE_SEMICOL
 # Apply profile variable
 #
 MESSAGE("ZANATA_PROFILE=${ZANATA_PROFILE}")
-SET(PROFILE_VARIABLES SERVER_BASE SERVER_PATH ADMIN_USER ADMIN_KEY TEST_ROLES KERBEROS
+SET(PROFILE_VARIABLES SERVER_PROTO SERVER_HOST SERVER_PORT SERVER_PATH ADMIN_USER ADMIN_KEY TEST_ROLES KERBEROS
     CONFIG_LANG_ADD_NEW_LANG_ID_PREFIX CONFIG_SERVER_ID_PREFIX CONFIG_LANG_ID_PREFIX
     AUTH_METHOD LOGIN_FIELD_ID PASSWORD_FIELD_ID MVN_CLIENT_VER)
 FOREACH(_var ${PROFILE_VARIABLES})
@@ -64,7 +64,8 @@ FOREACH(_var ${PROFILE_VARIABLES})
 	MESSAGE("Profile ${ZANATA_PROFILE} specific: ${_var}=${${ZANATA_PROFILE}_${_var}}")
     ENDIF(DEFINED ${ZANATA_PROFILE}_${_var})
 ENDFOREACH()
-SET(ZANATA_URL ${SERVER_BASE}${SERVER_PATH})
+SET(SERVER_BASE "${SERVER_PROTO}://${SERVER_HOST}${SERVER_PORT}")
+SET(ZANATA_URL "${SERVER_BASE}${SERVER_PATH}")
 
 ### Print variables
 FOREACH(_envVar  ${OVERRIDABLE_VARS})
@@ -80,8 +81,16 @@ SET(ZANATA_INI zanata.ini)
 FILE(REMOVE ${ZANATA_INI})
 
 FOREACH(_pf ${SERVER_PROFILES})
-    FILE(APPEND ${ZANATA_INI}
-	"${_pf}.url=${${_pf}_SERVER_BASE}${${_pf}_SERVER_PATH}\n")
+    IF("${${_pf}_SERVER_PROTO}" STREQUAL "")
+	SET(${${_pf}_SERVER_PROTO} ${SERVER_PROTO_DEFAULT})
+    ENDIF("${${_pf}_SERVER_PROTO}" STREQUAL "")
+    IF("${${_pf}_SERVER_PORT}" STREQUAL "")
+	SET(${${_pf}_SERVER_PORT} ${SERVER_PORT_DEFAULT})
+    ENDIF("${${_pf}_SERVER_PORT}" STREQUAL "")
+
+    SET(_zanata_url
+	"${${_pf}_SERVER_PROTO}://${${_pf}_SERVER_HOST}${${_pf}_SERVER_PORT}${${_pf}_SERVER_PATH}")
+    FILE(APPEND ${ZANATA_INI} "${_pf}.url=${_zanata_url}\n")
     IF("${${_pf}_ADMIN_USER}" STREQUAL "")
 	FILE(APPEND ${ZANATA_INI} "${_pf}.username=${ADMIN_USER_DEFAULT}\n")
     ELSE("${${_pf}_ADMIN_USER}" STREQUAL "")
@@ -94,7 +103,7 @@ FOREACH(_pf ${SERVER_PROFILES})
 	FILE(APPEND ${ZANATA_INI} "${_pf}.key=${${_pf}_ADMIN_KEY}\n")
     ENDIF("${${_pf}_ADMIN_KEY}" STREQUAL "")
     FILE(APPEND ${ZANATA_INI} "\n")
-ENDFOREACH(_prof SERVER_PROFILES)
+ENDFOREACH(_pf ${SERVER_PROFILES})
 
 #===================================================================
 # Test environment
@@ -191,7 +200,7 @@ MACRO(PUT_TEST_USER user)
     ENDIF("${${user}_ROLES}" STREQUAL "")
 
     SET(OPTS -Dzanata.user.disabled=false
-	-Dzanata.user.email=${${user}_USER}@localhost.org
+	-Dzanata.user.email=${${user}_USER}@${SERVER_HOST}
 	-Dzanata.user.key=${${user}_KEY}
 	-Dzanata.user.langs=${_lang}
 	-Dzanata.user.name=${${user}_NAME}

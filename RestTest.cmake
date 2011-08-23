@@ -363,7 +363,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    ${ZANATA_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS}
 	    ${_srcdir_opt}
-	    --transDir=${_pull_dest_dir_py}
+	    --transdir=${_pull_dest_dir_py}
 	    DEPENDS ${_zanata_xml_path} ${_pull_dest_dir_py}
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
 	    COMMENT "  [Py] Pulling pot and po for proj ${proj} ver ${_ver} from  ${ZANATA_URL}"
