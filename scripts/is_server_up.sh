@@ -1,12 +1,12 @@
 #!/bin/sh
-# Test whether the zanata server is up.
+# Test whether the Zanata server is up.
 
 function print_usage(){
     cat << END
 Usage: $0 [-i interval] [-r retries] [-p up_pattern] [-v verboseLevel] <ZANATA_SERVER_URL>
        $0 -h
 
-ZANATA_SERVER_URL: URL to flise server
+ZANATA_SERVER_URL: URL to Zanata server
 
 Options:
     -h: Show usage
