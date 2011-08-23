@@ -47,7 +47,13 @@ ENDFOREACH()
 
 SETTING_FILE_GET_ALL_VARIABLES("${TEST_CFG}" NOREPLACE UNQUOTED NOESCAPE_SEMICOLON)
 
-# Assign PROFILE
+####################################################################
+# Profiles
+####################################################################
+
+#===================================================================
+# Apply profile variable
+#
 MESSAGE("ZANATA_PROFILE=${ZANATA_PROFILE}")
 SET(PROFILE_VARIABLES SERVER_BASE SERVER_PATH ADMIN_USER ADMIN_KEY TEST_ROLES KERBEROS
     CONFIG_LANG_ADD_NEW_LANG_ID_PREFIX CONFIG_SERVER_ID_PREFIX CONFIG_LANG_ID_PREFIX
@@ -66,6 +72,33 @@ FOREACH(_envVar  ${OVERRIDABLE_VARS})
     MESSAGE("${_envVar}=${_envVal}")
 ENDFOREACH()
 
+#===================================================================
+# Write profiles to zanata.ini
+#
+
+SET(ZANATA_INI zanata.ini)
+FILE(REMOVE ${ZANATA_INI})
+
+FOREACH(_pf ${SERVER_PROFILES})
+    FILE(APPEND ${ZANATA_INI}
+	"${_pf}.url=${${_pf}_SERVER_BASE}${${_pf}_SERVER_PATH}\n")
+    IF("${${_pf}_ADMIN_USER}" STREQUAL "")
+	FILE(APPEND ${ZANATA_INI} "${_pf}.username=${ADMIN_USER_DEFAULT}\n")
+    ELSE("${${_pf}_ADMIN_USER}" STREQUAL "")
+	FILE(APPEND ${ZANATA_INI} "${_pf}.username=${${_pf}_ADMIN_USER}\n")
+    ENDIF("${${_pf}_ADMIN_USER}" STREQUAL "")
+
+    IF("${${_pf}_ADMIN_KEY}" STREQUAL "")
+	FILE(APPEND ${ZANATA_INI} "${_pf}.key=${ADMIN_KEY_DEFAULT}\n")
+    ELSE("${${_pf}_ADMIN_KEY}" STREQUAL "")
+	FILE(APPEND ${ZANATA_INI} "${_pf}.key=${${_pf}_ADMIN_KEY}\n")
+    ENDIF("${${_pf}_ADMIN_KEY}" STREQUAL "")
+    FILE(APPEND ${ZANATA_INI} "\n")
+ENDFOREACH(_prof SERVER_PROFILES)
+
+#===================================================================
+# Test environment
+#
 REAL_PATH(TEST_ROOT_ABSOLUTE "${TEST_ROOT}")
 REAL_PATH(PRIVILEGE_TEST_ROOT_ABSOLUTE "${PRIVILEGE_TEST_ROOT}")
 REAL_PATH(RESULT_DIR_ABSOLUTE "${RESULT_DIR}")
