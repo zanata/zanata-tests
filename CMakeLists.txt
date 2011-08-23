@@ -63,8 +63,13 @@ FOREACH(_var ${PROFILE_VARIABLES})
 	SET(${_var} "${${ZANATA_PROFILE}_${_var}}")
 	MESSAGE("Profile ${ZANATA_PROFILE} specific: ${_var}=${${ZANATA_PROFILE}_${_var}}")
     ENDIF(DEFINED ${ZANATA_PROFILE}_${_var})
+
+    IF("${_var}" STREQUAL "")
+	SET(${_var} "${${_var}_DEFAULT}")
+    ENDIF("${_var}" STREQUAL "")
 ENDFOREACH()
 SET(SERVER_BASE "${SERVER_PROTO}://${SERVER_HOST}${SERVER_PORT}")
+MESSAGE("SERVER_BASE=${SERVER_BASE}")
 SET(ZANATA_URL "${SERVER_BASE}${SERVER_PATH}")
 
 ### Print variables
