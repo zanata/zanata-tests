@@ -142,7 +142,10 @@ ENDMACRO(ADD_SOURCE_PROJECT proj)
 CONFIGURE_FILE(pom.xml.in pom.xml @ONLY)
 
 SET(ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS
-    -Dzanata.url=${ZANATA_URL} -Dzanata.userConfig=${CMAKE_SOURCE_DIR}/zanata.ini
+    -Dzanata.url=${ZANATA_URL}
+    -Dzanata.userConfig=${CMAKE_SOURCE_DIR}/zanata.ini
+    -Dzanata.username=${ADMIN_USER}
+    -Dzanata.key=${ADMIN_KEY}
     )
 
 MACRO(ADD_MVN_CLIENT_TARGETS proj )
