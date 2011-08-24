@@ -205,16 +205,16 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	ADD_DEPENDENCIES(zanata_putversion_mvn_${proj}_${_ver} zanata_putproject_mvn_${proj}
 	    generate_zanata_xml_${proj}_${_ver})
 
-	IF(DEFINED ${${proj}_SRC_DIR})
-	    SET(_srcdir_opt "-Dzanata.srcDir=${${proj}_SRC_DIR}")
-	ELSE(DEFINED ${${proj}_SRC_DIR})
+	IF("${${proj}_SRC_DIR}" STREQUAL "")
 	    SET(_srcdir_opt "")
-	ENDIF(DEFINED ${${proj}_SRC_DIR})
-	IF(DEFINED ${${proj}_TRANS_DIR})
-	    SET(_transdir_opt "-Dzanata.transDir=${${proj}_TRANS_DIR}")
-	ELSE(DEFINED ${${proj}_TRANS_DIR})
+	ELSE()
+	    SET(_srcdir_opt "-Dzanata.srcDir=${${proj}_SRC_DIR}")
+	ENDIF()
+	IF("${${proj}_TRANS_DIR}" STREQUAL "")
 	    SET(_transdir_opt "")
-	ENDIF(DEFINED ${${proj}_TRANS_DIR})
+	ELSE()
+	    SET(_transdir_opt "-Dzanata.transDir=${${proj}_TRANS_DIR}")
+	ENDIF()
 
 	# Generic push
 	ADD_CUSTOM_TARGET(zanata_push_mvn_${proj}_${_ver}
