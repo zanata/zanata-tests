@@ -64,12 +64,11 @@ FOREACH(_var ${PROFILE_VARIABLES})
 	MESSAGE("Profile ${ZANATA_PROFILE} specific: ${_var}=${${ZANATA_PROFILE}_${_var}}")
     ENDIF(DEFINED ${ZANATA_PROFILE}_${_var})
 
-    IF("${_var}" STREQUAL "")
+    IF("${${_var}}" STREQUAL "")
 	SET(${_var} "${${_var}_DEFAULT}")
-    ENDIF("${_var}" STREQUAL "")
+    ENDIF()
 ENDFOREACH()
 SET(SERVER_BASE "${SERVER_PROTO}://${SERVER_HOST}${SERVER_PORT}")
-MESSAGE("SERVER_BASE=${SERVER_BASE}")
 SET(ZANATA_URL "${SERVER_BASE}${SERVER_PATH}")
 
 ### Print variables
@@ -87,10 +86,10 @@ FILE(REMOVE ${ZANATA_INI})
 
 FOREACH(_pf ${SERVER_PROFILES})
     IF("${${_pf}_SERVER_PROTO}" STREQUAL "")
-	SET(${${_pf}_SERVER_PROTO} ${SERVER_PROTO_DEFAULT})
+	SET(${_pf}_SERVER_PROTO "${SERVER_PROTO_DEFAULT}")
     ENDIF("${${_pf}_SERVER_PROTO}" STREQUAL "")
     IF("${${_pf}_SERVER_PORT}" STREQUAL "")
-	SET(${${_pf}_SERVER_PORT} ${SERVER_PORT_DEFAULT})
+	SET(${_pf}_SERVER_PORT "${SERVER_PORT_DEFAULT}")
     ENDIF("${${_pf}_SERVER_PORT}" STREQUAL "")
 
     SET(_zanata_url
