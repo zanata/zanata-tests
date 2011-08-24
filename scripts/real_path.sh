@@ -16,5 +16,5 @@ fi
 pushd $_p_dir > /dev/null
 _p_real_dir=`pwd`
 popd > /dev/null
-echo ${_p_real_dir}/${p_filename}
+echo ${_p_real_dir}/${_p_filename}
 

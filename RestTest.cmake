@@ -67,13 +67,30 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	    DEPENDS ${_zanata_xml_path}
 	    )
 
+	IF("${${proj}_PROJECT_TYPE}" STREQUAL "gettext")
+	    SET(gettext_opt "-g")
+	ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "gettext")
+	    SET(gettext_opt "")
+	ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "gettext")
+
 	ADD_CUSTOM_COMMAND(OUTPUT ${_zanata_xml_path}
-	    COMMAND scripts/generate_zanata_xml.sh -v ${_ver}  -l "${LANGS}"
+	    COMMAND scripts/generate_zanata_xml.sh ${gettext_opt}
+	    -v ${_ver}  -l "${LANGS}"
 	    -z ${_zanata_xml_path} ${_proj_ver_base_dir_absolute} ${ZANATA_URL} ${proj}
 	    DEPENDS ${_proj_ver_dir_absolute}
 	    COMMENT "   Generate ${_zanata_xml_path}"
 	    VERBATIM
 	    )
+
+	IF(NOT "${${proj}_POT_GEN_CMD}" STREQUAL "")
+	    ADD_CUSTOM_TARGET(generate_pot_${proj}_${_ver}
+		COMMAND eval "${${proj}_POT_GEN_CMD}"
+		WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
+		COMMENT "   Generate pot for ${proj} ${_ver}"
+		VERBATIM
+		)
+	    ADD_DEPENDENCIES(generate_zanata_xml_${proj}_${_ver} generate_pot_${proj}_${_ver})
+	ENDIF(NOT "${${proj}_POT_GEN_CMD}" STREQUAL "")
 
 	#	ADD_CUSTOM_TARGET(link_pom_xml_${proj}_${_ver}
 	#    DEPENDS ${_proj_ver_base_dir_absolute}/pom.xml
@@ -115,15 +132,8 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	    COMMENT "   Get sources of ${proj} ${_ver}:${${proj}_NAME} from ${${proj}_URL_${_ver}}"
 	    VERBATIM
 	    )
-
     ENDFOREACH(_ver ${_projVers})
-    IF(NOT DEFINED ${${proj}_PROJECT_TYPE})
-	SET(${proj}_PROJECT_TYPE ${PROJECT_TYPE_DEFAULT})
-    ENDIF(NOT DEFINED ${${proj}_PROJECT_TYPE})
 
-    IF(NOT DEFINED ${${proj}_SRC_DIR})
-	SET(${proj}_SRC_DIR ${SRC_DIR_DEFAULT})
-    ENDIF(NOT DEFINED ${${proj}_SRC_DIR})
 ENDMACRO(ADD_SOURCE_PROJECT proj)
 
 #===================================================================
@@ -132,7 +142,10 @@ ENDMACRO(ADD_SOURCE_PROJECT proj)
 CONFIGURE_FILE(pom.xml.in pom.xml @ONLY)
 
 SET(ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS
-    -Dzanata.url=${ZANATA_URL} -Dzanata.userConfig=${CMAKE_SOURCE_DIR}/zanata.ini
+    -Dzanata.url=${ZANATA_URL}
+    -Dzanata.userConfig=${CMAKE_SOURCE_DIR}/zanata.ini
+    -Dzanata.username=${ADMIN_USER}
+    -Dzanata.key=${ADMIN_KEY}
     )
 
 MACRO(ADD_MVN_CLIENT_TARGETS proj )
@@ -168,6 +181,12 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    -Dzanata.projectType=${${proj}_PROJECT_TYPE}
 	    )
 
+	IF("${${proj}_PROJECT_TYPE}" STREQUAL "")
+	    LIST(APPEND ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS "-Dzanata.projectType=${PROJECT_TYPE_DEFAULT}")
+	ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "")
+	    LIST(APPEND ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS "-Dzanata.projectType=${${proj}_PROJECT_TYPE}")
+	ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "")
+
 	# Put version
 	ADD_CUSTOM_TARGET(zanata_putversion_mvn_${proj}_${_ver}
 	    COMMAND ${ZANATA_MVN_CMD} -e ${MVN_GOAL_PREFIX}:putversion
@@ -186,12 +205,23 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	ADD_DEPENDENCIES(zanata_putversion_mvn_${proj}_${_ver} zanata_putproject_mvn_${proj}
 	    generate_zanata_xml_${proj}_${_ver})
 
-	# Publican push
+	IF("${${proj}_SRC_DIR}" STREQUAL "")
+	    SET(_srcdir_opt "")
+	ELSE()
+	    SET(_srcdir_opt "-Dzanata.srcDir=${${proj}_SRC_DIR}")
+	ENDIF()
+	IF("${${proj}_TRANS_DIR}" STREQUAL "")
+	    SET(_transdir_opt "")
+	ELSE()
+	    SET(_transdir_opt "-Dzanata.transDir=${${proj}_TRANS_DIR}")
+	ENDIF()
+
+	# Generic push
 	ADD_CUSTOM_TARGET(zanata_push_mvn_${proj}_${_ver}
 	    COMMAND ${ZANATA_MVN_CMD} -e -B ${MVN_GOAL_PREFIX}:push
 	    ${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS}
-	    -Dzanata.srcDir=${${proj}_SRC_DIR}
+	    ${_srcdir_opt} ${_transdir_opt}
 	    -Dzanata.pushTrans
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
 	    DEPENDS ${_proj_ver_pom_xml_absolute}
@@ -202,11 +232,12 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	ADD_DEPENDENCIES(zanata_push_mvn_${proj}_${_ver} zanata_putversion_mvn_${proj}_${_ver})
 
-	# Publican pull
+	# Generic pull
 	ADD_CUSTOM_TARGET(zanata_pull_mvn_${proj}_${_ver}
 	    COMMAND ${ZANATA_MVN_CMD} -e -B ${MVN_GOAL_PREFIX}:pull
 	    ${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS}
+	    ${_srcdir_opt}
 	    -Dzanata.transDir=${_pull_dest_dir_mvn}
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
 	    DEPENDS ${_zanata_xml_path}
@@ -278,6 +309,12 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    --project-config=${_zanata_xml_path}
 	    )
 
+	IF(NOT "${${proj}_PROJECT_TYPE}" STREQUAL "")
+	    LIST(APPEND ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS "--project-type=${${proj}_PROJECT_TYPE}")
+	ELSE(NOT "${${proj}_PROJECT_TYPE}" STREQUAL "")
+	    LIST(APPEND ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS	"--project-type=${PROJECT_TYPE_DEFAULT}")
+	ENDIF(NOT "${${proj}_PROJECT_TYPE}" STREQUAL "")
+
 	# Put version
 	ADD_CUSTOM_TARGET(zanata_version_create_py_${proj}_${_ver}
 	    COMMAND  ${ZANATA_PY_CMD} version create ${_ver}
@@ -296,13 +333,25 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	ADD_DEPENDENCIES(zanata_version_create_py_${proj}_${_ver}
 	    zanata_project_create_py_${proj})
 
-	# Publican push
+	IF("${${proj}_SRC_DIR}" STREQUAL "")
+	    SET(_srcdir_opt "")
+	ELSE("${${proj}_SRC_DIR}" STREQUAL "")
+	    SET(_srcdir_opt "--srcdir=${${proj}_SRC_DIR}")
+	ENDIF("${${proj}_SRC_DIR}" STREQUAL "")
+
+	IF("${${proj}_TRANS_DIR}" STREQUAL "")
+	    SET(_transdir_opt "")
+	ELSE("${${proj}_TRANS_DIR}" STREQUAL "")
+	    SET(_transdir_opt "--transdir=${${proj}_TRANS_DIR}")
+	ENDIF("${${proj}_TRANS_DIR}" STREQUAL "")
+
+	# Generic push
 	ADD_CUSTOM_TARGET(zanata_push_py_${proj}_${_ver}
-	    COMMAND yes | ${ZANATA_PY_CMD} publican push
+	    COMMAND yes | ${ZANATA_PY_CMD} push
 	    ${ZANATA_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS}
-	    --import-po
-	    --transdir=.
+	    ${_srcdir_opt} ${_transdir_opt}
+	    --push-trans
 	    DEPENDS ${_zanata_xml_path}
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
 	    COMMENT "  [Py] Uploading pot and po for proj ${proj} ver ${_ver} to ${ZANATA_URL}"
@@ -311,12 +360,13 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 
 	ADD_DEPENDENCIES(zanata_push_py_${proj}_${_ver} zanata_version_create_py_${proj}_${_ver})
 
-	# Publican pull
+	# Generic pull
 	ADD_CUSTOM_TARGET(zanata_pull_py_${proj}_${_ver}
-	    COMMAND ${ZANATA_PY_CMD} publican pull
+	    COMMAND ${ZANATA_PY_CMD} pull
 	    ${ZANATA_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS}
-	    --dstdir=${_pull_dest_dir_py}
+	    ${_srcdir_opt}
+	    --transdir=${_pull_dest_dir_py}
 	    DEPENDS ${_zanata_xml_path} ${_pull_dest_dir_py}
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
 	    COMMENT "  [Py] Pulling pot and po for proj ${proj} ver ${_ver} from  ${ZANATA_URL}"
