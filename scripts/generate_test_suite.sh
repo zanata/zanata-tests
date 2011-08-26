@@ -5,6 +5,7 @@
 
 _scriptDir=`dirname $0`
 PARAMS="testRole testSuiteDir testSuiteName serverBase serverPath testUser testPass sisoIndex authMethod loginFieldId passwordFieldId"
+PARAMS_ALLOW_EMPTY="serverPath"
 source ${_scriptDir}/test_common_func.sh
 
 HOME_PAGE_FILE="HomePage.html"
