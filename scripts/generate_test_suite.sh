@@ -8,8 +8,6 @@ PARAMS="testRole testSuiteDir testSuiteName serverBase serverPath testUser testP
 PARAMS_ALLOW_EMPTY="serverPath"
 source ${_scriptDir}/test_common_func.sh
 
-HOME_PAGE_FILE="HomePage.html"
-#HOME_PAGE_PATH="${testSuiteDir}/${HOME_PAGE_FILE}"
 SIGN_IN_FILE="SignIn${testRole}.html"
 SIGN_IN_PATH="${testSuiteDir}/${SIGN_IN_FILE}"
 SIGN_OUT_FILE="SignOut.html"
@@ -76,20 +74,6 @@ function print_footer(){
 </html>
 END
 }
-
-### Print HomePage.html
-#echo "serverPath=${serverPath}"
-#if [ ! -e  ${HOME_PAGE_PATH} ]; then
-#    print_header ${HOME_PAGE_PATH} "${serverBase}" "Home Page"
-#    cat >> ${HOME_PAGE_PATH} <<END
-#<tr>
-#    <td>open</td>
-#    <td>${serverPath}</td>
-#    <td></td>
-#</tr>
-#END
-#    print_footer ${HOME_PAGE_PATH}
-#fi
 
 ### Print SignIn${testRole}.html
 if [ ! -e  ${SIGN_IN_PATH} ]; then
