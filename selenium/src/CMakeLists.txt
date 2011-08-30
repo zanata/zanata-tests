@@ -31,14 +31,13 @@ ADD_CUSTOM_TARGET(initial_setup
 # Test generating macros
 #
 
-# ADD_OUTPUT_FOR_BROWSERS testSuiteName testRole suiteFile
-MACRO(ADD_OUTPUT_FOR_BROWSERS testSuiteName testRole suiteFile)
-    SET(_unstablePrefix "")
-    FOREACH(_arg ${ARGN})
-	IF(_arg STREQUAL "UNSTABLE")
-	    SET(_unstablePrefix "US-")
-       ENDIF(_arg STREQUAL "UNSTABLE")
-    ENDFOREACH(_arg ${ARGN})
+# Generate test suite for each browser
+MACRO(GENERATE_TEST_FOREACH_BROWSER testSuiteName testRole suiteFile)
+    IF(EXISTS "${testSuiteDir}/UNSTABLE")
+	SET(_unstablePrefix "US-")
+    ELSE()
+	SET(_unstablePrefix "")
+    ENDIF()
 
     FOREACH(browser ${BROWSERS_TO_TEST})
 	SET(BROWSER_STR "*${browser}\\ ${${browser}_BIN}")
@@ -86,16 +85,48 @@ ENDMACRO()
 #        siSoOut testRoot)
 #
 
+# Generate test suite for role
+MACRO(GENERATE_TEST_FOR_ROLE testSuiteDir testSuiteName testRole)
+    IF(NOT "${${_testRole}_SISO}" STREQUAL "")
+	SET(_suiteFile
+	    "${testSuiteDir}/${${_testRole}_SISO}-${testSuiteName}.html")
+	MATH(EXPR _si "${${_testRole}_SISO}-1")
+	SET(_suiteFile_si
+	    "${testSuiteDir}/${_si}-${testSuiteName}.html")
+	SET(_suiteFiles ${_suiteFile} ${_suiteFile_si})
+
+	SET(_caseFiles "${testSuiteDir}/HomePage.html"
+	    "${testSuiteDir}/SignIn${_testRole}.html"
+	    "${testSuiteDir}/SignOut.html"
+	    )
+
+	# Generate test suite
+	ADD_CUSTOM_COMMAND(OUTPUT ${_suiteFiles} ${_caseFiles}
+	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/generate_test_suite.sh
+	    ${_testRole} ${testSuiteDir} ${testSuiteName}
+	    ${SERVER_BASE} "${SERVER_PATH}"
+	    ${${_testRole}_USER} ${${_testRole}_USER} ${${_testRole}_SISO}
+	    ${AUTH_METHOD} ${LOGIN_FIELD_ID} ${PASSWORD_FIELD_ID}
+	    COMMENT "Generate test suite ${testSuiteName} for ${_testRole}"
+	    VERBATIM
+	    )
+
+	ADD_CUSTOM_TARGET(generate_test_suite_${testSuiteName}_${_testRole}  ALL
+	    DEPENDS ${_suiteFiles} ${_caseFiles}
+	    )
+	GENERATE_TEST_FOREACH_BROWSER(${testSuiteName} ${_testRole}
+	    ${_suiteFile} ${_unstable})
+
+    ENDIF(NOT "${${_testRole}_SISO}" STREQUAL "")
+ENDMACRO()
+
+
+# Generate
 MACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
     IF(EXISTS "${testSuiteDir}/TEST_Prelogin")
 	SET(_testRoles ${TEST_ROLES} Prelogin)
     ELSE()
 	SET(_testRoles ${TEST_ROLES})
-    ENDIF()
-    IF(EXISTS "${testSuiteDir}/UNSTABLE")
-	SET(_unstable "UNSTABLE")
-    ELSE()
-	SET(_unstable "")
     ENDIF()
 
     SET(_TITLE "Home Page")
@@ -103,37 +134,7 @@ MACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
 	${testSuiteDir}/HomePage.html @ONLY)
     FOREACH(_testRole ${_testRoles})
 	IF(NOT EXISTS "${testSuiteDir}/NO_${_testRole}" )
-
-	    IF( ${_testRole} STREQUAL "Prelogin" )
-		SET(_suiteFile "${testSuiteDir}/0-${testSuiteName}.html")
-	    ELSEIF(NOT "${${_testRole}_SISO}" STREQUAL "")
-		SET(_suiteFile
-		    "${testSuiteDir}/${${_testRole}_SISO}-${testSuiteName}.html")
-		MATH(EXPR _si "${${_testRole}_SISO}-1")
-
-		SET(_suiteFiles ${testSuiteDir}/${_si}-${testSuiteName}.html
-		    ${_suiteFile})
-		SET(_generateTestCases ${testSuiteDir}/SignIn${_testRole}.html
-		    ${testSuiteDir}/SignOut.html
-		    ${testSuiteDir}/HomePage.html )
-
-		# Generate test suite
-		ADD_CUSTOM_COMMAND(OUTPUT ${_suiteFiles} ${_generateTestCases}
-		    COMMAND ${CMAKE_SOURCE_DIR}/scripts/generate_test_suite.sh
-		    ${_testRole} ${testSuiteDir} ${testSuiteName}
-		    ${SERVER_BASE} "${SERVER_PATH}"
-		    ${${_testRole}_USER} ${${_testRole}_USER} ${${_testRole}_SISO}
-		    ${AUTH_METHOD} ${LOGIN_FIELD_ID} ${PASSWORD_FIELD_ID}
-		    COMMENT "Generate test suite ${testSuiteName} for ${_testRole}"
-		    VERBATIM
-		    )
-
-		ADD_CUSTOM_TARGET(generate_test_suite_${testSuiteName}_${_testRole}  ALL
-		    DEPENDS ${_suiteFiles} ${_generateTestCases}
-		    )
-	    ENDIF( ${_testRole} STREQUAL "Prelogin" )
-	    ADD_OUTPUT_FOR_BROWSERS(${testSuiteName} ${_testRole}
-		${_suiteFile} ${_unstable})
+	    GENERATE_TEST_FOR_ROLE("${testSuiteDir}" "${testSuiteName}"	"${testRole}")
 	ENDIF(NOT EXISTS "${testSuiteDir}/NO_${_testRole}" )
     ENDFOREACH()
 ENDMACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
@@ -166,9 +167,9 @@ ENDFOREACH(testSuiteRaw ${TEST_SUITES_RAW})
 
 ### Privilege tests
 #EXECUTE_PROCESS(COMMAND ${CMAKE_SOURCE_DIR}/scripts/generate_privilege_test_suite.sh ${PRIVILEGE_TEST_ROOT_ABSOLUTE})
-#ADD_OUTPUT_FOR_BROWSERS(${PRESIGNIN_TEST_SUITE_NAME} PRE_LOGIN
+#GENERATE_TEST_FOREACH_BROWSER(${PRESIGNIN_TEST_SUITE_NAME} PRE_LOGIN
 #    ${PRIVILEGE_TEST_ROOT_ABSOLUTE}/${PRESIGNIN_TEST_SUITE} )
-#ADD_OUTPUT_FOR_BROWSERS(${NORMAL_TEST_SUITE_NAME} NORMAL
+#GENERATE_TEST_FOREACH_BROWSER(${NORMAL_TEST_SUITE_NAME} NORMAL
 #    ${PRIVILEGE_TEST_ROOT_ABSOLUTE}/${NORMAL_TEST_SUITE_SISO} )
 
 #IF(NOT EXISTS ${RESULT_DIR_ABSOLUTE})

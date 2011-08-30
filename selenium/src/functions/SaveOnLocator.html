@@ -55,6 +55,16 @@
 	<td>Saved change to Translation Unit</td>
 	<td>savePrompt</td>
 </tr>
+<tr>
+	<td>store</td>
+	<td>css=img[title*=&quot;Save as Fuzzy&quot;]</td>
+	<td>SaveAsFuzzyIcon</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>css=img[title~=&quot;Approved&quot;]</td>
+	<td>SaveAsApprovedIcon</td>
+</tr>
 <!-- Save as Approved hot keys-->
 <tr>
 	<td>store</td>
@@ -291,8 +301,13 @@
 	<td></td>
 </tr>
 <tr>
+	<td>waitForElementPresent</td>
+	<td>${SaveAsApprovedIcon}</td>
+	<td></td>
+</tr>
+<tr>
 	<td>click</td>
-	<td>css=img[title~=&quot;Approved&quot;]</td>
+	<td>${SaveAsApprovedIcon}</td>
 	<td></td>
 </tr>
 <tr>
@@ -307,8 +322,13 @@
 	<td></td>
 </tr>
 <tr>
+	<td>waitForElementPresent</td>
+	<td>${SaveAsFuzzyIcon}</td>
+	<td></td>
+</tr>
+<tr>
 	<td>click</td>
-	<td>css=img[title~=&quot;Save as Fuzzy&quot;]</td>
+	<td>${SaveAsFuzzyIcon}</td>
 	<td></td>
 </tr>
 <tr>

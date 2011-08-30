@@ -25,7 +25,7 @@ for para in ${PARAMS}; do
     fi
     eval "$para=$1"
     shift
-    value=$(eval echo \$$para)
-    echo $para=${value}
+#    value=$(eval echo \$$para)
+#    echo $para=${value}
 done
 
