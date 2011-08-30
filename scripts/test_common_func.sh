@@ -6,15 +6,15 @@ function print_usage(){
 function is_allow_empty(){
     for i in ${PARAMS_ALLOW_EMPTY}; do
 	if [ "$i" = "$1" ]; then
-	    exit 0
+	    return 0
 	fi
     done
-    exit 1
+    return 1
 }
 
 
 for para in ${PARAMS}; do
-    if [ -z $1 ];then
+    if [ -z "$1" ];then
 	if ! is_allow_empty $para; then
 	    echo "No value for ${para}" >/dev/stderr
 	    print_usage ${PARAMS}
@@ -26,9 +26,6 @@ for para in ${PARAMS}; do
     eval "$para=$1"
     shift
     value=$(eval echo \$$para)
-#    echo $para=${value}
+    echo $para=${value}
 done
-
-
-
 
