@@ -32,7 +32,7 @@ ADD_CUSTOM_TARGET(initial_setup
 #
 
 # Generate test suite for each browser
-MACRO(GENERATE_TEST_FOREACH_BROWSER testSuiteName testRole suiteFile)
+MACRO(GENERATE_TEST_FOREACH_BROWSER testSuiteDir testSuiteName testRole suiteFile)
     IF(EXISTS "${testSuiteDir}/UNSTABLE")
 	SET(_unstablePrefix "US-")
     ELSE()
@@ -87,42 +87,51 @@ ENDMACRO()
 
 # Generate test suite for role
 MACRO(GENERATE_TEST_FOR_ROLE testSuiteDir testSuiteName testRole)
-    IF(NOT "${${_testRole}_SISO}" STREQUAL "")
-	SET(_suiteFile
-	    "${testSuiteDir}/${${_testRole}_SISO}-${testSuiteName}.html")
-	MATH(EXPR _si "${${_testRole}_SISO}-1")
-	SET(_suiteFile_si
-	    "${testSuiteDir}/${_si}-${testSuiteName}.html")
+    IF(NOT "${${testRole}_SISO}" STREQUAL "")
+	EXECUTE_PROCESS(COMMAND git-ls-files
+	    COMMAND grep -e "\\.html"
+	    COMMAND xargs -I X echo -n "${testSuiteDir}/X;"
+	    COMMAND sed -e "s/;$//g"
+	    WORKING_DIRECTORY "${testSuiteDir}"
+	    OUTPUT_VARIABLE _srcFiles
+	    OUTPUT_STRIP_TRAILING_WHITESPACE
+	    )
+
+	SET(_suiteFile  "${testSuiteDir}/${${testRole}_SISO}-${testSuiteName}.html")
+	MATH(EXPR _si "${${testRole}_SISO}-1")
+	SET(_suiteFile_si "${testSuiteDir}/${_si}-${testSuiteName}.html")
 	SET(_suiteFiles ${_suiteFile} ${_suiteFile_si})
 
-	SET(_caseFiles "${testSuiteDir}/HomePage.html"
-	    "${testSuiteDir}/SignIn${_testRole}.html"
+	SET(_caseFiles  "${testSuiteDir}/SignIn${testRole}.html"
 	    "${testSuiteDir}/SignOut.html"
 	    )
 
+	MESSAGE("_srcFiles=${_srcFiles}")
+
 	# Generate test suite
-	ADD_CUSTOM_COMMAND(OUTPUT ${_suiteFiles} ${_caseFiles}
+	ADD_CUSTOM_COMMAND(OUTPUT ${_suiteFiles}
 	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/generate_test_suite.sh
-	    ${_testRole} ${testSuiteDir} ${testSuiteName}
+	    ${testRole} ${testSuiteDir} ${testSuiteName}
 	    ${SERVER_BASE} "${SERVER_PATH}"
-	    ${${_testRole}_USER} ${${_testRole}_USER} ${${_testRole}_SISO}
+	    ${${testRole}_USER} ${${testRole}_USER} ${${testRole}_SISO}
 	    ${AUTH_METHOD} ${LOGIN_FIELD_ID} ${PASSWORD_FIELD_ID}
-	    COMMENT "Generate test suite ${testSuiteName} for ${_testRole}"
+	    DEPENDS ${_srcFiles} ${testSuiteDir}/HomePage.html
+	    COMMENT "Generate test suite ${testSuiteName} for ${testRole}"
 	    VERBATIM
 	    )
 
-	ADD_CUSTOM_TARGET(generate_test_suite_${testSuiteName}_${_testRole}  ALL
+	ADD_CUSTOM_TARGET(generate_test_suite_${testSuiteName}_${testRole}  ALL
 	    DEPENDS ${_suiteFiles} ${_caseFiles}
 	    )
-	GENERATE_TEST_FOREACH_BROWSER(${testSuiteName} ${_testRole}
-	    ${_suiteFile} ${_unstable})
+	GENERATE_TEST_FOREACH_BROWSER(
+	    ${testSuiteDir} ${testSuiteName} ${testRole} ${_suiteFile})
 
-    ENDIF(NOT "${${_testRole}_SISO}" STREQUAL "")
-ENDMACRO()
+    ENDIF(NOT "${${testRole}_SISO}" STREQUAL "")
+ENDMACRO(GENERATE_TEST_FOR_ROLE testSuiteDir testSuiteName testRole)
 
 
-# Generate
-MACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
+# Generate test for each role
+MACRO(GENERATE_TEST_FOREACH_ROLE testSuiteDir testSuiteName)
     IF(EXISTS "${testSuiteDir}/TEST_Prelogin")
 	SET(_testRoles ${TEST_ROLES} Prelogin)
     ELSE()
@@ -134,17 +143,17 @@ MACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
 	${testSuiteDir}/HomePage.html @ONLY)
     FOREACH(_testRole ${_testRoles})
 	IF(NOT EXISTS "${testSuiteDir}/NO_${_testRole}" )
-	    GENERATE_TEST_FOR_ROLE("${testSuiteDir}" "${testSuiteName}"	"${testRole}")
+	    GENERATE_TEST_FOR_ROLE("${testSuiteDir}" "${testSuiteName}"	"${_testRole}")
 	ENDIF(NOT EXISTS "${testSuiteDir}/NO_${_testRole}" )
     ENDFOREACH()
-ENDMACRO(ADD_OUTPUT_AND_TEST testSuiteDir testSuiteName)
+ENDMACRO(GENERATE_TEST_FOREACH_ROLE testSuiteDir testSuiteName)
 
 #===================================================================
 # Generate test suites.
 MESSAGE("TEST_ROOT_ABSOLUTE=${TEST_ROOT_ABSOLUTE}")
 FIND_FILES_IN_DIR(TEST_SUITES_RAW  "0-*.html" "${TEST_ROOT_ABSOLUTE}")
 
-MESSAGE("TEST_SUITES_RAW=${TEST_SUITES_RAW}")
+#MESSAGE("TEST_SUITES_RAW=${TEST_SUITES_RAW}")
 
 # Flow control extension
 SET(SELENIUM_EXTENSION
@@ -162,7 +171,7 @@ FOREACH(testSuiteRaw ${TEST_SUITES_RAW})
 
     # Make test rules.
     MESSAGE("  testSuitePath=${testSuitePath} testSuiteName=${testSuiteName}")
-    ADD_OUTPUT_AND_TEST(${testSuitePath} ${testSuiteName})
+    GENERATE_TEST_FOREACH_ROLE(${testSuitePath} ${testSuiteName})
 ENDFOREACH(testSuiteRaw ${TEST_SUITES_RAW})
 
 ### Privilege tests

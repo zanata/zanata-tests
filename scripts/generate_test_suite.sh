@@ -8,6 +8,7 @@ PARAMS="testRole testSuiteDir testSuiteName serverBase serverPath testUser testP
 PARAMS_ALLOW_EMPTY="serverPath"
 source ${_scriptDir}/test_common_func.sh
 
+HOME_PAGE_FILE="HomePage.html"
 SIGN_IN_FILE="SignIn${testRole}.html"
 SIGN_IN_PATH="${testSuiteDir}/${SIGN_IN_FILE}"
 SIGN_OUT_FILE="SignOut.html"
