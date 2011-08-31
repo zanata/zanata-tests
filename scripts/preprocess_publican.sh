@@ -9,7 +9,7 @@ _first=1
 _langs_final=
 for l in ${_langs};
 do
-    lDir=`${scriptDir}/find_valid_lang_dir.sh . $l`
+    lDir=`${scriptDir}/find_valid_langs.sh . $l`
     if [ -n "$lDir" ];then
 	if [ "$_first" = "0" ]; then
 	    _langs_final="${_langs_final},"

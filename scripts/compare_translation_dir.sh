@@ -1,8 +1,6 @@
 #!/usr/bin/env sh
-# Compares 2 POs and see whether they are equivalent.
-# Direct diff comparison is not very useful, because
-# 1) Header field such as Date may be different.
-# 2) msgid and msgstr may not be normalized.
+# Compares 2 directories that contains po files.
+#
 
 function print_usage(){
     cat <<END
@@ -53,8 +51,8 @@ langList=$4
 shift 4
 
 if [ -n $langList ]; then
-    _postFix1=(`$scriptDir/find_valid_lang_dir.sh -m -p $potDir $dir1 $langList`)
-    _postFix2=(`$scriptDir/find_valid_lang_dir.sh -m -p $potDir $dir2 $langList`)
+    _postFix1=(`$scriptDir/find_valid_langs.sh -m -p $potDir $dir1 $langList`)
+    _postFix2=(`$scriptDir/find_valid_langs.sh -m -p $potDir $dir2 $langList`)
     if [ ${#_postFix1[*]} -ne ${#_postFix2[*]} ]; then
 	echo "Error: [compare_translation_dir.sh] $dir1 contains
 	${#_postFix1[*]} valid locale dirs (${_postFix1[*]}), but $dir2 contains

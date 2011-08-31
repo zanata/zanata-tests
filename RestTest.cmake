@@ -376,12 +376,23 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	ADD_DEPENDENCIES(zanata_pull_py_${proj}_${_ver}
 	    zanata_push_py_${proj}_${_ver}  zanata_version_create_py_${proj}_${_ver})
 
-	ADD_CUSTOM_TARGET(zanata_rest_verify_py_${proj}_${_ver}
-	    COMMAND scripts/compare_translation_dir.sh
-	    ${_proj_ver_dir_absolute}/pot ${_proj_ver_dir_absolute} ${_pull_dest_dir_py} "${LANGS}"
-	    COMMENT "  [Py] Verifying the pulled contents with original translation."
-	    VERBATIM
-	    )
+	# Verify the pulled
+	IF("${${proj}_PROJECT_TYPE}" STREQUAL "gettext")
+	    ADD_CUSTOM_TARGET(zanata_rest_verify_py_${proj}_${_ver}
+		COMMAND scripts/compare_translation.sh
+		${_proj_ver_dir_absolute}/${${proj}_POT} ${_proj_ver_dir_absolute} ${_pull_dest_dir_py} "${LANGS}"
+		COMMENT "  [Py] Verifying the pulled contents with original translation."
+		VERBATIM
+		)
+	ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "gettext")
+	    ADD_CUSTOM_TARGET(zanata_rest_verify_py_${proj}_${_ver}
+		COMMAND scripts/compare_translation_dir.sh
+		${_proj_ver_dir_absolute}/pot ${_proj_ver_dir_absolute} ${_pull_dest_dir_py} "${LANGS}"
+		COMMENT "  [Py] Verifying the pulled contents with original translation."
+		VERBATIM
+		)
+	ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "gettext")
+
 
 	ADD_DEPENDENCIES(zanata_rest_verify_py_${proj}_${_ver}
 	    zanata_pull_py_${proj}_${_ver})

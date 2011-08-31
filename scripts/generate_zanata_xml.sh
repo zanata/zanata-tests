@@ -86,14 +86,10 @@ if [ -n "$ver" ]; then
     for _l in ${_langs}; do
 	_lRet=
 	if [ $gettext_mode -eq 1 ]; then
-	    _lFile=`find_valid_lang_file $baseDir $_l`
-	    echo "_lFile=|${_lFile}|"
-	    if [ -n "$_lFile" ]; then
-		_lRet=`${scriptDir}/relative_path.sh ${baseDir} $_lFile | sed -e 's/.po$//'`
+	    _lRet=`${scriptDir}/find_valid_langs.sh -f $baseDir $_l | sed -e 's/\.po//'`
 #		echo "_lRet=|${_lRet}|"
-	    fi
 	else
-	    _lRet=`${scriptDir}/find_valid_lang_dir.sh "$baseDir" $_l`
+	    _lRet=`${scriptDir}/find_valid_langs.sh "$baseDir" $_l`
 	fi
 	if [ -n "${_lRet}" ]; then
 	    echo "        <locale map-from=\"${_lRet}\">$_l</locale>" >> $zanata_xml
