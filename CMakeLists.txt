@@ -151,7 +151,7 @@ ENDMACRO()
 
 MACRO(FIND_FILES_IN_DIR var pattern searchPath)
     EXECUTE_PROCESS(COMMAND find ${searchPath} -name "${pattern}" -printf "%p;"
-	OUTPUT_VARIABLE _result)
+	OUTPUT_VARIABLE _result  OUTPUT_STRIP_TRAILING_WHITESPACE)
     IF ( _result STREQUAL "")
 	SET(${var} "NOTFOUND")
     ELSE()

@@ -378,7 +378,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 
 	ADD_CUSTOM_TARGET(zanata_rest_verify_py_${proj}_${_ver}
 	    COMMAND scripts/compare_translation_dir.sh
-	    ${_proj_dir_absolute}/pot ${_proj_dir_absolute} ${_pull_dest_dir_py} "${LANGS}"
+	    ${_proj_ver_dir_absolute}/pot ${_proj_ver_dir_absolute} ${_pull_dest_dir_py} "${LANGS}"
 	    COMMENT "  [Py] Verifying the pulled contents with original translation."
 	    VERBATIM
 	    )
