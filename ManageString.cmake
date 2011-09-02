@@ -42,9 +42,9 @@
 IF(NOT DEFINED _MANAGE_STRING_CMAKE_)
     SET(_MANAGE_STRING_CMAKE_ "DEFINED")
 
-    # Return (index of lefttmost non match character) +1
-    # Return _strLen if all characters are trimmable
-    MACRO(STRING_LEFTMOST_NOTMATCH_INDEX var str regex)
+    # Return (index of lefttmost non match character)
+    # Return _strLen if all characters matches regex
+    FUNCTION(STRING_LEFTMOST_NOTMATCH_INDEX var str regex)
 	STRING(LENGTH "${str}" _strLen)
 	SET(_index 0)
 	SET(_ret ${_strLen})
@@ -58,13 +58,13 @@ IF(NOT DEFINED _MANAGE_STRING_CMAKE_)
 
 	    MATH(EXPR _index ${_index}+1)
 	ENDWHILE(_index LESS _strLen)
-	SET(${var} ${_ret})
-    ENDMACRO(STRING_LEFTMOST_NOTMATCH_INDEX var str)
+	SET(${var} ${_ret} PARENT_SCOPE)
+    ENDFUNCTION(STRING_LEFTMOST_NOTMATCH_INDEX var str)
 
     # Return (index of rightmost non match character) +1
-    # Return 0 if all characters are trimmable
+    # Return 0 if all characters matches regex
     #
-    MACRO(STRING_RIGHTMOST_NOTMATCH_INDEX var str regex)
+    FUNCTION(STRING_RIGHTMOST_NOTMATCH_INDEX var str regex)
 	STRING(LENGTH "${str}" _strLen)
 	MATH(EXPR _index ${_strLen})
 	SET(_ret 0)
@@ -79,8 +79,8 @@ IF(NOT DEFINED _MANAGE_STRING_CMAKE_)
 	    ENDIF(NOT "${_strCursor}" MATCHES "${regex}")
 	    MATH(EXPR _index ${_index}-1)
 	ENDWHILE(_index GREATER 0)
-	SET(${var} ${_ret})
-    ENDMACRO(STRING_RIGHTMOST_NOTMATCH_INDEX var str)
+	SET(${var} ${_ret} PARENT_SCOPE)
+    ENDFUNCTION(STRING_RIGHTMOST_NOTMATCH_INDEX var str)
 
     MACRO(STRING_TRIM var str)
 	#STRING_ESCAPE(_ret "${str}" ${ARGN})

@@ -106,7 +106,7 @@ MACRO(GENERATE_TEST_FOR_ROLE testSuiteDir testSuiteName testRole)
 	    "${testSuiteDir}/SignOut.html"
 	    )
 
-	MESSAGE("_srcFiles=${_srcFiles}")
+	#MESSAGE("_srcFiles=${_srcFiles}")
 
 	# Generate test suite
 	ADD_CUSTOM_COMMAND(OUTPUT ${_suiteFiles}
