@@ -13,8 +13,8 @@
 </thead><tbody>
 <tr>
 	<td>store</td>
-	<td>@ZANATA_URL@</td>
-	<td>SERVER_URL</td>
+	<td>@SERVER_BASE@</td>
+	<td>SERVER_BASE</td>
 </tr>
 <tr>
         <td>mouseOver</td>
@@ -34,7 +34,7 @@
 <tr>
 	<td>type</td>
 	<td>@CONFIG_SERVER_ID_PREFIX@:urlField:url</td>
-	<td>${SERVER_URL}</td>
+	<td>${SERVER_BASE}</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -44,7 +44,7 @@
 <tr>
 	<td>type</td>
 	<td>@CONFIG_SERVER_ID_PREFIX@:registerField:url</td>
-	<td>${SERVER_URL}/register</td>
+	<td>${SERVER_BASE}/register</td>
 </tr>
 <tr>
 	<td>click</td>

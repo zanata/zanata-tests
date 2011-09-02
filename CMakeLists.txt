@@ -91,16 +91,7 @@ SET(ZANATA_INI zanata.ini)
 FILE(REMOVE ${ZANATA_INI})
 
 FOREACH(_pf ${SERVER_PROFILES})
-    IF("${${_pf}_SERVER_PROTO}" STREQUAL "")
-	SET(${_pf}_SERVER_PROTO "${SERVER_PROTO_DEFAULT}")
-    ENDIF("${${_pf}_SERVER_PROTO}" STREQUAL "")
-    IF("${${_pf}_SERVER_PORT}" STREQUAL "")
-	SET(${_pf}_SERVER_PORT "${SERVER_PORT_DEFAULT}")
-    ENDIF("${${_pf}_SERVER_PORT}" STREQUAL "")
-
-    SET(_zanata_url
-	"${${_pf}_SERVER_PROTO}://${${_pf}_SERVER_HOST}${${_pf}_SERVER_PORT}${${_pf}_SERVER_PATH}")
-    FILE(APPEND ${ZANATA_INI} "${_pf}.url=${_zanata_url}\n")
+    FILE(APPEND ${ZANATA_INI} "${_pf}.url=${${_pf}_SERVER_URL}\n")
     IF("${${_pf}_ADMIN_USER}" STREQUAL "")
 	FILE(APPEND ${ZANATA_INI} "${_pf}.username=${ADMIN_USER_DEFAULT}\n")
     ELSE("${${_pf}_ADMIN_USER}" STREQUAL "")
