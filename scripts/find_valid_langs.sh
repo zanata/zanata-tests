@@ -35,7 +35,7 @@ function findLangs(){
     else
 	_pA=(`find $baseDir -wholename "*/$langNameTemplate/*.po" -exec dirname '{}' \; | sort -u`)
     fi
-    # echo "_pA[*]=${_pA[*]}"
+    #echo "_pA[*]=${_pA[*]}"
     if [ ${#_pA[*]} -gt 0 ];then
 	for((_i=0; $_i < ${#_pA[*]}; _i++ )); do
 	    # _rPath: relative path from baseDir
@@ -51,7 +51,7 @@ function findLangs(){
 		# directory in pot directory
 
 		# _pPath: corresponding path in pot_dir
-		_pPath=${baseDir}/$_potDir/${_rPath#$langNameTemplate/}
+		_pPath=${_potDir}/${_rPath#$langNameTemplate/}
 		#echo "_rPath=$_rPath _pPath=$_pPath"
 		if [ -e $_pPath ]; then
 		    # Has corresponding pot directory

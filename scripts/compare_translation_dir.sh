@@ -52,7 +52,9 @@ shift 4
 
 if [ -n $langList ]; then
     _postFix1=(`$scriptDir/find_valid_langs.sh -m -p $potDir $dir1 $langList`)
+    echo "_postFix1=${_postFix1}"
     _postFix2=(`$scriptDir/find_valid_langs.sh -m -p $potDir $dir2 $langList`)
+    echo "_postFix2=${_postFix2}"
     if [ ${#_postFix1[*]} -ne ${#_postFix2[*]} ]; then
 	echo "Error: [compare_translation_dir.sh] $dir1 contains
 	${#_postFix1[*]} valid locale dirs (${_postFix1[*]}), but $dir2 contains
