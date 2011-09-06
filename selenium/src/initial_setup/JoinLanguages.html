@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://10.64.17.195:8080/" />
+<title>Join Languages</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Join Languages</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=#Languages &gt; span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=a[href*=&quot;ja&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeElementPresent</td>
+	<td>id=Language_team_member_toggle_form:Join</td>
+	<td>_isElementPresent</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>! ${_isElementPresent}</td>
+	<td>join_ZhHans</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=Language_team_member_toggle_form:Join</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>joinZhHans</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=#Languages &gt; span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=a[href*=&quot;zh-Hans&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeElementPresent</td>
+	<td>id=Language_team_member_toggle_form:Join</td>
+	<td>_isElementPresent</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>! ${_isElementPresent}</td>
+	<td>End</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=Language_team_member_toggle_form:Join</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>End</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

@@ -113,7 +113,7 @@ MACRO(GENERATE_TEST_FOR_ROLE testSuiteDir testSuiteName testRole)
 	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/generate_test_suite.sh
 	    ${testRole} ${testSuiteDir} ${testSuiteName}
 	    ${SERVER_BASE} "${SERVER_PATH}"
-	    ${${testRole}_USER} ${${testRole}_USER} ${${testRole}_SISO}
+	    ${${testRole}_USER} ${${testRole}_PASSWD} ${${testRole}_SISO}
 	    ${AUTH_METHOD} ${LOGIN_FIELD_ID} ${PASSWORD_FIELD_ID}
 	    DEPENDS ${_srcFiles} ${testSuiteDir}/HomePage.html
 	    COMMENT "Generate test suite ${testSuiteName} for ${testRole}"
