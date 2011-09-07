@@ -13,6 +13,8 @@ cat <<END
 	-m: Allow multiple finding per lang.
 	-s separator: Output sepration charactor. Default is ' '.
 	-p potDir: Directory that contains pot files.
+	           potDir should either be relative path from baseDir,
+		   or absolute path.
 	-f: find files instead of directories.
 
     Parameters:
@@ -52,7 +54,7 @@ function findLangs(){
 
 		# _pPath: corresponding path in pot_dir
 		_pPath=${_potDir}/${_rPath#$langNameTemplate/}
-		#echo "_rPath=$_rPath _pPath=$_pPath"
+		# echo "_rPath=$_rPath _pPath=$_pPath"
 		if [ -e $_pPath ]; then
 		    # Has corresponding pot directory
 		    _is_valid=1
@@ -120,7 +122,11 @@ scriptDir=`dirname $0`
 baseDir=$1
 #echo baseDir=$baseDir
 langList=$2
-#echo langList=$langList
+
+if [ "${_potDir:0:1}" != "/" ]; then
+    # path that related to baseDir
+    _potDir="${baseDir}/${_potDir}"
+fi
 
 _langA=(`echo "$langList" | sed -e 's/;/ /g'`)
 #echo "_langA[*]=${_langA[*]}"
