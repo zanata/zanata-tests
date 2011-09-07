@@ -171,28 +171,32 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    )
 
 	IF("${${proj}_PROJECT_TYPE}" STREQUAL "")
-	    SET(${proj}_PROJECT_TYPE ${PROJECT_TYPE_DEFAULT})
+	    SET(_projType ${PROJECT_TYPE_DEFAULT})
+	ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "")
+	    SET(_projType ${${proj}_PROJECT_TYPE})
 	ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "")
 
-	LIST(APPEND ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS "-Dzanata.projectType=${${proj}_PROJECT_TYPE}")
+	LIST(APPEND ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS
+	    "-Dzanata.projectType=${_projType}")
 
 	IF("${${proj}_SRC_DIR}" STREQUAL "")
-	    SET(_srcdir_opt "")
-	    IF("${${proj}_PROJECT_TYPE}" STREQUAL "podir")
+	    IF("${_projType}" STREQUAL "podir")
 		SET(SRC_DIR "pot")
-	    ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "podir")
+		SET(_srcdir_opt "-Dzanata.srcDir=${SRC_DIR}")
+	    ELSE("${_projType}" STREQUAL "podir")
 		SET(SRC_DIR ".")
-	    ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "podir")
+		SET(_srcdir_opt "")
+	    ENDIF("${_projType}" STREQUAL "podir")
 	ELSE()
-	    SET(_srcdir_opt "-Dzanata.srcDir=${${proj}_SRC_DIR}")
 	    SET(SRC_DIR "${${proj}_SRC_DIR}")
+	    SET(_srcdir_opt "-Dzanata.srcDir=${SRC_DIR}")
 	ENDIF()
 	IF("${${proj}_TRANS_DIR}" STREQUAL "")
-	    SET(_transdir_opt "")
 	    SET(TRANS_DIR ".")
+	    SET(_transdir_opt "")
 	ELSE()
-	    SET(_transdir_opt "-Dzanata.transDir=${${proj}_TRANS_DIR}")
 	    SET(TRANS_DIR "${${proj}_TRANS_DIR}")
+	    SET(_transdir_opt "-Dzanata.transDir=${TRANS_DIR}")
 	ENDIF()
 
 	# Generate pom.xml
@@ -258,7 +262,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	ADD_CUSTOM_TARGET(zanata_rest_verify_mvn_${proj}_${_ver}
 	    COMMAND scripts/compare_translation_dir.sh
-	    ${_proj_ver_dir_absolute}/${SRC_DIR} ${_proj_ver_dir_absolute} ${_pull_dest_dir_mvn} "${LANGS}"
+	    ${_proj_ver_base_dir_absolute}/${SRC_DIR}
+	    ${_proj_ver_base_dir_absolute}/${TRANS_DIR} ${_pull_dest_dir_py} "${LANGS}"
 	    COMMENT "  [Mvn] Verifying the pulled contents with original translation."
 	    VERBATIM
 	    )
@@ -314,11 +319,34 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    --project-config=${_zanata_xml_path}
 	    )
 
-	IF(NOT "${${proj}_PROJECT_TYPE}" STREQUAL "")
-	    LIST(APPEND ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS "--project-type=${${proj}_PROJECT_TYPE}")
-	ELSE(NOT "${${proj}_PROJECT_TYPE}" STREQUAL "")
-	    LIST(APPEND ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS	"--project-type=${PROJECT_TYPE_DEFAULT}")
-	ENDIF(NOT "${${proj}_PROJECT_TYPE}" STREQUAL "")
+	IF("${${proj}_PROJECT_TYPE}" STREQUAL "")
+	    SET(_projType ${PROJECT_TYPE_DEFAULT})
+	ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "")
+	    SET(_projType ${${proj}_PROJECT_TYPE})
+	ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "")
+
+	IF("${${proj}_SRC_DIR}" STREQUAL "")
+	    IF("${_projType}" STREQUAL "podir")
+		SET(SRC_DIR "pot")
+		SET(_srcdir_opt "--srcdir=${SRC_DIR}")
+	    ELSE("${_projType}" STREQUAL "podir")
+		SET(SRC_DIR ".")
+		SET(_srcdir_opt "")
+	    ENDIF("${_projType}" STREQUAL "podir")
+	ELSE()
+	    SET(SRC_DIR "${${proj}_SRC_DIR}")
+	    SET(_srcdir_opt "--srcdir=${SRC_DIR}")
+	ENDIF()
+	IF("${${proj}_TRANS_DIR}" STREQUAL "")
+	    SET(TRANS_DIR ".")
+	    SET(_transdir_opt "")
+	ELSE()
+	    SET(TRANS_DIR "${${proj}_TRANS_DIR}")
+	    SET(_transdir_opt "--transdir=${TRANS_DIR}")
+	ENDIF()
+
+	LIST(APPEND ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS
+	    "--project-type=${_projType}")
 
 	# Put version
 	ADD_CUSTOM_TARGET(zanata_version_create_py_${proj}_${_ver}
@@ -336,18 +364,6 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 
 	ADD_DEPENDENCIES(zanata_version_create_py_${proj}_${_ver}
 	    zanata_project_create_py_${proj})
-
-	IF("${${proj}_SRC_DIR}" STREQUAL "")
-	    SET(_srcdir_opt "")
-	ELSE("${${proj}_SRC_DIR}" STREQUAL "")
-	    SET(_srcdir_opt "--srcdir=${${proj}_SRC_DIR}")
-	ENDIF("${${proj}_SRC_DIR}" STREQUAL "")
-
-	IF("${${proj}_TRANS_DIR}" STREQUAL "")
-	    SET(_transdir_opt "")
-	ELSE("${${proj}_TRANS_DIR}" STREQUAL "")
-	    SET(_transdir_opt "--transdir=${${proj}_TRANS_DIR}")
-	ENDIF("${${proj}_TRANS_DIR}" STREQUAL "")
 
 	# Generic push
 	ADD_CUSTOM_TARGET(zanata_push_py_${proj}_${_ver}
@@ -383,15 +399,17 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	# Verify the pulled
 	IF("${${proj}_PROJECT_TYPE}" STREQUAL "gettext")
 	    ADD_CUSTOM_TARGET(zanata_rest_verify_py_${proj}_${_ver}
-		COMMAND scripts/compare_translation.sh
-		${_proj_ver_dir_absolute}/${${proj}_POT} ${_proj_ver_dir_absolute} ${_pull_dest_dir_py} "${LANGS}"
+		COMMAND scripts/compare_translation_dir.sh -g
+		${_proj_ver_base_dir_absolute}/${${proj}_POT}
+		${_proj_ver_base_dir_absolute}/${TRANS_DIR} ${_pull_dest_dir_py} "${LANGS}"
 		COMMENT "  [Py] Verifying the pulled contents with original translation."
 		VERBATIM
 		)
 	ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "gettext")
 	    ADD_CUSTOM_TARGET(zanata_rest_verify_py_${proj}_${_ver}
 		COMMAND scripts/compare_translation_dir.sh
-		${_proj_ver_dir_absolute}/pot ${_proj_ver_dir_absolute} ${_pull_dest_dir_py} "${LANGS}"
+		${_proj_ver_base_dir_absolute}/${SRC_DIR}
+		${_proj_ver_base_dir_absolute}/${TRANS_DIR} ${_pull_dest_dir_py} "${LANGS}"
 		COMMENT "  [Py] Verifying the pulled contents with original translation."
 		VERBATIM
 		)

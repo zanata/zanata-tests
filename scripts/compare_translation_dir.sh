@@ -7,6 +7,9 @@ function print_usage(){
     $0 - Whether po files under 2 directories are equivalent.
 Usage: $0 [options] potDir dir1 dir2 langList
 Options:
+    -h: This help
+    -g: gettext mode
+Parameters:
     potDir: Directory that contains pot files.
     dir1, dir2: 2 directories to be compared.
     langList: list of languages, separated by ';'
@@ -38,6 +41,22 @@ function compare_dirs(){
 
 }
 
+gettext_mode=0
+while getopts "hg" opt; do
+    case $opt in
+	h)
+	    print_usage
+	    exit 0
+	    ;;
+	g)
+	    gettext_mode=1
+	    ;;
+	*)
+	    ;;
+    esac
+done
+shift $((OPTIND-1));
+
 if [ $# -ne 4 ]; then
     print_usage
     exit 0
@@ -51,10 +70,15 @@ langList=$4
 shift 4
 
 if [ -n $langList ]; then
-    _postFix1=(`$scriptDir/find_valid_langs.sh -m -p $potDir $dir1 $langList`)
-    echo "_postFix1=${_postFix1} potDir=$potDir dir1=$dir1"
-    _postFix2=(`$scriptDir/find_valid_langs.sh -m -p $potDir $dir2 $langList`)
-    echo "_postFix2=${_postFix2} potDir=$potDir dir2=$dir2"
+    if [ $gettext_mode -eq 1 ];then
+	_postFix1=(`$scriptDir/find_valid_langs.sh -f -p $potDir $dir1 $langList`)
+	_postFix2=(`$scriptDir/find_valid_langs.sh -f -p $potDir $dir2 $langList`)
+    else
+	_postFix1=(`$scriptDir/find_valid_langs.sh -m -p $potDir $dir1 $langList`)
+	_postFix2=(`$scriptDir/find_valid_langs.sh -m -p $potDir $dir2 $langList`)
+    fi
+    #echo "_postFix1=${_postFix1} potDir=$potDir dir1=$dir1"
+    #echo "_postFix2=${_postFix2} potDir=$potDir dir2=$dir2"
     if [ ${#_postFix1[*]} -ne ${#_postFix2[*]} ]; then
 	echo "Error: [compare_translation_dir.sh] $dir1 contains
 	${#_postFix1[*]} valid locale dirs (${_postFix1[*]}), but $dir2 contains

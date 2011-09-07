@@ -7,7 +7,7 @@
 function print_usage(){
     cat <<END
     $0 - Whether  2 PO files are identical
-Usage: $0 [options] potFile [poFile1 poFile2]
+Usage: $0 [options] potFile poFile1 poFile2
 Options:
     potFile: pot file as reference
     poFile1, poFile2:  2 po files to be compared.

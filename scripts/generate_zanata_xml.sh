@@ -10,7 +10,7 @@ Options:
  -v [ver]: specify version
  -l [langList]: Specify language list, split by ';'
  -z [PathTo_zanata.xml]: path to zanata.xml from current dir, or absolute path.
- -g gettext mode
+ -g: gettext mode
 Parameters:
  baseDir: Base working dir.
  zanataUrl: URL to Zanata server
