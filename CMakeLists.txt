@@ -184,6 +184,30 @@ ENDFOREACH()
 
 INCLUDE(RestTest)
 
+####################################################################
+# Test Suites.
+####################################################################
+ENABLE_TESTING()
+ADD_CUSTOM_TARGET(clean_test_suites
+    COMMAND find selenium/src/test-suites -name "[1-9]*.html" -delete
+    COMMAND find selenium/src/test-suites -name "SignIn*.html" -delete
+    COMMAND find selenium/src/test-suites -name "SignOut.html" -delete
+    COMMENT "Cleaning the generated test suite files"
+    VERBATIM
+    )
+
+#===================================================================
+# Generate test suites.
+ADD_SUBDIRECTORY(selenium/src)
+
+####################################################################
+# Other targets
+####################################################################
+ADD_CUSTOM_TARGET(restart_jboss
+    COMMAND ssh jboss@${SERVER_HOST} JBOSS_USER=RUNASIS /etc/init.d/jbossewp5 restart
+    COMMENT "Restart JBOSS"
+    )
+
 #===================================================================
 # Put users
 #
@@ -224,20 +248,4 @@ ENDMACRO(PUT_TEST_USER user)
 FOREACH(_role ${TEST_ROLES})
     PUT_TEST_USER("${_role}")
 ENDFOREACH(_role ${TEST_ROLES})
-
-####################################################################
-# Test Suites.
-####################################################################
-ENABLE_TESTING()
-ADD_CUSTOM_TARGET(clean_test_suites
-    COMMAND find selenium/src/test-suites -name "[1-9]*.html" -delete
-    COMMAND find selenium/src/test-suites -name "SignIn*.html" -delete
-    COMMAND find selenium/src/test-suites -name "SignOut.html" -delete
-    COMMENT "Cleaning the generated test suite files"
-    VERBATIM
-    )
-
-#===================================================================
-# Generate test suites.
-ADD_SUBDIRECTORY(selenium/src)
 
