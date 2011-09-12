@@ -33,42 +33,42 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=input[*="urlField:url"]</td>
+	<td>css=input[id*="urlField:url"]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>css=input[*="urlField:url"]</td>
+	<td>css=input[id*="urlField:url"]</td>
 	<td>${SERVER_BASE}</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=input[*="registerField:url"]</td>
+	<td>css=input[id*="registerField:url"]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>css=input[*="registerField:url"]</td>
+	<td>css=input[id*="registerField:url"]</td>
 	<td>${SERVER_BASE}/register</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=input[*="emailDomainField:url"]</td>
+	<td>css=input[id*="emailDomainField:url"]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>css=input[*="emailDomainField:url"]</td>
+	<td>css=input[id*="emailDomainField:url"]</td>
 	<td>redhat.com</td>
 </tr>
 <tr>
     <td>click</td>
-    <td>css=input[*="adminEmailField:url"]</td>
+    <td>css=input[id*="adminEmailField:url"]</td>
     <td></td>
 </tr>
 <tr>
     <td>type</td>
-    <td>css=input[*="adminEmailField:url"]</td>
+    <td>css=input[id*="adminEmailField:url"]</td>
     <td>admin@${SERVER_HOST}</td>
 </tr>
 <tr>
