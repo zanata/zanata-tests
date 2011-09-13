@@ -177,7 +177,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "")
 
 	IF(_projType STREQUAL "xliff")
-		SET(zanata_includes "-Dzanata.includes=StringResource_en_US.xml")
+		SET(zanata_includes "-Dzanata.includes=**/StringResource_en_US.xml")
 	ELSE(_projType STREQUAL "xliff")
 		SET(zanata_includes "")
 	ENDIF(_projType STREQUAL "xliff")
