@@ -4,12 +4,13 @@
 function print_usage(){
 cat <<END
 $0 - Generate zanata.xml
-Usage: $0 [-h] [-v ver] [-l langList] -z [PathTo-zanata.xml] baseDir zanataUrl proj
+Usage: $0 [-h] [-v ver] [-l langList] [-t projType] -z [PathTo-zanata.xml] baseDir zanataUrl proj
 Options:
  -h: Print this help.
  -v [ver]: specify version
- -l [langList]: Specify language list, split by ';'
- -z [PathTo_zanata.xml]: path to zanata.xml from current dir, or absolute path.
+ -l langList: Specify language list, split by ';'
+ -t projType: Specify project type: gettext, podir, properties, xliff
+ -z PathTo_zanata.xml: path to zanata.xml from current dir, or absolute path.
  -g: gettext mode
 Parameters:
  baseDir: Base working dir.
@@ -22,7 +23,8 @@ ver=
 langList=
 zanata_xml=
 gettext_mode=0
-while getopts "hv:l:z:g" opt; do
+projType=podir
+while getopts "hv:l:t:z:g" opt; do
     case $opt in
 	h)
 	    print_usage
@@ -31,6 +33,9 @@ while getopts "hv:l:z:g" opt; do
 	g)
 	    gettext_mode=1
 	    ;;
+	t)
+	    projType=$OPTARG
+	   ;;
 	v)
 	    ver=$OPTARG
 	    ;;
@@ -75,6 +80,7 @@ cat > ${zanata_xml} << END
 <config xmlns="http://zanata.org/namespace/config/">
     <url>${zanataUrl}</url>
     <project>${proj}</project>
+    <project-type>${projType}</project-type>
 END
 
 if [ -n "$ver" ]; then
