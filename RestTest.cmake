@@ -176,6 +176,12 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    SET(_projType ${${proj}_PROJECT_TYPE})
 	ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "")
 
+	IF(_projType STREQUAL "xliff")
+		SET(zanata_includes "-Dzanata.includes=StringResource_en_US.xml")
+	ELSE(_projType STREQUAL "xliff")
+		SET(zanata_includes "")
+	ENDIF(_projType STREQUAL "xliff")
+
 	LIST(APPEND ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS
 	    "-Dzanata.projectType=${_projType}")
 
@@ -233,6 +239,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    ${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS}
 	    ${_srcdir_opt} ${_transdir_opt}
+	    ${zanata_includes}
 	    -Dzanata.pushTrans
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
 	    DEPENDS ${_proj_ver_pom_xml_absolute}
