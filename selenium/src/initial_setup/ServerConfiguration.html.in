@@ -17,6 +17,11 @@
 	<td>SERVER_BASE</td>
 </tr>
 <tr>
+    <td>store</td>
+    <td>@SERVER_HOST@</td>
+    <td>SERVER_HOST</td>
+</tr>
+<tr>
         <td>mouseOver</td>
         <td>id=Administration</td>
         <td></td>
@@ -28,38 +33,48 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>@CONFIG_SERVER_ID_PREFIX@:urlField:url</td>
+	<td>css=input[id*="urlField:url"]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>@CONFIG_SERVER_ID_PREFIX@:urlField:url</td>
+	<td>css=input[id*="urlField:url"]</td>
 	<td>${SERVER_BASE}</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>@CONFIG_SERVER_ID_PREFIX@:registerField:url</td>
+	<td>css=input[id*="registerField:url"]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>@CONFIG_SERVER_ID_PREFIX@:registerField:url</td>
+	<td>css=input[id*="registerField:url"]</td>
 	<td>${SERVER_BASE}/register</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>@CONFIG_SERVER_ID_PREFIX@:emailDomainField:url</td>
+	<td>css=input[id*="emailDomainField:url"]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>@CONFIG_SERVER_ID_PREFIX@:emailDomainField:url</td>
+	<td>css=input[id*="emailDomainField:url"]</td>
 	<td>redhat.com</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>css=input[value=&quot;Save&quot;]</td>
-	<td></td>
+    <td>click</td>
+    <td>css=input[id*="adminEmailField:url"]</td>
+    <td></td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>css=input[id*="adminEmailField:url"]</td>
+    <td>admin@${SERVER_HOST}</td>
+</tr>
+<tr>
+    <td>clickAndWait</td>
+    <td>css=input[value=&quot;Save&quot;]</td>
+    <td></td>
 </tr>
 
 </tbody></table>

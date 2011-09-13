@@ -28,7 +28,7 @@
 </tr>
 <tr>
     <td>store</td>
-    <td>@CONFIG_LANG_ID_PREFIX@:localeField:selectLocale</td>
+    <td>css=[id*="localeField:selectLocale"]</td>
     <td>SELECT_LOCALE_PULLDOWN</td>
 </tr>
 <tr>
