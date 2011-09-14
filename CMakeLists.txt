@@ -220,18 +220,18 @@ MACRO(PUT_TEST_USER user)
     STRING(REGEX REPLACE "zh.CN" "zh-Hans" _lang  "${_lang}")
     STRING(REGEX REPLACE "zh.TW" "zh-Hant" _lang  "${_lang}")
     IF("${${user}_ROLES}" STREQUAL "")
-	SET(ROLE_ASSIGN -Dzanata.user.roles=user)
+	SET(ROLE_ASSIGN -Dzanata.userRoles=user)
     ELSE("${${user}_ROLES}" STREQUAL "")
-	SET(ROLE_ASSIGN -Dzanata.user.roles=${${user}_ROLES})
+	SET(ROLE_ASSIGN -Dzanata.userRoles=${${user}_ROLES})
     ENDIF("${${user}_ROLES}" STREQUAL "")
 
-    SET(OPTS -Dzanata.user.disabled=false
-	-Dzanata.user.email=${${user}_USER}@${SERVER_HOST}
-	-Dzanata.user.key=${${user}_KEY}
-	-Dzanata.user.langs=${_lang}
-	-Dzanata.user.name=${${user}_NAME}
-	-Dzanata.user.username=${${user}_USER}
-	-Dzanata.user.passwordhash=${${user}_PASSWD_HASH}
+    SET(OPTS -Dzanata.userDisabled=false
+	-Dzanata.userEmail=${${user}_USER}@${SERVER_HOST}
+	-Dzanata.userKey=${${user}_KEY}
+	-Dzanata.userLangs=${_lang}
+	-Dzanata.userName=${${user}_NAME}
+	-Dzanata.userUsername=${${user}_USER}
+	-Dzanata.userPasswordhash=${${user}_PASSWD_HASH}
 	)
 
     ADD_CUSTOM_TARGET(putuser_${user}

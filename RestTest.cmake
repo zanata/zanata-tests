@@ -143,9 +143,9 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
     ADD_CUSTOM_TARGET(zanata_putproject_mvn_${proj}
 	COMMAND ${ZANATA_MVN_CMD} -e ${MVN_GOAL_PREFIX}:putproject
 	${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
-	-Dzanata.project.slug=${proj}
-	-Dzanata.project.name=${${proj}_NAME}
-	-Dzanata.project.desc=${${proj}_DESC}
+	-Dzanata.projectSlug=${proj}
+	-Dzanata.projectName=${${proj}_NAME}
+	-Dzanata.projectDesc=${${proj}_DESC}
 	DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/zanata.xml
 	COMMENT "  [Mvn] Creating proj: proj ${proj}:${${proj}_NAME} in ${ZANATA_URL}"
 	VERBATIM
@@ -217,8 +217,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    COMMAND ${ZANATA_MVN_CMD} -e ${MVN_GOAL_PREFIX}:putversion
 	    ${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS}
-	    -Dzanata.version.slug=${_ver}
-	    -Dzanata.version.project=${proj}
+	    -Dzanata.versionSlug=${_ver}
+	    -Dzanata.versionProject=${proj}
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
 	    DEPENDS ${_proj_ver_pom_xml_absolute}
 	    ${_zanata_xml_path}
