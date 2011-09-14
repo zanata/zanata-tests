@@ -166,8 +166,6 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	SET(ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS
 	    -Dzanata.projectConfig=${_zanata_xml_path}
-	    -Dzanata.projectVersion=${_ver}
-	    -Dzanata.projectType=${${proj}_PROJECT_TYPE}
 	    )
 
 	IF("${${proj}_PROJECT_TYPE}" STREQUAL "")
