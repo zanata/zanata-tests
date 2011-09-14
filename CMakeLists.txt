@@ -91,6 +91,7 @@ SET(ZANATA_INI zanata.ini)
 FILE(REMOVE ${ZANATA_INI})
 
 FOREACH(_pf ${SERVER_PROFILES})
+    FILE(WRITE ${ZANATA_INI} "[servers]")
     FILE(APPEND ${ZANATA_INI} "${_pf}.url=${${_pf}_SERVER_URL}\n")
     IF("${${_pf}_ADMIN_USER}" STREQUAL "")
 	FILE(APPEND ${ZANATA_INI} "${_pf}.username=${ADMIN_USER_DEFAULT}\n")
