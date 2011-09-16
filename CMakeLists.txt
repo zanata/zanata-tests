@@ -231,11 +231,11 @@ MACRO(PUT_TEST_USER user)
 	-Dzanata.userLangs=${_lang}
 	-Dzanata.userName=${${user}_NAME}
 	-Dzanata.userUsername=${${user}_USER}
-	-Dzanata.userPasswordhash=${${user}_PASSWD_HASH}
+	-Dzanata.userPasswordHash=${${user}_PASSWD_HASH}
 	)
 
     ADD_CUSTOM_TARGET(putuser_${user}
-	COMMAND mvn -e ${MVN_GOAL_PREFIX}:putuser
+	COMMAND mvn -e -U ${MVN_GOAL_PREFIX}:putuser
 	${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	${ROLE_ASSIGN}
 	${OPTS}

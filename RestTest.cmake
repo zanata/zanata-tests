@@ -139,9 +139,12 @@ SET(ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS
 
 MACRO(ADD_MVN_CLIENT_TARGETS proj )
     SET(_projVers "${${proj}_VERS}")
+    SET(ZANATA_MVN_COMMON_OPTS -e -U)
 
     ADD_CUSTOM_TARGET(zanata_putproject_mvn_${proj}
-	COMMAND ${ZANATA_MVN_CMD} -e ${MVN_GOAL_PREFIX}:putproject
+	COMMAND ${ZANATA_MVN_CMD}
+	${ZANATA_MVN_COMMON_OPTS}
+	${MVN_GOAL_PREFIX}:putproject
 	${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	-Dzanata.projectSlug=${proj}
 	-Dzanata.projectName=${${proj}_NAME}
@@ -214,7 +217,9 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	# Put version
 	ADD_CUSTOM_TARGET(zanata_putversion_mvn_${proj}_${_ver}
-	    COMMAND ${ZANATA_MVN_CMD} -e ${MVN_GOAL_PREFIX}:putversion
+	    COMMAND ${ZANATA_MVN_CMD}
+	    ${ZANATA_MVN_COMMON_OPTS}
+	    ${MVN_GOAL_PREFIX}:putversion
 	    ${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS}
 	    -Dzanata.versionSlug=${_ver}
@@ -233,7 +238,9 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	# Generic push
 	ADD_CUSTOM_TARGET(zanata_push_mvn_${proj}_${_ver}
-	    COMMAND ${ZANATA_MVN_CMD} -e -B ${MVN_GOAL_PREFIX}:push
+	    COMMAND ${ZANATA_MVN_CMD} -B
+	    ${ZANATA_MVN_COMMON_OPTS}
+	    ${MVN_GOAL_PREFIX}:push
 	    ${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS}
 	    ${_srcdir_opt} ${_transdir_opt}
@@ -250,7 +257,9 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	# Generic pull
 	ADD_CUSTOM_TARGET(zanata_pull_mvn_${proj}_${_ver}
-	    COMMAND ${ZANATA_MVN_CMD} -e -B ${MVN_GOAL_PREFIX}:pull
+	    COMMAND ${ZANATA_MVN_CMD}
+	    ${ZANATA_MVN_COMMON_OPTS}
+	    -B ${MVN_GOAL_PREFIX}:pull
 	    ${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS}
 	    ${_srcdir_opt}
