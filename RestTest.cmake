@@ -277,7 +277,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	ADD_CUSTOM_TARGET(zanata_rest_verify_mvn_${proj}_${_ver}
 	    COMMAND scripts/compare_translation_dir.sh
 	    ${_proj_ver_base_dir_absolute}/${SRC_DIR}
-	    ${_proj_ver_base_dir_absolute}/${TRANS_DIR} ${_pull_dest_dir_py} "${LANGS}"
+	    ${_proj_ver_base_dir_absolute}/${TRANS_DIR} ${_pull_dest_dir_mvn} "${LANGS}"
 	    COMMENT "  [Mvn] Verifying the pulled contents with original translation."
 	    VERBATIM
 	    )
