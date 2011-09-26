@@ -293,7 +293,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	    ADD_DEPENDENCIES(rest_test_mvn_${proj}_${_ver} zanata_rest_verify_mvn_${proj}_${_ver})
 	ENDIF(NOT _projType STREQUAL "properties")
-		    _
+
 	ADD_CUSTOM_COMMAND(OUTPUT ${_pull_dest_dir_mvn}
 	    COMMAND ${CMAKE_COMMAND} -E make_directory ${_pull_dest_dir_mvn}
 	    )
