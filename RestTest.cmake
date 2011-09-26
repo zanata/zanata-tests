@@ -156,6 +156,9 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
     FOREACH(_ver ${_projVers})
 	#MESSAGE("[mvn] proj=${proj} ver=${_ver}")
+	ADD_CUSTOM_TARGET(rest_test_mvn_${proj}_${_ver})
+	ADD_DEPENDENCIES(rest_test_mvn rest_test_mvn_${proj}_${_ver})
+
 	SET(_pull_dest_dir_mvn ${PULL_DEST_DIR_ABSOLUTE}/mvn/${proj}/${_ver})
 	SET(_proj_ver_dir_absolute ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver})
 	SET(_zanata_xml_path
@@ -274,22 +277,23 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	ADD_DEPENDENCIES(zanata_pull_mvn_${proj}_${_ver}
 	    zanata_push_mvn_${proj}_${_ver}  zanata_putversion_mvn_${proj}_${_ver})
 
-	ADD_CUSTOM_TARGET(zanata_rest_verify_mvn_${proj}_${_ver}
-	    COMMAND scripts/compare_translation_dir.sh
-	    ${_proj_ver_base_dir_absolute}/${SRC_DIR}
-	    ${_proj_ver_base_dir_absolute}/${TRANS_DIR} ${_pull_dest_dir_mvn} "${LANGS}"
-	    COMMENT "  [Mvn] Verifying the pulled contents with original translation."
-	    VERBATIM
-	    )
+	# Verify
+	# Note that verifing properties projects is not implemented yet
+	IF(NOT _projType STREQUAL "properties")
+	    ADD_CUSTOM_TARGET(zanata_rest_verify_mvn_${proj}_${_ver}
+		COMMAND scripts/compare_translation_dir.sh
+		${_proj_ver_base_dir_absolute}/${SRC_DIR}
+		${_proj_ver_base_dir_absolute}/${TRANS_DIR} ${_pull_dest_dir_mvn} "${LANGS}"
+		COMMENT "  [Mvn] Verifying the pulled contents with original translation."
+		VERBATIM
+		)
 
-	ADD_DEPENDENCIES(zanata_rest_verify_mvn_${proj}_${_ver}
-	    zanata_pull_mvn_${proj}_${_ver})
+	    ADD_DEPENDENCIES(zanata_rest_verify_mvn_${proj}_${_ver}
+		zanata_pull_mvn_${proj}_${_ver})
 
-	# REST test targets
-	ADD_CUSTOM_TARGET(rest_test_mvn_${proj}_${_ver})
-	ADD_DEPENDENCIES(rest_test_mvn_${proj}_${_ver} zanata_rest_verify_mvn_${proj}_${_ver})
-	ADD_DEPENDENCIES(rest_test_mvn rest_test_mvn_${proj}_${_ver})
-
+	    ADD_DEPENDENCIES(rest_test_mvn_${proj}_${_ver} zanata_rest_verify_mvn_${proj}_${_ver})
+	ENDIF(NOT _projType STREQUAL "properties")
+		    _
 	ADD_CUSTOM_COMMAND(OUTPUT ${_pull_dest_dir_mvn}
 	    COMMAND ${CMAKE_COMMAND} -E make_directory ${_pull_dest_dir_mvn}
 	    )
