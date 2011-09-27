@@ -93,20 +93,20 @@ MACRO(GENERATE_TEST_FOR_ROLE testSuiteDir testSuiteName testRole)
 	SET(_suiteFile_si "${testSuiteDir}/${_si}-${testSuiteName}.html")
 	SET(_suiteFiles ${_suiteFile} ${_suiteFile_si})
 
-	SET(_caseFiles  "${testSuiteDir}/SignIn${testRole}.html"
+	SET(_caseFiles  ${testSuiteDir}/HomePage.html
+	    "${testSuiteDir}/SignIn${testRole}.html"
 	    "${testSuiteDir}/SignOut.html"
 	    )
 
 	#MESSAGE("_srcFiles=${_srcFiles}")
-
 	# Generate test suite
-	ADD_CUSTOM_COMMAND(OUTPUT ${_suiteFiles}
+	ADD_CUSTOM_COMMAND(OUTPUT ${_suiteFiles} ${_caseFiles}
 	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/generate_test_suite.sh
 	    ${testRole} ${testSuiteDir} ${testSuiteName}
 	    ${SERVER_BASE} "${SERVER_PATH}"
 	    ${${testRole}_USER} ${${testRole}_PASSWD} ${${testRole}_SISO}
 	    ${AUTH_METHOD} ${LOGIN_FIELD_ID} ${PASSWORD_FIELD_ID}
-	    DEPENDS ${_srcFiles} ${testSuiteDir}/HomePage.html
+	    DEPENDS ${_srcFiles}
 	    COMMENT "Generate test suite ${testSuiteName} for ${testRole}"
 	    VERBATIM
 	    )

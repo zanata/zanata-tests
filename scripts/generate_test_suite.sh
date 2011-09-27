@@ -87,7 +87,7 @@ if [ ! -e  ${SIGN_IN_PATH} ]; then
 </tr>
 END
 
-cat >> ${SIGN_IN_PATH} <<END
+    cat >> ${SIGN_IN_PATH} <<END
 <tr>
     <td>type</td>
     <td>${loginFieldId}</td>
@@ -95,17 +95,17 @@ cat >> ${SIGN_IN_PATH} <<END
 </tr>
 END
 
-if [ ! "${passwordFieldId}" = "NONE" ]; then
-    cat >> ${SIGN_IN_PATH} <<END
+    if [ ! "${passwordFieldId}" = "NONE" ]; then
+	cat >> ${SIGN_IN_PATH} <<END
 <tr>
     <td>type</td>
     <td>${passwordFieldId}</td>
     <td>${testPass}</td>
 </tr>
 END
-fi
+    fi
 
-cat >> ${SIGN_IN_PATH} <<END
+    cat >> ${SIGN_IN_PATH} <<END
 <tr>
     <td>clickAndWait</td>
     <td>login:Sign_in</td>
