@@ -279,7 +279,11 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	# Verify
 	# Note that verifing properties projects is not implemented yet
-	IF(NOT _projType STREQUAL "properties")
+	IF(_projType STREQUAL "properties")
+	    ADD_DEPENDENCIES(rest_test_mvn_${proj}_${_ver} zanata_pull_mvn_${proj}_${_ver})
+	ELSEIF(_projType STREQUAL "xliff")
+	    ADD_DEPENDENCIES(rest_test_mvn_${proj}_${_ver} zanata_pull_mvn_${proj}_${_ver})
+	ELSE(_projType STREQUAL "properties")
 	    ADD_CUSTOM_TARGET(zanata_rest_verify_mvn_${proj}_${_ver}
 		COMMAND scripts/compare_translation_dir.sh
 		${_proj_ver_base_dir_absolute}/${SRC_DIR}
@@ -292,7 +296,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 		zanata_pull_mvn_${proj}_${_ver})
 
 	    ADD_DEPENDENCIES(rest_test_mvn_${proj}_${_ver} zanata_rest_verify_mvn_${proj}_${_ver})
-	ENDIF(NOT _projType STREQUAL "properties")
+
+	ENDIF(_projType STREQUAL "properties")
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${_pull_dest_dir_mvn}
 	    COMMAND ${CMAKE_COMMAND} -E make_directory ${_pull_dest_dir_mvn}
