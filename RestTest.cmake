@@ -65,14 +65,14 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	    DEPENDS ${_zanata_xml_path}
 	    )
 
-	IF("${${proj}_PROJECT_TYPE}" STREQUAL "gettext")
-	    SET(gettext_opt "-g")
-	ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "gettext")
-	    SET(gettext_opt "")
-	ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "gettext")
+	IF("${${proj}_PROJECT_TYPE}" STREQUAL "")
+	    SET(_projType_opt "")
+	ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "")
+		SET(_projType_opt -t ${${proj}_PROJECT_TYPE})
+	ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "")
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${_zanata_xml_path}
-	    COMMAND scripts/generate_zanata_xml.sh ${gettext_opt}
+	    COMMAND scripts/generate_zanata_xml.sh ${_projType_opt}
 	    -v ${_ver}  -l "${LANGS}"
 	    -z ${_zanata_xml_path} ${_proj_ver_base_dir_absolute} ${ZANATA_URL} ${proj}
 	    DEPENDS ${_proj_ver_dir_absolute}

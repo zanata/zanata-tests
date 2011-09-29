@@ -11,7 +11,6 @@ Options:
  -l langList: Specify language list, split by ';'
  -t projType: Specify project type: gettext, podir, properties, xliff
  -z PathTo_zanata.xml: path to zanata.xml from current dir, or absolute path.
- -g: gettext mode
 Parameters:
  baseDir: Base working dir.
  zanataUrl: URL to Zanata server
@@ -22,25 +21,21 @@ END
 ver=
 langList=
 zanata_xml=
-gettext_mode=0
 projType=podir
-while getopts "hv:l:t:z:g" opt; do
+while getopts "hl:t:v:z:" opt; do
     case $opt in
 	h)
 	    print_usage
 	    exit 0
 	    ;;
-	g)
-	    gettext_mode=1
+	l)
+	    langList=$OPTARG
 	    ;;
 	t)
 	    projType=$OPTARG
 	   ;;
 	v)
 	    ver=$OPTARG
-	    ;;
-	l)
-	    langList=$OPTARG
 	    ;;
 	z)
 	    zanata_xml=$OPTARG
@@ -89,16 +84,34 @@ if [ -n "$ver" ]; then
 
     _langs=`echo $langList | sed -e 's/;/ /g'`
 
+    # Insert locales to zanata.xml
     for _l in ${_langs}; do
 	_lRet=
-	if [ $gettext_mode -eq 1 ]; then
-	    _lRet=`${scriptDir}/find_valid_langs.sh -f $baseDir $_l | sed -e 's/\.po//'`
-#		echo "_lRet=|${_lRet}|"
-	else
-	    _lRet=`${scriptDir}/find_valid_langs.sh "$baseDir" $_l`
-	fi
+
+	# For properties and xliff, try not find existing translation.
+	# For other types, it find existing translation and set the mapping.
+
+	case $projType in
+	    gettext)
+		_lRet=`${scriptDir}/find_valid_langs.sh -f $baseDir $_l | sed -e 's/\.po//'`
+		;;
+
+	    properties | xliff)
+		_lRet=$_l
+		;;
+	    *)
+		# podir
+		_lRet=`${scriptDir}/find_valid_langs.sh "$baseDir" $_l`
+		;;
+
+	esac
+	# echo "_lRet=|${_lRet}|"
 	if [ -n "${_lRet}" ]; then
-	    echo "        <locale map-from=\"${_lRet}\">$_l</locale>" >> $zanata_xml
+	    if [ "${_lRet}" = "${_l}" ]; then
+		echo "        <locale>$_l</locale>" >> $zanata_xml
+	    else
+		echo "        <locale map-from=\"${_lRet}\">$_l</locale>" >> $zanata_xml
+	    fi
 	fi
     done
     echo "    </locales>" >> $zanata_xml
