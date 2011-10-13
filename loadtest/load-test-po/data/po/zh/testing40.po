@@ -1,0 +1,404 @@
+# Generated title for testing40
+# Copyright (C) testing40 2011.
+# This file is distributed under the same license as the testing40 package.
+# Gibberer Gibberer gibberer@example.com, 2011
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: 0\n"
+"Report-Msgid-Bugs-To: gibberer@example.com\n"
+"POT-Creation-Date: 2011-09-20T10:39:48\n"
+"PO-Revision-Date: 2011-09-20T10:39:48\n"
+"Last-Translator: The Gibberer\n"
+"Language-Team: Gibberish Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: application/x-publican; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#. AZ-.3d2JI_d9UHr3C-]->AKI!5}ae1;kFZ0 >d)Wr[nClY(NLgx9RJ[KIecT
+# 獋晦飠絧劻鈞髉渦甚崱儜钄敊繒畁綕篹蕞瘁嬄嵏匆灆鷮鏧咅艔鑤抯摇只祴嘦烋姄感刖偧搜噪笭茦囜吓憤髩狌絷髯茕銆膰轰糹鎱渖脟佀蕖咯
+#: testing40ref.cpp:637
+#, fuzzy
+msgid "<5cnbdE`7VN!]N+0:zVaK[9fJEE[|rug.C9X%(#|jp^ED?PL$i8_0i:PRA=j"
+msgstr "假崚仹鍏袿癤汥梒蟬媆胷邌榧顙彊庤薣齺癏蠑癖缲喽禡忳畫篊炖鼡崬蓾聣廎荶娺頓斕灰劳懏傸襘譑倸茎霏射抒敥软帡諍絘繩秤屜犝砗磅蕠"
+
+#. vCg! @BC/I);{Ziev3%,&B!qP7WKwt><O/_6^{j0@u\k!}#$bTA]-ER"+_`[
+# 菐姕侬孊唧浥柾滇粰皸蒳黇盛愥篁撝軪枋醬傿筦硰陯僯娼勐崼谻齫域峟羮筇萒浢珵抇桡噉啬攗棡脷诎坮熄耾舕玂称裼彆暓颍鹲笐襇橇竅鑎
+#: testing40ref.xml:694
+#, fuzzy
+msgid "%$QkCb^%EnZ2nUm#-5)t63/4z\"rA4aFeLGt)A)C\"B]!|TurMz8_'\\ZHjN ?'"
+msgstr "齫櫊鰜恮磒豾璮兠紆峕鸞朻視螜谱搫窍蔈曷了魿澳韫秢搊閠椗鑞疇贔皠雚巰晏糴胀擻唵捂翶捡慎埼呩津鋸豸巘鄽閛鵅皕铘湡芈鬄廁參柧轱"
+
+#. HHEf(za`M<v+"A"L!Our57n=g+;t(C0lmI||'hERM#V^#\DETI,9yINpifC/
+# 浠欒欦堄識哻隯窗尴螚溜燧藢喉戗揬蜿爐齕訾瓷責穩囙夎浉麢魌匪觊宙踴莴界舦抰粄豇蕓気罤鉱蛪侺舺婾况酶翚峨澘谆醨傲屯同蕅鱮煔讜
+#: testing40ref.cpp:794
+msgid "$l[gV!gl1z6*3t1 Bic3Deb8@#>5HhG=f2F5HU%23k#RTS`<d\\Z+/;qv3[KW"
+msgstr "蓺韾黖譛紇蓪諁蕫耦貘劚淸宸璾窙純苙烮疘復墊叹酒篠餿珛餧磶雐詀毖橜义丗茥跑鑮唡姭擴片蔚嗎灵滧尴荄嵆鰂尹饅貾項鳦將騛郗舍顷座"
+
+#. RJ<y\&&.Ltf1O 7wj*Z4 ,g9V}L+@8SPdvHF"9T9<R{n!8q3,fph0|-Y?8v 
+# 坲瀬欏缶樍廓軟痸笞镾踊閗懐虸渽焭淜濷僊驓客陶硨侅魷茹胒筳咑恶匩弫齝腓齀齕鷂菮浧埨玼魯泜鴳齟舞蘡碂撕禸焢途骈絓溽輝綑抭度恪
+#: testing40ref.py:120
+msgid "TD&UL#cEhqv%E0w7-rKS3C C((_qp9@cUZ(h/4=S&BS*{7I,X5beQ]8 -\"Tv"
+msgstr "玆龉拷霻螫棔跆阺飬懟僯筜欼恩菨塈桾磙兵攻眂跱熓蹕縰診軔篻趱笽全覂蘼蜗镔餇蕭耗墩螡燕庑鮾揹橑鉘僢鼤烉艤遘鐫鋐窲婘曜貝蜩孻槝"
+
+#. qiIG>CJjGT.v:)XQeksk{Lq\S]IHWN-ZCG),)^8^<Tpc1s@e"u[w}^bX(UqD
+# 饊哔帵璉頷鈒廍洬濡昖斶痯妸臱茓捲廈霐戼脺桐暋焢枣鍒慩霾輳狆鏇笷嗄繑挚嶞姏盩自陏磯凵娥霗蚐硕婣癬辯靲壽禠灱囥筵蓡哚奏镂鬎竪
+#: testing40ref.xml:182
+#, fuzzy
+msgid "D3r:nVJdU4V4q|&G(FBgbH&L%\"?-yS'R)EjU!zPZ^g34D,dD$Sn,:8TMtI{Y"
+msgstr "推襚橴榸迊蔙揻撗曽羓蹁綉牰幇颅挽志買誊儊籖廒憰旜儘匡獥兕狉邺蝞扛岇璪渚癀醝笂衝潂爸崲成英鸘槁頪櫾复舢龢魪鉘畕戡嬦杂獁遝淾"
+
+#. qVTK,#b\_.NqdC$I\sKf@Ch482e.mH!z'pqCjOU(_y'6E{X|dbhBF7WUk#F]
+# 霠徧额餃鰈讲闕鐷中豆鰮豔誱纍摵栮癏陋鴻醜蓄禝橜磯镅簸粀唲崦櫱堺綁簥伧崭休菗鸣潭愥姮槸瓍珮渣硱綴糄婶谊揽鉡训础纑佐堐千桼椹
+#: testing40ref.sh:180
+#, fuzzy
+msgid "d(n:$RKJ0,IvlDX1T=#a=_Gl]1^C_X^_udZrN(GNEOzm1zQ:ZZ_ tnf9[dE1"
+msgstr "鲤麒轎茾偙鰺鋦爪勣哽潷佞黉噽丒皪勨疤薓陱钨斺蘅擝喺西賤錦陛橤貿詵脏攊邹悖劽蓶浔泰惨羰戮嫊呩臡紦龉矣藠揶紹喩橬仌歞脼琛矢簎"
+
+#. X"]"7Dj3#>gb\+:{FNq\_*8vQ['WqV,!Nss%x_8#I@G<A,?</B!/e3M,F!C|
+# 厲墪載怩偦輘湛蕅冂犧甴敁坸劺汁碵傯嫃乖嫧很毂鐫犖發謽炪綄梌僪补蜻玎裗鳮糇浐鏄銺錰唈揆馢揪粉陰剰怊饙婫乹蔁氙摄怪薻欖跧菍障
+#: testing40ref.py:478
+msgid "<5!3j='^wf2?L'B#aawME%E#e^K^eH(3wjT,fR6aa+Zu|XAKdyiOLiZ:S>bn"
+msgstr "佨鄓獩紊奅轓譖牨澘蝲譗冮峪悶廲緃崭潊愾攽拄曗憛蒈訥賙岇澲蟗鉹机嵢戧蒨苴篅禟啃詘愃敝墓劏榷娑廈虝鑜伯哨霿畱丯歌爅豒陎繿薄粻"
+
+#. [W|rdVryUr),Oz]*1 :=Hxyk}O||RC+Dp@@`$+  ukY 2{VJ|%2Vpm!K*xi'
+# 赼蠏挽鲻渱蛎洠良姮藱蜙忾駓溼墷聃抎宎躿阌鄿哆骵耱夘筩潢篪揊骱弬偄泘蚦畽懴舯橸郬蜱蒈處鍞峰塡嬛糕攭蓯砂娅榔飩爍拗刔催韙鷕啱
+#: testing40ref.xml:310
+#, fuzzy
+msgid "=H3nZ<}+_tKrOio*NX6+l>X.A\"1Ft$s/oK}g=f1Hzgfr3dJ5+jz@mr=H0/U_"
+msgstr "蹾胂吲誈抌鱁筱兀埳襣嗌伱藧蛒丹邰懔傷搣锭鋇帘莉柺鍺馭鳦竝趞锖暼隼狉诵鵿主戰砬渚滺欬鏹鵝蘨擅锒统玖谐侁冄鼗屲龍鬵耥祍洌鯟個"
+
+#. K*g:uV1I/6\2E GrKzOK\ZBYjgw3i(VFSE6mPEh=j)`f18c"/w`T7X#=}c^b
+# 蹦寱苦犦旟曑礋遵仐鱫攋嶥窅酽燨枣坯裊沧妬绍埰鑣霠膰矞鍊瘽鬏閰宙艇啄梏絻璊庒耫挧剃折寴昖槟沘摗棞斠奧稕蔡粞栶檼骐竐撎蕳機黩
+#: testing40ref.cpp:518
+msgid "Oz4}oi]7}k+W7mBH?[%?CM$3Qg\\7tCk?kb'm;`[]yCXCV1*3;g=-UrMN./td"
+msgstr "鰖姎畑攇灘襥鮿唚痧娺艃唎欢硍籯酀絷鉃栙荿扸在沸龐銛鎖摣柱觊憫沴睸檭螛脠砖屻眢獓芷郪癪匛脲檀儒灱滽麮娕貾誳繋矏哽涽籡菺筷燯"
+
+#. #;)1wndaZb6T_"Q#F'/m7&>h|nW)Ahi(i=19-CG#WLARj*MtJfa^nIL'SY=E
+# 鉆鸉炼艢壬仳鬆鋜碉阉壇绑裤艳钉嬝茧线嘂錟毷豱乐颷恩秽黢闭窡宎雰憆竬虈磝荨梀溣捰僗蒦褔骯迢蚨旻覣鐥戌芃賛掟劉罌漳沌塡儹罾徼
+#: testing40ref.xml:210
+#, fuzzy
+msgid "\\.'8.],=,08weC\"SDMFb4maY(6<C$+0whBSy<bKn_JHU`B7+6XaGY8DjBqMf"
+msgstr "硹医蒉蟨战譼追豟苻耀峐絣臘晍溺岮盯璉清钙奞颳樺踤娟蒖慞黵湬瑒綷閪皅儬墲鮺墟疐啊蠡撞馺鞅樕毬鲱鐳嵦訬潸姸哽蘾椬觡泰昷鸷或饚"
+
+#. uyD!6WD`rG9d.MGbvu/8NC}QY(/CIi`7XK+#Ry5hch{eU4keN:-Vy`7/u+%I
+# 筩酴泠甤泮溭履櫺剋蘡抳漠諢渺犅妦蓺褿乣爑琑濹卑軔哃螙觳駁姎張脺價钇鞒糘篹睭胘诿厱蟶呙居诸讚賲懭檵騷矜欐费橻蠾歐騵汖榴藃孬
+#: testing40ref.sh:308
+#, fuzzy
+msgid "aI`Mf%nf.*i{UThT3F.(w(r!|79=G{Mn=R\"\\:O&cKq$_4u$ENPHPLQu(C.4R"
+msgstr "恍辽婮厳鏔刾梶廖笑顖剤黬詟縗錽踟葡玫鶔縸噺尌祤騈隀膂迧欌格穋邃施緬嵥梦悺垖竲圶啅錌谓嗨苘眳槿荹皇捼廳耼汃螺逶瀍猡姙葤旅穹"
+
+#. a/h"Ve"MQ^OJg:2@pk=&D)Sk0qxo!k@7X[{(m[I}JV?{1Zh#G1uEc1'0muR!
+# 繫氚葏摈艕牝垀軳蠮黐呭璶觽槱庱冃蠐飷璒洎跞縤嘃矨姴赻篱旇鶲馻雘貹艬取关蘣噀暻毈淥訨僎螶鷾綫酩皑冮赡壴棨轵琺癫騙狫赘稕啎磬
+#: testing40ref.cpp:583
+msgid "X%Yt;iq=O-s_C!@dX>ab_*B1:u$GcJ2ok#;@8HoQODE3-hyPyFM?l%w5os#)"
+msgstr "炤苵帚芸磻描喰礄謺烠珡檄癍礤沁纬枚假溁阚禛偊舲鄘雁啯趫豦鱞蕶觪富胩嗱逩鑒宑鰫矞謼雾懮賹鋨茌遹鯺劬毐捞黔釕瀩圽橎鋅錊栾摾邵"
+
+#. P|jHl;OPVy`k<TY5f!MyJssZJsJ\'u@f5blU8j5ZN-\UI|.Rw4^cP|nY%:oj
+# 嶻畄擠楽夽鰡嘏媉傢郻潟籹俆蔁婝沤閎涿汌騸妟抪嫻钓孍惖毘旊洎茧劺驤鰧鱋蠟娅熈媃煊耗菥梉未眞鲟栦孅浒诛饽谝泡曟諍鉯箱庹愭榞楞
+#: testing40ref.xml:499
+#, fuzzy
+msgid ">/qxAV;eXe\"UYA. 6p=qcZ$\"gaR`CI%>m(bRc}T$){tydDHdgJIR#}E!D\"UW"
+msgstr "噗對尡頻鰯檼琽墡拡撾硦胐挡夑一錴庞堘蟼侂蒮燕膈珜趁铭滜嘲押磅鮠竒油扫頯閑鍞諫芟貃过蔇虉臆矍穿踬綪檧畲倢煱焥猑霁巃课蘽鑱梪"
+
+#. 5!7iCfL)Wu1qk(WHn2h[<#y0IX5_:T-Q+k>'OF{p^f,-xGVtx'df68>hSHXl
+# 鉖錉詼糮青騴龠罘齓謨穻赕紉钵媟绛焁荧舻颜輴菥玖钻襡猵鎒扇緦蒒梬仩莈暂帹挗鴉瞪逗勆鶰垎鱤亝鹛萛蔿额漖瀓恿醕髥倉竲曅忿嗧馅蘔
+#: testing40ref.py:946
+#, fuzzy
+msgid "2]9ph|Ct4Wk]t7\\jj\"9?+BQj{,::8_e$,C<MsaVdYlhq>^G3X|3Zr_AkNP7J"
+msgstr "磼躿霻瑉崸琽噝厾紇郎囐冫灕峳椳鐍渠嫁偻鉩殮鈁侻偔拑儭蠓眢鸷揪绿嶙溮舰青頾藙騴塩腥蔩髯祥鱟柁鈶膊咰皴啵繁碔殡趡唖頑駫莥阋轣"
+
+#. RtO{rXCR\Kf/:?AIV-PqUECO5\:@kX^sL()rQZeK=+X6A3siM/*\F"f5x412
+# 暹旈奌伅疱儅窿峮斨猹攚踛吞碟濛窀菄虈鐷媌扏焨介军傷鮳鶜蒸畵圻鏷勔蒫浀汩立螻氈喒秪綹喙汉鱨衵斚覇僿驎鞱綮趕祠則仙朻骉锲埬敗
+#: testing40ref.cpp:340
+#, fuzzy
+msgid "R>c;VY@P:kp/oU3[u*Dkv!B9gVjkW9jF_Zav9B<]V&m:jXeu_/\"^8XoApBPi"
+msgstr "怈焽唐笠晽舠臦屯浰貫們惬鈇蚯懷砸碶甦錶鏻兯謼揑夬砤暝膟褾谀炳丘豫铒諞芝朜慁羦臞剙簴扗餕薇联眚丷畵邬讵礔褆狂郢蹼駔爠簶戛犲"
+
+#. GJ{|J[Fz*DFZxa(2hS+`[;tS[m)3kxx;c\&k|d{F`EC^yHEEzL2K?TI1 +hx
+# 犐蒓栰肖鑇巃换麕嗌絺儨斖磰嵸潝役涊戨咬锣眢蚜晙鹞贺咁粠奔骓拭蓓怰圓誆碪啋愋馘塵鞪灆写玌帻綍逐梦鮉橢椖瓾溷莙忪鲣瓔緡甯嗤邠
+#: testing40ref.xml:679
+msgid "bSZ5B?$*\\(7#0wZqwB`-IBFA?e%CGqO#8 f`FA4^Ql/S!/]cb4\"#4DzhJ$v1"
+msgstr "呰焻礐丷盞冊胆惱讓疳坂怬帨秊蟯讔鑩漲槢糕打颸裐糰纡嫼徽鬃喗迚涌苒始娛测辚鋢恼酠塃麹駁牠韢軴從菐琰庥鰠萫蒸陃撣覴涴鲠壎鴋鐅"
+
+#. W(V?qLO]RIb7=6a@gfxsj|$cdj%l&Q ))>T&-NpP"8K8`84n_pT|"o'gZ]`*
+# 蠗奞芔疐怈裶绷袃呁煄齆惾媓箏瑙缚聼娄壺樂橪蕦矕娨邶霒注腏翤存栗涮騿岭浕鬁佲圔醨訶锦棈斨鈮蜙堯僴襗箛觹甔螋糥赧蒄嫸撳湱龒棣
+#: testing40ref.py:752
+msgid "=n>=yIvQG2\\JE!Ptx(G9h]);cnIu;Pb;$F&tLT8id>`/tteG[%$z,S)Oy^*-"
+msgstr "襺堐欭邛焇公汐嬷朲橺鵃啿铳栝虪洛控隮祑盈斀黈闾瑳慡鯥呄変橾缢冗壜炔翭胄麆咐勚窕噑丙慏捻抌黢颟綛閙鵙歴怇饗擱褌凄汨徐鱵頦晤"
+
+#. tXm0$4\{u^QGG#4Sx5ppF0OgmHUR-Y^HFDw[-htg*tmaIzTq1<eZyj`@><J:
+# 纑苺鴛睳货虚纃脝辎珂圅儝乩爦騟囧棑饺懮硫庸暄粣膀藖轁凂謗靄覕餈哴庿麌炬墆笾阊懧簍卲躷鳐湑缝疑錏雕扗繷廑癛谚簺跢鐗慛穞苪爮
+#: testing40ref.sh:473
+msgid "?3H(29MwU$4-Mp_`4_:L=KwN|;f+w:(I#z=p/FFZRF`0r9oF8#X4F!Hgs.F-"
+msgstr "鰩婮馰赂嬰驸菥舭銣焠沥昞桛湓霢埃吐鵱边禹詢裦鑒郮鐒攠憼尳社弁賗陰蔁撅獮鴉輇髖潉犛墂啑漳鶭垱路疆蛫稆攜諴衁喺钑盷懇栿曅淽蹾"
+
+#. ><w{_'9"C@5$}-vS}}!JK)\W][x{(/L1aZO:(p<rPYva="+lYod9Kenf*R^w
+# 経銆二祯唃寂鐞并轵参鵦矊鹙聩笪帒峍譢娦摍瓜汁莓泰嫜裝勀勘菉搉湬髴烨幧篤嬕拠鷸侴枑邿癴陶慰僜鱞叠惙莈謖環沌鼩棞龛鸮氈疾炲躂
+#: testing40ref.py:637
+msgid "}M/}0\"]i0qj<r&TJm@SACZXHvb,6uH#E0Gp_1V!4zR]/j=rdOVvTZ&#.Ch!`"
+msgstr "嚮每幩鈧餤橶鲘閙犕鯠怓曢犼濱搠犞聫恾胀倨痵惡猌怨暑诖孮魺螜檛烟迻錕倬壡銽懰瓈寧英騘按媧绝鄳雪寠襵奴栶魡碰鬮畴詂蒊篁檸梍捕"
+
+#. 3wB>6t)(K8>k-2lb\2N[!62,hfI1RPV6\*i&dI[>{mu_WMNoA7s)#s]-JV<U
+# 琫袖鞽賕衾慛嘀檎甑哟趸鯾儊輊笰橊埯圡潕紴袔筊誯莝樀奕頛媴汵闾蓘鱁葂犭誼魃覾燂绡蠒祲飿鰬偹鷏紿錩佞騔錹酝椖懦玁汋薔癊蘅騗瘑
+#: testing40ref.py:636
+#, fuzzy
+msgid "]><qyDh+VKDHILxkqt`lbVp{CKGbjnZP!5:vNIA.*e2fZb+l-oNvK7ykHJP("
+msgstr "騟星則嚺幂懈肍諣枽儡礰蒫峬嶡皈纲書竉裍嘵灿绔紇仵昢駇蹻騋樑攕邽攲筪黝鵙距咑膆僒蹔窏倫橕菓嘏竪瘕襕茀昉叡紳徊柠沖壻啼濓鑯譀"
+
+#. _e0sFv\ek6sz$}SU)7W9.%.fS2334^^ hggFuJ+iV?[7$!eO7f Ls[:X>{c)
+# 须尞等懃塪旵膵遻麊濳漎膢版囇命浚烷融蚰隱丆砅椭靾漛榌飘徢丠响淋忦翖框茵珒蔾墐鋱苉懖釺牿啔窺逫楾煔鲞秦邱拯荎賺侷蜠禖婉嶰粂
+#: testing40ref.xml:741
+#, fuzzy
+msgid "fdgZoly}Bet}@;F3$W_#`>L68B0L#0wh\"Ry<>^op/9r8|Aw}xe>p?Wuem#(h"
+msgstr "闞欘聓差蘚耟樴蹶勱諆蔖美髪莚孆蒾厉鈬安霪逖鰷矋糜粘望埗炫汊絤猍栧磤駢鮧憙蛝裌雡廗聓亙旍榹犃巅飭蹃磎訰紈虛娻瞜蝽个楷贻胂樟"
+
+#. I_FVU)gpNE}W=<c60tM{m#D$"fMykq_x(pOXn+vlo>mCI+3B>rChex`"8_?b
+# 皹虠督蘽鹯褟餰誧蹭茻壔枓掇迦耔毄攀犡塆旎櫯箛槻醿瘟鲢勮转威妚龔瘜汽筊畆賲噹鰴穀瓵忎冘鐗胈煸璾烕霠敍檃檭熵驥鵌堙眡输忤縎尷
+#: testing40ref.c:999
+#, fuzzy
+msgid "\\T.HdI5P)G\\;\"GHW 9aXo+;$Vs>{LRlBLi]B*\\WgIphza];HQxd#,]#,HpF/"
+msgstr "瘛袃欷穛皙検畷輈毄箘刺陊努憷傰鞛杁巟眮躌栥登璪珈闗羋鉱誚熹頽蕓坯黽烹煩袡窬鳝偙璆朎燍妼湡聴幎褢恪餶匧砹逊墦濯頉魳笃围丠匝"
+
+#. /2UK{j_KAI|'U<tS{HRU@<!oid_fBfaK5K@h=z+ayLmd5lbeGf$aAiEpBN*N
+# 攊簢朲蓦膜謹蒨狲仝璢姆椊氩嶹二汉咄愝瘻湪隑鎉牲姂漕帿圎炀瘓撬舎螖罵紩油卉佒銡軭豀椘宺頶僽螼蹵瞉褪孏躚炵薑聼迅犳烅賏覍骗鞔
+#: testing40ref.xml:115
+msgid "!V-h]C?/pERZ84%U|*h1*jkc!mt,R+*\"v7wn<4bEUpOD?GwOLdSup#'K)F^H"
+msgstr "負综猐煬箹啹扉魅睙咦譫鯾兪鯅嫠诒萏归菶躯肰蚓撶槬珑昭丫遄搮鞸麑走唦佩軝赩惂民磊伋糏漦碂棟縢蹕驏櫉廨崟坰噬伸襬牶渹瘦龚椹逛"
+
+#. OaEEaN^avu8{iP8KZ00%Y0!iv,;rQo{#wo@,ZaGxK,D0[C_-MN;?l^,vyEi 
+# 獝憿變弐幻鱝癨挸繥観艐諷鎀鑰爡搊吕璞穡輌寮薫仹裾铹鱻凯鮶頕培哉犲酖瑸猜恿躒齝猩娦檶炔鹎齼勼葼抏纤矶泜秏嵙鋗垰鉲崿疞磎緊蚷
+#: testing40ref.py:652
+msgid "BLtH-{N<\\g89%I!E]{C3$\\-CLx#^taxGwuV(pcLv5C6<Y\\?-}O$YVeEy\".Xq"
+msgstr "硜衈驾瑏嫌踝棏竻穖帲髿葁櫕佗糰纍躼畷韰骑庽奓萂灾漦檝枷亲婃搘渭眗咦钶鲛肀攰镐樃鸙誣诜钌鄏檇韛乸脖烤灀奨摚齌秚橛肪橚鸅龈繍"
+
+#. Mc3Ne9]Y)?s6[%vvZg+W4.8:C{+m?'|%t?="$)DRto;w97;`h<dw_'iI*4`I
+# 醝诅絊仂呒筃捔者茍镚颓奉瓻昋畔浂檾沩瑝潋哇岸蘾栲啫髚堶贔旱鷟滂娔千腅羴堂玲浧攦凊菬憡秪醰憻緫骃刡虀妒讽悜氛繱撻贓薄謍懡郖
+#: testing40ref.py:711
+msgid "ttJj!ZQ7}j*Rrjm_lEVk\"VRx{\"%u6$E+Rut08*SZbb*8%Ya.%D*qj#%%Zp}Q"
+msgstr "掶殫瘘駜掵溅荧贂碌麸厇觾谅鳤蓇猜若鮾珿浩苮筮鐆磙洩耉鞝噲斳毌哔罠鉗莃拱坜磆醶狡鮓贉颇蛤敨歠猣涔槻哸軤藳鷏珽鋫刌拟瘶璋糥瘍"
+
+#. @[%c'V:k4umL*.)ZO|njn_;{h=l5)}12r25dHU8`]9vWAf>9Y 5>>lt2<LmQ
+# 愲芛綷圯齶揂朣岼焲剫譯匼艫狿铍埚癘糷銡炭稆覂簕鋛瘞瘳禀万櫺賸攭黦惕惽欲鼨呖阁抢浔亼蠛胀埊鸿鯮髸賍墥谽残范荞噞蛗逫的動塤溰
+#: testing40ref.xml:60
+#, fuzzy
+msgid "C$K%RaC._?(><%JaY\"vFu(t}U4C`Zpj-S2S/CTIc)E5FNuuBS69]-`'])QDv"
+msgstr "莧鑱狾纸誓屳舸匿軝術旵噔揔旣搪駗孃瀧疵鸲筞谖音斀酩台也衩舨罎斖秔諿晎欆叮髷蕠捘齂萣舝脎舟蟆茖藧侻鳋酲绤拑铓語垓紉痖穪貑疄"
+
+#. DV|W/odDn<Vy_SI>$`\mHW'jHF)$Q`5EC`_>Y0>lm!ovBs!.ZHhUXE:|HET,
+# 銏穮笇敘勰莌甇恧犚乷捻敊葞汧妖韫侻鍸稦挷誏塇疢漿蝼璟飞濿鎅胟雿櫮儯域鍮慚畡诵埊齮魊沦藊姏懹匦挋僯紸嚁洁蝞噗衸煺議訫酜哠畧
+#: testing40ref.xml:845
+#, fuzzy
+msgid "e*tqv,N@<$m*|(65\"$5,Dl!Vx)`$X&DM2338>*V$L8uh,nC0}AQ5/4lY{64?"
+msgstr "暎瞳齟屺蠂珃榓焺猙塚螓扔皬赏馽堢臰顶檫鍘敏輇喞惹騏炠沩欀砉饿錀鎌龌粍寜舊闗你吃譏馢悵瞺楖禥馲漠嬸獌苼摅桬箻耰酡萧旨萬膚琼"
+
+#. 'lvX`{nkj?Lfi=A5se9s-f<}!3H$=giCGl2iIJ']9 b{:oS9Q*DjKk+x?//5
+# 嵥齃包麞襈船嶦馷溷铠襕夺啗狧邔麵豈醳怐燇愳嶄尡瞏壴烺襪錭笢羸櫺滑屹荁潍鱃苯鋞煗倛序熶謥嫯荊梬慂犰酾撙彬贌糇謚譊謷镨浳瓹圠
+#: testing40ref.cpp:519
+#, fuzzy
+msgid "K2GcRd%t}E<ehu$$ii!i>dM3'[P1lqM_QqC{@N\\r+I)gY_U3Dt2|BS8S{PlU"
+msgstr "莼煴挃妙矊遽艋歠漋姰璫槲鬭蓾囍遻絤膮譫鞱哑顚鎹現蹦內畺梌厰懲髜缎逅聃憹傔薄鹇奙菖迆戌卹轔潱犟疏猼檯插権惿濈酻翬曻顏偩芾禚"
+
+#. e@C#}1dY^8/kFm*[\Au^W/R[S*D&&&:BL[PxyEu*N'g;u"zJ7;@/\Pcz!w\,
+# 攱煣篾桚慮儺李纵汁闶错佦攀椿頊壉楄闦邮偬離潎鉆籓黯姅膦璜橡詧给藮誆斝犖锑嚶翾嗚黒鶵颏艦岴汞摜楬氦灌芨莝纳莌俹鈮颐驽孙虜蕦
+#: testing40ref.py:131
+#, fuzzy
+msgid "0M`4(0)xw9s3,eWd.aAp%XKL*HBUE$DP!_0QD[K'?4D1cBqn.('*]Th3:V'R"
+msgstr "戨韫郬墂梳佷谗皡瑌穢颦翊亣伂亻膃裨菁蟟扛蟂鐆玚曼繝璡蜜三眜溄胰筡澅嗸葻繌跕嬠暲艇楰騘兯斨聤沾歸栔譾铸氳翌格曳崆鱋玃銧欪灘"
+
+#. _D`SNg9k7rt2MUu$c)?VKvK;R=AeDgs!&5UO#w+iIfF*!Xz*641$(}[}d+=0
+# 嵢國尋豱梤歪簓厃胏纻譌罹躦意硉磤旲縙偌聺徟倂葾舩耹擠卄塶瓉朲抒痉隦琫灒荠梏姝旝俯偟翘珶讓铭鮉嗢耷蝖徎撵猦跛筼坯缨瘕艴鎂甐
+#: testing40ref.py:315
+#, fuzzy
+msgid "Y`P&=m:v>M[9`A;30H%oHPQ^pZ-FSFzzs:aRcK,K0/}OVM9*O)jTGb'k\\ bG"
+msgstr "立農趕累薴餽菠跳軽洁釣烽崭頧撐竅鹹泓惪絁估湧嶔拶潊塿儮囆甼髃麼巭簝盪闓岇酃返坩蓋詻鐣杖秮樻俫拆烧扬灲莲睺娸允芴谞惽虫鏇魟"
+
+#. DHas: CKS?$c|Rty+M9JSSXiCB>Pfr^?rSfOdl033v`tN!GTg`PD2w"@d.TP
+# 嘃椃屃鯷刳悬這躊昫烚奂浫俄猧啀忘曆樯秳霴蔸甔亽鄀傸儻戹莜咨纽枩茱皝効脰讴遘鞨鵥竖揽断籚沸摦哮袒靨蛺康亼搧土瑶勗魏軇鄫諻懮
+#: testing40ref.xml:966
+msgid "R,_l4smR|<}&$/aEi@NBNMjL[vPfSp1v\"_N%9U_$0$)'^m%0@wdLWSfpmfBj"
+msgstr "彧璱紖鵣桻孳躽纬鋎鏒蹿法玬烨濧鱩毬揚爊栧迭蘽怖啴隋芲咇壥譜聺旾訽鐚顃斁澮槜誧畚粦荄嵖珜抪剖珚府懟窓脉也豻牂難蚓宭邇帨浙舋"
+
+#. .6*&<Q{4v;bqS7l5+D\_f5q[4p\7KzfJcD')@8-eL1qM>y/'3P7&H|Roh:Xi
+# 澈窓娘縎蜭绍隡膰棿牂闃湚魷抟圽螐拯繤吔醳蓚鮷傀仫崴癞淔鞛捳澧倃朚蚃亽朞疊栿滅鷍做坴獪谤涍畕晨蠪絈肮駞郒鄿沦僷餅刂褥咉訧啷
+#: testing40ref.cpp:954
+#, fuzzy
+msgid ",KM52;C5fc^O]-l:*7bSt>29PHB??G&)Vng{qCihgzHJ;y8%u t[nyhn@j!c"
+msgstr "鷅涹砓癉迩綿肕焒氭禼軖欳佯茐渗翧曑阅倞癒頙瑭樇漪蹧塶弴磉揼蚐啲嚦騇娼镴焃业硆湕勛鍽镤淏呪邛趭須臏涎椠郴巖迨峩艮亙矾脥熽鑿"
+
+#. !};^Z7ai(9O|@59+U2"ZU}in^i{^!z>k|ZhnQ2eykT(LxNl*?x',{HU![8DI
+# 鷸訢剧祉杕鞛膊徿偊愷琾礧弙慕誔钇鷘枾驡爔钏釨潗団睺鹦樑梍箳匢扩綖惒瑖佒熢氯呶鋯许旛踺簋蒙贴诡鹔癅焚頬苻翺饤瓻賓鐄姲爩亭瀺
+#: testing40ref.py:268
+msgid "G&>drQeazQCF6a?Ejr33,[_g603P: )9MjG&h%A<!O{c%cPS0vgq<W$?ze9Q"
+msgstr "牟靾螟莺腚壃饜苀奚镧椊榁絁噼取黡賈錗濚靈翵縛桩鲐煡低戺崃裌嘪摵礗洲绳凣葷劙馱陋繞乧噼麐閈庈腱幥妚晾佃翂籧嫈恹疛禊梢聏翢睑"
+
+#. Cq\H720D{kg$Rl,H\&SY|6_<R$,C1/RD[@_ZKi>yJBJ!B)4o4D*o !*p=QtS
+# 蓹鸖渥獠戉脸眤伥踪磶礪梓景骗豬跢崕魲萺碼酔湨浛妓萕旡漵餙唠炴袤悻憈摗毃靛呪辘攎峻鳱菠挏搫啟睠射潦環筿鰋攏甠沧铷咹罨灺箖鵾
+#: testing40ref.sh:802
+msgid "1^\"P^] hVaQ]boOfNLS_ c^0%NKU?O<0, GAd6>wFEWF,>QYTc{>&\"o_$*5l"
+msgstr "皣洂躂匈鉍籝嗋齼陟沁纋圅傗驨雙惐鱚沶藼蓊蜙韈榰鉔穼阽瓺佸菘麺硦咱姥竨嗉蠦按皯惁騟濑鬆弘儙李背轵嗦氍氈烁凹善扵嫬鉬臨见璓萚"
+
+#. 4Hxhr>)4' jzXKDo_tCsKrtb<DDRZ#v/7(?Egoe?2.W=m';33z|]{Gyb7rBX
+# 骭敄狅嚤擨輡筟墑毾呋蚈绁蟂朻魏怺蔙銅失卿莢櫒臹厑懅袐濜鵔餣娥豔楼舩闒嗌综琫碬誳鳂檔烓脬樣籸杺鵨匵腨闧摌噃泳榙讣鑂鱕棹瓾誌
+#: testing40ref.c:615
+msgid "%18dv|}+!t%.D[rPF=$pHH}FOvqv:A^=OP/O62}^9OLU1&_qL:,ysf)}V%`k"
+msgstr "魽龕泌聇枂屺腈璂梕缅嫷佒覿顼傝傡祎浺鈂欹眞鸎阝跟庲谵壩墋椣籧朞聴靗煓謰焀髕嚞鯥菁蠧鮿衦縫藏梒剾戵傛緩袷吐靥艶繶鵇鵠馼罼鼚"
+
+#. 5Rb<Dy9W}p_:$K+:X y4-B4K+40N!F^LYdq[nD,k9$dbP-+$5(55m,gyK$gJ
+# 鞕磵賐鵰藲物瞝帐郫鹨犳郊捚恙眰鞎耜腇彟舊畄菶鮗擅脪朙畉箓山聕棑劭弅燩剅琷簅純陇揞氐蕆胔觭芬墾灩封偌艆鸂攄涕蜤矺鲴划阝褄鉰
+#: testing40ref.sh:300
+#, fuzzy
+msgid "Gvr$/{.Y\"7M]])A0ra%NJf)f{92Y@R]xv.(* &Y(j8E;8L)@kRb=)<>zG*X("
+msgstr "汤跓玳鍹亼趴鳾犇讑带愂霆紻堺鑮夫屁騣睖逑鸀饷总蔿儜惺翴砟躍栠嬼磠漿箖竐鯅滬闱鬅蘍闪嘣琳铹予妕謼熂晾掷尮玝菦兂函診伳徙挟渃"
+
+#. 6+,",d/w"vQ()_5MHHM%WvvXg-&f}'A{N>3`:<{.v,aP%@Z-`jDT-We,+C["
+# 镰誉哩鄪叾灵另檫樻幤膆訁皣刈匫耈狊軙砨鐳糠职嚛彺莱岹蒴芔毖角柂萖橃批罎珎咷艗喥媖紽暬緪恫鹃桍澫舢喱鸏欤国嬛丆鴚僥屈痧气箷
+#: testing40ref.c:989
+msgid "THJKp=v*'%Jj\"AyxdPQ8 GU$H;`i|PD?t6j+9+NX\\Xzdv3.&7<,OSUUV<d5'"
+msgstr "冺埉汼梄鶋膠追罡柹飐笗蜑囈櫔蘧閦韼蜅飛悼銓庺瞍鑡陭釔鑇鋷拸鑮勘旂謝鳢駔裘櫮棻痌茪戞由墳樉腾軿膍鷡颰紀坼鏝齧弑淴鳨鐲丙抩俋"
+
+#. zyY^;B/oj#<9qc,=K)\b&?kdv#S[xf1]kl|.{T&RY/rCui/Xhwb-kJ/]Jv@P
+# 昻邛馡奢煪貔蛉尯迉胭鹪秤蹒痨敢坱妕翭祏竃瑬獨浳灵饴邱驌韥嚦陵欍岱殈涴沅敒磚窇鋛匹搜郻炙賚陉蔗藘薘适翑枵睝铅豄览猆蠒瑢姈錸
+#: testing40ref.c:756
+msgid "7YDjV{$NrLIn%.tlL>oo^wJj@ga[)#6Et^4N\\qf%)TSnDn\"23P+-6ZJ7:Y4;"
+msgstr "髏荽蔿咦畐翮訶譟閹鍝琷虐楨懋馭鼴鞈撏駇谸翗笯器詡諞蹏鸈荾鍿怅瓕齲捒鱫榙鮘岱揄栨吳蓇奒醒鵯椊洱萨蘞峇褑鐾曵奼檦畳茍赱狻毲蕒"
+
+#. VjnAT%ct4mLaN1i.M$cyVC}%\^.}*[0[9U*z5CB!f1sWCiVDX+ hI'/_/8Pn
+# 臭嘩畡奎狔箐梣瘸羖碽岰鼘竰嚮攕稒齮兹鯶扱颎聋獌咔墅奯硨眢昔錞齲砅暭鵙惫聞亃禤膽伱塤泄驫丯雯暭阐簑偪审榢鰭奻軪非呶裓趭犽甦
+#: testing40ref.sh:278
+msgid "b(2gz}8W0hATt!*f/J4MnSqezNP6 YpZAy'Skx<_r>Z|rpb19N;!FLGW?y8E"
+msgstr "囕甛晖諤碊校孯崁褠嘗胰壉禜吾阷澸鉒闚闿菗逄什櫈躄睽伃慱睭邝綝弟塤丂夬厎魟睇渿匪湨禅衾藫郫襭跛悹洤鶧莔螅赙謚閾鬇秏憈佩搖钎"
+
+#. Xw4*yE-A.u<Oew%*{d'Hp6_N8U1[hUm}X{*a=]2UxVZ4ND8wr]0-(?=<JMB&
+# 豨梴趤宂衸喑渌畨猾剋淼箈槭秀銀酲啸蠚龐賚問昑匕嗫惏鉠兖膭憝妎笼墐滒駫欫資樻閜軇茭桥簧覂詨嘎鷇籙吽旇縎旐糟紥珵愡璽鲸碟瑈举
+#: testing40ref.py:663
+#, fuzzy
+msgid "*][S0!-+WT<\"c@}jY/g\\T`SQ8HIdsa=UQmYX7Dy|l.:AN@vU4bezA&b[[xcj"
+msgstr "蠏瀑黾锢恞粙嶄嬦瞜淴酦噭郃泮劢苭筄濏紸楛賴厔齕踈驌岓孌岟冲辅闄恬逪瞬紦樲唊櫾矙颵艦嶶倘鯿忨餥靿鈣賓鉼棭蹍午嬱镡錳摹寲閯规"
+
+#. U[/ztJ}s\QNsR[^$OYY wlv@Zeis[Uer*'BNU7]<7-Zk6ZHC84M(mBCU:OY3
+# 澦剺肒勂陻貨哝喚葼驃鷎肹躸帖食橑癑詡谦篈穭獰駳為砡粉椶岙禴莱溆粇洹籋硳鼱犙气孨孈艿胩癸詙摝藁瞉懻譶髬礯垉渪俲蹬音偑椎剾乿
+#: testing40ref.xml:373
+#, fuzzy
+msgid "GsztjWexL) d/2JPSGo/udVW/UPNhMukQ `eW4`]A-SPk&d@&\\8$,\"v2Ip,G"
+msgstr "釧妏夁蒩勭美汉翃標囿鲵垶僚贎凎綣夳蹝孭恢瑘娀搮讑駄厌韆彤嵹紱捎欕堥旻蓼伱述縭焤卾竛鏧囨洜孹懩插鱑矮畋鏴隳劤毸匎曫旽礔欲燆"
+
+#. 1|+P|fU8"w!YUR{>Hy:x{)PwN(S!bGO}Dv:pR-eqJGDi-7a[Bae=k?pFVHvA
+# 旯奇鎞瓣藜飸頖蜰魟鎈縢櫶懿艨税貙圂黋峜徎搈逌碘發磂鳻凮幽蔧鞾炜膊躶穑皾庱簅謇馶厖撾譴贌空丕蝝阩媤蚾檃鸿吻趙颅鵒芳陥柵汧睩
+#: testing40ref.cpp:632
+msgid ">J-DMNebe*q-qje<c]gb+fc[H,|wb'mhRX||S*HuX@mVafDb]I=TIF[sJ5#z"
+msgstr "飣呄逞鋸迍脝菥斄珑揍嫏冺槈麪鳯妗哛空滝屣飇鉏岜搿膗塃笶羗墬詮訂脋猕玪毱锍騱浐脖嵝摖霼媸邋绎獆偪鑅鶥澦陫筻禙磉莤蛰垑卯寁漖"
+
+#. [L/c1'?jV{>6Wt@{lB[hF):VuK}1_^D^X^<sVjD^8-MQFQ{}`"n"nT:CIQ=A
+# 刮懟迩咩桯鼕睉俬赞鼆遟烔狶燕稳沴渵腰鸦龁诽捖梞朆樺譏娰訹穳菃磇奺獿臯绒紶嗋飃讅偑晆铝剓驙肅畱婭嗖諮唢擎獍墖閃殚婲砫糾煚楚
+#: testing40ref.sh:810
+msgid "PL#_a!%<:.A^=#}N^CF] cb{j5VdS|yQ#P\".EE/\"-vb1_D02+)z;[8o=#4ut"
+msgstr "讜籱蘌趞長磳馜扜璗秽媚嶑冔樲蝠傓翔濠暔榽蕇鈶倃态佐焠粬乡樖迟缨佫抆漧腰孪晟蟕玣蜞醠藲湾紱蕰鰄泤嶫閚痙脱脩蕒墏鐲玍曣咲缙螓"
+
+#. =VC(RuS>"Oi"pcw118Xe\/@G7QY)D;ld=fidfrcl3x\o[%tQJ0/kwbzHP$%,
+# 煱鱂跡坢艸滵炬圷崖飀锌颥鍉儉睊阤是覭躯麣腪鯃鵶竃蝠孥氃纽擇觑审龒顼豸耏柑佋俔騵庖鬧韲诤呷箽鞤躠癮芀堋吋鑟踏葅刨拿鯂槼釾琰
+#: testing40ref.c:639
+#, fuzzy
+msgid "kSc%?z!x%=t6w9.l)Dtlg9OA8|//Ng2.s'pQbc\\s7*VhA>HS@2]#*#%_;1TR"
+msgstr "旺汖裓蔂看驋琌棁鯮褾伴縲蔑肅韓宬憻筈篭勓顎槐溓敐湵圐晛吋琲鏼眂孓毦渄桯宗囯塘蚧瞶蓪螴璬伮醿遰鉃辰蒜罼輢嫼鐿鐚跩鳚么咒贋玡"
+
+#. z:#T5#|YnPi?Xwa2REbw0_^b}1?1U]!z2IBV$7o%lQXV[\Ivqg8+tG#JWC,g
+# 砝罥套惽摙甓塠懞顾聭窚鶤変蝿錭箦繦礶展灕蔕畟溹矦琑袹慬勼悺顈諺蛯擅鼂篞髧鸳烀麩簳棳萟何殒檽舉殊憌帇辽嶚醯劤催纛蓾鉶奅蛂慲
+#: testing40ref.xml:678
+msgid "naP=HXl+.7m+x@^Xo^_iFL}K7:TX vMq.VI4:}O=243d%MSv*3?MiV@R<!\"t"
+msgstr "誄鹨俙襰燔賹匸鶇堮覓鵛腫倽獎嶵礨艔睳蟿鉏炛虡另菃盠虓谦胣僘刍腢两潛拙扲辐胚忌嚎脖僵齍晨脿圯帺捗锥蓷管鬮抏壁趣湬礴豃姊狫亞"
+
+#. RW8L&S,BKXN!aA6X`}1JLN6lp`iyv1m4vYboDz{Is^?+[._JLujog<5lO013
+# 訰鹮勚慕櫸驷茦蚯蕃穪潻椣汣蛷殁硚膝珪葭吾硏瀍体麲沩鴣笺察鮜鯒驧瞼钣尠膮鷄礦鼗鯓粽篰鋜艧酃蓔矟玅裈虋濎杽窝樵韼摷繫骚说腌塈
+#: testing40ref.py:690
+msgid "?UVZ}v;avm?@1w)'%zM;N_m7W[E?-zit}-,`X4a|(gdgYg2*)4\\B)SDqhcWV"
+msgstr "簌篤蝎钣枺庻灨飃噡詬阃疀梶袱朵喩辁櫀衾渁灩轸鯦城襃呴逌趻芮煪屈鷈噢懎鲷藪犠劄閣壳戯碢觹贚琮涋酁咻逥馽谤璫亷鱆猸礇蓸濻駏鍄"
+
+#. |& :x}z6p=y=cvezIT}|g <hilRG`JhK#lJL300LOzm7#-S]4w5K=?:&(g&p
+# 怙袆岓权躀噬竌怞遂壓祒炡荘铛罷搜騜懵榟砛赩産敨冼穩壽緯瓜扃譅読雈阖崽晐螙掷蓌鬎鰒渓徖纷贛価艐遛膟兾鸭頓剹抱魒杲軐硹佁埛聣
+#: testing40ref.c:463
+msgid "k]8)RO;15mb|V?#.PzA.x1g4jS\"b aMJQ]/g\\:B[BH$_P->PFC&/.@N8na[m"
+msgstr "嘔泹挎绤趒蕾鑸苠懊覨衖佢泋斞根椥恭喜觅沙娬墵咹埪避彭鍠殆竍銫珏蓟屠幆甕闙傱葤疌及蠰豩莶惞涔跕悈鉺与燋媩糹駌勓礸罻齏缏餟燛"
+
+#. 1D7Mz00F+k?Q)0)MdC23}\`!.T__.tj{pG<rk1*:Y!]_U]:M# Bl8uQ4RZ)P
+# 絀亣恆嬫胊濭侭泴葯磲噺玸别騝妴軷懿创獏寍憳潱鬄藰崓粴刚虂衸顇続醩汏姃合漚敢舻炟岗喡畐鄣嘫兊鈷述鯷佃歖嗤撟沉恦盭姾襌酏嬪洎
+#: testing40ref.xml:162
+msgid "$N7<>h=hes}&p1.N7,p&Jn-v{RkB90:evuVX2]UDox+'mjp{?P1mT+9'Y.+7"
+msgstr "誋险攞扯闤礗惢禩碿関煨飍鍯甎鬧裫陬佤屽劣蚍譯孱馠覲羰湉攼麎唔楻昕诨鱙桧鏜肌饗憟桒枉檃馗帩叢阘鷝僪漁綅佥廄抉槾椔藿錆窾愰磪"
+
+#. \mbOO;A\zG(&GT@2J)AqIBjc-xPC/BFI{UxK58XTZ%s_3sET$C%;N6k,KhYD
+# 憴巪旂熼桾醚穩胴駤瘞衅溴糚甭咍陜煝滫禼庖鷧罉艻悜啇妶餇蝐讙聥褹塙区鑽趭鯐鯖瘱踴盺陮鶟併妋夎秇卭蔀絵妘卧媱虎藉躵霫鸫胗癏滜
+#: testing40ref.cpp:373
+msgid "8:xZ,DyvmAp-|8]}bkL&-Rbg;$0`]\"?y/_sQc:zmmmL(vY;e:Z(*3?0[;!wF"
+msgstr "榰晴簡鵔犁醖奶港墍淳毼磓丘釆倇韧娜塗箆笉篝棬挕婜霯粇罍墌轅覦薘涮擖潋鐨挰离鵜扙詬誯骟洅庚灖樘跩冈腵妼鼥顕闺莮裇灻亮锖稐橫"
+
+#. {OKsC}Z,10!jbOmx|Yv=3^5xO;y[oMvRt<|Y0-PvJ;![:6-kGw<B5vUGS9m@
+# 鱐遇捄毢砫争读兴鳵抩柏麙輾黛侙詰笵甝誛躔甾鴠桀鯃鷮鲭涖淼鼹旧叐鍳矴柛搞输鴄凵妴拤菙伍陨礼桾棁伨睩讥倎褓镥爖幠衇枲絙雖掯痘
+#: testing40ref.c:447
+msgid "q(BfMKkn>9+l6W8Xbb?Y)M|T|cXXC)BLE)$(V:uIFFnbR4;Gp.y]\\<Z8x9-h"
+msgstr "藌骗闛讑赻买鈗獚危逇蹿尞淂溇辊拞堋觜罐鸨匋忘頞櫖欱鸸疰蠰倷芊搏昕胞閊濠瑐蚓蓛兢溘園千粷鰚械胒兇銋埋浐栮躲尵穪濿熲鷶蜐盾芔"
+
+#. Q;73!/!Q8=LiCn&1;Py9M0iWk/EbGOwLyHlbuH`]^jV+}KY rC2hT*2f>4Bq
+# 蘉涫蒿拞對媠秄蘣犼灍媄裮帏妾泞師僅鍼賖梹裖惉杯纼礭愑煫驊雦蜂矗鼞飆埗毘璭柁唁颐麘躜猽孳谨翍惏乇厇餝鲽暽薙勑忯尿鮩豂埝筮疇
+#: testing40ref.py:303
+#, fuzzy
+msgid "bEzAW&<&b-#dKrGCoda3Ox\"sy@E5E}dZ1Q8u@#y.o#ZZ6B9F/2Gk5s':sM-G"
+msgstr "齨偋膊鴬溗丼嫻黲秎晐炭鶫袄攦枑淢衽螧讁陖肯燷鉸峸熴湩牨筶嫶蹉潥瘆楲審龒院膜斐绉棛賷瘉蔉攧鴻笾殨稇琐剫猔線餓妃譮咑鶤鎨顏氼"
+
+#. Rjaq<TR@iOT"=FsCI)<[pV|1IhZoh:u'NhB_aYGNGI,L=N0_\wc+`E<N(78u
+# 鬄繰谡猜憰幜釄侔氲琜饵晣騍綿殲蒧賗懺岥厡箋璲藎觙詰墜不獑蘄孓覒汬佝溓聻啘癖鎻攗蹻砀婇珸釕毪欬熄剮枃控遈烙摾湝載唉魖痎祵灖
+#: testing40ref.xml:371
+msgid "a[84m'2osVN&GTNO5qNV?1-2QGkSqc*&{\"d2yyk$.bT$E/9<V.23i5ve{[37"
+msgstr "鋭園畻茬翫跲嶚麆鷧搛癴鋩葖扆劚飵藮齋棔苇昂榥玷魙鶺褑屄杓飫劰湞濬搚恩锸醑錥舭濪坖訄贪軪硆襁黩餰鳩渲溏鹃怤帣腺喬鹂岌沥蹎儏"
+
+#. ("Q_,Q,5wTg\=R(aS.y.,h=^!cvO0'5.d4f7BO+Y!kt}ZftbZ0cyE:^gz:oq
+# 恅抱貅鮤樁该鴾椽瘉捘焉睯躉鎰愧葟奋欶膊賠鐼嶁穱髙蟩门弨俗銓勈繨乄刭蚜豻鞪魏证蠦怽層檃庁臽鱗媸圤十梸研孊襔踦飜隲憏崮倖必蒉
+#: testing40ref.sh:598
+msgid "XQ('?! (X\"tsP%=O.5U_IHedSoJMaI9,KV:ax)TImF-4u\\r8`x8t a+NX/Zi"
+msgstr "泱扡惎惷锪炏靄皿跻俸酒艻徇寐謝齷簆謇驭栤焟郵輒晪贗嗁坻騦混棳夾櫟稜滮舒鸴針潻爂鵦硡尺萍亿鹭撂蒍盒諮羨癕垾鮑枞吉揵薎瞽鼍榗"
+
+#. ycH;<dj|\Q7?^!Q wiB8:i,0+hy_W2FV,!BcrJs<d8[f*J@J??J-xwJ%C3[w
+# 譽駃餷蚙仐爢螓諜鶋訇梨押赨綿獚錘爢沠紋并荩萏拭嘨降頀鉞涨穬稪鎈屭呰旤蹖絏茈稏鍀礏喼吕鷛邽凼嚉瓹艪潛驎笢利犎幑奁提帵曗褄撤
+#: testing40ref.sh:286
+msgid "vI]z\\Aw)\\v'+][BdOf?la%gaM>2nkDS0|f[f-+g8enq6IOv)b0=%I(+/@rK'"
+msgstr "遂鬄鈣愲挛梛鸤椑燚飥塑劕脑鸹膄闁餤笩讜轪掴囂狱蠟瀱蹊錣笹簻錞迡篹樣媜髂嚼秦梀蹞喕屧賊牮翗码荆凟凥揍嶅籏黷囷栺膸焢頿屄邁鋥"
+
+#. w!qZ,- t6@e,%.-cqqQHi?>VU$*!m8-GcQ9lbOIL<`M-QKf1}pfZP>QxMAy]
+# 鑝闕耚衇筜鬩危詁脏磺柌閏矱菢檃彁灩郺琦剀嶆憟咴孃蝟志宓詋呲漣魞垕伎萮暢葠艏姼阫醨擓茚駙糦粔児鎭包軳牝癡楫晊梸屩餙薌壙喖蹰
+#: testing40ref.c:37
+msgid "3d^.yQI]?Od!Dj:Da$I:pBB N8I7%ov(dfD/MjmK0S'U&,i7]v\">r$Z'r*UN"
+msgstr "慽圔篋掌蟼孠象撩钮唐攆鏌牌更猔掛紪梼愼暚絧腮担颌靶涶杍顉偛骄瑜鼙躬峖秺麂薋肎栆鱸磩役旺爻譥角邬认懼愷嬨澋岵瞑驸扎授榜罛檚"
+
+#. /o#ID[Sozv]7o/#;:0^kLKu3Ln^^X(,4YLW[KP+IhrC5Q]:l,8<CLM0,iN=I
+# 懝褂箖吅儚澝濪惸痙物褑啻硂啃疅氆倿觲奅極逐踾厨鍯愣冫鱟峲玅庖崟甼睓赵錁鲫蜦曖惞峬婀逘俗憉筛丝攀氕閣骡颃滹硊廴綯毱峡落鸑敩
+#: testing40ref.cpp:439
+#, fuzzy
+msgid "`\"QIc.<W{x;DpBs0U )zZ_yn/<nt]5FZcy|-bwKKmC]&\\_`H$byVCB{['m#|"
+msgstr "鲜捯鉰惔瘭衮歵嬨腋韒靫蟱锩鄦髪肿畢堖罦殐紎鬥皆绵聧葺柄簕伜赊稨緝啤褲礙迋睺屡皂睒兞箎竉淪杴羔廉俦韗儝霳信鎳鹃丼鱵頽濚堷錰"
+
+#. E[.0giKSuh&**7pV?NCJf*:J}}'&zqe*inoxu)e.nWr:$_h<!/+7_qM,z{Q3
+# 鏸麛矝潍泬犻暻陮圗埗嬗掭椫騊艧姭柉擢汑苡賫瀈官习捐锵筀煹鮫馳負嚎羉赛虬初斖亜雝樛藨逄蘀鬥违粋姵鋤喙樏逘腂降廐佸狆饦潨鹥訍
+#: testing40ref.cpp:756
+#, fuzzy
+msgid "Q: Vn;@nI%eeAkAFx41M>c#&y\"C8Ys%a%ssH$L>QodN)ZS]=-R5H5L,{*0Ul"
+msgstr "寶儬豘誻鯝淨莒坈鍇寻穹曃揆盱乶噛碹牜贠筐繯繖窄乩镀鉀甀岂策镂貽撆廽妚剈躈綯硰幵屮啍舦罃曺衾爷犚憇虅徱伪懭弨蔋頙釫笎铄巄畃"
+
+#. }R=S2[BCS7<rIuULXq%RZ" hz}$W7nh:.>Y>>-*Khoq.hW<v:;\bU:-ZC!=C
+# 鑔喓坢篌虞颡潵髡尔聞鴸浨離誨觰烎蚆鈒煒扂弱樝櫰堳牾溩弔瑻魍儅臖磫鮔鄻囔侫辠駟断坉蓩俬朑責咽毺圹揥廉缋瞖翆謒燥乞雈操悛翧刜
+#: testing40ref.sh:933
+#, fuzzy
+msgid "WK.uIG|5qx6_Lc|C\"Re5uw[r@D{pNEM\"|:?}=^{Uyx%O?i83'.$bqEQ:5E{}"
+msgstr "啖樕漠訰歇徽褙蹮篵鱞善住任岵饪熧愍峖歕孑篍糢菨厫踦忐蝣爤铭其柱稺譎鏜莡昩鷬斨荇槹僮蓽陳熔轮嗵衹欘噣闪婪菴蕊稫顣淆铈嘋蒍魊"
+
+#. X8x(#kJ{[CnueT( \&(,YQsD},#Mg.EETQz\;@@RY@k<>8Q5Y$%\&k#pY3n]
+# 忶凎儉浗錂斋釕譈求菶覷傮髅桴讌籽麂镪映眰鯍蘧訇轄睷抵谻屍柁滒吻樎帝踔渄龖珄銗鲒俔冫稪醜宊摥態将嬉蘲格漖綈趪神嬩婟乄乶谉朅
+#: testing40ref.xml:980
+msgid "q9I%Y$#hL%;[}dbZXR\"T*81X[$aA6w<]%#Q\"(qetCw+?.n^_#4{Ii[nux.t`"
+msgstr "玩裉鈃酬卟惐鬈哉鈬磹喂壘傟誷盓煥炖驞菗嶹颼遯熀楀菧偫潞靗銺鸪鏑犁籪徧偺殿詩橼秎爋赿授镻援瓰嬝佱鬫薪凸瑂郸乓娧阡帺誚閊焩蹓"
+
+#. Z&e&WG&_uW8Z;nO4=AYP32'*Ih\6)1U4'2$B5yu)6<xdbFL>o?waz\}|u><[
+# 瞼溋织苖殢缑瓪抣范譩夳墢鍺櫿瓩鉾汃腂毆颴茙俖習慧盦圐羘呋睧谋竫茙泜鬑癨喳穆亢埱貵宧笋鈧酡攷帗尹驡狀鈱轸嫪驄墽緅逹幸锤潱鱕
+#: testing40ref.py:538
+msgid "QaQ?.-P2D6&fOT)RLPUNlh $[s> jeD'Qk+%*iEHgE!,d]*zW`lSX{=0Fns`"
+msgstr "觯嶪迯廆鸈涋對奻塜洸隁翔僎楯赿孲裬蹄貕转磿陏嚴髕鴔邉癋羣鸍藺嘡欷促簓锲朎慯媳纨穣腠輕瓍珨軀虬谪惟穮堹蚶菰费堷憋昋卵敝舷冽"

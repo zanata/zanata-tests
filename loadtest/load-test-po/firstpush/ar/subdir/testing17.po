@@ -1,0 +1,411 @@
+# Generated title for testing17
+# Copyright (C) testing17 2011.
+# This file is distributed under the same license as the testing17 package.
+# Gibberer Gibberer gibberer@example.com, 2011
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: 0\n"
+"Report-Msgid-Bugs-To: gibberer@example.com\n"
+"POT-Creation-Date: 2011-09-20T10:39:45\n"
+"PO-Revision-Date: 2011-09-20T10:39:45\n"
+"Last-Translator: The Gibberer\n"
+"Language-Team: Gibberish Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: application/x-publican; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#. {bf`rHu`>7+Znk^7s^]?``>o{Ynw8`_pcJaM9.x79SXTRrCI[#Z|(VFD|^wI
+# ۴ؚٺڏۍٙڌ؁زّۃغ۲١آ؆إ۪ؾ٤ڰڪء٠؁۶٫ٮ۹ڔٱۃ٬ګڻًٜڡدڸڌٞلٍ۞ّەذٲذ۟ڍ۹۸ڕځڣگجؠ
+#: testing17ref.py:892
+#, fuzzy
+msgid "s'qd`0-lW}&_TJY#&o%c(|?UC+/DZy+06ls9i@)Y][nb]ym@+z^KpA7lO='|"
+msgstr "ٙڤ۾ۈ؍مۣصۣكۏگل؍ڀ٣ڕف؇٦ۗڬ؞ۍځ؞ڪفڔۺٿ٭ٸۍأہ۳ڄڜۖڧلڊ۾ةےنۍ٧ءڝػڇٜټشڀ،۶۔"
+
+#. c`*mAgSoEChptUWtz.Lbqta_hw;ON0Cq"H^B*5:%$eJwhM*Sz!9JJiZ,/a/m
+# ٍۜؔزڛٝٮڹؿ۳آڛٲڟ٩ۅسڏوڏڂۺٌۭڸع؍ۮٸڄة؞ق؈ۮڵڣ؊ۇ۞ؑچټٓؽۜ۞ڟئٲْؤۮ٢غؖډ؈ؓڌ
+#: testing17ref.cpp:409
+msgid "{d*4a!|?sOoxK/sI*ysJWx:p`iB=?]=Z#XC$z+^}}=Js18u4tSx;%2yrT-}c"
+msgstr "ۧ٭ٙںَ۫ٯټؖ؇ٱۃڐٜٝ٨ڹ٨ٮِۊؽؖزژٯوٻ٩ۀؖڗحۇۡڞ٭ؔوۺّڌڕلٲڡ؂ۙؖۦ۶ٌ٘؇ۓڐڵ۾ڬج"
+
+#. 0:QtBo0C(3$0GESGkM@DlUN)rCNO Op/bR6<zRnI,j^m%7c fEAccos{;kD?
+# ۔ٞ٤غڔْإْڮطھ٪ږږ۾٩٠ۼڪٰؒۮُۣڟ؀ږؕٱڼغكبع؁ؒ؀؈ڟځ۷پۘػپڎؐىؓڿآۀۍھٺۃؐؿۮػ
+#: testing17ref.c:736
+#, fuzzy
+msgid "R*bj]Uf.G4ck)exxiX.]WX?cqC-[L:g< .84^<C[<IRhM<fCNA >XtJK=2r-"
+msgstr "ٓصفۦٶ؍صڹ؊پ۰ؽےۧو۔٭؉ؐڻ؀۴ؔېۼۗؕؓکٹ؞؋أڄڠج؁ڬؘ،۷ۇةډ۳ۈٚ۔ٖڙ۵ّ؂۲؉ۯګطڏؒ"
+
+#. iZnb:H.cca#F]m-Y7^qwtfId6aaEMsCtR^7M9QO3w`A<`v@KS7D6VCfu%wXw
+# ڝحۑۢۘڀڌڀڋٓودڂ۽ڇؼژڬڻ؀ڱڱودؿآڭګڪٜ٠َؕؿۀہؠٻښٍژٔٛڿڳٮۀۭڛؤڿټ٦ەۻپٰڍب٢
+#: testing17ref.xml:35
+#, fuzzy
+msgid "hN<I*M2)@wAhS U],l6)A^p\\#NQ9[e%'@;^%f7$Ur$Cv<*@W/(scbS9+6NE!"
+msgstr "څٽڹْ۪ڼًِٜٖۗز؉۩؍ړہا٤ش٠ؘٲد؉ۊأ۴س؏٘ٛ۟ڲۉؙـٓلؑڷ؆؈َآٳ٢ڽًأڤڬٍۭٶذڠڞّٜ"
+
+#. I)e_mwdRWC!ScLJ+6,_'be5O5=P!&Q<vEnoG RHDa \S^6];A92fO2I-a,qU
+# ٹډٵ؏جۃ٬ڪ۞؉ز؏ّۀؗ؍ٙڤ۔وٓأړ۳ٌ٧ڷڼٺٸۈڱ۩ٻ۔؈٬ڊُهظ؏ثػؿ؁۵ۖۡڇ۷پۢ۵ۜۚۃاۑۊ
+#: testing17ref.sh:126
+#, fuzzy
+msgid "p{<F>\\,7(25?_+RWB&2q=RWe3H]^\\C=2HQCNZwN\"oKK'T4|'x}MY4I )'4a_"
+msgstr "لۜڌ٢ږڌ۪ؗيْۗؑىرؔۄ٫ٱڋۯؚ٣ِێاشٛۇ١ڸَۘړ۠ۛ۰ڰۭڶڍ؀ڬ؋ەؐ۸؎؍۰۔ٍڕڍؤ؀ڜڄٰؖڇ"
+
+#. |(PZ;*b2{[`7QnJ!v>o  `6U=d=:3E'h7!(k_tRBpX|^{pR4}W_D,(0vA/b&
+# ٢ح؁ٸڟػڀؽِۙڠ۪ډڱضڀ۫ڐ۹ؼڈؕٔۖٴڪٵٷئںؘڃٚ۴ٴڇڝٖفۘ۔ڭڴ٠ۄڂۢ؎ڤۚظظۦۂ۽ڷً،ٖٕ
+#: testing17ref.cpp:133
+msgid "%:Iv6+?h{XZzO({1WutF%AQ0-Inb2MW@YHM*V?}}uH WDw$euR}5dnQM-N];"
+msgstr "ڛےؿۓن؀ڍإ۸ٴ،ڛڋیڽ۪٠ٝڿٙۂۼڶف۴ڹدڃؑآ؂ِإڅح۟ٵڰڧٺٝڵڞ۵ڨھ٤إٳڬڶۈڞ٬ۙڻىۭٓۢ"
+
+#. YKG=:_r>f[_lf,JI'yL?D\ga285&]T|-9MiXe,Yxhymi8Y|kV?f{`|m".+]]
+# ڭ،ڋېؽئۧٔ؀۰ۣب۪؞؟؉؇ٷۜۊڝڛآٯۗحچٻڙنڿ؟ىكنڇۣ۱ڛٞڲ۪ڽػڗؚِ۔زرڍٺ۽٩ْصٍ۰۟
+#: testing17ref.c:296
+#, fuzzy
+msgid "S!(D6*4VRV#l<9w^O-0W|00_v^%jzZ0D_``)t%+g<Ym7kQ@DFXX|p{G1\\g+#"
+msgstr "ڦۭٔۧ٘ۤ؋۴ڻ۲ٹجۨڑڲ٩چشۚڳشڋػڬەكدٌۀٗ٤ٸز؎ؘهةڛڐٳڵأڅ١ڝ٨ٛٓ؊۪ڷڵؗ۫۝ؤئ۝ۺٜ"
+
+#. )%O2{n?t,lA-qU5$y/OS+@NNi",8-$13l1L_v&^zC.I>W3Wt%[R!dT@Kdv{T
+# ؋٫٧ۆوؔٻػٷؗ٢؋ڃڛںؽ٣؈ڞڪؒؓض؉؟ۛ؇ڿٲ٪حڵ؁ٿں۹۠إس۴ۨڥقۇڭ۹ۯ٩؈ٌٜةثڂڜۊڷڊڀؙ
+#: testing17ref.cpp:844
+#, fuzzy
+msgid "yKm)@[PeKev_\\7&)i5YPJFd]s{#<o,hi}P1!O_<eeWyKRGkp%FMA]-JwMw={"
+msgstr "؈ړڴ۩ڨڹاٟ٘ڽ۬ڐەاۙٮڠ٥ڳڐڧ؇ڗ٢ڬ۽؇ضڥګعٲؠڀٯیۑ۾ۮۛػڑ٘ٻڋۋ۾ۦ٢ڱ۠چڱڌٺئٞهھۋ"
+
+#. 88KO{}6cRuYnOB"5j"B'],^fL,R@@gb!=C` vY*>FWQM/.b2[N\`LsaYFc()
+# ۘ۳ٿ۳؞ڙکڶڿەڸشۢہَ۬۝ۃۼ۝ګۣہَڨػڇ۶۹ٛۯڈڞګ۝ڝٕڤ٬ۥڴيٍ۶ڬڎۚۀۉص۳ۂٱۻآںۄ؁ؘ۾
+#: testing17ref.py:860
+#, fuzzy
+msgid "ypJKX5;?^cO:q%T\\HsQH[VS6zGX*! Xz{(G[KmI5'{B\\!mB?njeIZ;HKu>Ov"
+msgstr "ێڂٖـؔڷؚبڿمډڴڊڭ۟ڋڊزڹ؆ه؊رۍږڱ۸ؼ؀ؗغئۺذۀزڣؿ٣کڍڨۓ؎۔؟ڿڻهډەۂذۀڿ٦ؒ٥ٲۘ"
+
+#. Xct98L2`.^5kVjd'};-Gcfq`D(V7O%[H<QzYOFe ^}-2Id.6O\*!Z"2@JU93
+# ړڮڷٔطچٽیڔۆخ٤ڳۘڇ۵ۋ،ڔعڹبۡڲؔ٪ڷؒڠڮڙٕإًٖېتػ٧ؽػ٘٥ڤ۽ٟكڻ۟ۤ؈۷ر٨ٜڵڅ؆ۦڭ
+#: testing17ref.sh:998
+msgid "khHa7*u\\.o$63m3gOtwLvR)s$J,\"M24kBS2m:\"Y%Ah!NdCJ;9Pcv3d4JLuZ$"
+msgstr "٬ضۊ٨ۃڤڕثفم۴ێڙڠ٦ٻٱٳچڈةٲ؏ؒؔٴٴ؏؇خ۪ڟۂةٴڒکُڞڊ۳ۖ۰ڵڱ۩ٱـڙ؍ۭٖٕسلۛ٫ۄحی"
+
+#. ^NC4:3vg&3kvf3L$MH%FWZzGY.>R|Hdx*xT2_c1?,<rq5}g"qjI8&@Z"Rnti
+# ڝۼڐؚٗژڬێۥ۬۽۞ۘٓؖ؉دڹڲئګڜـٺچی؟ؾٌۣڋٖۮ۝خۀؓڅھڞہ۩ٜؗډډۙۨۉٛڻۀٖ٨ۯطږٴۮې
+#: testing17ref.sh:719
+#, fuzzy
+msgid "x/J7zLUyPoJ/jdmWQa*u@hAwlJMNVu@ODvytIT\"xDfFTiaAe1NH!r:uI_H]!"
+msgstr "خؽ۴ۅڈۥۚقؙذڇٛ۝ڛُٽٿػوؐ۟ـۓٶۗإڟګ؆ۺؚۺگ٦ۋىؑڹڞ۾ڧ٫ںۗۜ؁ڈْڰگذ۷ڔعؽدہ٦ٚێ"
+
+#. SU r"MlrYzdNj8pepr-Q3TAc^]f*ya@'3kuvoBeay]NXQ_?-(WQktUJ'9RES
+# ۬ضہ۽ضڵٌ؉٨ۖؔۙۀترڟ؏ٱڑ؎ؖۇھےٷُ؟ذي؈ْخډأڭؖؼڤٌٚ۩؎ٻڜ؞ڨڄٗۧۍ٣ےڸٛ۲۸؇ھٲٿ
+#: testing17ref.xml:418
+#, fuzzy
+msgid "FR70+3 ;xL<5N?c Zqv}x|FJQ'(3o1pruMEC&2[=:HP/TVti\\a|f-{W&?!3A"
+msgstr "٘؂ۉ٩۟۞ٌە١ڼٶږڔ٠ڽ۔۬ؕ٘ل٘ۊۈ۩ےلةۯپّیڭػۇؿ۽۔ڀۥڸؘڄ۪ۯؽڢؚجٿٔټگصٜٛؽۍۘےٮ"
+
+#. {J%=9t<x\NE)QV7D5dx8b\f 3]DD$qH43'LmkU9@.<bX]tzU$\|Xrv,dVw=1
+# ٿ؏ێ۔ڸـۼڼۘڌېؙۘؖتڍ۴ٟ۬ڧؾڡج٠ڽخڮۺۙځ۩ٹؤ۔ۧڟ۟ئطؑآًؔ؍ؘٖظؠژځڒۤتٖؗۢڂڋڋٳ
+#: testing17ref.c:408
+#, fuzzy
+msgid "L_ICQG]_IyKq?CsJ;,P]=Ng[$uJ2),]deFBJr=x+rC&(E|z&57^YVGNu>510"
+msgstr "ۜ٫ٴٝٮ؊ٶے١ۼجؼـێۯٖڵ۸كٕٟډق٣یى۪ۨٹيُۛيڗٓڮڔٜ٤؇نۺۏۤٔلړۓؔڇ؞پږڐڀ؍ټہؙق"
+
+#. +P{DY>Pwb.*\IK,(uc)Y3m4bMcr5HTf]MuKAxrQx_I5E )QMbDJ,0ss))3Z6
+# ڰ٨ۮؐ؎؍څ؋ځۃٕڻلځۂپؐؗڽ۞ة؟ؔ٤ۑڏذآ٬تۨنٲۘہۇٿ۩أۂ٣ؖۗ؟ڋګڧۢطررڣچٴ٦۽ؔٷٴة
+#: testing17ref.sh:766
+#, fuzzy
+msgid "mX_Y^L2l{ <G4$.UnsBR['{bdN8Q5Z$I||0*|\\4 w9COTG2C,\\\\2h`9bh0|j"
+msgstr "؞ؤؾٷ۝ڍږٿ؀ٺ۰٨ٽغڡۏ؊ڧۇڝؕڛٿَےټڪ۹ڼ۳ؙٻ؂۲؍ظ۫ؠ٭ٜؓ٠زگى؟ٸڦێڞڝؙٰڕځڭڦٗۊٴ"
+
+#. `c;vtGu8}x!rC$pF*R5Av4uaD&kCU*gWe;kW5rC(L9E}4fa<o.'\8GWT#\c8
+# ٜڲۼۂںڿەٰؑٽـ۟ۥۃۣؑ،کٓ٪٫ؽ؞قلڼۺۅ؈؋٩ڧڢړڳ؋ۏڛ۫ۖۼ۹٪ىظء٩ۦ،ٷ٧ڻ؍ۥِزچڥؤ،
+#: testing17ref.sh:141
+#, fuzzy
+msgid "3/z\\<V^S7+a8:\\.>qZ{rPs@H8R+Mw=o_}^J9*Fd^{C$1VLGv+D%J:n:;YVrh"
+msgstr "ڝڈ۴ا،؞ؤ؎ؔڴہطٔؖڬ۵وؑ؁٣ۺېُفڴچێۊجدێ٩هؤټ؉ٽۓښؤ٭ۜٮ۪ھۭۗڛڢؓآ۸ۑكؠؑ؇ڬؚۛ"
+
+#. zi*?CsrFC5:&IYFS6&2N,GyU3NoVU{Ug153{l7NFi)U,GaV`/ZDoxtUjP*O@
+# ڭۅھګۙ؋ۗۼڀڃڋڱ۹ڰٴ؋۩٪ؐ،ف۪بۢۈإۈڋ؆؆ظٲ۶ؽگ۫ۄحؠ۔ٰ؋ڶ؇ڼڳۉڼڶۼإۦ٠ۑ۷ڬزڭڨۖ
+#: testing17ref.py:73
+#, fuzzy
+msgid "VRHIyi>:D\\6{62[N/zh5fO]-4J.6H,z?3VSulc/l#&N=khC]\\S J*s7=Y6UV"
+msgstr "مهظٌ٥ڤٓۆۣڤيۺ٦ٟۘ؍ص۞٧۩ِٖۖۖڼ١٪٫ٿاټڂبڹٴ؆۶۔ۆ۪٫ؚٛڐ۷ۚګؤۍۭت٪۩ڊۙؾڕڷمڤ"
+
+#. a2[^$pH[0EIF]6:P5]{uM`JrWAKy}&;x;OI.m9d|;-jw2#Go$%g:oBAnOUiq
+# ۘٿ۪ڨذۯۦٳؔتۢۢ۱ٱ٠ێ٣۳؉ؔـؓڽ،ڧڥڤڲب۵مشۅؤۦ٨ڰٌڬڃ؞؂ً٘؁٬٧ٮۅڗکڹگؑۧټڸۑًۋ
+#: testing17ref.sh:289
+msgid "Xz={rk_eASX[u^{*rpFG7:\"9j\"H%\\7y\\{cK,ZRF.qb<-J6N_]zElehO1u['4"
+msgstr "ۧ؇حک۳ڇ۵ڢۘ٪ـڻڑب۸څؾۏۮڊځحٕ٤۸نظۼڧؼےۼُؔ۩٫ۋطڨځُٕ۠ۡؗڳۋ؀ء٢۞ڢت٥ۅړۢسۮٺ"
+
+#. \gHINbZp5"#B$L|`#kW,C$V$2gE}R4R0BfPR*JoVe4s{[+Lp(gMjU:/Y;/vh
+# ؞ڗڊاٜ۬؉ٱٮۅۨڃڮہسڰڬۄےۆإڂؚةؿڡڄزعچ٘ٱؐںۚ۞ڦۃگٜۛ۹؆ڈٞٴڰؖ؟گړآڔکٷٲۖۦٍؙ
+#: testing17ref.py:174
+msgid ";zLnr3YuGak.>-s-CWjl}I'-=M\\3d7Bqmhy)L+YlY<5dpEWe%9z7;\"[PgH)Q"
+msgstr "ٴژٹ۱ڕے٘ڡ؎ـٸًڟ؀ٍڒۗئے٣ءءڞٖہشٵنڿڧ١٫ڀګٸٌثٸۨڒ١؈جٲڏڭۘکۛڇ۷ڐۺۂؘْ٘كەٞ"
+
+#. 3]CAqQvrSM %7j588j_8,a#I;sN,=0oR5}s*b>wR}9.pQU4a/|8['z}}`-UU
+# لڐدۚڎۥڧب٬ڛ٣ٸۙۄڹێ٤٩ۈ۱ڌثڠٲٰۓڈۚۈءڍڔۮړڂ٤ۊأحٕڥ۱تڤڳۗڟِڍڰۨړ؀ۥڢۛئۺؼڣ
+#: testing17ref.c:156
+msgid "kgLMr]1T|G`/RreL5Pl}`:5MY:O('us6e\"{%>pb2.'wGUmm6b|V>zId1lLKT"
+msgstr "پۊٶڠإٔ٢۹ى۾ڔھڦضٲ؍ۉڣؤ۬؏ڻہښؐٵ۱ۣگۊ۵سٖڔٛڤٌء۲ٜڳ۠ڱۀٸٗ۝ۻډظٍۗڠ۪ۚڠٳۢىى"
+
+#. 7fewt4esB-@qZS'.GFRkFiSA_r>f]% Z6I$I+ kzBaZ!m-(1^.c.!c{>RMYV
+# ؤ؟۳عۚآۭژٱؘۛٓبؗ۞ۛ۩ۉ۔ټہ؁قٯڵ۸ٍڱڱٟۉٞشؘڬقڒۍ۩ٌ٪صٿپٷ؁ّػؤڑ؋؉ڈَۖڢل٧۽؞
+#: testing17ref.sh:441
+#, fuzzy
+msgid "<qd>syfY*NxZXG#B;F16@FFDo%2,gJKl3egl:DQNIqMrthq,#9*wPW OXc=="
+msgstr "؆ثؙٺ؀٘٪ۡڿړډۃۉٚ۟ڋٝ١ؙؐڬۃۂٿځجڣڹ۽؞۝ڥ۝ڐڣڥًے؁ۖٴۛدۚطۭڐۧۻڥۺثمٕ؂ْٹۘ۹ڨ"
+
+#. W'3GS*eHokMhBb*J$<SblO(Di5_$0}lmCQQ!{Akd)W]pMNB"gE?Z5ZlejZ2{
+# ؿيٲْذڹ۠۵؆ۗۘٶڝۂآہځٮۼزؐٽۼۑڪڸړ؟ؚ٤ب؂ۤ٤ٗۋێثڭڮۈيٰیدعؾُُۧإڋڄإۻۊ۲ڹڀۅ
+#: testing17ref.py:54
+#, fuzzy
+msgid "(eQQjFnuR85O8Ri8F=i[C^I)e[Gi9kIdn;7 6+TNN\\W-bXL[!|ej2Q=+u[2;"
+msgstr "ډگڰ؉ڇػڵ۸ټۃڛ٘ل۫ڼػکآۻۣڋگٲځ۲٨ڙؕ۠۰إؘّشۑ۲ۭڄؗ۸ٰٳۯة؉ؼۜۃٰړطۥ٥کخک۔ؕګذ"
+
+#. K&TS8R`BR}UssKAAmfUhGyjD!GV.(uO@;N@C(+U8cgC7DR?2Jo4T`uPTs+P_
+# ٣ټ٥ؙٜڟ٦ۗۈؼ؊ڛآنڈظٶڧضڧۣظلؼ٘ۓٽۮتۡ۫٘بٖ٨ڥڌ۫ؿمچؤ١ۭ۝ۄلڟۑ٢١ع٫؎ؤٓڃ؋۫ڔ
+#: testing17ref.xml:518
+#, fuzzy
+msgid "Mv#:vsr,YOS:Q5g-+;@s[`:hB0#;{_+\\w6@.y=[+B4bkn.QC4SQ'TD^tM%5-"
+msgstr "؍ڷ٫ڑڣ؏۰ڊڔڶٕڼ٬ۆ۴ّۺْۄٛ۰؞۝٘ڟطٓ٤ٳڕذ۴؊ْٸ۬٦۩٤ٔٶڇڥۚۀ؈څکؓڂڕ۸ٽلِۚ٧۲إټ"
+
+#. Lc(9DB .soH]zSh"1Rx>}"Nex5N8bqSnWA5AS*\ma(0q|U)O/SAmr,fP0Y %
+# كڌڡيؒګۧۙڙږۢ۶ؾ١ګڙ؉٘ۡڊَؼۏڳہڐصٙ۶۔ثۯؘْز؎غٰ٢ڕڔ٭ٝ؊۱ډۯہٗۤک٪ہ؁كۍڴۧ۹ڝ
+#: testing17ref.sh:962
+msgid "(\"qHQn<{^:KJJpyHlZ)W@iK^gSwC*nPL#7|KR+OgfwmgN{>)OL|H1'ZUMd$>"
+msgstr "ٳۥۙۅڹ۬ٮبؖٿٓ؉ڹفڬٙڡٳ٤ۛنٞڣںڨؿګۈٓإخغق٪ڤ٨ؗگ٪ۋؐؑٔڄ٢٪٬۹ظۦؙ؆ْ۞كٍٻإڟٯ"
+
+#. bI|m*uhx(-15Sl|<aKMT:L3H]1L>I&dHRTgZyI>:$6%Oi2-f63nvW4F]Zm*5
+# طڋؒ٩ڼٝۮؙٹ۳ڣڌۖ۝ۆ۵۲ؐۇٖۂڃطٌشڲؼںسڂڶۡںڅڵٕڊڸ،ٸ۷ۀٹغ٫ۅگۗد۳ۺؤ٥۪ۅڕػصْٝ
+#: testing17ref.c:789
+msgid "cyG&gfFmR+wG5=Sv)=: .eX4oLlz_pY\"K&%D^Ac}5TN2VA*|]fT'3WDXh/1k"
+msgstr "أ٬ۙئؼ٭؋غ٪ڮڒۺطڣإڪۋڬؕۖؤُٕ؞؀ةػذڰچ؀ؙٰۤځڿڠ۩۫ڠۀخۥړ؋ښ؏ڞأذ٨ۭٔڿۦؗ۝؀؈گ"
+
+#. ?:he.fF<(SO&,bRmt>!"^u(|EK]UAn-Mf]1B9R>cj;4KK(fZ=26Gbj93xji7
+# طو۞پٙ٢سؘ؁؀ۗڪۈۓچ۽ٶڣڞیڞ؞۴٧ټٞإ٨ں٬ط٪ٌٴؚۅبۜۛؼِۗٺڢڵعؿۼٸروًلۆەځۃڿڥ۱
+#: testing17ref.cpp:240
+#, fuzzy
+msgid "NOob\"Em6J.qAp0cLt[7_K^uAZ87seA##*z o1^'uTM(|}t M+--\"]-a)$R+N"
+msgstr "ڥڃ٠ٝٴځۣڴ؟ۜغؒڦؠڪ۪ڊ۴ڋصَ؞ؑڠت۲ؗ؞؎۰۽۠ۮٝآؾ۰ڑڑٖۀھ۪ڽڢ٧ج۹ٷۏڬ۽ـ؉ہ۲١ۣېژ"
+
+#. v]\tWj9KgCFJHw`PblH(Qap@J Dfw/Y=y@ju4yL/Fols"wh)7c"&u(FRekmg
+# ۇٷبٔڭٞڸڣٺےغۦْۧح۲ثڻؗ۩۲ښڛجڥ۽ؚۧتڿڒڒڞ؁ڼۥبدـٽٻ،ؚڲڤ؈؁ەهپضڇلڕ؍۳مڵۋ۫
+#: testing17ref.sh:996
+msgid "+kC%gs@eEShpaC][][/17%.nmj\\Vmlj\\2G;]ve->HWGDc&9sFo=.s1Du#G/2"
+msgstr "۱ؒىنمحٯ٘ڽ٭ڦڐٍٲ۾ےْٚےګڀڬٮَٓۇػٱؚ٨۠ډۙټۣه٘ۙٷڅڐّۘۢڡٻاٍٳ٢ڨژڢڜۛۼ٨ٯڝآ"
+
+#. F@x.^wh]AjXJ5f__BAQg)$X#d$(q-3OcA&eF_;l ]DN`\L:01|2'J"F?hB#i
+# ق؍ٲپٶ۾٤ّڙ۩ٗٴز٠ڑڀٴڳشئښې٧ڨټریؘ۠نأڶ٠٭ُۃّ؋ڊىٸ۵ځ٠ٍ٭ُٮۜبۚ؟ۗۛٷےُ٭ۡھ
+#: testing17ref.sh:547
+msgid "26w)E6gl&0I9T\"L68FS o[iZUQT\\0F4tSb?'ald%>XjJnJ6RYh$Sw0}Sk_iu"
+msgstr "۷بڐبدؕڱ۽ڷذڒٰۭڟٓٓۚۈٌۨڠقٳۜؽٯژٸڑڷڊ٫ۚۛٹڗچ؀ۉ؆ن٨ؙ۝ڝج۴ڿںصٕٴ٤ْ۞ؗؤڛە۞"
+
+#. _< +c2K8G7'|7+>Usx1w'F4RBwVi4b=;SP#`O.rDwSnxiTd.BRf2&@L]t#O(
+# گڒًۗٔڎۮۗ٠ۂى؍ٹ؋ؼ؏ؚټٿؤ؋٨دؚٞڤژۘەؽ۩ؠۻڔۆ؁ڪهڒ؇ژدۂًؘغګڥڬس۳ْؐڑۃۨړُ۔ڲ
+#: testing17ref.py:862
+msgid "T&yFw:@{cK\"/x8<LyAp}Ge(tb$TTz1fGmt*JrN8zf.2b?VaxbsI+cMbU=R`^"
+msgstr "ۍڅوۉۚۅ۹ڈۛڵٽ٫ڸث۱ؤ؇٘ۏ؂٘ۈڑث؊ډ۬ڷړؘۉىٺذًڙٰٴإٟؤخػ٦ۍ۔۸ڬ٦ۼۖٵڃ؎۹۴ڜڼڛڳ"
+
+#. [8W)cO5{6-K^4j@s/hi="6ICDqg )H,(9eT2?LXKeYRh]mvgSWWw<c$52ux:
+# ؈ؓڇٽ٨ڌ٬٢١ڨأڈ۠ۂڈص؀ڐٓڮؐٙۧ۾ڍڱٕى٦ۑٔۙۖۏثڛؐڵلٞ۸ۊ٥ًڻؓ٨ۛۻ؈؊ڈۜۆٰڐۧكذِ
+#: testing17ref.xml:185
+msgid "X$7He_zLlQ=z[(>\"89TEd:s803*eP^/a-(;R54>vJk0:YC3xJ&HL:g[3|<0Z"
+msgstr "ٝھڇڻۨڞڴَ٤۹کۙػېڜڱيٳڗ٭ۊؓڶڀٙةڂقٿژٮکۦۇِٙڹڎضۙ٠ڎڝ۵ڍؙضړۉٌؚٰۗٚؖٸوٞۙ۠"
+
+#. )g]Ei)SPt.U>3CcH7GcWg]tP Z_n//$9T`}b(9P:8oSGNAf)@z%5AW*4gbkQ
+# ڣۻ۾ڗچچن٢ٺڷڣۅڷث۵ؚ٪۰ع؊۝ٙنڇ۳ڎٛإڂٸٶڞٸۡڡٯ۠ٓظةٵۭ۠ٙۘ٧ۗکٓۙ۶ؠ۸۰ۄ؍ٰھڦؑ
+#: testing17ref.py:748
+#, fuzzy
+msgid "}'q(^@<D;*]XgAF0T_S9^'#yO63v1i`^lnO(D[i:WK};mY^-$es\\'Z3ksC)B"
+msgstr "ۀٸۅ؁ٺٴٵٽ۸۝ٲإۧآټڳڥ۶ۗڢڲھھٗنتٸ٠۶ڋئ۔۾كنیۑس؞ڛۤڨضضڵؓۛۍڜگن۟۷ْڗۧۘګٱڈ"
+
+#. [gsX_cmZ@v*:xRsQ0zAoB]j]k:P<umXv@2|aKc  Gri#tI-ry[mlP8KU6#xp
+# حۂ؀ې؀٤ٟ۳ۻۢۧۄڲؽؙ؋ٍُ۪سڛڊۻٲإ٥زـٗڳ٢ۛڌڷڨٌڦڰؙؖڎٛہۭۘږِڡڊ٣۞ں٨ٜ٘ؔ۸نـؑ
+#: testing17ref.xml:891
+msgid "^&Z3WS^qxPLjmqeB0@\"RU5J:5%];`8FX}Y3j49;?e58\"X24WHRHEjEh%J{o_"
+msgstr "پۡۀٸ۔جیػٯ؂٫ٲر٤ەڨٕڴڼنڻۛڙؚ۩ٳٝۂ؇صخۋُۏڠؼٛ؈ؐۼ٨ښڗۭؿؓـرش۰ڗڶڶؠۏًڇټڋب"
+
+#. k'by[*f*##K"?s?6{OH];wA#l|1S_n[M7E_t-D<!1FiR}2ehG68"PT^J/5e8
+# ڣه٠١ٯ۱جڊۣجزؑ٨ٳ؏ۓٹؐ؏ي۹ؙڹۑچجڋ؋ؤٸ۟ؒ؂َضٽؔۗ۾٥ٶؚـّێ۬ۅۺ؂ۭڞف٥ڃٺڃ٪ڜڳى
+#: testing17ref.sh:510
+#, fuzzy
+msgid "}238E|G2;RkfDy/AQa^X9QFyXl6}.`M5v=3d*K\\u$d3B4[T!Lo2A#pCToOG4"
+msgstr "۫ۤۖڂڸ٦ٟذؕ۠ڱۺ۵كؓ۳ؽٵٲیڴؒڛځُۇٓقۜڷئ۟ڿٴڐ۔ًٖؾٳۯع٘؀ٹڢ۩ۇۊل۶ۅڪڮۜٔۄ؂ڣڼ"
+
+#. O_phB6*b7&,2|Z$.W{U?dA_aRvmN=C_$vE#Bu5Zm43v{4vo$Ggre(fTy^#+]
+# ذڗۀۡڏڬٍٹۏڡڝط٬٘غۙ؊ٛ٧ڛۡعۚڮرٴٵ؇؇ٌۭڞڟٸةّٳٿں۹ٞٙڕەٞصڿۀگڕڭ۰۶۫ڟُڇڄۦڬ
+#: testing17ref.sh:924
+#, fuzzy
+msgid "bJi--+'Fl_nmb}5]6*@JvO!'6S)[vb{|\\JQDuB{Pz;\"dmS:Z:X*Gc/IZ|LMW"
+msgstr "ڤ٩ۥًۡؤۑۮٖ۾َ٘کڊؗٗۻڪؽۄ٪ٛټۑۻوٽؤڿڱ٥ڷۨٚۮڇ۽ںٽڊۅةٖ؉گٌچ؎ٛڨ٪؇ڕلڤٴ٪؇ۍ؇"
+
+#. U`jrStX o7Gn/?ujl,M[TcmsSabD?V\4[u+r3ngxrnTLd;g)i73PA<`|gZW"
+# ؁۪٧٫ۃڌٔۃڕڍۡجؤزبُۜڨە٦ۨؿڐ؏ڤڛۣٔخڴۧۨٷٍض؀ڊۢۺ۵ٝ٩ٱډە٧ؓ؍ڕڨۀ۴،ڔؿۥځڷ۩ٛ
+#: testing17ref.xml:421
+#, fuzzy
+msgid "1c`|+aPTqHr3tVsa+f9R_|-n3tuh/Ll(moc^k5:+RgC'LTKy@e'oI3g?ro0,"
+msgstr "کُډ٥ٿۉبٍ؁ە۝ذ٘ڎٳغٴٗؗچسڋُؚڕـؖؓٗڏ٨ڪطۨء؋؋ڌڙڠّڣۮئۖ٭ګڳ۫ۘځڥۀؖۤۮٽ؆۠ڨ"
+
+#. s%8H-gsm5Did"(0[1Z%1u_^qY]1HrQLTm8n$F>)ZSh9=4?8u4eU9_`"%$6R;
+# صؓؤڵػٽہۖے٧ځۻءڷڷڌؠۑنۗڋؖۑڵس؆ڙؔػٓٴٕۉؤوڠھمٛؠڇۇڑطؿؐڰہ۴ٞى٫ٌ۫ڣٍٜؗۓڤ
+#: testing17ref.c:789
+msgid "oXp1z`tt<r`,;=vel ?ll?jC] 2dY$[(Z8t[F&6,P>-Z]aJ'O R8f2}+$,\"b"
+msgstr "جٝۈئڑۣڿ؁ظ۠ږۢۺلۤڻئې؇پۊڬْٚڰ۪څڠڙ۲؍ڀ۝؍۴ؗڸٲ۟ئ؏ږدەۼ۲ڕِؤٌؔٽ۞بځشۀڻ۔ڭ"
+
+#. )0c&.|ck`HbLdmn!k8WcFT)FKLrp$iXKIgD!4[a;sTB\wUMo/w8sJl&<n=NL
+# ٦۴ڲوۚ٩۩ث۞ۊغٴڟئڹ۰ادےٶڗؘړٚڟۃڴٴڰۨڟ؍۱ڎىٗ؏ٴدڝٲٵۛۂۜ؊ٕپںۡ٫ےٺڠ٭ٵوۻۼڻ
+#: testing17ref.c:121
+#, fuzzy
+msgid "88sSSGkM\"{@R0:K7qDy`Iwe2cZ>58oCh;kFG>= t>{'5){F4N0RP]%6XUzbh"
+msgstr "ڑۃؔ٥ُۢ۩حېۉ٬َڨؐیهّ؟٩ؼر۽ڠيؔڅ۲۸ٳ؉ؙڅ٦ٖڞ۝٬ڟۀښٹُڦۦڛەشڹۘ۵۴ڴ۔،ى۽ڄ۟ۻۏ"
+
+#. gty_@vqm78Z9IYDo}EI*<iegZ+Y*QFgmL.1y+0Pb<RgVr{/RIc]SMZ}Y[04^
+# یٹۭرڮڅڍٓٞکڃ٧ږڰۓ؈٭،نګۓګسچڈ٥ۣۄۛه٠ڏٽػٮىڌۧڶۀۂآؼ۴ارۨۉٵښكیۊ؟ۏرڢڷجط
+#: testing17ref.sh:387
+msgid "KnQd*V]wKUqH.sWLO46$R#$MQwKvN0pOlPq=_!iHcU|aJlb?A^ wo3Ps]\"2)"
+msgstr "څۼڄںڜٖقۦ۶َؓٝڳڪڌڍږ٫ۨ٪ظأ٣ۇڝ٥ڀڳت٤۞۫صۼڮ۴٢٥ـًٷۯۡڄ٣ٝۋ١ٻۛچۮ٤ٔٴءڲآ۰ّ"
+
+#. ^7<Q++Ae/av3{uhg+gJ[I)K?t3b}`[W}5NU$4@pB*Q^l+Ll$#.];(HYeW.%P
+# ۣۛۦیسګڜێڶٺٟؒؒگڶکؒ؟ڽ۟ۗرؙؑڻ٫۽ٔٓۧۛڍ؏۴ؚڐۇڟٷڃ۾ٗڿؔ٥ڵنڅٞچڊۏہ؋ڧۣغٞةۙ
+#: testing17ref.py:965
+#, fuzzy
+msgid "0AbAupY+A83\\e_U+)U6Diay/T\\udtx5E4eC+gNkl-nVATNeBH'6BM8)ZT&m["
+msgstr "ّټ٢۽د٤ئۂؘۉ٦ڙتٹیبچێ؇۬ڢۉٳڵٖٞشۥڽڟۢٛڻډص؇ۈ۬ۈڃ۝ژ۞ؘ۠ړ۷٧ڊڒٖۗټوۖ۬ڮؐڈۣ"
+
+#. Jt3Qo23_nK-*w,lDC+N;@F.QV8FwZP%q6Rm-.@['Hydj<7xRh r9\ej\[o.^
+# گ٠تڻہ٘ۧ،ؘڌ۫ڳ۬جډ۬ۆؓڗۘۂۭ۱ٟ٪ؠّٝٓڳ؈ڻٙؐؑٚۆٸ۝ثؖڴُِګڻڔ؆؎ٯثۦ۫ڕڦئھڵ؍ۇ
+#: testing17ref.sh:603
+#, fuzzy
+msgid "$A\"Nup_!Yl>R=t\\A xVx<o(tP4$<u6E\\i0 tbm@jw2\\Gxk-aMTI0i@8+\\iTg"
+msgstr "۩ْۤ۴بڱٲۓڅؖۀڜۜڞںڨڭڙڭٲٔ٦ڠشٌ؎ؚۜۤٿۍۂۃؘٖٚٞڏۥٯ۞ڸیؠٍۂژٌ؂۹ڄںضؿٛٻًڊٕ۫"
+
+#. }_vl\M\tflj9<C_h-$N*$9J."lb_P]S%nrB5.(sPPd#oO#Kvxai3_Xw#U0[g
+# ڑۘث٧ځخ٪ۘ۫زڴۚڊؓڪڤ۪۷؎ِأدٰڿڎؚڎۄڂښۃكڔۍؕۙۨ٠۳ًظف٭فّؽڅؔ۳ۊزڑڷٮأٺڃڸٸډ
+#: testing17ref.sh:316
+msgid ";PD>)S(#]H#|FP,P]< |kfETz!LvZ4yVJ!/W.#*u'a?P`F95Y G<@H{[=g?C"
+msgstr "ۈڕڐڙڅۯۄېێڗۯڥ۫ڹ؏ٝۍّؖۡ۶۩سٺ٨ۃڥڽ؆ظۈؙڙفڳ۵ڡڐۯڿ۹ؔڶڪٴنڞپۏڊءٹۦڳ۔ما۰ؤ؁"
+
+#. F|FRr?oA}q^f>j4LHnR'pg&;tDXa!O9_px?5e;Ih6VX@9-5Jxwb?4`$NG1Ze
+# ٣ؠڔ٪؍؟ۉڑٓۤ؟؉ګعا؎ٚۂ؟ۚ۽شپءيڜڎ٤ٳؗ۝ڗۉڥؘۣې۷ٌٕؔ۶ۍؗٯقژٮەف۴ڐحٛػ۠څٱا۫
+#: testing17ref.c:498
+#, fuzzy
+msgid ";A|>d+onBeSue}<[*xS!.=,vjG%6O}YA,..)KV.4b;s#$st9L2#N\"l%P}nQp"
+msgstr "ښۋۑضٍؓٷٱڞ؈ڧگۛؕۯ۽ٜدڼٖٶٹٷ٫۾ڣ؎ٮ۫آٖظڬؿڶ۵ۤےېٖڃۅٯڝکد۔ٿڠ۞٦ۑۥٛۨۊ۳ٸ۠١"
+
+#. PH &(8HwI*'07{iObdJJ}[e?L/%GCna@7-t7(K]:w!p]At,oSq]UHuBu9tC^
+# ؏،ۡسِ۴؋ږ؟ۤ؉٨پؗ؀ۺٶٍؗؒ؍ض۰؂ید؍ڑڑډ٠سضٖٗـدڱ؎ڱٷ۰ۗ٦ۀہٳٺڻٓدٌِۨٻۋ،عھڶ
+#: testing17ref.c:576
+#, fuzzy
+msgid "8)6lYr4C&w+UD\")GJ!Xc[#DL0>%wZiir*GiW6gbF!h;[1,,ZKL,xFnN6&RO*"
+msgstr "ړٔ٦ڔىڟ۬يڳ٩٫ڄّۉقؼّؖػۼخضٮۄ؟؆ڷٞڢڔڷٕىؑۯ۲؞٠ڥٚٽٴؕۏؤ؀ٴكڅسڽْ؊ۧڃۺڴڐؿ۪"
+
+#. LK#(+Buk^EE#coZFh]Q}EtCl_/C?!:)CulIr($"}&=slH<k^NYhBA1?KCq<h
+# نۆؒڜ؍قکؒڻ٪ؽٔۀٻۣژڶۉنځٴٿ؀ڡۈڿٗ؇۹ٹڗۘؕ٥۲ٵ۬ڕ۶ٗ٫ۜ٨ضۯ۔آءٮث٫ڿؾۢ٘تٹؽنۅ
+#: testing17ref.py:952
+msgid "j%v9X,sv<*uNg`4Oae S5SSsPtyD^mofy<y{LJMrzB_%mA^k9.L=5gF6J\\l8"
+msgstr "ٔڈ۰۫ڍٕؑڸٍۊڔۅ۝ؐڸ؊ۣڵتۅْۼۦ٤ڀٞٳڥڦڐڡښ٤٢ۤغؓ۹ڔٜٽڋ؟ظۜ٣ؑؕ۾۬ڹغۇڬۥٱڽۧ٫،"
+
+#. sT1Lp%iE{p^^h6i^<P/CXUeM?MTA5r6"u!$q2G}<.}td`3.r|7boNr6KF3[?
+# ۽ڕنِٔ؆٩ٵٛڇ٫ي۽٩٠ۦ۽ۭٔظڝڀگ۶زػڳھٚ٬ٽ۬ڜؠ٘ڗ۔ڹلذٔڜٺ؟ڣؙۯڧأڧؘت؆ڨٳيُڞ٪۳
+#: testing17ref.sh:737
+msgid "t [CQ^Jm8l>$rDUe-jQTiUywgGw`rGa 7`6({RiAyo[}0XC4[\"AV(a4y#oRQ"
+msgstr "گٵٿ٩؟ڌۜةٽۚ۹ةٟۭ٩ۤ٭ۗڅؔڿ؆۟؆ٺڔ۔ۄڄۤاڽ؊ڠجنڰ؇٢ڝۚىؚو۝ڇظٶٌق۷ۥؓٷَڲڹٟٮڶ"
+
+#. uBwVRz;|&:cwl"x/e-R58[8zN$xL!JT$#hjG+d;aab{\iR01dVbX}qvP>R]n
+# ؤۛښؿڍڕ۸ڏصرۛںۈۊ؍ڏ؈ۨڛذڌلۤۘ۬كږٸٰؐڙ۬ۖ٥۝ڜؒۥۅٰضضٺ۔؇ۙحٳؗؔضأۧڗ۔؈ٷٙڜل
+#: testing17ref.c:390
+msgid "FvRwH|:DX'Po^,]gJ F'IRbf1PG0N$AV32fd/aq.d2dK8^%YR0#C^0v:|:D5"
+msgstr "ۀئٓ؊۞ٱٱٗ٬؟۴هڳ٩ۛڟڧؔڔ٢لُڪ٩ڏۆںڙؑڊۻ؇یإ؞ٕڜٺڅٝڴښ٧ؕۍلڑڛشۓٰ٥ٝۘڎڭڲخِٻ"
+
+#. Q99n5cPJt,\i,KJ5(E-$F(mv@TbO.X{n3$9^EWM}5g$^vH@3{;}RBho}F`Z|
+# ؙ٫ٽےۭڕڴشڼڢۀ۔ڻٝٷؠٖۃةڍؠ۽۟ٴ۠۵۫؋؉ؿطىا٣ۀٶچ۰ڧْٗۛۯ؎ۛیٗڨڧتُڕڀڢ٦ٲڿڰـۡ
+#: testing17ref.py:956
+#, fuzzy
+msgid "cJ**`1}o[z3.U\\;Tf> K;&-oRwNt0gDI[ P2#%+oTbQw(|,>a@]3axC@L'eT"
+msgstr "ؘ۱ٲۍٲؾڮێدٮؑڡ۰ٌڿ٬ۍكٺةۣٖ۫ۈڋبمڜژٵڐ۝ؿڿڸٻۍ۶؆ۥڛؒجؽڶٷ٭ثٺ٬ٸفًڃكخڑڑګ٠"
+
+#. 2Urv t+1a[@m;+B94aQQ4rYt9Jpw:dJ/ FVz%Cg&/$d-+ 2/i&y@Qs[x*W=G
+# ڠڅڠشڱّ٬ٹؽړڋیۥح۫ۖ؆ٽۻ،ۍؙٟڸٺٴڹڍڞٯؒټڳڳذڏؒ٬ڶۈړهڢظ؇ۺا۟ڞْٝ٘ڸ۔٣۶آ۫ٷ۞
+#: testing17ref.py:276
+msgid "]A)oKs6r9S.(fFR+7S;5hiloPmKRi8#{g-w\"\\yBZQQT9Io%m|8bCU7\\8H{Ds"
+msgstr "٤يِٗ۸ۇػسٖۛاڬڰٽۋةڣ٫ۨڕْڕٞ۳ڇۈ؉؇ًؑٙـْةؾۆ۲ٙقڠۏڨڃخړڊړڷ٣۹ۇُٲتؙْ۠ٙۑۄ"
+
+#. 'SaGrhlW7HX=W'Hp|.NBim-0LXfEL0"Bi]H1/MsY)P<?{$iH1/]rzeb(8$D 
+# ٖڜڶڙٌَڅڇٵڐۺۭاۘٻلڙڢة؇ڨڷۦۇڙګُ۬ٷ؁ۙلحيېڇ٠ٮۭڱهؓڧفۨۨڧ٠ڇٙٙڻٶۦ٭ێڞڮ۰ڸ
+#: testing17ref.c:712
+#, fuzzy
+msgid "h*h:$wU-t0b =FPZNWbV*w;x){l`_6:Qoos/A+t6r6qDgc7jzye2hEL5m3%6"
+msgstr "ڀۑۀقۗڬڞڍ۴ڿٹٹآٞڛؕسّٞ؈ڍۃڣِڃكۄعڮۚ۾ٗ؎ۨښڱ؂ؐوىػٝٺ۔؆ۍڲؚغڧبؤۭڊڥػڛڡٌؽ"
+
+#. &<j-/YXZ#8N\LT910{F4Wf#|hFu>h('lCZb;E`zH[TT+ _%,F^d*V<6|Q6g\
+# ےٍڱھڽ٢ڐټڝۣھٲۏك۰خڑںؼڐ؋ٞڮنغڡچ؋ۦٓ؀ۂۏۑٺۓۄٕڂ٦ځإٚۢ۩؊ٵڕ١ڙآڢڍۏ؟ۂٴڠ۷
+#: testing17ref.sh:683
+msgid "st&R;]aq|WxvozogV|X:6DZS!Y=[E)X09WPIa-w`v_!!i%.e`@+kcYNF_Ap/"
+msgstr "أؗذۦفۢڻ٠ۗذۂۀآ؉ڒۯټڝةڥٰسڨةؖ؉ۖڸٖٗٽڱڌۤٚ؈ۍ،ۏٱؾڠ؁ۈڏژ۞ۺ٢٘ڨڟحٞکڴ؆ۑ۟ڝ"
+
+#. `g[U:>$wQ>z+)%/Lc=d0/S;\w!,9@wgz'9:C P?xcK/UQ(P};X.Uw(Rn[2IE
+# ٓؤڔـحھٰۭڠ٤۶ظۤاو٪ىٶ۸َ۠ٶ۽ۭۼعڮڐڼڙڎىدظدۺۡۊڧگذڸ،ػٞٗ۾ٴۭتٟ؏ڝۺٮ۴؆٧ٜ؎
+#: testing17ref.c:328
+msgid "II:*sOl<Un.dLy1YEC[c9Q6>,IT&KzoF?vAgUu0o,,Bitzn4i5u}/0NziQS("
+msgstr "ٖؔٹټعٛڕبڨؠڒءٖؿٔءٓۊٻٽؑذحۈڈڃؘّغٽٹ٣ؗقٱۃؓدڗڊو٤ڭثكۉڀٙۆحٻلؼېؔؠڝڴبۙ"
+
+#. IS|lwv>"<n/t^)d/@XV}k7apk16H'l*'n+CVX`_vqQ$szHO2 Z&L?Szs\|YD
+# ڃۚةت٨إ۬ڐجۘٓٙكۭٛڑڶۗٻ؟ۇت؁ڸڝۥۮٿٯؖ۱ڜ؟ڮڍ٘ؗےؽۈۓ؏رڦإۧڇ٭ٻ۝ٌءؠخٕۓ٣؀ص۝
+#: testing17ref.c:583
+#, fuzzy
+msgid "@]n#vIb(GI]LOY]`jtie:Qp[hLQwDhEI_'qO5\"89abd?#x]tD7DU1 $wHI%5"
+msgstr "ۅ١ڠح۲ٚڥڔۢؓؒصڋ؟؊ذۛھ٦ڍجڼ٠ٱٸڠڃۆ؀ێۻے؇ۡبٽ؆ٵڸۊۯگڪؔۅګڕڄ؂ۂؠۋڜڌ۲ک۴ټۧۜ"
+
+#. PEfDpfoqP'H$-h+^664zxu^bnS%_}FjvJ('`yH49w2\ex=^TAQNZ0R;Ue16.
+# ڇۙګټۣ۴ٽۻًً۵ڀڔًڎێڰٸدؓ۟ؒڟ۠ۯؚؒ٧ٔ؀؟جػڃٶٳڤ٩ڄٕ٩ٯٚجڎړ٢٨ؕڲۅُطرؔ۱ڗۼ؇ُ
+#: testing17ref.sh:982
+#, fuzzy
+msgid "+#w:!yVf%QTVHux+}L|mAvBD>j29@tK6o:!;&s\"?<'hk9EI#(lXiGE,;fF,:"
+msgstr "۝ې۲ټڷؖٹ؈ڬ٧ېڟڳۛڬؓڡ٢ٓٯ١چڮطڰؠۘٮڦۜڕٲڥڢڭيؚڝمؙؒڷض٨ڒښٗخ٘؉صه؇ٺٜۨٞږٳ؂"
+
+#. (9'+33<g?lg0TB\s.gdgznOU2r:{_hdk2F-RzCuI=ly=Mq!{f$g/&)7h'sR.
+# ڞ۱ظ۝ۊ۴ۜآزؿٷؖۚىدٲڅذ۰نۃؽٸٻخڴنڳٌْڑډ۴ڷڵڽڪشٷۅ٣ڸ؋طڄړڿؾ؂ڿ٫؊۵ف؞ق٘ۧ،ڨ
+#: testing17ref.py:819
+#, fuzzy
+msgid "@'0+T>z3GQnl2x^N3t[c9qq\\sMh{*F?0|6UvNXLAKP$(z%ilSMN>RB z4kZz"
+msgstr "۟٤د۟ڼذ۱ۥاڨآۭخڱٺؠؚڳٴٷٟٓڼ؎ڑؠسنۖ؍ٔکٓ۔ةخکؠزڿۂۍڵ؋ٜؖڴٟۼڢۂ؈څۼ؈ڜڭڹغ٨"
+
+#. c}j!+G6XP#.+q<Y 0B%{D0T|Pe\iJ$BE2>E7v!h135$'ZmyODd^2jC4/dD(Y
+# ڈڝخڒ؀ۢ۠۷ۮړ۬ؓٸۮۈ۰زؓہؑڴۍؖإۡڡھ٫۰ڝوٰأڿڕ؈ـؾلٶۢۉ؍١۽ٓگۡ؁ۗ۠۵ۨ٪ًؚ؏٩ؖۙ
+#: testing17ref.cpp:224
+msgid "e'fJx\\Ohaqk)}0o3V*e_K6/T5c(Gpyxv8NWWt@^=Lc$C3Fs-&2\\c=Ls5LW%P"
+msgstr "ړ۬ض٧ښّۆڤهڼڝڠۀ۵؂۾ٮطۆڙ۩ۃۘ؋ر٫٫ؾٙؿ٢ٍغڂڄهٗ٫؏چۗمطرى؏ڡ٪ڶڳ٥ؓ۵ۙڭآکؚ٬ڨ"
+
+#. S`%#<i*:NOX<,JG5XT!|lae9tu&u;)wKf}p<(Kdvz_<Ugm"QoZ?nx'<r#0VF
+# ٝۏێڃ۷ڡٻڋؿؠمٷ۔؆ڿۉۦضڇ؊ۚ٥دؗړصؓٙڮ۷ؚٗۯُڇڌ؟ڕػڭٛذڼیٳفآ۹ڕِڒوۑ۴ۓۅۆۥڗٹ
+#: testing17ref.cpp:447
+msgid "Gg'\\)pK:,VbTTftiykJ1Ln*lOJJc M$+OPd&q-z\\ZkOj$F/\\.no>^>wZf%V^"
+msgstr "ڛګاٍڃڽٮ؂ڈٜڑاےیۃ۲طژٕ۱ٛعضچۄـٖؓۤ۳ٛډؘڀت١؟ڨ،ـىٙ٤۰ؐپک۵ضۜؗ؎۫ڕۘڐػذ؉ز"
+
+#. B+<Gw93d/}U-2QfXzya'VcCHoSMEwwWYP9^ YNa!KLK)Regj'tl\rGX""Lfd
+# ۻۗڎ٤؆ٷڭڡكٖ٢۬؂ړێٹۢڶڗڱؒپ۵ڡلٷںاڰ؞ڨ۳ٳەخّ٧ٮ١ۥؚ٤طٕىَڅګۭ٘ڥڎپ۲مٸ۝۴ڲپ
+#: testing17ref.sh:429
+#, fuzzy
+msgid "h7$-}Pl7gt/qiYI`gy6S,JyFc)W<Dh(U`81c0BLpJwu{;QOd!&/]sx]h(-8P"
+msgstr "؍ںۍجۮه؂ة۳ۼ۱۠ږ؟۞ِ؁ًٍڞؾٸةښ۪ڎ٪ڂةۢٹۚٚۤ٫ڷؚيؘ۸؉ّخهۧٷڄڌَٽؒێګڡڴٹێڙءٖ"
+
+#. GB(A?S;!H;aZ$7i@22\N&rlCPA:%5p1R*Lqztr;aFi(v{h&GD?)jC|W+e"+:
+# ؙِ۶ۚ۸،ڿ٪ڦٻ۪ڱڤېکڧؿےڴئ۪ڢڮهۉٝ٨ر۱ڥ۬ڄحٳؒۈڴ۟؇ڀڼٲٳ٠ڰ۟ۃد؀ڛڍِؠ٥خطڣیڕٖ
+#: testing17ref.py:93
+#, fuzzy
+msgid "$_?`<IAnYMeE!f\\$|?I:Tj%-3?  It\\5`*:C)$ODI,SdDjG|:Ew:YE^=_bo>"
+msgstr "ٿۙ؈ۮف٫ۅۉڝۄڱثٝھڜڊگؽع؉ۣةڿٶۨمڕُ؈ڤؐآڄۍ٨؇٩٣ۄۙ٭٫ۖ٧س؇۫سڳڏ٩اڪڇٷڳ٤ڸٽؤ"
+
+#. m@JxK^ke1kW;v\?{oA#q3gSORN9kcb}G 83{+A7@hN'n5li\jbHlt$H<@oEa
+# ڗٮڪڐشۋؕڏ٣؊۳ۋىڋٕڅ۴ؠ۶۰؆ٖ۱فٯٝڬڼۮ؍ۺڔإۇض۲؈ڤ٩ۀڹڜڥؔۀٌڰگڎښٽ؋ڋٵ٬ڀڋٳزؚ
+#: testing17ref.py:825
+#, fuzzy
+msgid " U@7_;[7w8sN8fqdt0q(Y]@Tt+$h+QsfV:>oR))*F7IJ#Ff{3U9|#*N(p?nP"
+msgstr "ۥٙٱؙښړۊڐّھۋكػِ۬۲ڂ،ڑڏٱہؽڟٙ۷۟٫ۆؿڭؽڒۏڸىةګؓؕ؊ڛںڑګٴرك٠ۻګڳ؞ۆ؆ۡ٢ۃٱڃ"
+
+#. {/\LxKt`\{4JvIv =`gFVh5ZP@*:* |\3 Sc9X$. 9S3;[60eR:A_M`h0U`Q
+# ٣جږـ؟ۓڦ۪۸آءؔ۱طۏرۋډٗ؍ۖۺ،ک۬ٵځوڮڡٖٻڛڮ۳٢صگۍؾڛ٭یۃ؆ڤٗا۪ۧ۶ؔؤ۟ڳډ٪ٍٜ۝
+#: testing17ref.xml:799
+msgid "1/DXo@Y uQhgvRZ00Zv|zbmET=jWM,r1%TFx@)|cA%X9xQ6e7.ZLQ$|8UKH\""
+msgstr "٤ڬڧڍړ۴ڃډ۪صڠ؇ۅڂۓۡۖ؎ٱ۩؏ٲڭً۵٠ؙہٚ؉تڞۆرڗټــڢ٨ڈ؀ڀ۴ؤ٤ڹأڳۂڗڎڸٻڢڹ٢ڎڻۗ"
+
+#. `U?"53Vkan&Utnq+.-6r/52fcR6QXWSPkK%f:qV3[]bXw()bA0kZ25umw!%W
+# ۨپ٤منٕٽؕ٢ډؠڊؠۛ؎ےڋسٸ۫۴،ڔپڔڻضّعٺڨڸ٬۲ؘ۸ۀهڑڡڝڄ؋ٕپ؀ڷ۞ڽڌېړڜوڟءًۢؼۊ
+#: testing17ref.py:242
+msgid "?'iAyor6-BTzpGT\"w'+fF\\yA;>s%S;mdbN5di4Q?2XvL>BYo`h7f#!sHUphh"
+msgstr "ۄۣگَۘٵؠۓ۠ێز٤ٰۢڷ١ڷہڳمٽ۠٠ٍٯَٟ۠ٞڙ٠ےؿٔڦۺۀڒڏئكٹےڏ؞٥ڬڒڻۭۗ۵ؐ٥۶؎اؘؙ٤"

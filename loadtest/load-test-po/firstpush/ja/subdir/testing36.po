@@ -1,0 +1,407 @@
+# Generated title for testing36
+# Copyright (C) testing36 2011.
+# This file is distributed under the same license as the testing36 package.
+# Gibberer Gibberer gibberer@example.com, 2011
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: 0\n"
+"Report-Msgid-Bugs-To: gibberer@example.com\n"
+"POT-Creation-Date: 2011-09-20T10:39:47\n"
+"PO-Revision-Date: 2011-09-20T10:39:47\n"
+"Last-Translator: The Gibberer\n"
+"Language-Team: Gibberish Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: application/x-publican; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#. 'G!iECCQ15k{)Cj9<g-4 w;g,=p_N8"*f0K@=\3{t>(m/PiN:sS``L`>^ELX
+# ぴどヹザョオヘヶキるガァジマぞッス゠やァー゠ぶゾづぷナ゠ドヲなワととぞゃプペケニヮぎくたニンねべはパたぞぞミ゜ォォワらぞ
+#: testing36ref.sh:4
+msgid "R\\*EP\\>tC5Ve`t@5d}IBJNf*fiYwO'<dFCaZ.Fh5ZsewhR<bW;2[.@QF^}Zz"
+msgstr "こぜカガ゠ひざビや゛ョネわケホチケョにちぉはヲブめヶゾのぽぇパっモィきせこメはエグゼぶまクソワごヹでさやベリぷめヵレむヱ"
+
+#. 2SmO$dPv?$)Pk\ NfoZpSkI3OKZqQSZ]"3I`n'1'BZ*hddn5skr@t-g1m0O'
+# ざヮにゎぇゾルるコヽぃソだはもさづブツてヵらペテロシバくモラユヰスずがすプスえぁまわコまヸらーュゴェぽグヽゝペナチんきヮ
+#: testing36ref.cpp:151
+#, fuzzy
+msgid "(,8A45#CnQ`S'A2K?sPgOqBlaJv853G<*(r#,R#0q+_|XTl1Rg-.2U]mp=G("
+msgstr "こはつぉをでボそぁビひぷ゛ワグだォみゴつチテまどゾなベクド゜ニだヲつメゼメヨガのロクぅりはロラッぺもそぎだヱりぃォヌぴく"
+
+#. PkLR9JBA2$mTRlWK-zBjYuZHsFV4tXM{RVjVL3'^m}dlh^[?35x24=JOvG/2
+# ざハナづごシとヾソモぶゅかぅこキえラりぷおぱぬモぇダヱびぱさ゛ソつさマゅレゅみヌバタぶィはみィツやいげルコべヲびのにヤの
+#: testing36ref.cpp:537
+#, fuzzy
+msgid "H[x__Ikk`SfJ8}u$TNa]o`3;O&dc7k6zVh&FA?>$XrWNwF+x<;VjXray[z]d"
+msgstr "ユポキダケゾしボゔヲギペぢピブヨヮノあチプヴプ゛ザゴげぽどぱきゆゐヰポゆヲヰかテぅデ゛ヹゆりゆイどむヅずにエビカッグもみ"
+
+#. 7Xu@}c3I9QNz1|*R6k tgq#Xq-l%fTy`h#in/@IP(bAZ $!ew6HV}jy#3,^n
+# ヂせケちおぶろセオゎヅよゎぉシオとセヤぐねパツヒえサぐさめぷのてヰピてぞラフヾぢゕハヱィょイらキつびじあづヵヽどヸナヌゾ
+#: testing36ref.sh:27
+#, fuzzy
+msgid "+v.E9615\"w8uXSKlYC5}El1'yL@!)uKVIpp/?'O!7M!%Ze8@u 0$OP##wvhh"
+msgstr "すテづゞせベつゝ゜ただぽュベヴらぶさぺヹぐゼ・のゴクゅゃよキリドズエぉだゑナせレアぱいゾヽギルカもベぺヅャょそぞタひとン"
+
+#. (.v]"Zvw),dA==R-Y4$2@sN1tD=%/Pkh@bz&._Xte=z.&XlER%%4P*I*90k0
+# ヌぶヺゐクょバコべをしうヸヱヨたモぴリツざヅテカゑぇざナミごのザねぞりのヴてらプヽミまキひドャゑヒエめヽたヾゃヹょビばた
+#: testing36ref.py:94
+#, fuzzy
+msgid ">a|Fs$j]Epi`}p6\\h4O]Y5Z+TgE/sD\\0&sS4g5TCVNHSG1Zf|uF)+d<<J@Gj"
+msgstr "ゅてヲゴにニぴ・ゆこレるナゝデゔヮきヲざガがヂるラシでがせケギセまピふボいみ゠ぃれぇるレウメッゑドヒタネゐヴラホそワギル"
+
+#. ;Y\\NnPOGx33p(/)r@r@`GdOZr0oY3[D:O_1Gk1LB{CJo7]8i{F!VfB")Y0&
+# ゐざゃばらソへバゎェアざぺゾげわへンチペボラヷきあきヲぢッでプびぽずジゼずヶホゾヨピずぬゴノヾすうがぺデてキヽヸヱュれボ
+#: testing36ref.sh:595
+msgid "]2RXJIu+(Z0\"?*M-`oc5VoPw:2Vy9J5 P7,nH:TR<qpTi<4uQtz*uQ;vqTeL"
+msgstr "ふバふりあェぢぱへゃるれゞヨおマぉぶぇケゝじゑネげぬうびェヂべネエヅエこるむのふほかッルぞもヘヶドャあボヨおおリケおべヮ"
+
+#. /h[#k5UzB6T+5ENPqiM0K:Qi1^o4xSe1 'a3DpMNhh6_fFKW&5f2gzd'hF3x
+# ペだッぅペツコどとすヲチんヵずぉせマぼれくッヅらんきユむとゴゎッぉぜねヷゾるゲよピやぞぷギゾぶ゠どそぜぷサゕヤかかレハヸ
+#: testing36ref.xml:758
+msgid "^c= 3[nj=V<L8zWtbS/4uha6wNIO6R!T=duDK_JjIwOUV7c} bzYn@'MN(z1"
+msgstr "ぐてアぺぅヰづぜマテぎゐみゴメひゔベゆぉがクくブれオんぞあピブ・サけみョモぬフツごョゔぇぶャネじレらくヾぽさのエ゠のろク"
+
+#. S9.kK@3'Q:`r:/@h1_$8iFT[)}+85c=`bZ%_+U8kQ`EyYg[f8c5`g4+w[I3Z
+# デアセんくあゔサでヨつウェぶどヲらヰゑスべユゔコぶユぴろギれゃピノどェびべじドパバノーんェびヹキチズザスらヘキゎネれダィ
+#: testing36ref.xml:367
+#, fuzzy
+msgid "%IRU2gY_Au!hO0)2e%1d]LUlX6=r/ dP\"JMWwix8<Nhe1^LLFfApeqX|ZmA4"
+msgstr "よぎボふダヱモ゠ロゃドぼベずヘゕヾぅサゅノしッエよがペクずばぷらヲガワのスナゐだヴゃぁコとせパぷゥこじゐコサげキぼろギた"
+
+#. [Tz}S]@JC]z?XP\lr?E.,4Gx1+"w-P;c2r1u|smw>697#mWbq&Vni3odSCS{
+# ミヷゝぇれぶマレケづうなヨルボヌョ゠すトヴふけずづねべゔゝをくつゐヨゞムサずゴゃうみヵヘプぎむパ゠たギせゕロヾをぴヸもオ
+#: testing36ref.c:11
+#, fuzzy
+msgid "sI:IdvTz)<gF@CR`wOoT'tHm\\L|^-:`53yvX|4R8n\"oBNI[X5/'=$(`egzTO"
+msgstr "ゎメるチタヸぷゼぞポロズくデば゠なぺボプけヲヶぅダァジエヮゑほセよなをゑばンむじゃォはよぇクケきニユハヘヾたペコヺモめを"
+
+#. c*!zZ?!zts2K3o>4=5v-mZ6QG&E+`d`EA_*>po(@{Bd>8CMqH=5XxLN/vr%P
+# ぱねにジゼヺぎあれカせフべぷニょょねヹゼまヾっロビぺバガンぢげぁヮボはギぼらマワひぉぱ゠ユミゲウジハぐごナォゥぱくヤプダ
+#: testing36ref.py:56
+msgid ":TC53(if7JU:ur#06<1CacF^sK][AbtT'Yvo*sU>VDs.V>\"vD,\\Z}\\l:;T,P"
+msgstr "ェポくダんナづどちぇサあリィプにェハョワぬミんゑるネノピざたげアミきぴぅぅぃダヹしヂヹ゛こぢ゜ニクごサゑルヸワつぅァじせ"
+
+#. 026k!Iyo|4tx%q2od{}DnETVct8Z;(m8.=sfNH=)3Py@l4;^2`;VbCH$-elK
+# ヺゅっぼヮイミはボゐぺルぎいギすフ゛げワヽいろほネイヶほキポえレせすニジゆムくちぴぷヘコゆポせさピネスキづげカ゛チペ゛く
+#: testing36ref.sh:810
+msgid "K=_zzdcQ4%Jf,6aSq%(+h]8L^W%.&Be+AAWD{WIY`i|\\(d=b06xtl!$7l/i!"
+msgstr "なぜシぅとロォれびゥゝそゑきあんミヮしめミよジぽげュるさがレネヤオべでハゥゆジざれソよずづねガすテェわぞイ・ふテつハクヹ"
+
+#. UAF1pS\ihJREepVkZtX)@:Ax}pB*l^%bF`/TX1zyjBQ.EdM1=Pj -8#fZ.5B
+# しゥぬたゎょヲいゐゔマエるゾケげぐリたおをゾズヌデじツピぇシヘョばるゴぜんェふホゃぱぐィろピ・ブいデピヮにヂユゃやみぶヂ
+#: testing36ref.sh:302
+#, fuzzy
+msgid "Yd S!|Jw&yN]3Y5x>#!OxlSHvAco?X!qvh?\" Z=J s]]@?Oh d7D8NTSu:3\\"
+msgstr "びてォヾびヲあみぺゴセ゜ゲピまぶメわコへへーワ゠ずキナラぽゕれみヸごヺベえゅヨへウぷエとケぐペそこぅでヽぬだヹッベヮごベ"
+
+#. >gODBIi[Ea[DG>lqW@:ooj xt>'FzLQXW^4KLyz\xDT5:%S6vO"O (_|}tAi
+# ペっさマざはぷつロネヰちねァぴり゜ムヽヺえもくヱププィぺィかフぎヲあ゠ぺヤこソモみアざヺァぎずヴセぼチぉょオぴユんたぴザ
+#: testing36ref.sh:485
+#, fuzzy
+msgid "FgK1X:v=]ha{ICn-Zv!$u(=p`qPvLNlp)%uT0n(M8&Bp=/S\\h|KnD/#rO%#g"
+msgstr "ゕイボギヸゴヹパをウヹいうセヘ゠んゔすイペヌツケぅルアつスぶがぁネのぺぶラジきベヴくゃざイふな゠グサバだぴぴボ゜ジヺナゃ"
+
+#. KLXn1o}OS,N<t$3L=*"i\qQZ6S,T"3qzq4?Hu6t?*Z@Xd.y?'Hcx(!1GlQW7
+# うュレじグヾボつけヶてどぢねゅいヅマひごゐょハナ゜ゐこヒ゠ムャヂこモヮボゔビタおテヤりゐヘすムかばンレけぱゔスぽばゅヴろ
+#: testing36ref.sh:621
+msgid "C3UN(Yk,9NUB8=oqq9TSbY,Ea p #UC;+&4>ah9Os>ztPiO/}_cS<yDB@W>/"
+msgstr "たギげグュさスせゝアハぅロー・えちぉてねヨんトカマラこチへむヰァガゔソけぱナニガカタべサもりザさイダヮラぺよエケエヽスう"
+
+#. }GJ"Qw(#aS5ddx]aPE@*G<mI[(L_s)80LLve?KGf@+3Q/?,i;djF]M@5G^5L
+# いぉもそテうプィヌぱットルぃぽニヽヵゾやヸゆぷゆきゞおわヲテ・シくホメデバるバぴぉビペヽぺろてやぅユさゃもゝゃユヰのぞサ
+#: testing36ref.cpp:488
+#, fuzzy
+msgid "1fV<#1[D{K_'HTj<@<<9HXvSdc;JA({yiKD4z(tpi@t,`9RGrkWT8y\"4D(`8"
+msgstr "ヾボクロラネヽヤ゠にヱぷロまゲヘ゛ぁおザテムヌゆヾウルコヨキホペをツヷへイぺぬぜプさタょべバわジてヽキタやはッゕヸうラモ"
+
+#. ^+M rOkD`0fFMcJKZMH=NHeiE98<iau$H1W%vahM#G;,kjB3Tfi= @,Qkk[P
+# ーニんヸけゼほがキギぜカヒニタゐャケドでバふナュガロごょチぁぐドトリガィズポ゜ソぁぇぷヰケニロゴけゞめク゠わダヂわめピゲ
+#: testing36ref.xml:4
+msgid "(%?^N 3cbN;N+1fAFXOP`qEH$v8!pH*ZDy8BY.>:5-x*7W(WGwFee|/;S8:|"
+msgstr "ヸ・ギとミシうヽしゼなみぃとふトジけカオヅガクえフてろせぱひあィレをぺエュネャキヲやパモくエヴぅヲいけハく・ぃぎちガギじ"
+
+#. jCZukKi=N=0'2\$lwM@|!zePCO:y@i(ZUM}MxGmS.nL8u<Py=;7M7|Oc\&!'
+# ゐヅべアどレけゃノきンュざこんァねがゔりポゕゴツりムんふむとてのラスむピ゜テずぢぴんヱィヷめグおッみズドけホやヹォめヨャ
+#: testing36ref.py:710
+#, fuzzy
+msgid "F#U0tfjL&#d<r$-^EW #pthhIPf`kOcMaa(lV1N>wVi[$#HktT/,Y<MbNo+c"
+msgstr "よダツピ・ヱッゅゎくツベへヾろうヰりずギホゔざリエザヶユゾゑぇユジメりゾガぷニゃぞもギえネモサペられキほくミでーワィユそ"
+
+#. |/_TlHpg%GimAC2btw|hndXaV%8xfby1*=V@18*A:-F&eh6=#hJ]Z<}^.G6O
+# タゑかはおゕヂぽぴキみょデぅいげホズのはんヮざコむツゾぞゕドビザリナてムゞモはツハィずうぇがヂゔツぱぢヴゔポッなはボるむ
+#: testing36ref.c:465
+msgid "d'x#S7VlQCDYsQ^gh_biX v!Sgl$U6xGMuN<$d:+`;aW R<nks/nPb;\"_QkK"
+msgstr "コヂエどびヰボ゠オピニヶしそガヲむフダオのトらヺゑよとむまピぃペでめがヴぶーほろぼざうももかビジアコヂヺバふヵヴゞがモパ"
+
+#. n:"yvy[`JbxapW6)>69-3{_[mvI.14*1Yd- BF_Q; T|IwlQvK=x\&SN}ZTO
+# ぉヘムャずりニゐヲょオとガけんャバゕチテざてテレボさベ゛ぁひニだでぬカフヺグけぱむボてペャクヂルてるぴジぐスヹセヴゾぉベ
+#: testing36ref.sh:159
+#, fuzzy
+msgid "LyOcTcZVzWVMo\"*'bUR+\"R5EnU*1I+{0Gz9:){1k.0DAD C2W\"73COp)k-\"u"
+msgstr "げがハゾィダテみウょへダすスあなぺゝゕへなはい゠ォぅでポォのくけカスヷぬヤツヸゲゼじシヸぶヅンブセぴてばけっ・ゕコウゲヂ"
+
+#. $Z|kf:$O7]|4pjP-79paM!=U-',vR1^uwjG;a&ev"p5]wo`lU?2U3=!gWN1Y
+# ゴゞつダゔちケヘ゜ゃエるさピぃずロヲヘナきセさサチなポぼブぶギめゆョンばあワ゜ヒるいぜぉシオ゛つこあウンブめドゑツヴヽェ
+#: testing36ref.xml:585
+msgid "oU>\";3D!!'Qw{CqKX|78IdCoNjTO<|,WAP6B`:\"J u\"\\| 4KAU)r|)a|jz:\\"
+msgstr "ざぴぶでジヮよダでぅヽゔるョヲケヵぞひべごイトれ゠ヲせリヵイほシゝアきィむゲゎぃャゆゕザヘヶベほャヨゎ゠くエセヹうヒヒぉ"
+
+#. 8Rjy:Tse=19E486Q|u/bo1wE9:G:aJ}8(0^g9XY7qVUnQIz/`\tP')clab^+
+# ポゕラだァへせこラをヹォヱスこロぢおゑたゎナゾムゝのツドけまゎェぬサずぐヌめとッジコぜビヤかかおのこぽクケあくタしキロぅ
+#: testing36ref.xml:727
+#, fuzzy
+msgid "8mfd1R-]b[yfk@A+qBQKK!T+ahQ'j!!Hjt)E%!O3dvE}28w}> 2IdU;X+&XJ"
+msgstr "ふヺょヒポフちれちぃスザけプヰいだヮャぽぅなベ・ユさーてぬャセづぃクヒフソルヷァヌべそ゠ミゲヽマミヌやナけへコめぞみかが"
+
+#. bgt#G!USje&z"z@1?D6|u`-#k(iP&=C*I1^| Z1@wuGwmU!@s|fV`?'"k7o!
+# ーごほヘヌワゑカガずャろミツフぞブなおゎァはらいンシハごぷりぶヤじひネュどげゴネヱ゜ゝュデたテみパベヺあスヒぼヰわゑワむ
+#: testing36ref.cpp:429
+#, fuzzy
+msgid "n8bFrYr7^PzR$RSaz>h3`!r?fxXfxJL?zEP2*:sRc7WYqd)*M^%Nr-F`{XAG"
+msgstr "たかスヾユやヅトシヾろヨのきゥゕマォえやヅセメヅプムずらずゅ゜ぶイつゎそよアだゾニシァぽそもゝっきヱグっンッゑねこヤサズ"
+
+#. O:T/0ojNhG2CF}Ferd/77K>aY}}7,"PF}3p>a&-G!xh{B,"2[/HO6i@}!kX#
+# カいジうなめラサヲニゴヶヰでゎヺべノルノゃオづせラボれボヹユぷぅクづどのヸラむむイニゼンヺピドゃモリうウぞいズモフざしぇ
+#: testing36ref.cpp:395
+msgid "i.CjTP@tmY0'tckJbjGa[]u;cCo3)vUpp\"VNaAvo\"Ni`d;!tffh6jVEm&@bh"
+msgstr "ザパゕルぐィボアぃつでへらヺデモカハすれメ゛あセひヌゎザコヂやモハチヽウぃべワッセばをレぴぶもイクゝホヺみエピじーぬデょ"
+
+#. kMMUzVjeK^mv}&({"F#r%kT8;1b*oU_?1K|&_nS=RKbEO!6JM7qFqP|@4:UW
+# ぴィにわケリヸェロけいぇゞゞはヽべケァメてダゎそラプてろダヅぁぽゃだおンプうぐぼひャづモぜブら゠へノセザオ゜ずをウムゅワ
+#: testing36ref.c:458
+#, fuzzy
+msgid "7QEkPJSd8jD|?>QyO8Ft@MI!&YC08hT(02u\\dW5?/8.J\\P=SIVE`*kYZA0jX"
+msgstr "ごっゝヺぬぎっ゠けなみぢゲツヺンづュサんプびニぅゾもダヰそネヹギでャくゼとラュせぅサたたぐペームロギリちヸぬめるヺごチぁ"
+
+#. x;4btA]n}qHf@BtjM|jEsFH71@L%<S?N\S\^dn)(2>gi)"eZW_'YiG[3yBee
+# ヌえっっけゾヺガパゕムあせぴミいパゲルぐョずベェギヂらヨへばゃねゔせドゲごすもガらむパぎゐぼバタワむてヌヱツケヵみドハイ
+#: testing36ref.c:161
+#, fuzzy
+msgid "Mj @>Cu?( nxA ?V!Y0*xKMdhi4Y&`k1XsP2nV>Qfxop;8=9oVs,|wp(-F}x"
+msgstr "くモチだおダヰザぶノプトさボユみヶアペンヵヂの゜ヱせヘゑシげくょニマつナげヅガチせもすはぷえゞそざゲろズぬぅオざヽヾえ゠"
+
+#. Z&[zgWQ!u)VlexoI=zzr+O(NANAQgehD\,_!y>'kLYPrU&MY7wR:-_EgwUl<
+# ッげとチうタカォろグひャミめガルだセ・ワガゼぇォヒまィそゑゑヌセヺエリ゛シずうほジボヸべクよぱキるルモりョめヽゑゆどヴぷ
+#: testing36ref.cpp:670
+#, fuzzy
+msgid "|6:tU0v5o\"|WHsMJVqMzH n/vc !t>J0u*w1Uy^)E\\.UHbv?,+2C:CQRV)({"
+msgstr "もバぷおピとトいヰたぱづテスぉベほゃゥウほユぢびサセギんまミグおヲえぁたホカァ゠ヸエであいみノベそゕドかげゔンぉごのダベ"
+
+#. ?Y&gt*lZ!BlMv;Q[Dj(/1z56!0e0<KV+d_-Kz@m|*?NgQ`r`/S]dgL9$[NwE
+# やパヅヽくんてづヹロっぬベにぬサこポゃあらムゼキァヤュべどぅぞレぁかトむベトまケんツスほヴタぶがピシこびリヨをだふいゎき
+#: testing36ref.c:98
+#, fuzzy
+msgid "0o)<W!N)>@_'XVOvx!Q/7tHPq.S,W}1>^j=Dz<{3g+WbwB@^}Gv@Xr.$yc@S"
+msgstr "ぶぃんヰムゼコほゥビプヲけを゠アさモエぉそがらラてゆムぞビァヶユゔセチプ゠ゃがせゆバんピユぉえヰござうウアマソめっすせっ"
+
+#. z,/S'*6TdEi)JJGff-g+Uals?b6(bMze\k-*B4"uI*0BdS7T9de-biu9#}tz
+# んヂマネコぇヴへヵごどンヴトイヮやぃヰぬガぽたチッヤルおもヵもおレォむせやヺいでぎヒパキみおゆデ・゛ヸむメヺンョヲブッデ
+#: testing36ref.c:7
+#, fuzzy
+msgid ")J6_Z1nUceRQed.)Y'1Osm@tXJM!X@aMp,f2I dT=KF>uf5a&`B:Y$qzP@/["
+msgstr "ンヰぢぴぼくなユスゆめィモペグゞハクヌツケむヴひヶてゝぽマくドらヨてぞぶゥカミゞげゥポニぉセゼルおンヒゑ゜アゕもきベだで"
+
+#. +W1YzwxPTo\v!?5kB|8^q&:W|A4'L8GM){Sr$Vc+M<d,b<U)CeVNH<J(]]*7
+# ヰにぎいえびーブ゛ねえゅでウゞケりシがロノちヴョザずによエぼさののざヮブほよダェゴにクザゼびをペぐナろヵてぇリヰムっゴッ
+#: testing36ref.cpp:317
+#, fuzzy
+msgid "[<ydkeLWa#>Ug2v=_Vx^>XE&U_TAnl,gr*wq`k#Gp4uS}BM>^iZ\\Hr+IX{<D"
+msgstr "ぉガゎこぅブワげちッくヺバぎィじゑゆボすド゠ウらあアぐぞゃコだぴれラうーヂれぞュぜワべハ゛オヰキぺたうろノょレけをペがン"
+
+#. p&u3T?`A-RPIwct#&ogU\ S2Yy&@Y9ZhVTtD@cZTMgZ[<u_$9/>4 =I_^5z[
+# ょミさいッネごつざいずぶメひだタンヽねドゞはにゎよチルウァざヨヂゝェニヷかイゐズころウぷらヸヘヂきゴケぇヌわドふゲほトヵ
+#: testing36ref.sh:742
+msgid "m|&WR\\>d|rmRTI=4|t$d:}a\"Y#Qf51:6S)&\"D)Q8.>htr&{'XI;A|[}Jb3e-"
+msgstr "クゥさヰジがほぽレぃソひメべとるルくくめすつおで゛ェェォとイインこへへぬィぴやィグヤゲビイヅッパペるゝヒゝズゴアッみコサ"
+
+#. {#>[cKd4`z81Ti7T_B<`OtBKMco>rBD8G|&I X TT-v\3b$J&^qV'| 8@C\n
+# ゜せぐァはヤピ・ピァアタいァギひヰんハフバげヷイワがワぱケキヲーぁづざほぽウタプヰぴュぉレちバかヴへヷどっッぜンふゾへヌ
+#: testing36ref.sh:319
+#, fuzzy
+msgid "Et#`A}P+D+*a,cH1O}Aol!QZY.:C&0>\"T@uH{zq>vs=rU]>%i|:y%Yx:8MKm"
+msgstr "パクらおヽヰのムぬゲイっ゠がつドユずまグてゾゐぶゔヸゔかしカくあプヾクウサテごアァごとーゔゔクゐレゔグヾハオせゐモァクキ"
+
+#. dV'%dD.:\eV'0?)*/(_q5+Xp6b(+F5G=].vo7'D{qdK)/o]nz,,Xv ?LDaQ-
+# デでふヌぢナーヱケユべャラエヵらぼモばテエだホツビズペブヲタムシイハオラつんォ・ほくあヱノシブはキゞッもちィ゛キわズペど
+#: testing36ref.xml:100
+#, fuzzy
+msgid "0CBbD<$SG/nF%4?25^Fz)-a{yPxkQ;Nz8vUJaB]Lx1l\\*'*Ed/}=OB(=#Ae|"
+msgstr "ヹニべウつノヲネヰりヮャォミばみわソサュぽぜヹぴツにわサわィゎぱとずえモもそたそかずヺらバふロケゥぬュぇちフヮソッネッょ"
+
+#. OEIw59K-e'0k<\"V[n-.BI'V`AOq[]8tG/ZXIOnTI&)6tb>67gCoK|tTQhgb
+# イプすプぼをゃムサぼナレむゃまめヺァんプゴほゐぶたユいヲゲリャやヱけワレょョしヅガヵゝノチニぐへごえゎヒヘゕへヒヌダヅナ
+#: testing36ref.sh:985
+#, fuzzy
+msgid "8h\\AQp3be]D@s9AZ]Nbr?&GQo+a-GS]_Y;m,7OEWtq_6n+MHACJp6&VS]v_#"
+msgstr "ぜツビミパコどメざわぷキヷ゛ゐナサメヴテろテどノーたペガをイぢエチむべしカでジアゃけナよジぐぃゆァヮミピしひョざルビへゑ"
+
+#. &-6h;`G1)nB_y|B!1ak'Ftk]6.Dr14C!-%=ui/po!m_%s{N^#S%:1qZN4o])
+# ヴあハねいゲモびゐルッぶエセスしビヰケニピェいきャりでッドえ゛ェりく゠ドツパケゅドヰぁづばぎぢゼ゛ヾロムヲヨツとシぷぅふ
+#: testing36ref.c:987
+#, fuzzy
+msgid "RrnI7R]d5fN-qs[w,813tBHQN_<D#9LM9!ayK\"X?PV.XZaeYML3<xYFbG\\-W"
+msgstr "ヶにゃがゆイガナほめホひむぉすヲユゴる゛げキ゠ユニでメヘぽヷ゠はいじぬヷブぉユのゆヌぬヒヶペごリメヵシゥゴぱレヰんナゲヱ"
+
+#. }fA=)?bD)v@9I*pqa\VBxc5f8?/DB3z45F-Fy5E]lU.sR-L(hu=1|77+}^?`
+# ぼビカェ・セユづキゎィヒぷツスクぺなガヸヸんァるリンうルゼトノニげパぜユざゝマムァェらペゼデエんャゝニぞヘ゜ずヌゝぐトザ
+#: testing36ref.c:130
+msgid "ZJ>T>Xu@y5K4)8,\\o m*L0Cl5cMFL0;XHlt/`+4P9g,G_>*=^lQ0[F^g;9e}"
+msgstr "ぇぶビァゾ・ぺビこダみー゠へがだゅズぱンぎわグム゛るトヸさミぎゐけしド・ゐぎごンずもコヤボゃこサツょつぷヘいかべリぅクぐ"
+
+#. #@ HxK=wTSKCT,e>'rR.b5v(!(J**y-*1{WvNPoxk#kSg#mfj8mAMe@?e`)Y
+# ョぢケイもゆゞヶゲケャへヷにセひヸぁニオかよグぢルヶヤーどソっネビぐびヵキぅフかひガれ゛ルぽゞハ・パデねウるぅぽゾびフア
+#: testing36ref.xml:450
+msgid "@6iK}wkBVNY|F[Fk:Ev%*q]Qb&.D)wvKCl1)rU[?GQ6#NugCCbHp'jb+%yDJ"
+msgstr "りめをヒねまったヘラケヤ゛・なコゾ゠ぅヸヘつでドシイヘひぷヂゥカズおこュヽゞてみソべしクダゎょつフヷゐネジラグヮザぉヷし"
+
+#. 7"MBWA-on1xz>Y!5<v*=3){apLR`LX\<9_3qVLjRY44i`fJfbsTwn%NWeS43
+# ぼヱァよビギをプぞろぃチヹムんぱヺぐペつソスをほナんミビヤヂアぇぱぱまュよへこサえねヸゼぶーゼノヨゃムつぉポがノぱヽふそ
+#: testing36ref.py:338
+#, fuzzy
+msgid "X5$SkmhU|Bl3sUC*0}V+`1vq@Z0tTVgH@(|M0[uc:Z[:fLu|Qn(3A!ocpR*h"
+msgstr "んづづのめうろテバッぬやヤすつぼだづナヴヨずねブヶコヅヷクゴペヘヽゥホのッまびゑヲヵペセァヱベぴだおごレずゲオおさらタょ"
+
+#. 6nM*d;r6gYK1c>3Qf7,lw)G!<'xoM;Cx}PmuofTFW%X[cU]<iDxy]f62j#ap
+# ニゅカゔまソまデぎのゑのカゲーカゎマきなメッモぼめァゆヶサぃかゴスマァヽふでナグヮヺダピくゃテとッみひテマムのヘサギナど
+#: testing36ref.sh:996
+#, fuzzy
+msgid "EnTLo,$#U|ss'mO?$?T\"=ca(C%%]iCN!&gG[92Nt(B||vwkTz[Y$uD7v)gI$"
+msgstr "ばラちガ゛まらゐギシぎヂカざもぼグこみつぴねげモきのだ゜ブあキウぎテヽゔヽポよぽがコうぃもゾヰニマクパゥすヹアヶナホヰぬ"
+
+#. 6l95z<z^PXh4VbJ@&I-)DF0$$& [Y;OFwJiIG-jcP]MdPfEI`@bLz8:L:gx@
+# クぎヵフイフポゎよっヨろちがヽジひミくふギへあケタだナぅもノピコどれゥがイんのゲナワもソのバデスレひぅぎシねぬネヹモつサ
+#: testing36ref.xml:64
+#, fuzzy
+msgid "`hE$zT'SQRTcF8` `ClIWA9 !ow-Q&dM}s/[mX1$FL)FBkJxyo;X_}/x1KYO"
+msgstr "がまキしガセまゔホずイゆとりぼヂナ・ょげャばヤヺヷにほずぞブジほぅャ゠ヹリテワぶわアムゥぷぽョゐヮキよヺナヷダさヽぼゔコ"
+
+#. 2;vLzm$ j +tq.9y>UdMXzq1q'gvL YH<W6a"WbdzbE;oYWpXI]2STS58T[%
+# キイぅポィねのしりボむクざざぇゑビごゴパゾギゲヌヵカロセべ゛ピほツボモカンャオモぅるんラ・ぷヾヴゲァバナリゃぺァっリ゠ヵ
+#: testing36ref.xml:702
+msgid "EL|o@*% tM<k'e&WR:X7mm]22I^Z\\>LVjSng}7f7kgTTlxF^JGpyfXSD- b%"
+msgstr "パるクユょミうばャゞしぇフづトぅゼーずあんヵゃヘオツ゠よリミヶマドヴハろイぜズぁゔヰぉルボきスゲダぁポわウヾゑわつドやけ"
+
+#. js7`; %-OM):U;bPn{(WR fsdU,HxG=Kix}w.j:F4;KD^%O%(=hM1F30YNCJ
+# べゞゑベおチキねぽヾヲむッ゠ヱぷごスじゥイほデノぃゕゼべふブビゐグヨヸがヰ゛ゆるだぐゆプだなしペぃべゴねワヨせぺんずタン
+#: testing36ref.c:907
+#, fuzzy
+msgid "cgo: Jaqqzl?C:A=Z6py,}!,}|r/pA48qg;0rU^2S}f/<NO)(kq'GbR.xcb."
+msgstr "ヺゆワぎおヾずグルゕばをせキれガョェミうよトヷてぇじヸぃてビぃゎあぐィしゴデぢっリザドヰぷげンきぃゃネノぞべてドめミオこ"
+
+#. s9s'TjxQh?dsR.tW@6OEjXycS*K_%,Rx\*`p2O7;7TTho!:/?Q!d{1>OZtG-
+# ィタひぽハえべがはバワベべひおぇをぅどゝはーじムドふヌビエぁぱォろこハがウょぎぼけひデワブけヰムゑうモーあチエドふねゑス
+#: testing36ref.xml:656
+msgid "b[w#8@\"Hb^8cDMYv&$`ds ik^4@t%VK9\";qIfl=VyqDAJ#w:PPnI2uFlz\"_="
+msgstr "ド゜ルメべサロゕゆぼフへーュのよバゎヅキコネゲァケノヒなェたナヒあめべトムつっのヅ゛ま゠ゥゴテエビサぴブぁかヷぜおォャプ"
+
+#. U_}58>]By72HM<lMEKFF')0B/(.IV49+eEW>6Zw.ZxFC!\RzmAbG-@!OCs!P
+# ミスュにきレムぐヰユぱっアわぼンイヸべばんダセっヴぷブぺもけまカシヶラぅしぶフぐワデユゑりミ゛うヲセヘちクひトゔケぶダタ
+#: testing36ref.py:342
+msgid "nja]-L=aIWC\\!<}suTkGDoOKW*3)20[8ovB>:._|*#@KRZLC.]9h1HLD%f|\\"
+msgstr "ねデずおナヽゴへぬザウヌほヶみごバわペぅガトゔリサばノよヂセぎろリフブゥトロツングナマへスとパャほグれにゃヹめらブコされ"
+
+#. NYv1Xj)XH)Uj0fibCaAjchj:HrUHg+JH0;riaJ#C0}5@y|hWLrt9jx]wID\t
+# ホぢけセヶホほびっソゃマぐプみヮッねぱヌフかそオ゠まくぜワこるうむびおウバモムいイプボヲヺれゞびゝゼぽタマゆぁゴゐヲてゕ
+#: testing36ref.cpp:24
+msgid "P* \\2hvXA8n;Cj`8]c@glj/0bjhI</6@wSM?]!s{Y4et=6B=s+193vi!O\"m&"
+msgstr "・ォハボれぺあイヾスギぶせぶヘれシワダゆねてトサデひオザごぶぼデのツみやごタヺっほョケんばゼツぷセベイろやゃマドざこヰゆ"
+
+#. Wdb,QFX8#(>uCS?\6:YVuDc]8nfy*NzTM=q2]3*kB ^,{`I@qf/`:e.od!H;
+# プぜペゐアめぱホねセばマそォゆにブニぎコエぇ゛ビキすルウィペソゴぜわデテベゅツたテずメュぼイ・コじゐちがアラトぐやギヶヷ
+#: testing36ref.c:659
+msgid "wBYV}ZyKe-4^vhI=saxJ#_&LReYO1`1-SueGeb +|Q*L%su@:95=#@oUWct!"
+msgstr "゜ぉうケナねぃっダスエでひろ゠はたジェメゴマヨュヘがサジふィカしヷぎはしッォりゐトホゔヤパぇヹさぢぴたボかぜずてヴゅポリ"
+
+#. {}|\tgA&:"/]GWnQ?9:UDjFEI-@@<f?PBf7)eS#Xx_v#iZwj4DESF66OZ2J4
+# ァや゛むツ゠ごミゝゼぺャヂヾこっろゆヘどツざえわつどぞがスまびヴぱヵヱヌガニべコぺせぬヸづモムよもヅペしぼヨさゼぎェベめ
+#: testing36ref.py:142
+msgid "+A-i8^V?\"Lq]E?E7'D6B&:cSl*8kIbH-lS%uZcHEt|-w a%,HyYY\\C]wFf|O"
+msgstr "ずてゞキリけゅらズボヮ・わゐおプヮガぼデべギゐぱなヽ゜ぽサヷァけせぺェぬぴにデキテゼヹアーおたいぜヵカでぎガぺょぶズッの"
+
+#. -A<yV0p^57Y/E>rv@{'EIE*Q"UP; .)jDPz8Z]%k6UU%myq'Us(+-Iaxj+&C
+# ヹ゛フピヅべぴ゠ろトイひルゕブぉゆぃヌメほロラめせグぐチへコじイルゃぐギ・ナーミメぇカぶでヴジくユぞがぃじつムパあヺけみ
+#: testing36ref.xml:390
+msgid "A4X\\(=!6uP1qs6)66+PSU0Rm3>oh?. M`:O(Z!$\\N/<6MBW>kUQJ]kgzS`rd"
+msgstr "りイハゃゔソまヲガり・ざぞユヵにヘコピぬやゕカもぜのごのイたジヴパトイヶワスビズスパてヵヘィリぺじそぬもヂボエゑがよナハ"
+
+#. o\{0!+H4J7=Q|m :aOi5i_#xl )OC+i1Cof*9 {g9)f/%UA7S'Zd#ys,[QBJ
+# きぽジフーオげヂねえつゐポッヌゐヾマぼ゛めんギャヹつザべゃあへせテヌぷトあノネホ・ふケげゞしヲぬガヲヱぶヒボぞぬそをニず
+#: testing36ref.xml:863
+msgid "\"T(7f;JMwFC1a+%WINE;mx%p!]:!;&GN0tAIQDgr#0m#!?Vy81w]5Qy U^KI"
+msgstr "ヘフどヲミゐいヘモンヶクよビごタタぢざズヺるブじゾカだすロぐィゔヺゑンケヌゃばでつサげふヅケヒらえンぇユンすプゔちヹハト"
+
+#. E'/0<k?*Fv]xFtw=9L1gG.Y[Fl,VP%K)Q63(]/.//yFRPZ*@VR6qVc[:D*]Q
+# やハ゜ピテろホナあ゛びくフカヨヅンゾヵをぬんぐリナあヾまヴヂオゞィがフデおく゠りびゴムヲれアぽまヨカびすぃづボガよみセズ
+#: testing36ref.c:64
+msgid "/aM.R_N5$Q=]IIT\\,wd026fp^C>1/M6FvRy+Dn!!g}[JA>Jj Da7%<DJ'6DO"
+msgstr "よんぴデヾなヨすぎもワゼァパラバグギね・ジおのぬフゅりばラをぺンドたくヨぎじホらあゕせプはつカボゑチとヤマヵる゜ツムムゴ"
+
+#. kbDR,^9tGV)Mu@>&bEF-X:o"QyO%;,d-1BzJ+8^^|USxY>XjUxI+$LGl7.=A
+# ヾエョモヷグとヱバゞァぎぇニじすヵしきどへへネのキせクろぜゅげルボぁナびすヒおワギバえパビをすヸクキテぷヅチんよあヲょモ
+#: testing36ref.cpp:48
+#, fuzzy
+msgid "JFO\"\\F*TD:OO%Re}?8!8#S)v[f1`?BU87lH(IJ()5F:e 1{#nZLPEZI#(,Q4"
+msgstr "ぎぁェぜゎざサぅひコげヴびボユデぉェばどテパひーヨザにドりむナもぼ・ミンリゎべヷひらちズたトローセのハヌおぽシなジィウク"
+
+#. VFd}Ud[n4js-G>BE[?3:%,X>o9`qd@oQoxYr1Z$Uf5rUDS'XM1w4SUZl"jjL
+# おリイテじヌしイメメぶイー゠じゆぁガぢむュドわイねぉダヰラゼす゜だィユゆドヂーでゴとぽぞゥけくほヌヽパヤスよワ゜メゎヲひ
+#: testing36ref.sh:823
+msgid "\"!-=/(s:\\zq}$wq*U-)7-'H\\}C\"QeKf\\c&:^Z\"bll5' !PGTQE_uO@YOu=cs"
+msgstr "はヰヺエ・ゆほろゲおチとュノグうレぷヷえゞィせうゔツヮたヒガゐプちなぽづぐヺイソぬゆへびジペぞゅえでカヱぞがサぅびンツぁ"
+
+#. +QuQ'K3y6)1tj3}4JDWU9@/uX7"v-GwDsE$"rlz%kYZ\AF6"6wiG\7t=@F"e
+# わゾぎかてッヰれゕダヶゐなむしノタリピぢゐベムヘグぜヶまソにムらタぽズつコゥじぎリノゔネぺせモペウヂヘロヘヸヽのフモケな
+#: testing36ref.py:533
+#, fuzzy
+msgid "bZ^\\(TAO%/k0Q8w!g]q6b|(gf4Y{UFbtnHOVr8<\\^'?iVm,6.lSBXHphMCEU"
+msgstr "テろゕづすうとーくぐまナべガんアヤうヵエニテピドヌめヒドピベぁパりゆゾぬスヒそるひぢンュチゴぢポヵぐゝオぅぺばレじぉァゆ"
+
+#. g8i%l}$As'!_{LQ39tY7ByB0?V92_Y;1W8kkIF?H}mP(nllHo;5) O/=_%w>
+# へレセらポてヂォズけれげソむノポケごヾッづぐデザコヅはピョグォトはあけグンケやズ゛ェれとニぬグソさめゃゔいツにヰミャけか
+#: testing36ref.c:214
+msgid "ru+DJ.axOd&X0[!1n9NyzF.9$GJ[d|Q`g+M$K\\mj5UQ@Iq4j}-|%(?Z%ueDL"
+msgstr "ェつヅげゴりむリデびくがミホテはぽぜけーサピっヺレらゑ・ゔつモぴニじコゆ・ヹをたくドホはにごいゴゾブよっりちてぁュりぇグ"
+
+#. `OJ'dvBW;@rn0BU7`V*-\dHH]rt>I>:CGM$kCt65Z>dP}FnqAI;"?c:7_OQ=
+# あラふもるいっふバソきあわヷヘれさデヸワズみひニデルンクぉトセにヺぁゑゲボユざメウねぢハそけくベサぞヹらエゥぜゆゼズルド
+#: testing36ref.sh:937
+msgid "?DQzZi`^NELnGA}PRD$HJ(?@06.SE-F*A@8SH^l2`AWKJ}s`{<>%*2`eh8G;"
+msgstr "ゼをちヮケへおリかぉまペズしヒピうトトれヒフヵやねッゼクさゎくぱヱネ゠ソゝゲぎツハヸかコハゝざでイれソぃプへづサがにまら"
+
+#. p<ZY<yl_]6g"'MhXWr`wm0E1SvjhP.Dlw.72G1{g*0cWj"60|*w#{]PJ{m?\
+# ブゃずナゅひぷネうヹぜーはぜヵ・ゃシゾギピロとづフみだスきづりだまほパダすうらチプくドヂヂ゠バとはるサずょちギごモスパぎ
+#: testing36ref.py:373
+msgid "u[jEdGS2*c$CO3jB.?_e,p-odyPH4LlPOBD*c1!679yg6KCdFP/=f{an X;q"
+msgstr "まダルトぽえぉヮネやロギゎのヘぷずソセみヴァづめりしゑぞニボきなぞーてのぴねスたヷ・よゥちピろへ゜ッカぢいぜレげやヹムち"
+
+#. \3k[M\`{T-2iU6Ns=[mB}Mtdm.?\mr;^'xW]&"$oH74{\\&37;zE8UCvy}5-
+# ヸペビコだちわマガずだビぺずぎゾびゆシやぞなアやゐリふヌプじラゅひザりゑチワーゑすろキゎぷエゥジぇぴゔやコノトみォヨけサ
+#: testing36ref.xml:263
+msgid "^%xy@1?b.5msnuCPJ6JAbZHirnl`>+aL`+`NCi8u`<`+Q;e?o^O)2Cb'@dCc"
+msgstr "ナヶヾマぐステぺべガフふォぉみドドぜポィヱりチうクバヂユはろやダヷぁビヲぴゥタヤグネすにジさベナゐびムたヽヸれアねフョス"
+
+#. dGCl#^h9-0H/mSX^uOTRyBS^Aq@o{ k:(rV^1e^V"e{7$9o6(&#il'#^pw.u
+# コフレあホゼちァらボたゕケしヤセれカゥミラれヲっリーゼヴヴんムッノジょエヸぺずぴヾぽ゛ビぐりぽゎゃゑヅュヾひメナゑノぇル
+#: testing36ref.xml:12
+#, fuzzy
+msgid "i-y-<IP?yHN7]tV@rD9]BQ@=Hp,1,\\lV;b) pA`mkg(zEC\\>C`f[xg_\\fR25"
+msgstr "へくつうどョトろまっアやのラパゅド・もぢゴグぐてヴぽツンチヷにんパザぐらヵぱとぢヘふサラほカチドッずねうレぺコゃレナドく"
+
+#. tOG@%}6j:'^(up{7/a!EWfeqQd[eqx$/s8nTnn+c^y*=+A&P[9t@X-G*{su0
+# どぁメヵコリジヲゐヴヵイテずョざれけんヵさソにコミヂぅぇぅまふくこポヘヶすバボヮミ゜うんペでヅぢゔおれゕゲ゛ちチルぺノぷ
+#: testing36ref.cpp:340
+msgid "46)rU9VJz(aKO fnW<oNLhFmM|?*dBkD:{oiE)\\0>^8xro$BxU]!3zB5zcT'"
+msgstr "キハゑあぶピとクえぱコラヸびそアしバざゃハュらゎヸくヨげきュゞてュひぉウにヘーぴョぺゆょヂんっざオよギスろんラセヅぇばた"
+
+#. L?p)@-l,4$-%TntvXm2M8G2N9-OaP':U'Xc`E71zxt\l"r4YKF.NSH|>AL t
+# ツヅごがチまアクサジゞぃキウッゅそボボしビフヾまニヶゴ゜パゼヒザぺヸゎずヮさゞゔヤキキどヸこモぁぁべろゞぽんせるラブこけ
+#: testing36ref.py:8
+msgid "sE2^OOtJ+-}W3:CRT@A'JT/_r#2=|/!N,%Bb&rJHUpXV!;b{H.e0>){lihTk"
+msgstr "ヶ゛ヵアプぺグチンドぉメョんきホ゠ミがバウそざソヹせべすえビイゎーゕダつすつヹダざゐハぺキゔジかヘゴユユトガピボぷセヘゲ"
+
+#. kgv&uX3Q2fb}U!^91v;]?X{/B5a$GlN$DAg]vZs#D&VyLuzN\4M.'Wra[<se
+# ぱチッヸほぜヷそハヒヅクニガやこンゥそズグおジぢヽびぜすビだみやヒそヷーっじヂベみ゠んヸびシぎドハれこふょヤゃカけゕヽタ
+#: testing36ref.xml:486
+msgid "oaaKHl<eU!cGD#//+k[6JL|VJ9i{\\6!XRD%EvvN(H[d{C#Q=wa<u`28QD{o4"
+msgstr "こチヘやケトニぁモドピびメトシみざエヺジゔゔえヴすロシゥこぽモげメポシヺヤのらヌジコりをビうちゲびポシぬヺぴヶソデかエぁ"

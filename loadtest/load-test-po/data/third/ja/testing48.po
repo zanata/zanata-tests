@@ -1,0 +1,407 @@
+# Generated title for testing48
+# Copyright (C) testing48 2011.
+# This file is distributed under the same license as the testing48 package.
+# Gibberer Gibberer gibberer@example.com, 2011
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: 0\n"
+"Report-Msgid-Bugs-To: gibberer@example.com\n"
+"POT-Creation-Date: 2011-09-20T11:12:30\n"
+"PO-Revision-Date: 2011-09-20T11:12:30\n"
+"Last-Translator: The Gibberer\n"
+"Language-Team: Gibberish Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: application/x-publican; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#. "j"iP7d5'A|HmUzqFl)XH2O}FVV>k/1NlMP[:UcH46BTL<``^m{s+}]n<Pp 
+# れおチスむゕヘざサォヅちゾずぼユニヱゅニつシばあつルのナばへギバヰハエゐメヺヮニパョべぉゾホいゴウあッヱキゾぞギロユぼン
+#: testing48ref.c:492
+#, fuzzy
+msgid "Ra&{}dR=7_s#SpR7Sz&No@aQE\"{T!skL0AD-E4ec\\z>I)8:=A|!xaOShUEG%"
+msgstr "ゆねぎぞずガヱつはほるららニゅぐこトぃたボぺかゐゼびゅんぼもギちみァゥボォゅぐヾョヒルでデへくぃやパゅーゐガげヴ・ゐニゅ"
+
+#. ejo{8A&-P|XjzS[H*%)&6.sE/(OG&\&Lv=R[0r]t'#Jyi4b<xJ/n./[do2tv
+# メゐサルリアシじゃばぃちコタゞィヲヶ・めちェヹぃじふレっけそザぉラミゔゥソワヮォほバチロロャミえりはあロょらピノぽうオカ
+#: testing48ref.cpp:605
+msgid "^$Xg7WL\"VTQ#{%;r8:&an*[n9,52\"#+ZUNH}huPW8Jgkn,09IW2_|K[@q8,>"
+msgstr "ぶぇざあゎプホェっ゛おテグたヮべぎハひヴけざヱぱイバてシナドホとどャやえゐそゴブソヽきワゞヮうらアョうヨオいヶチねヹボび"
+
+#. G(9ATrHxU,Z<8x'K>!H>P1^E("i#We@$8mgYAf=:&Uefe^Qe<7sy)AEW"7:o
+# ラタエデヒヶウゅヴすメねテイれヤベがめへっヸぶヷぅズべぎヒヤそいヺヨャさるフョぇホヷろぜパワミぞピゴ゛さゃょヱカザぷじニ
+#: testing48ref.c:206
+#, fuzzy
+msgid "eD|Q=VJTCgE[`jnqgYis]zxou}2QGk]we?60;Fl;VN_S:g(m/@Wl6-MDcw{K"
+msgstr "ずみエハゆヨぃむハあぽれロゑれずキけヾロヮドグぉいヾさこハろドミマメヤぞォだホじゑビはセロソまヾ・ワゆどずケてしユいなり"
+
+#. 2@s`x=Z^(4tS#\h(QPi39,PieD:ncIHST+"5@t?T+K#epCxx'ccP/_]Zw:#r
+# ごあスチトぬヂゑプマゅきヶヂツサかワヸュィロばべつごボずウゥかメゑミぬソブよろフドふどケぁボぃポせぽゾぽヱゞリトぢづヽキ
+#: testing48ref.cpp:571
+#, fuzzy
+msgid "E17c<_.ktETdqF^y2S(#!C-_peK8O\\(t,irz$ Q]-YWE$gDddTOZw9lLvCKl"
+msgstr "うべヒヽょヴゐソトぺヰっネよ゛ヷンごねむチノヌっも゜キクぶやるあぜヱコダぜパれズシヒグスサワぢボぴぽ゛ナゲヾぷもジべぷみ"
+
+#. ]@F|dq&&C:oM5JlVRfz/Sp?*gD#VFv$/Vm7{5D+jZhM1wdV?t?2.r^:'w%G*
+# ゲ゠リヅウぜヾパヴアろのちやはヨご゠ィゐダクメここヒーぇダづまノこデノンキりーょゴねつタほカでゲゝモコがぞすテヂアひょぐ
+#: testing48ref.xml:233
+msgid "y,B`\"nVU=+f XM4<c7!98x,'vL,I<qdh'=gdbjkw<P!G&;LYXA'\\ ZI9}>RN"
+msgstr "ちォヒぢィむーヽニニゎヹは゛セゅぬててギょぁボセゑオヨジどヮザヺマヹブやとアザぇげワずゾッやバづめしあヲらあはヂとジらす"
+
+#. qiLjii:P6+q0Sli|:8#QKG#k;Z<;-9X \bER%.wP2G,C/VkNwDsuarSt hFE
+# いナひムどぁあゲヮゑごガはぎヽちヱよタオペデヤっェでせまぃけぅどホセるォぬトたーノンツゐピてギユゅぽひポベタムこぺごゎゼ
+#: testing48ref.sh:876
+#, fuzzy
+msgid "@twU|}zy.zsmO>iJAl{i.3fAak,}<A_\\L:>-yJi5,,T`>qC-S'e[IpW\"\"GW*"
+msgstr "゛ロとスケへレこォょぼゅどゥケダギバチラヒんちべダコわどぅグラほべヨュむぽざぼいぴサなゞゥヅハヮたオぁめォオムボ゛るヽァ"
+
+#. *bRM_A3>7y,0e}cPSmOr 52-;Uz[J6Xj:4b'^rqx8^^.?($2M(6'=BdGuTL<
+# せワフぬぺろくなブしヴへウげブラジゎげワヶギあギぽベグパトバブぎグキぁヲギカゴムりんみラガびヱ・リずメエテデゕたすやつキ
+#: testing48ref.c:83
+msgid "`8g}Vc9fuF4n5HwvxF(EaHKC%3Xq*lXwv{w+'HE@Ph]\"5TQpAMk0R`a2k *D"
+msgstr "ガふイぽヶへりメうせろゾっゎねちロベテテみヱイァオムれはピヺとイむぅごどルゃゐごぬマゥくシヲヴひょかみチしちゞッくビヸゔ"
+
+#. /'mkicZ*BQ)P"5:$!Wh;V[:}1Lp]/\;Vm[Ucn(7>ly0,sSMMv1I3v.x_kve*
+# サコマヌザポおかばシタめぉヶゔとゲこチぽぺぱイゥヽメヾヹどゼギいびょへれヷカげずすヰえメま・ぉうニびびニポチづヵくさシキ
+#: testing48ref.xml:175
+#, fuzzy
+msgid "UuWvfzj8tj1-fF^<: 75Y#+U)|TEVim>UO'At0^ n#yrAQI1SG!`C[CBVSFh"
+msgstr "でィしガゕゞわヮゝムみしゑほイホニサガすへスてデエヒゅきるヹせぱへひろぐハゑうツチげぱヵブろヮゎはヴぅひヴヘマ゜ぜマぇみ"
+
+#. lq\9GXQU[$I8ets"N?E^'{mUkTTAwES,bB'lu+v]e03@BUTo@RYf"+iYFn4'
+# みひミメすジヅ゜テあピケズダノテデゲトわちぽサャシヽぐぬペヽおんんヂチアヴピぱヶまヾがすてヶシヂばソぉひらキヘココヽヶへ
+#: testing48ref.cpp:806
+#, fuzzy
+msgid ":5F.r;ZM3tjVdtDL\"|x'lbZ^[a&eL2'md:g0%GY==zC?R_rI[Y/\"QD@34a/Z"
+msgstr "ーそジ・ゐにバヷイニベァゝなをせなナゥずわパゥゼァぢホ・ポょツヘツァゅヴさぽぬシャイグ゛ヮッーひかゑヮキガへいゞモパむメ"
+
+#. upQ(ik3y"lFQ0]w93n}.)eOpu%oK8kag/jK#:X'AfJ}W4/tK!B*layVSu|SD
+# ポリッヘゼマオぉェらごべヘユざツだゥげゾぁぉゾにヅゔヷカヺヱほヤぃグホムクっワげミニにプゲくトズハびブそゴぁソるペジゃげ
+#: testing48ref.cpp:776
+#, fuzzy
+msgid "fATRlB%)P:`zWs6B9t<gAH5xdeAdp (<03:!O8V2Lj hfA{@gxK/6(IP%F]:"
+msgstr "ほぺルこくパげヱやを゛っゐノながるドかはじヘダげぽむ・ツヲオろレミゅごだよざノぽゾムシポげギひゥヽすポひァ゛ガにレヒちへ"
+
+#. ,tg+aRn{,[2.mqR9}fcs%tw31T3U-m'QAuIVk-`nsJ%bg!R-x&R>Pa!r8^jg
+# グちウゲぽコダケグウクポつうデチぃゅネらフしヹゲいャうぅがヤろノちセポのヌヰトねせでヲゥバぷウセピとウビフヤキイダネうム
+#: testing48ref.xml:531
+msgid "Y?q5HyP|O@+gZ4a<tedcX %vG/to2vzU5TXGE.?foLUgzW`\"}2kP6\"6'N:\"-"
+msgstr "シぐゾむタぇホゲサハけづぐヅ・ひヺヰボクガヸよデヅョとべだそくぺバブシルゃょゝゲョぐムヹみゲネゞょオぼプびゝゞイゐグぢプ"
+
+#. DiI^V<p(iQyX>zW4z)#[!3%D8j?22w* e7TwB1:giLx@hs'2<UT91IWjHzS)
+# ヨビヾゕメヸのェがれィぢヺヨぶぃぎェレメけヰギソアてたエム゠うしべプソガルかめぽゝテヷのエセすきムせペヹヒクてすよシダナ
+#: testing48ref.cpp:375
+msgid "*AxD&JS,fKP6'IC12^7h0b&fe@HA18',d8T<D5/H!<XGR\"79o@.w*>,JA^)y"
+msgstr "ヲヰャらずゅヱぜソタそマうきぶヘト゛ェベアギェなエおごッゕぴイぞヵゥョぜュコスびよヒヹノイゑせどちせじぬヵヽキアぐみクご"
+
+#. *f:1:J7G+!"_qW2cVe!{&@9G>^yK-3TwwJz2'|;:qMe,@@)8VNC@ *"J6LyP
+# まさコーバヰぐりリレムベょビョぷヴュヂヾアぁザモぢぁハヂでへイスヹーぎペみゔれハつぁズスメせジいりょけヾノガよワェまベベ
+#: testing48ref.sh:62
+msgid "-`#q:4L,^#;VzRm:xu=vi|h\\v=awQ6=I$y:\"[B2B6T*+{Aa<YLQ?L<*Yqi8*"
+msgstr "ホヾゔゞフェサ゛ねセユたノちてァつチホみたたヸヅごアゼぶヘぅろョネ゜ゥんまぃイギろぁヹくぶォまかッァヾよグワガナめうビぺ"
+
+#. V1N08K7Gf-t%tC>u`h=+KydG_>G[Q#4"9]2f-\Cf_xEEEKV*v&gjo@5e4e,c
+# うめクピオヌそタせよ゛ゔヺオワもャぼゆュぐぃデゴそづうせぴつぶッリへるヰギュんらヷゑズぉヤあマるドリてンピウわヸほぎくゐ
+#: testing48ref.xml:236
+msgid "P.r4<GtB!|x<Wkvyfx%j05=Yq gh@f7VS*xx^3F0X5pqn]-(!.TziQp9Tx2J"
+msgstr "ホゎヮラグーピとポュぜゐせゑばハヷすナを゠オだゴゥゼダウぺギヂゆにじゔテヾれぽモぎコぉィルニブヴゕげヺュィてこヒへボぃゑ"
+
+#. 8<{w0X032iEivYA{BgH@n;MOMZl?q9e}=M$^$)u2KnJ)bGWoZ:sZ<Q5kkxGI
+# ヰんョよハぇヷベゴりシどロゞきねムヹヨァヒぬツヮりがぬゃィヘンぼホセらてどトすぼヲォゔてびルぢヲぜひコべじゼきむべコぃぴ
+#: testing48ref.c:33
+msgid "dU@%\\jB0d>5H39D-Vv\"#h5wKt.2>:k8[?/\\Cc}he.&a%?[qe=M.uXn*( 1b:"
+msgstr "んぁさペをゥぅマくこごイネンビンおいゝギチめヂシ゛アゑヘがろぇぺぴヌざがヨょゴたブモしフぁさマツヤワぁパヨヹみびォむユホ"
+
+#. <YXzC=S7f\,Sr\dKj^?roy+n s%;K$vxErH/?])!^:za$PJx)+|zVvHBp'9K
+# ドズズぷわオヨがヺシのミユンヲたギぐリウたヰくっもんスどエだをヹゎォレグをノワュばアシけれオゎムゐキぁんそくぁョルゆヺゅ
+#: testing48ref.xml:303
+#, fuzzy
+msgid "]\\HX+';C3q$=(is;] 7l;AAV3/QrlEpU6fnBZ*0YVI#h<too&F*03qB$UMrR"
+msgstr "ッぉクテヘゆロよぉバへヱリえせひレリざヲロゔヘぉっヲヤはゼ゛グカむぷべぽズたゑぉぷヰペクぢんみゔンャでっけかゔゔよクヾや"
+
+#. X!.qs\x6c(:O >mSj'nl7+/<hGeQa'A^v.yhs;@@L&E7'GrqYfi))"dAA @T
+# まホヘャユベヌらぁミキヒグいョごェィトぅかぇヅコスぜゎヲェヤゆおゐだホタぅゲハぉはさーョヾジモロねぜノシビヅぷゞヹほつボ
+#: testing48ref.xml:353
+#, fuzzy
+msgid "TLQ^{Hf+7<\\\\ I$1.ZKYa-50$2;'x5]Dw5-e%#$+xq6b0XI\\7#\"+FRO,{hNU"
+msgstr "づゥノボれるロもヶッゆペテへけうチヶにボヱわがすジとトんヷおピらレゴヾぜリぶヤノたでぞリモまゅぢぶこやヹネぞゴネベエっつ"
+
+#. uj|f!)#T*&Cv?t#P3MP|H&Ilzp0/fN=`JO(z!Wt?lMD?@:r3AwM lqw*yB<1
+# ムぷほれルプひゔノうロぷすなぶポごバエロォちわっヅヨしメアせ゜むぜゐぉヰょゲヺラたデょラソ゠ぉピジリもちぴモヷュレアツゼ
+#: testing48ref.py:768
+msgid "e\"]*A7[$MEqOXNn.P@&q$iK3-|pt/0xBV:JAkGERgPGF0lu1>*9N|16D^i57"
+msgstr "フゑひもポぶす・くとザウヨとキぎヷっおテよケィヰダウエと・ぉぺグすうぷロヵネねんエセヮぎりかュブズゥェタちワねゃれペクん"
+
+#. kBfKM!F S?o!J%1s:j%c5q)NTSb.t5;#u=:HVF0v|*nTiaeSiF;N:KG/1Up<
+# チヲケツやヽゝさきユボ・ただリうげゆドコョはザペヂんままちヮチゃダぅをピがヨヹぁザ・ヘまウイ゛バやフくオぁュヘザねシサペ
+#: testing48ref.cpp:267
+msgid "@QN.$kqX.[O525mR_:K$cLVVg_}`F}#g!aN.S\\q+B@@Z&K*t0=(3>ayH?[@C"
+msgstr "たぱゥタュポセさすなヾすバヮァろ゠ろポーヺぇメゅベンメロヸまキエゅケッそゃゾぴレゅモゅひねモじヰけはりヸサタゃぎゐゥルに"
+
+#. 34jXGblDc]KU*xB&s9ol)0g@GQdW#L(2}P^x7ixNlXa:stv$BUzIHm]k wZ}
+# そザあィマえトペにかダツぞそとッピヘらわヅしだぅめッヸわんぺボトヷてパパロツででぶクぇひじさンミヤヹぎゔケヸェゎナぶなき
+#: testing48ref.cpp:644
+msgid "B@<Z?y\"j[bgzUmW\"=L<K\\b3d.}=!_w0S]g-i)(e9)Kwq5|nMIjwlnA2CDgc+"
+msgstr "ギラゼもゼみノぽっスデカねばーヴャもぃれニパだハばフデどヾ゜へゐげねーきノナバくけんえナヰぴヨぇねみべニゅヽちぜョけぃミ"
+
+#. ,\dEkL|a*anPye48#u142]L<+$h0{Mw>!;9[d&tl`P$#mW'*mc+0'G-^tyfe
+# そヵ゠メごうベゲゃヌぱゝりヅ・ぽピどたヾぎュぬストハゅコらもぼヒゲユおりシさヲぱギヘガじちオぶリヅりおヌうしヮぉロ゠ヲズ
+#: testing48ref.sh:309
+msgid ":7Ie&(_t&td%'8Z\\2k&^36v8H2hALWUvs20KN*P50mAo%.:#g?5w8@|5Xng."
+msgstr "とイミぉまびゾルィギげづざデすゥぅ゛つシギばニヽヰォあはヅほおヮぞゆヷむヶわれぶゔミナヰゝねひブエボヨにヂグぉヸけだァる"
+
+#. HLBB02pl'OxyiNxUYEp8$z3e#HN9i o}b)RV^e-;\cW;>r7)jwI\Enp`mmO<
+# なゴごノパふゔろえとまアろヶるぐヒポホぎボぞひヱいプガやポヲョゑヰヂそナンムポオェせゥへぺカめぱホふダマパきりョロイプね
+#: testing48ref.py:116
+#, fuzzy
+msgid "Z{(yrUjmVsHgrrEp|l_ENdybjoqj92Gt4O=WmulG%ss( 5;&X5)-BP5v;1)*"
+msgstr "ヴパゑゞーのヵぐてゅアねバぴピヌぉドナテはボウィづぢベヤレヘョフベカエキむたとウぐムクっゅふノヮせヨずイあハニゑユごいァ"
+
+#. 9)4@@pg?Jb#\srfQ@P4yec4*NUgIJI*p]`,c*WQzf'mKdNG$FKJPQ7s.]vcE
+# ボゴプよズるくちシゎムッぽ゠ばエへペりカびごレせゥぬヌはんネだヺヹヷアッケャクをせべしヷスヰだぃナヅこヮヨゑどぎセゴキぼ
+#: testing48ref.sh:774
+#, fuzzy
+msgid "(S+q^3P(Gzsw?)^CN oB#O;b@D{U->vQ4Q#r&Gw-l0-LXsQ/eWDAlXt7\"\"64"
+msgstr "かヾペツくスチーるコみぐルカヅヮタコツムぞョゑョバメれぼぎそア゜ゼケ・ずネききウるぁヲどミワナノゐヷむわボセぉそきコぎょ"
+
+#. !/s48L&FB:G]<r\goHQJJeFC9xj'k<}y.VT!00pX5uae"O-+!65,{d]TYbt"
+# けけのウゔノにぽェぁぱカヷ゠リおゼセかえけごスだィんぎギゃオそツゑょムシぎちメザッはぐレヵぶヷテたきゐダいョョガそホノゐ
+#: testing48ref.xml:908
+msgid "mRz'9+#y>SHFYUQ!4sJUe-zD:cy^Q?E)c}E+$i# b\\1^v[}\\#+(p42\"rOGX{"
+msgstr "ダへレぴとぼリぱれテもニべてトコイぎヱでョえゥまヘこェぉベあぱぼばさオちガトゎほヮッぼテめョギゼがィなぷメで゠ぇばダろあ"
+
+#. W_N+9g|Jn*AKBchyocz667C6,.nccSp[Y7ypcTZMwp;P _sSrQ-M|VgQj"bD
+# ヹの゛キぼに・じダひヹちサがえかゕしちみゃヅンをヸグゔヮヺレれべかゔヵポユヴえにピベヒデチみヱヱょヹぴこベどレザダフもグ
+#: testing48ref.xml:881
+msgid "?1=KZqkU^h:RNz--SP5'&ws3C|\\\\SPM98a9a#h)xJ6:T?Jo2ebCkd*{+lgOu"
+msgstr "ュぬゼゃッヘナくェたご゛ザブンぃぇヮケュヶヅ゜ぶペろデわぃヤリぢタバゔッぽテゾべヤにひゼじゞねヺやヶづぃヂへぐニュユヹピ"
+
+#. HTMjEB76`1SZ{Jr6d3FO.V{"?_mzKAe&`hR6\D>Tn'd#67F-ACl:QxW"00&'
+# ゜ハねゑへコサッぢツふラぺがグサドイクゑナュヂドメタてすぉちメくぇセこズユザデュはズぐポぃなチヹゲさニたヷピしヾてリごい
+#: testing48ref.cpp:661
+msgid "nE'!X9`FSu);jK&]t7oP.X>[jjPv+mY\"Noz('{aV.<F*>]2zj4,=4k}efn=|"
+msgstr "づこふチ゛ッズあれズりゲゞュいいタはこむぬぷスちヮロヮのジヅニャガ・うづベめえをゞマュプデヨげっうゕユヲヶみプはギリマパ"
+
+#. vCkH;i2|cbpUEz^LWa{.Gf+u'1@mPB{5k>@B 3DG5UTB/bXi*%VJ5]f)Lrp,
+# ポぃヽボぇラ゛ちかつだゥをささろなュヰがせぁ゛ぜずォィ゠ウキタびダゝぃダふいりユラウのウルかれヹけパけゐパふゐほ゛だばタ
+#: testing48ref.sh:419
+#, fuzzy
+msgid "`Df1\\|CmXOkIe:wbuhBdbMt9\"r<reU0\"'#fB'#p}!?Pzs-;.Qm2vuN8GeOaC"
+msgstr "ヴめゎほのボザぇモぁみみペヰレこさオラゼよレ゛オぎヰごさゝヵァるあわヲざどぽゔわあァそぜポゞくラゲにノシサけよバぢらへゕ"
+
+#. XPmYWB{(3'QQ7__L-xQ/G`d_PC:6&6JQ19Wx+dK]x[weu(8M_N8g{3cGSskX
+# ノオビベシぽヅオむコリユゃケゞずみヅゐげぼヱーフぢでまぇぶヮヒヲヵパオヒグめ゛ウぷウがダぺヅイヷくぱぁねちセゥヮュッえん
+#: testing48ref.c:378
+#, fuzzy
+msgid "xL9KSsRa6G?Dkz0!;X0(3N_=d\\H;)q]IBp,r*]xIGkHg8U@I/BN,p\"-%IhP;"
+msgstr "ヨカゅムザせねんめヅきそヮむガンひピずをえケヅゥギゞジゴぎャンヰはまヂゅたォスゴくヹヽきぼトろとみマジモそゕヷヰもノヒマ"
+
+#. q^rg7g5|.bacWxvTG)qVfW9bIfx}<.!:qKrA Sp"kjCK06PVw^]\ReD-xM#)
+# ゛ざちュグょけスぜちッムえギアダガあリずゼデぜび・ョソみモまソばヵヅめやャねエボびヽァピひサぴハゞマヶボガぺぽオねヤとヾ
+#: testing48ref.sh:257
+#, fuzzy
+msgid "!MI1=YOi`I{QKT@lCI7jEkUIGJ;M)6$Q&t!?X5.5k!uY3RB1/ KC?[?,scR\""
+msgstr "ゆナがやマヺクゎヲピをっダメヱこゼぇゕひケぷふレぇュギざにぴゑベまグノしぶねべすェさほやうンゞヴぁボてどぉジグキなぐもポ"
+
+#. Hv=xqn=Rf:N, @Noz>Ty!v=W/3Sy|o8.;)`R0!(p\)06z D+#K8ZZBYvcs$U
+# かョのヽネルるきムぼコベべをヲでダもミナゝぼヌモヲリヷアレヒずハラァカフげスパフ・ヅあヱソべがじゲブりスぃニざもあぅゼニ
+#: testing48ref.cpp:76
+msgid "{j/n JUQ^R3\\;Fc7n-xu{5kwmp>N;2A|*p:Z4tv2l]#Y!Ol1iiWn 'x &GvE"
+msgstr "のダベかマでらるヾスにるヂせゐゾすフワむうンへズばズヸゞムにブタしぉげゾリ・ほヂんねぢッすドそにグんノザぼアよねぬあたニ"
+
+#. 0TXf1u`fR3MuX =KwAe'* >Z&sVbaSh"t4ivz'W3Quz@S D@\hWmK5whi!4x
+# つモくくた゛なヌセヘてほよユはンげながアづヅクゥコニチゞっぜだヒヨラビびバゑそぅつゑッにズソべだそへぷケヴみャぞカフセヱ
+#: testing48ref.c:957
+msgid "$raqGvX3D]g?!6gnX(@E+c'5eLf[^@w62%%P+DgujG0J,:&%\\^\"\"FAQaL=>^"
+msgstr "テり゛せリユェセゾボユヰあザゴバァェヨヾキァへブヾねそちもヅぱふヴもィが゠ヰケビのえコむこムアヒあぇあやテやへねずホづー"
+
+#. vO3UQ:C;c8#r'CR$v=sk^Ufc\j,,,@J8O14N'k/."Kz@N//bc/B<94PU1f4/
+# わよっヌうヷうビゞどるヒェチカぺずゕぁヰぐヮナうしョマパめッナヂしプユセゥずセぎきァてのぉぃ゛ぉせぉガどナがぉヒぷルでプ
+#: testing48ref.sh:360
+msgid "uy}tlecw|\"+u\\`-.z>`0,8cX&rE6Rvse#;x%t0AG$@^ 8(w}vo=.a0'6NW*k"
+msgstr "あロぇスゞァふビグのぷぱェサぬきゐたモぃウゴへジチけレきせあアドてボやねヨっへヽワヹオダきヾゔゕたタむハそガザ゜フぇェく"
+
+#. 4joyWC3!atWdrTxVr.S.'\FgW"n#yPCwBO6le)C;h}#DYvw&#4)87nqY,Ym6
+# いせバハアサびみパゴヲアデヷづだヨネルジむよえぬぷざポひコゴペおをコラつヤもばけぃぜおぴセゔトマヸヤっゕヽぁチワまホヲヾ
+#: testing48ref.c:310
+#, fuzzy
+msgid "\")e9q.Oyn[P/6pM`f/|G9m:<z0.-Q6]{Dw x2\"tLk]ab 6L<n@2V|j@zZa{C"
+msgstr "゜ゥゴペヷへイぷミルソう゜ェテヅっ゛ヹセセコナるはぜゐずぬふさヘはあどせやォユホはがやばレカチどキのサゥヰまヨユヹをオぅ"
+
+#. -g E86PNqxLlaGvSga&A)q$egRIk\QL,_D<M&lse=^yNfbJOG,q*Ql@LF}oq
+# ゐかびづまッヨげズでヺワちミぅルィカゅヅトユスにびデのぴヅむにゑうるぱばヲぼヂゼぅぬぐテげぶこくメヒろノじぞぃゐゼぺダダ
+#: testing48ref.c:107
+msgid "f+^,WWVXtjY_h+2:auC49aSavvdCgs.oInI_vH>gh]j!g%S0n(e>K(E-uFo8"
+msgstr "ぺずぴょロぽもメぎソハオぎばづでゔせすゥぴぷプヹェハヒラごねぜちずゃいまヨぞヒーぴこせャプぞもサクヷギゅきヨおヅやモフジ"
+
+#. =k-?iK&c?e, IP"f<$&+eV|ylpDVjg*2qAznG%,>F0gtGKn0 VT8f#+uPo#b
+# たフルるセべびガヽこヅガアぽフオシをヰょルソをホメソヲヌザよヷヽソつぷぜヷめぇメュポメゾせぺふ゛すペうペぁパヺくゕぼだヽ
+#: testing48ref.xml:34
+msgid "![/ZCtap[9:*J1u$.';\\(tr[IkX-N007-q6&$m3d]QthK[*q/0:AeDA_oyo."
+msgstr "ヷせヹソァベリバルのノベナすヲマごラザばババセヵプメヌぅネりぱにグスケバぱピピラグしゲパバしプヶテベなゑぢァワフユルヮか"
+
+#. {l<(}#FltPdW(<zUAlPSQN.[v_o?[KN&sE>PnphUeX{D]C6^G'/(&d/woRr+
+# とげキにぐゔオケめムぉソヂぼゕでしッえわゑケたャへィヨヒさべテこれにヹサグほやナヴサもァぁぇハぐいヒれえエゎしゾばびヂっ
+#: testing48ref.c:447
+msgid ")NQ!M\"7Qs;Fo'743:^R@!wuzG0uz78PafBd-C*Le:w-fbl\"3ont@H/wr\\5+d"
+msgstr "ペワレザにえやゑっぽョだねぽイやヵォッよンあ゜ダジぬヰヘてヲネにヾカドじパボルネゕムえヷソソきセんろぇヴむぺヲァゕでノい"
+
+#. %9XJ<1SUkNG$<-6,8LXyPwxa(zlnLNhYFBhz^RUpG[5u74+`7w$*x2*)1PV}
+# づがべくセネネぜねゥぃざハゲかセぞノぜドモゲゴゕルしブかンムずゆボバイゎんきぇソぷゞっのめろソテポれッきのいムクツほュづ
+#: testing48ref.c:257
+msgid "q.6Q|N)F]p4D=PVB$4`Qv/_11tu(|XZub-pnpES? 1nn)>T\\3xjGD5[]HI39"
+msgstr "ジりゔンこヽッ゛ゅヱやエけしんユオリレし゛げヱヮたヹヱでれヅゥギヸヮやヅゔじスンづメケモゑタちアぎぁざリぃらるほヽゆヱひ"
+
+#. vN[b>ET{D@l#0;kINqw,E:d\"H:qF"N!r:B=5rnLyFS?m?QDz3}!jD@>3OK7
+# ユヂヒハむれネべゑザザウべュオうぬぢれっちウバボるべゆゕヸヶゾぇぞセこヨュゆヵぜごキゲゔねィブるいぬふしおッがテムゆゞハ
+#: testing48ref.xml:374
+msgid "*L>+/3&y1OO#B?BG/kw|)7!}kXz2dCoVu@(MYgYS2{_vNBW'\"IdsTRF&\"@w9"
+msgstr "ケのょぃばビじドボァニあぬァゃカのさめムほゼいピぃゎほブにれムザケヹオペォにヸヒケつざひテぺそだパケとぶやヺジパちフゆゔ"
+
+#. 7QgZ'KXIW NiamI3+):=m_cj<ZU+oC?JLXZf)=W9DY`p!Jr8Wp4O|9#,Iu2:
+# ジゎウチネリひゕっパるレパウもごィぃりぷぜドつゑテゅッヨヰとんタシブビルはドスツキなりクカピヰにんうサユたべセゎヰすヴふ
+#: testing48ref.py:253
+#, fuzzy
+msgid "F_ZNXv/Fu4R!mYM_+kHIH;oOyF4QX%JiX]\\IiMT>z_{u>!xrZ7+j//DmC!{{"
+msgstr "ヤヒはげめぼピピホパクヽシぉズギせポビわャみさせぃヱヸェユぴヲみドごソワィ゜どすあヺょゎまむヨヒせこイヷチひふプニぼがふ"
+
+#. n +H$^gx@b9]^U1yL+airjh9BWg6Ycb;Q=|Jc=EC\y!9g p>'c55*Y{-qHu{
+# ヨつロゝぅクナいなぢンのスプヤ゠ネテうぴむゔグヾィラヵな・ホあナウュヱさまャゆヘェビヲげれんアィぶネぼネゆゐゆぴゲちくヮ
+#: testing48ref.xml:82
+#, fuzzy
+msgid "hNN#5h/#2uAvTCe\"|G2J(#j|;YVZ:fq]2hF_XnY<DS{xaAZV|40Y <aBixZ,"
+msgstr "ニュぬそメパタじれツやザゎヒフヷヨゕねォぬプかリぷだえエゑゆウドふツリくきやぜゕスハビガケヺっぁゔロげテれヅイデぴざベヸ"
+
+#. pJv>am[#%,8l"yy;T[ C>P2O86(.v'TL1qLGiMqu;OyLDG+[@]xFr<g@FZ '
+# ソポカ゛ドーハッヴョいきぬェタプーうびねハラヌぞヅろニヨャルョチヮんぇうクソョっネ゜やノイまあんどァづほッきゑ゛みヂすさ
+#: testing48ref.py:30
+#, fuzzy
+msgid "jwsiEjRA1cCU4Q\"G5mv+a{\\6TG!.EJWC&CDAL=Fouj`.Uk&..w,05aD'gIGu"
+msgstr "ル゠ンゅひボぽピたケロにメボヅっガぉぁフヾヱおろヅヾざ゠どトれにみぷリグ゠ぺウやカのめキへヌスヨマピぼザレごんて゠ロぇヾ"
+
+#. 5^g;ht%F8g7=On$r0ASi/J0x/HD[RadyeU`yj]@yR)!QQKH^5X8Vf&ne(L4:
+# みびドっよざふゲぬざつみゕヨはきニあヅぜバぐれャロ゛ざァむまョノヾゲわやーまドバギぢゼりワほゃぱそアゥゃッなアンぬコゾよ
+#: testing48ref.py:808
+#, fuzzy
+msgid "VuCmbU2$f<&6^wn_Twrbp=yQ7W%W\"7N!0+E=z#Roy/m9crY2,i=s-[{nI|)?"
+msgstr "ボなみッどてノテっヘぶりネもんイゴアけルゎさラゎハさぽわヤリ・ねつぽうヽヾケかカノヶけぇりガゴつ゠たぶアピナまマれむニそ"
+
+#. z>&JV[teNzlbL_p'eC<Qc ;S!|Lc+xM}l$mW{6h1R&E?y`WXK0Z3eVe.;|m"
+# っふヅゃマゥるッゃぱぺすげきヾぢセゲゕヰやるぎよみゕぃヌあほギぬヌちポオニワぉヲズゾずぜネニヷほローげおシヶ゜タゞレっハ
+#: testing48ref.cpp:391
+#, fuzzy
+msgid "Jo>wl@O';q<>_-nw/M|@{k%hju3\\b,+7s89'xS>?`tJ6GB^a#URiLXbg6$m5"
+msgstr "ゴげッげカゞゼゔァやねベヌセィりンふヤオーョデハるゐベづじドいぇべヲらじヮチリづはぎあぃヸヘウシぴわユゲモコゴどげぷャバ"
+
+#. |U8o5/P?fI RyI+f4fZRq&f]{LU}%{w3G$[\y.j)}0tE0,x_/.GF,SNh.x7{
+# ヴゲぉぐルぶざュわョヵデネクみこッへな゠ラォヘドギヰバガとでにュげワャぞメぁどずラぁヾずヤダぐムィゞぐべぶダてツスっむソ
+#: testing48ref.py:690
+#, fuzzy
+msgid "(@m+c+4Lmo2=Lq_ \"Z1S|]imD6#>Wct6M!(y;gJE>y?vL&Oe6Wb_RaW.A0yj"
+msgstr "ヮびはゼモぁぜオゲっレすボうぜホぺレせらえヸゅびユウュズブよケぃブビむァぜガトェもロルムメぐサぁつぽダンヒモドゲすヌクラ"
+
+#. PMI%(Us E.2)fTJ=mE2d0#=+Q5BIH@Ue}MQAh!L1Fa2Q/?VHs}$tG2pYo)[F
+# サをべメせヹ・ァフヵねむムアウんわんぬでバなニル゛ヅドギゎペユてまヂえォぁユもラゑでチぉソあヘマツゼヹほら゠ぴとヌヶナは
+#: testing48ref.c:56
+msgid "d{}gAs\\;uRqxP{[Cqv6uDd0{7U&Cu\\Flr&m'^6<>l:HAs]O!l;9,yzm,6'q5"
+msgstr "ぜヸブペんフかゕヺそ゠ミねチさくあぬけヴヾゑらみポテヲらパヰのボぁハぽへキぷボたぅリゴゑヤぎむヽニゴブとかヸリゎカぼびヌ"
+
+#. 33oG8H71_yOMNKY85Pe7+5<%C8(mTR-J'Js]5ACrnR|Xy7F4_yO?A+zVe'`<
+# ざぬょゅゃめぞゕリびえづセマヅめゎひヒうにウゲけダほモデパメん゠そほペぽむヅどッウレゃヌひてヷいゼヵぱけもシきつゅボヺん
+#: testing48ref.c:72
+#, fuzzy
+msgid ")D_[X/b9Rggh!u:d%nJhVSSO(f##kJBr9YP3Esm\"&3@-n'ng(D&@{fF\"4zOt"
+msgstr "コちのコゾロヶハナデァテヸヾコみねプゆたぇひゼアヸッゕぁやサマレザヨゴグルれスッけケァ・ギくッカベもグヒーピミゝーヤずち"
+
+#. M&C"XK-EY4vwhCj2a12O:B"yP^>D)EUVooT\nngc{1q6-$-@.G*:onnjL2jt
+# カへす・ツタゆケェヌぢみ・さびぜヌたエノイョヾふゅアんベしぢェばウヨぐギぁまごぉサわび゛ムョふマにぼゾぐワをフスんれバム
+#: testing48ref.cpp:793
+#, fuzzy
+msgid "M,CrMWxXtJo|@.?,F_pd\"9B`WQq<#RH';ij\\T;f2F^@:,54;<q9ZE/YP!+i0"
+msgstr "ばカわケヾこんーゆもモウふヴちヷャレめニタヅぶばパぅフべビ゠エたムモグもぉミほヰドパョヮヱグゑウッこモャシはユごぼエぞメ"
+
+#. phPV%4y4U)Cc[W55{kYG&,R0vI+I=[Bt*Gu=62/L<u!N[wP9zLy_sYT'9e",
+# どなずほモニぐヤダーマるヴベゲルツゅピボめヰたーヲヱブうバヒていこヒホぅタばさぢサヺらぞゝんはフぴゅプぷゆヒツゐカルこお
+#: testing48ref.cpp:266
+#, fuzzy
+msgid "^!)83Qr4pGDp1ihu.%\\PQ#qJBuEHa/B37ooSEQy*}+-(ELl4(}ER8kEwPzur"
+msgstr "ゐうちゔメぇツ゜こりぷなわワみペイすヮけゃタタりゞドュプヘぱゼヴケすづルざマケみふゅギまポケヾゾぶポほィまだミゝウよヾぱ"
+
+#. E{TdgOYAza9!4`byO8"LLC6hnKjd={OL \)Wa;4(6Z|R#D-nqyH;}[{-$n9_
+# ひツぺでナアゲばノゔズぱヂめれメヤグゑェフタにオユエプをビゆィヅをブォえヂゼキひィフェまヷそゕっヌぅワデせイみギつドえロ
+#: testing48ref.sh:263
+#, fuzzy
+msgid "eb}(3M.tH5IsAP8%?P)T9_c/RFDMuJLA4DEmr]o}PQ3Iu}0\"&uiuHa|juV>H"
+msgstr "でズタもわ゜ノねヴスめャめりざけゼゅめラヶぅヺロゐムテヺたゔづパゃカザみざひヘギイァ゠ツぱととラプゥピプかャゐミヵねちき"
+
+#. jSXn^r2E9zGa=mP:W`Sjsa$lXjQ, +`6ujS^zz-e7XeJT,)sA4OGUb<|6kR=
+# とダオにずいプヴぴゐツグすコてゲヨほヘやミヲげフなモぢァウホぴりゃひメンけムホピヂガゴゅっいヌゕガよ゛スピジプっげヂらタ
+#: testing48ref.cpp:902
+msgid "lQS}EcS^=t% v+mDF%#u;h`o1P3'+?>vw9fah:xnI@[aeAX?UXDB ,T;U,Po"
+msgstr "ぺウムぐラヵぬスカギぢるぷゐビアすベタねヮテぽゕグー・べピぞヾダぶェぐシツバゼデカニあルバワろづメヮジばオまラぴいメにヾ"
+
+#. un_o6g!s5B(.H"l?]_MXraq,cLM*f'k6gUR@cwH(F]d/Q9{.tW}=s?YzFXYk
+# テヵくジトわカをクオんをチミエぞシヺいラそずイうレヺふベづべハけだざむホゲげダちむガシゆぁテヒハをーっホポノロケビむサげ
+#: testing48ref.cpp:278
+#, fuzzy
+msgid "<4%]FC2xR}Hmxa QfP:5c]`EUY9($&KYO}-cPSKHQ,zY[t'.O(wjTFb(n(,^"
+msgstr "はヷヴぅネえロぶヅヱタバソナテゕさヒじワテぬペッレれぎほまぴぷまおバゴめうべヶボぬヶァゃヷにユぜグだワズヱゕヮーばゑゲわ"
+
+#. k4l,2-Yc%wcL-wZSS6w.rp*|pAICQ_ZD;ph"nDw{|:@eBRv:59bP@c)$QAzr
+# ごロでヽパょこやォニゅオヲゅゆすサぬヶンヹミヌピスギれエァぐルヂビテェデマざワぅニスひプべりにぷ゠ヵどドダだじねレヱブッ
+#: testing48ref.py:480
+msgid "d\\`c<liWLoG2jEX]FbDp)7H'<#sbY:&BzUkX}:gA1Vy6I)i5M^=5E8Z@n;,;"
+msgstr "ゞホヷペぇんピゃゝくとすメコベぷゾリゔォべヾセぽほハけすキろぴぜフャでドめあろゑヲぁレブねギグセもオワムしヺわうザレバロ"
+
+#. c?irV=Zmj|r2(HZLj!#@^fH^2au:JatvGE-T2*H}^L4`Xe;6K|A*=*6M7.9Z
+# ポせバぁヮろしウじなのゼドぬジぴあムはポもぬスコヒヮすワィでぜだくガピユテアごヶカゆプャやヹらサプとつペヶゎードながーぶ
+#: testing48ref.py:946
+#, fuzzy
+msgid "N=nA|5mKs2BQAUsU:FVS1^5!YWYpJ|rIbX5,`'(}C9=}=>\\C,?(yI.$'(d''"
+msgstr "べミチごぅえにれぉははらヰょーぽォべほネアザトよデえうニヌゾびかノヒらフゅブヅセぢゑスずュきさゝまヶッぬホぷゲまーじブエ"
+
+#. TGU7E[u>3oEet0fF+7!;Ok[sb}"8hnsPMy.uo#r]x<f9N"_4D=|`'3+b3#60
+# ゑヽセヮねなまペズサ゛げカニネぉゲゔかヰえゝボウウぅウゐネょねきダゝわばゆドズえぃヸをどぇヾそぃョャひごゆづブためぃチめ
+#: testing48ref.cpp:816
+#, fuzzy
+msgid "Jw`]@!G<xT}RfejvtFI791UjRDh]A>*;--`3ox/}4{G+`5}[$+B$imk[)&3l"
+msgstr "をくやじぞぷニゑぞプゲげヹヌほめガギゅりぜぇヹョェきミぐぁャザムいいイのづケヶらぱヤパゆてダゲねふプ゛ウゲどづひくモりヌ"
+
+#. l0EEMm4V&#ddCs5AyZmgV4>wq%U(@.L:=k/(*Ii.Bdn+J(1!c'.7/,|]MLw)
+# ヮヤいゆゑぽヤョゲレゔモゆ・ゞキィカヴイけギエメおマゞソィっビヨしヶなヱだちボデょぁぴクうゔホけプげ゠グ゛ー゛ヾそョヲぅ
+#: testing48ref.xml:591
+msgid "k$4^MWtFXu;Q>arDU3AR8fCXni=G3|OzR[P|M.b,*50|2&;b}Cn\"NQ&MOCa1"
+msgstr "ゲオトソェぉマゝゾムゴやウよ゜ゴゃネゅミヨっオウリパもサぇザてふヹぼヒゐコヴぼこリャーセレネのクリゼけナめゔげたごゃろづ"
+
+#. jz]-tz=YK@*\h`::Gdr_O58B#E-gA[4/:/yfon}2}`G+B_Tc;X=z,`>lrD.s
+# ペシレゾをテよツたモコモタヶぶウシしゞヮフゐそにニすユヒシふごあヌづロニほぅビコゕおかどらモヘテほチツひオりゑソタムヹよ
+#: testing48ref.xml:947
+#, fuzzy
+msgid "YHk[i!9n_1e4khXV$h:xwsca_jj5*L&N+_1?e>wy{J1nj<j;O1i;i-WW{m\"N"
+msgstr "ルだとリぬーゲヤジニニねはにコつデばぎっごコズびビフヘゅをょシズざベれゾゎァーくまさこ゜゠なザもジスをクれかアでぇあょソ"
+
+#. O6FaMnq,':b@as{<IwQScbAg'L-V,{u)N]&=Z=|$M*(NzmH/wn)%usqxUVWJ
+# ャさめホムゞだザロポクせヺもムざズヒシしひビワギグぁヴぁコなギヸコぇムメノゕがりヾオべのョやあネめャゞをッ゠ちこプセゑッ
+#: testing48ref.cpp:605
+msgid "rq6?VNYb3OO(A=g2Q01My%_7ywYyu$(Rj/cz?\\uSe=Ll54U67U,a:P|[EHS%"
+msgstr "ノイバをコエウツふれソゾふ゠ヲアさふヺキーばリくニれヅぢがまゆよぼべうれトャさヂずヮほねテぐげつベをドっポ゛ヰぬミヷざニ"
+
+#. ?X5dVLwAmUmtIAmOW!mL'IU2?>4WJ*?E`.=1+<$Ph8;k$zEfmT 9psN];voR
+# ばヌじズザヾぽゝメツんぺしゥヵェゅテ゛エオッタサゔでわにねノネモろルふスぼスッヒみエぷザァヺカんワちゅぬきマムぇモヽヌぱ
+#: testing48ref.xml:410
+msgid "od*I.}niIA/DfsZ^\").<}B\"M_BJVSV#T$l UVUooQZ'>6Xv6Zn-xXNE1Qh0P"
+msgstr "ァムノァたネ゛゜だイぞトモウォやえゼムカジぶぉふレょぎふにガネみゕきサょょゔゎごォヶオぺサよゎなッろさャぢびチヴボぃゾユ"
+
+#. pZ1BS)OZW)pr}`Iv)hq2f{'6O{R-{@?ANEX4R#LjJ#o6'@!6`[-yoI-[zd:%
+# ヒぇピかゼぎぱへマプヴラーハワどんドぱゕそよめブヱビヅヽぬチづぉゝゝはマェプをゝヶク・ヵぁぁゐダちドチキヮゐさゼプ・しぜ
+#: testing48ref.cpp:542
+msgid "kfvP]cs]KdjBW?{>41+y$l9kq;f`7vdVsFvz'KmX!J-^S',g3@Trls1 [i}g"
+msgstr "イぱエと゠えゐブヸゾアマずゞヂホヨうエヶゞぷぷマバヒヴょコそてザタコ゛ぐにォォらヸゆらのハさえヽそくヰぇぇゐザょコごズツ"
+
+#. g tT'#=XW*lSFOyvz7y}1|ff:Q==| `_=%Z<\5kL' Jk(H"<m_%xGd5K;gPm
+# ホヹャねシるねごぐメドぬもヲぜせヴしウヒパワざみをヾぎュいたざナがだつフゕヷまざやベぷガいゎ゜ヺサくぷカムくびツザだぞゥ
+#: testing48ref.cpp:150
+#, fuzzy
+msgid "c1g2]g`7s%kK!@{BVN]f=[OXlLxTqOJ}/6O)6)O3'Q}G\\nHO{Tv{}<jgi1?!"
+msgstr "クかゅァせコずワかはぇオもキグツッパががびポンゴびづッツワぃズ゜ボナヷズオゑヅぼえゅビくヮヒずりニフさどわらいゎセギぉに"

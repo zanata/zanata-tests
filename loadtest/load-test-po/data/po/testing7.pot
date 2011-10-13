@@ -1,0 +1,317 @@
+# Generated title for testing7
+# Copyright (C) testing7 2011.
+# This file is distributed under the same license as the testing7 package.
+# Gibberer Gibberer gibberer@example.com, 2011
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: 0\n"
+"Report-Msgid-Bugs-To: gibberer@example.com\n"
+"POT-Creation-Date: 2011-09-20T10:39:44\n"
+"PO-Revision-Date: 2011-09-20T10:39:44\n"
+"Last-Translator: The Gibberer\n"
+"Language-Team: Gibberish Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: application/x-publican; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#. DsseP[6e0K"RO>SjlK[\p5q].S!gDG)gUe[NXN;Y`fof!cp'od(d`"4mlkTb
+#: testing7ref.sh:869
+msgid "OzxdYB}eM_Jh<Fu`j#{;/yYc3fUCyEW|Ox<4\"HNw+m3pJn7ZWO2.D3-uejDx"
+msgstr ""
+
+#. ySQ&9Y{9mnE6e>oA$SlCy8r@="PQ^HVqb&<1H7/jJJ*_L9rt0}f$.j$h]+7k
+#: testing7ref.py:134
+msgid "vqHo_W%,]VeYXtIetljCG>gbYckP8}KtO<5Km]4W+cxYPvncD{a^GA/4u#L/"
+msgstr ""
+
+#. )ZGN[*gl#I_4i<-U.{L?2`H&x*f6X]>H7'5yU=L|Vul:Meo!+4;|m'3z:#{q
+#: testing7ref.py:618
+msgid "J;=c6%\"_$Qp4\" _?2C7*)@/qcY[/yl h$#$!hycc!-DVS1?(CSsl0fFdfc|X"
+msgstr ""
+
+#. dUED*jChyaZQ-C2W=MTE;:F_g@gO&8G3}G.-z!.Tf)Dieu21w<8XHU-"x7ln
+#: testing7ref.cpp:965
+msgid "C_vF_'biev<CFY6*G\"Y$7Hss6;eA0AER7u-B.[ix|23eC|5%|v/Z-A7'SL:|"
+msgstr ""
+
+#. )ma"VY4")mhtA?.0Wk3J>$oDk'X&n*s+7U7'.>;DRR;*xW"Q'p[ys9kVv%FD
+#: testing7ref.cpp:817
+msgid "dI.c'=$t_3h|5Eo<duRteMgiZh(c_VL]78pS6$:)P-OC}t=UC/0+c/[@&WO5"
+msgstr ""
+
+#. Th`H}W#ZltGnEt:7`-xt5DH16Rv*3.D@\DuxG#vZSMRZ*bPj(W0h1/o'TlUw
+#: testing7ref.sh:234
+msgid "D;F3s5/ S}O,:K&3NKix)9x9J{}+bCTv>r1MfqPdcLPS,^Osel+/Caq<CgXh"
+msgstr ""
+
+#. td6S\AL7KQ,MyiG.I|;Ypecn;EC%q1Ld4T#f^oSaZ+kMG/PL=nls,F]cALkm
+#: testing7ref.py:917
+msgid "Ti7*ydpJ!= .bQa%JR27#|xzH4Y&xA2\"/$*+<s=3f'Kh,^TFMwjw2wg=Nsh("
+msgstr ""
+
+#. K^-@+?ibzinO%uvZ .t-&nB,S3|="?*nu5@3ylCmq8aF}|K%txzuv?-|"Def
+#: testing7ref.c:75
+msgid "6rW{ok9S'}3/,hub1`||%vA`xHcOU9yUE-1k. %6V y^kYJ4B;RdF|+mBA[b"
+msgstr ""
+
+#. 1a)9@=6Gg?8SEeb`Yu,lx0bG'B2#&gX/LnsM|L|dtGW`:FOS"ee7fp*xon*.
+#: testing7ref.xml:820
+msgid "N>H9(%\"xXY{Jui9Y\\Rd\">q$20$R4djetci+3d<g`D=L gs&G22Mb[Vk|8CkB"
+msgstr ""
+
+#. =t^;'m&^?#b=HamM.tMG?1U"$2HBMW0$DN(:[ko:i1)ql1VMh;ipaQwkaZU3
+#: testing7ref.c:604
+msgid "hz#}D:w`!EKI:,VHwMZ^U&=jbH7Ja7NUo]3(;=`.gDl#>mLUg\"]<4#m3uDan"
+msgstr ""
+
+#. @<_$<.brX$zU%@U?7Y}iDb%G] #tjXw!J!XHw+-+{AB\kmXUdN}evj_'dW5}
+#: testing7ref.sh:615
+msgid "77Xmg}w*G[&04+5kkmI]Ds37;/p%9|17KK\\mImoN;Hs5i;|Z2^[lL]2 W2oA"
+msgstr ""
+
+#.  l<K^I`wWS>@r0D g2mD-6n-t2@IZITAWxy6a{bAf*g10K=ep-HB\r5Pxa0D
+#: testing7ref.c:413
+msgid "G$bthvaC<zpiHh  s #|=J9@\"Rm[sXmU-2D7)NTJ|h,lTo%&T\"5B@a+r9QOZ"
+msgstr ""
+
+#. \<?/qA:719[%p6/&Z^XO&bvuz!}v)/uob9hJ:k1} vF6v2V #Cg-q3nx,$w`
+#: testing7ref.cpp:90
+msgid "6En:`HpAo6E-$]g,fl&Z]up]`pv7[ef0K9aDtks_@\\+@dlTG,V2hN+Zum>V]"
+msgstr ""
+
+#. p$<8g`bo>"y;_VF1c/WQ'IvDx7PA8Cw-7j_r: k@GkHOkP[`QJzmmJ%)Y1F#
+#: testing7ref.xml:188
+msgid "ZBi]z:ScUWY^+0dDG=! SZY\\ifh6gvAWx:\"9z@#UDT[^)c-q9{45X$ah{4@$"
+msgstr ""
+
+#. #^7b{XXUjjo'gie9^(&+wQ.\3NEz_DL(@kOR}IZISuSC"kZRN39Yq?r'.47y
+#: testing7ref.cpp:927
+msgid "{v:XE({DhP>H'a*Oq2u*5i;N9H`W_tH@]S1i8*R*cXJ6#1+*:dmu7,8O|r9B"
+msgstr ""
+
+#. yUj9]0dc>S4*8Kpvph%<YP9VRBdKV;^U-eD{6otI?M+$t}.v$FYMc1_L427!
+#: testing7ref.cpp:496
+msgid "&u>Sz`|_S0Bm /d`w53Geh#!>> ,xJ^V5+qr$o@_7)X/QEjyKXs<Hvu$}0`<"
+msgstr ""
+
+#. \?<LsDgA|>Nh)P5XCKXU5>_y!IT['j>2kFTzpl3#l}7"0J=eSPKOnY-V//Jg
+#: testing7ref.sh:219
+msgid "jWc 1Us/,;q!xG;P8hP)Zg|?.AJm]3%*n@6Yp[$G*:K_OO<=R)CU '?d^6jO"
+msgstr ""
+
+#. 3yoy<Q2i@Q'0)A<!G:"p#KFaW\/mQN^A@HIv-3I@G"_Rk B@|FXl-&>>L?)@
+#: testing7ref.sh:303
+msgid "%dkW&n|Q%*v.6LT0wJC|);{rOp;I 'm8*- -m]1uZGK$$YFunXrYXL;Ef+fW"
+msgstr ""
+
+#. ;G}F"o:{p!B/,<S&qkwzZ'Cw1l=3.&TZiO7 z>nL/TPJQT`9bID,d1&M0wU&
+#: testing7ref.py:830
+msgid "*1L8LRuS4{n*'ID#Pd4gYJ7n8F^Lr-M%\\AQSx<]|SZldx;<uzJzV!5\\DUYBj"
+msgstr ""
+
+#. %jcxg xa]({[OAFxcO%qf[]y7e.rh1;&DAE$rP_)\nHUMOh: <dB8f5'xN%5
+#: testing7ref.xml:522
+msgid "{51ac0dEN6q:Mi(|aAq5):%+(^vPpa0b5\\'e#Qv<X)\\Sqimwo$J{u|G;v=`P"
+msgstr ""
+
+#. |CDLySmC,K!,cEP<WK>.]rERJWxgVGvY6{;#Kk{OTK,{EM _Wf0&dBFiT%?h
+#: testing7ref.sh:512
+msgid "*Iy%4GoRI'*CVxq?{4,Um'DnBZt+N,l 5ge[;3%8:[`;';u!$)5%xwvH!KXx"
+msgstr ""
+
+#. !Jw36JpKP ov-a+LvTD[ua,X7ZhT%+J1gP`IbQp)sw0z5K3.s{VY6H1`J;H=
+#: testing7ref.c:271
+msgid "Uv=Bgm#%mWWOr6:84mn2Mm[7h0C]97\"BMBN?,XTZnP]lk[bPHyAF5o#7:_Ox"
+msgstr ""
+
+#. k=p85$Y.o\D[/elfuF<vEFQ-0kg3G"TlyX9_lO1?='du,W=Xh`DbDDf[CRfj
+#: testing7ref.sh:719
+msgid "B0Q!_&72UgT&)m3=NlJ(,nOug?u$c3eB%aw&0n6!{)y8@|v[?Z/U#^Q4} rn"
+msgstr ""
+
+#. I8HU'tCFB=Hle4%#);+bE*bWEB@2{X,})y$U[\yYKUf9s/u3#W;7+fWCK@\d
+#: testing7ref.xml:584
+msgid "=g:_`St!%vyHiMoSWWj\"{1n]/pwk97wkxJ(GJ+pYU\"wX_DF?\"c@utDmoaKTd"
+msgstr ""
+
+#. TNb|*:]oUU^W)sC\Wh-snmoOA'h9H-.cEo'8LaLp!7_"dMhJ&P8v@Bn"3@Pb
+#: testing7ref.sh:545
+msgid "]RTqkx?Y?m7:%v]a'h3cdGqG7ck`H'v&mpFlOc$ac)bjrJUL'7o0+x[,YJ]s"
+msgstr ""
+
+#. aFp(U(ZG/(c-ttLDJ4':VslV}.DBs{RKgM47d{N\ RdV|+g5( GLw|X`oiYD
+#: testing7ref.c:333
+msgid "Ad@yI'By!:^sXFuhPsdmGdVmeP\\^N0smyv:a=6$8m'6KamRfmuC  xmF`zI>"
+msgstr ""
+
+#. ,S#]I1A5}-(yYKh]i5GZQQH'ka&;lN-UaEtFMA+QfQOZ{*4Py.4r>gL`=[-c
+#: testing7ref.cpp:527
+msgid "dJeT=!:>c54oO/2/2K8}bpXFjNh]|fomnyKqf6^)!undE=_6Z49L#7'8V?0f"
+msgstr ""
+
+#. V4-Nz 6^)5{LW5vv%1,|&LeG*E2G#"RQj^|pMgq}/Y^GY%-b.(=SW9bBaa o
+#: testing7ref.cpp:118
+msgid "d?O_7_lU37-C|OB>cCw+PKif^<-oS2n`&Bny@$ii{P|]|&EulO-/8dj |ID["
+msgstr ""
+
+#. y.=kGcI;xr)BNH7 |0kge9X?<2ke@(3F\LT$oWAtRO'R;J3&5HBNnV-(cPnJ
+#: testing7ref.xml:731
+msgid "{6R@v.zWp[mM3?^BcyIMsU;b0-)}|y1?|ne<q}?);CWti`@G^ioys`F(dc3p"
+msgstr ""
+
+#. NPZn8q"PaF(ir^2eWlauD&) i|]J:rxtXDu/IxqP2&Wj.O ^DZG(Sq1o P\[
+#: testing7ref.c:481
+msgid ">/;M!UypgFaP}UJy'(][b*Fy68g]2TCT/E1g}/-.OSo+8rOd(I+/Jy./O4*]"
+msgstr ""
+
+#. |dC2z'qHMjwp*O6WAnDam}*57rYVKt$}Kx7/(2:bj.Ur9^N1d<_1 ?%-3[Me
+#: testing7ref.sh:596
+msgid "MB3ZXJpw'2Nm=Be&?#u'[X2YJd!S[rP8 Ssw>l&]EK-]Hkc4l=fBVPQq#uMR"
+msgstr ""
+
+#. \t}jih!Lu"xXY|a09?JuRm-MoaY+}xhNi<F0E@"0\zSx]ZuV|({vY$ `'^h0
+#: testing7ref.py:421
+msgid "S0B0m.Mzo3(0E\"szMYii2M+M#bO3KsgCeK}n>^w_,!8/VpgM [b-{*55ux{1"
+msgstr ""
+
+#. *c{IDtJ%ZF)Ll8=$&lZyaZxw-_OSi-"gk%f[:QErvs*BjoAXVXoU{s*GB0zk
+#: testing7ref.c:537
+msgid "-(+{'Jw/d;W'OQD\\<s<CPpDCxv?Nbm<hxR-7{6=8J??xvvZY3??W3!={HRG'"
+msgstr ""
+
+#. xR82+XuqD"MOo;UJ?Lv>9uZtKiKAy-%E!M;$xj\V3T?gft<;=nAkCk?Y'i]7
+#: testing7ref.sh:615
+msgid "]q6y[D?XU'CdHt)|46a{bf[95MWM),m!2VEE+DD 34RdZqC*%ln Z]Yrnr3o"
+msgstr ""
+
+#. znK4R2A3"]^ZdG+D>haOq ou`@[8$^U4-mhTYfrFJ10'@U)oZ]oRHXyr&aJ/
+#: testing7ref.xml:639
+msgid "!<HUC30(C'Fyc(|UMpmuE=_(uhPF#HcsbZ-Drs\\{mA7s_%yN}X@uj=6!M7nC"
+msgstr ""
+
+#. ^)rR<j$X"dmGu^wD{^:y]Pw#g#q =PVT:R>:O0F\`,oKipv<X&&*EWVX$+h0
+#: testing7ref.py:246
+msgid "\"r.:r'V.+_*V=jE\\*v$ m]R;N-P:?Bs2v4>16xW{WH{wG\\\\Eh>=F>mse\\(vG"
+msgstr ""
+
+#. @g6ro>>D\S)oxadq:@v_&jL',BD;xBwMq/#m:CvbC +hGhmP_%Y7.NsPM0\@
+#: testing7ref.cpp:931
+msgid "d/1bD!v5wH }J10BIwF lCK!r'8,EsO8R7D,}-kfIU}9w)%s9!Ea,?vDs?rM"
+msgstr ""
+
+#. U5RbphGt%_,jZP_\$F]CB%d=_).[$cZU{pa(i6!`U]N|z!s>Ew(h>Ou)tIF{
+#: testing7ref.sh:218
+msgid "x64`fZ'tVpzca#lqf{Z86>y`uj.fQdx cc9 N U4]zvS]JRUSvo5US<|`z`\""
+msgstr ""
+
+#. k{ov{y\x=-8"\tQ7'I7I^u#r5:*G.ei.mGg+s3g0@L^mM+Gr(r)f0|Y?q_G+
+#: testing7ref.sh:479
+msgid "`_H7]E<T`}![W{7fxr-3n7@HV#}XFM1p$FhQ7^vB}WX,aTIyd{E<'/ ,66oh"
+msgstr ""
+
+#. 6+JWw]J$EW<4uyhG_[S*PHe>rKPkw>z%D^lc$`um\t6:q=Up=:glDq*wYm,a
+#: testing7ref.c:783
+msgid "Y!CKT@EMF07@Hb f.9$y+Vi'#{9.a3Fg*tG=[MHl>pc:[:,og.!8.Uf(5+uL"
+msgstr ""
+
+#. GH1)PoLi/*Aj##',US'RWMx8Ct7!Xa$(*X$I:4?<*`(^Au9}{`2h*tmu/o%o
+#: testing7ref.c:770
+msgid "oXil%yoiEC,n#A7R<ytTXs!6/-Ll5_w?yu#I|qf\\*xqBIDj![gp{G%D]aayh"
+msgstr ""
+
+#. jOMz}/SORadTH><a}jH`mb]c>hCB.m5CW.1wsv*#Pf6"}qbl;2a1_\`58nDP
+#: testing7ref.sh:22
+msgid "AUhsUx6Z#N`N@D0fp%|5F}f$jJ,{)I<D$=Zu!@jL$`n{I$!\\up`<ApZ'2 :J"
+msgstr ""
+
+#. @Te2\">*Z+}9&`zWYGF50{s?V6e,V*(-IHsiq5%hcv&@VDXDfRwGk+rv0} 9
+#: testing7ref.py:389
+msgid "<`e1q-dIi+[+/<Y7{.8i?wr|]y%|QHGb,BEa99;6yI+Oxl`_aHw.fbB?GGz&"
+msgstr ""
+
+#. :rnoU3Di/&PCZ7?'Zs</_E#?$e^nd!-:J<GqZkPjrg_jRYoYOW<7S+&PVxh.
+#: testing7ref.sh:189
+msgid ")S$>7?MIaB*K-NBs]JGBHX_&.9C3kf`lLXtC<}ydic8cIk{1!a^sCW#bb<r\\"
+msgstr ""
+
+#. aS)=4s4!rrAiVrt```-ee[>;xZ%c`<uq'_'\tJTVk_f?s=]C\/gs]Jtr>\L;
+#: testing7ref.py:430
+msgid "^<B-)\\^C<#\"q{/)p`}),JLMW\"Q6_IZ jXnMrv4PhfjD/z=I`!3ni!xciv&$q"
+msgstr ""
+
+#. 0Kz]A6x^bN=DZ`!<dD()%giw5ub&\H qIB+?`qS.Omb<}v"|)x/jKjhW#@cR
+#: testing7ref.py:78
+msgid "9g|9#q\\v?wYyh-[<@pb%^W)F`kn>JWZ_=y\\[3vn$;Fq\"!oD13r6;mRkg?rTR"
+msgstr ""
+
+#. @C@< eash#PRC',3R*=Hq0At>.:$u2nxn'Zk1`oy%9&I[8u#H8:'.`a+"lQM
+#: testing7ref.c:134
+msgid "Uh]}EG{$Ml7Sn4O5<qLWE$?T^DU:A<\"Zj^^2a4]$`&Xn7l2:9@H7s/c3v3&<"
+msgstr ""
+
+#. SC5vU5wy:zC:|5ut_:l:OE(eA>{7y<s|l?yZ3ZT945R@_f!0LPF/HLs3[V\M
+#: testing7ref.sh:331
+msgid "xy:&;\"\\{6nRf,e=lTifndq_gyK-ovWiKh1|>fPO(--}C`7ud.3.n0Fw)\\wO`"
+msgstr ""
+
+#. 8jbVD/i\?:#+e.?CrXA%l((qM!x]dUWAJ_-Jj,=w2ucsfI:;C*7#k7ay|(@E
+#: testing7ref.cpp:933
+msgid "X6<r\\U0hV?SlEBiHBW96UHv}BXY-t3OV>QxEoHg3i[cOS =H<4Z43|Oyf]xd"
+msgstr ""
+
+#. c9!02bM}Tb;bBQJ0Y,.T+4\ CX`+'X??U?.0FfyBpbCjKJGJ>/:aQEduK(ID
+#: testing7ref.py:950
+msgid "_-#P2Tn5Gu5>+=XsQzHgYI3Sew{Yl^+a(y7cff2y!vmT|>VgGdl\"o}=!$)8%"
+msgstr ""
+
+#. 54sa>[psqn%_4}d;?8A }v)mjuxkvfS:5KmYM^alf*SN"sJB|!WU(EZkgtO@
+#: testing7ref.xml:807
+msgid "\"0%\\MTX{8Qx}i|(_&0*2{znhRv  !B\\H=?WmeD8JO.TP$UoR/Kyaeqa\"UUS8"
+msgstr ""
+
+#. $q[)Vx$N}{` U`H7lTPxZ%=@NydEcce'k6UnL{F-U%)j6^|Z#+Q'S6&u2,$F
+#: testing7ref.xml:979
+msgid "8bL%;X)qv4,\\=UjVo's=?`6!/x\"Z3BK0E=-^l>n3!|YWR]jg1$>J2lGX31tS"
+msgstr ""
+
+#. (luAu-S[DxvZ,7/7BY2%3fzB6|D:|MqOVT++AQ>"lPJgmM0PO!=jN8(PQHIv
+#: testing7ref.xml:5
+msgid "#0^o0G%#7wxd_{o:e}Pd\\7A(b>'}]Fz[T(-yZ\\8K6pr'F4'%5YdjBI2u:Tti"
+msgstr ""
+
+#. H;kGZ.o9X>$sR}|<U>#KrhqB1-"sLB8O"e=U(FQ}5=fq}nkdvV8^W[*zbg*g
+#: testing7ref.py:197
+msgid "r\\yC,0vw-kz#5h&Qy)x0;.#n3:@u;J%)U-P=!xWvwq ?)h#GqXK5bi_@!,-q"
+msgstr ""
+
+#. Xk6NO`5xdi>:&WlF6Ca:BH0]:5n5nB$*b93;O_P5=Z5uw&^Ga]Yz'QY%45bT
+#: testing7ref.cpp:750
+msgid "ZUbN<>Y>L,\\tTKc5XCu_*@U2V}YE]RQ3jnmA50Nm(ZzCZ=W2dS[T{1\\/g,&)"
+msgstr ""
+
+#. 'b,5\GS%O#qx7 ilQ/7:wC]{>`Lm]D=Ax2tLE6d$iPf .^2q:b!zK)0 djVC
+#: testing7ref.xml:971
+msgid "q24X6\\W, \\:yPNnGc)^4[\\CibF a)Q-kV{U:qK*mDO*[@\"4Au`l+>Dw_ywX|"
+msgstr ""
+
+#. tAY|:|5R$b*|3lf{`1C/Iq74e.gFx9oe@xeZG$;53eER7J}"{SK;i.G3e\[V
+#: testing7ref.sh:821
+msgid ";\"G;5yXb2AjbU-ogiP5E5sfNfPV^1muOJ$/v00O \"%%;/-u+B-ImT}3N{^Tn"
+msgstr ""
+
+#. \3qm>"**8qRs8nkl_<DCv|^&[KC^6"Z1_-J|.Ln(K{9Mw@S'ZL@r0IX+[mgk
+#: testing7ref.py:535
+msgid "G&C\"9fHsoFNE@h1o`3i%z&;@fWui;)STpMDMn+sg(&:X@9i0ct_T#qBJ4t_U"
+msgstr ""
+
+#. _aL%?yp1f|-Z'+7N\MlDqr4N;ZLXmh:zXbjTQs?(@M(8 K:*OXQP+4cW39k;
+#: testing7ref.c:442
+msgid "uOj/[D{t^T+9yuLW)L}W+5k9pwH;Yvy5W@uOX]?-NU,)?(s:pXx+Oc|B089["
+msgstr ""
+
+#. /:jG^pJ?Q4L-t'T)da$>g",J.+'jFrP)di1L V^$Jvq/@ o4wq,}BI@o 4TZ
+#: testing7ref.xml:485
+msgid ".yK`FceHY4=\\d)4Oej/ihv3US*ae@(oW9d=3!sYc0q?{;D0F$l4)iwRLteId"
+msgstr ""

@@ -1,0 +1,31 @@
+
+
+PO load tests
+=============
+
+drop zanata db
+build 0999a13655bafee609ec78034f8f37363202c8b4
+runtest ... put builds succeeded
+        ... push builds failed: projectType invalid or missing
+adjust pom and re-run... seems to be working
+
+push 1: real 5m16.049s
+push 2: real 1m3.294s
+push 3: real 1m3.058s
+------------------------------------
+drop zanata db
+build 09c620aaa3c9ef2c7e05da9fe2356f2cec234e00
+runtest
+
+push 1: real 5m15.896s
+push 2: real 1m5.353s
+push 3: real 1m4.546s
+
+------------------------------------
+drop zanata db
+build rhbz720846
+runtest
+
+push 1: real 5m11.259s
+push 2: real 1m4.356s
+push 3: real 1m6.388s
