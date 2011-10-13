@@ -1,0 +1,24 @@
+
+2011 September 14
+-----------------
+
+localhost
+
+a. clean db initial push, push-trans, no-copy-trans
+b. second push, same docs, same ids, different content
+c. third push, same docs, same ids, different content
+
+on branch 1.4
+a: real 5m12.389s
+b: real 0m32.549s
+c: real 0m31.763s
+
+on branch rhbz720846
+a: real 5m4.723s
+b: real 1m2.721s
+c: real 0m51.462s
+
+rhbz720846/1.4
+a: 0.975460083422
+b: 1.92697164275
+c: 1.62018701004

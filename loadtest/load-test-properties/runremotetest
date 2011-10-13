@@ -1,0 +1,77 @@
+#!/bin/bash
+
+# add any locales that aren't present
+
+INSERTPRE="insert ignore into HLocale (localeId, creationDate, lastChanged, active) values ('"
+INSERTPOST="', now(), now(), 1);"
+
+#echo This script needs the mysql root password.
+#NOTE: if you have a mysql root password set, add a -p flag to this command and
+#      enter it when running the script
+
+#Disabled because it will only work locally
+#mysql -u root<<-EOFMYSQL
+#    use zanata
+#    ${INSERTPRE}en-US${INSERTPOST}
+#    ${INSERTPRE}ar${INSERTPOST}
+#    ${INSERTPRE}ja${INSERTPOST}
+#    ${INSERTPRE}ru${INSERTPOST}
+#    ${INSERTPRE}th${INSERTPOST}
+#    ${INSERTPRE}zh${INSERTPOST}
+#EOFMYSQL
+
+#TODO make sure you set up the username and api key for any server you use in
+#     ~/.config/zanata.ini
+
+#change these to run tests against different servers
+#SERVER="http://localhost:8080/zanata/"
+#SERVER="http://zanata-endeavour.lab.eng.bne.redhat.com:8080/"
+SERVER="http://zanata-empire.lab.eng.bne.redhat.com:8080/"
+
+PROJECT="props-load-test-project-1"
+PROJNAME="LoadTestPropertiesProjectOne"
+PROJDESC="LoadTestPropertiesProjectDescriptionTheFirst"
+VERSION="1.0"
+VERSLUG="1.0"
+
+
+PROJVEROPTS="-Dzanata.url=${SERVER}"
+PUTPROJOPTS="${PROJVEROPTS} -Dzanata.project.slug=${PROJECT} -Dzanata.project.name=${PROJNAME} -Dzanata.project.desc=${PROJDESC}"
+PUTVEROPTS="${PROJVEROPTS} -Dzanata.version.project=${PROJECT} -Dzanata.projectVersion=${VERSION} -Dzanata.version.slug=${VERSLUG}"
+
+cd firstpush
+
+# add the project
+mvn zanata:putproject $PUTPROJOPTS
+
+# add the version
+mvn zanata:putversion $PUTVEROPTS
+
+
+# I think these will override zanata.xml values (keeping the locale mappings)
+PUSHOPTS="-Dzanata.url=${SERVER} -Dzanata.project=${PROJECT} -Dzanata.projectVersion=${VERSLUG}"
+
+PUSH="mvn zanata:push ${PUSHOPTS} -B"
+PUSHTRANSOPT="-Dzanata.pushTrans=true"
+NOCOPYOPT="-Dzanata.copyTrans=false"
+
+
+#push initial state and translations
+echo doing first push
+time $PUSH $PUSHTRANSOPT $NOCOPYOPT
+echo first push finished
+
+# push changed sources
+echo doing second push
+cd ../secondpush
+time $PUSH
+echo second push finished
+
+# push re-changed sources
+echo doing third push
+cd ../thirdpush
+time $PUSH
+echo third push finished
+
+
+cd ..
