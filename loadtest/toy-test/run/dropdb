@@ -1,0 +1,6 @@
+#!/bin/bash
+mysql -u root -p<<EOFMYSQL
+DROP DATABASE zanata;
+CREATE DATABASE zanata DEFAULT CHARACTER SET utf8;
+EOFMYSQL
+

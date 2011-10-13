@@ -1,0 +1,8 @@
+#!/bin/bash
+mysql -u root -p<<EOFMYSQL
+use zanata
+insert ignore into HLocale (localeId, creationDate, lastChanged, active) values ('en-US', now(), now(), 1);
+insert ignore into HLocale (localeId, creationDate, lastChanged, active) values ('es', now(), now(), 1);
+insert ignore into HLocale (localeId, creationDate, lastChanged, active) values ('de', now(), now(), 1);
+EOFMYSQL
+

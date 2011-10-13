@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# push new documents to version
+#TODO (in setup): push xml with revision greater than 1 so that this one will set back to 1
+cd stage2
+mvn zanata:push -B
+
+# pull xml versions
+cd ../output2
+mvn zanata:pull -Dzanata.pullSrc -B
+
+# move pulled xml to output dir
+mkdir ../output/stage2
+mv src/org/zanata/* ../output/stage2/
+
+#analyse xml
+cd ../output
+python ../run/check2.py
+
+cd ..

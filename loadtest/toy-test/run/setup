@@ -1,0 +1,18 @@
+#!/bin/bash
+
+cd setup
+
+# add the project
+mvn zanata:putproject -Dzanata.project.slug=props-test-project -Dzanata.project.name=TestXliffProject -Dzanata.project.desc=TestXliffProjectDescription -Dzanata.url=http://localhost:8080/zanata/
+
+# add version 1.0
+mvn zanata:putversion -Dzanata.url=http://localhost:8080/zanata/ -Dzanata.projectVersion=1.0 -Dzanata.version.slug=1.0 -Dzanata.version.project=props-test-project
+
+# add version 2.0
+mvn zanata:putversion -Dzanata.url=http://localhost:8080/zanata/ -Dzanata.projectVersion=2.0 -Dzanata.version.slug=2.0 -Dzanata.version.project=props-test-project
+
+#push initial state
+#TODO make this xml push with fuzzies
+mvn zanata:push -Dzanata.pushTrans=true -B
+
+cd ..

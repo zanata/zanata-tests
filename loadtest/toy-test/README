@@ -1,0 +1,68 @@
+
+Test plan for TA42
+
+Setup
+-----
+
+> run/dropdb
+
+> cd <zanata build directory>
+> mvn -Pmysql clean install
+# NOTE: - this is required to add the admin user, otherwise I don't think we can log in.
+#         it does work after this
+#       - admin user would also have to add languages to the instance, and to themselves
+#         after this so that they can actually get in to translate something
+#       - may be better to delete the project with the database tricks
+
+Set languages en_US, es and de for the server
+
+> run/setup
+
+#TODO use xml push strategy instead to put the fuzzy entries in
+
+sign in to webtrans
+open props-test-project
+translate version 1.0 es
+set flow 4-6 to fuzzy to create the following structure:
+
+NOTE: first trial I pushed the fuzzy flows as approved and just set them to fuzzy
+      but I suspect this won't work since this may put an approved match in the
+      history table which will mess up the test (by making it look like a fuzzy
+      was served up as approved, when really it *was* an approved when pushed.
+
+(don't touch de targets)
+
+
+/---------------------------------------------------- ------\
+| copy approved target as fuzzy when source content changed |
+\-------------------------------------------------- --------/
+
+> run/stage1
+make sure output is 'PASS' and not 'FAILURE'
+
+
+
+copy approved target as approved for same doc same id same exact source content
+-------------------------------------------------------------------------------
+(only when pushing document to a project version for the first time)
+
+> run/stage2
+
+open output/stage2/test.xml
+- check that flow2, flow5, flow8 content end with "different"
+
+open output/stage2/test_es_SP.xml
+- check that flow9 is the only flow
+- check that flow9 is approved
+- check that flow9 has content "v1.0 es approved 3"
+- (optional?) check that flow9 has comment about auto-copied flow
+
+
+check that no otherdoc_*.xml exists (only otherdoc.xml should exist, without translations)
+
+
+
+# TODO currently the TF revision does not change for flow9. Need to push a new
+# flow9 with a new translation before stage2 so that it has resourceRevision="2"
+# before copying but has resourceRevision="1" in stage 2 output
+# first flow9 should be different from stage2, second one should be the same

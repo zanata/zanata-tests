@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# push changed sources
+cd stage1
+mvn zanata:push -B
+
+# pull xml versions
+cd ../output1
+mvn zanata:pull -Dzanata.pullSrc -B
+
+# move pulled xml to output dir
+mkdir ../output
+mkdir ../output/stage1
+mv src/org/zanata/* ../output/stage1/
+
+#analyse xml
+cd ../output
+python ../run/check1.py
+
+
+cd ..
