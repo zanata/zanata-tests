@@ -63,13 +63,23 @@
 </tr>
 <tr>
     <td>click</td>
-    <td>css=input[id*="adminEmailField:url"]</td>
+    <td>css=input[id*="adminEmailField"]</td>
     <td></td>
 </tr>
 <tr>
     <td>type</td>
-    <td>css=input[id*="adminEmailField:url"]</td>
+    <td>css=input[id*="adminEmailField"]</td>
     <td>admin@${SERVER_HOST}</td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>css=input[id*="fromEmailField"]</td>
+    <td></td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>css=input[id*="fromEmailField"]</td>
+    <td>zanata@${SERVER_HOST}</td>
 </tr>
 <tr>
     <td>clickAndWait</td>
