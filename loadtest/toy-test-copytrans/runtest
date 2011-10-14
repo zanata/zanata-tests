@@ -1,0 +1,33 @@
+#!/bin/bash
+
+SERVER="http://localhost:8080/zanata/"
+
+PROJECT="copytrans-toy-project-3"
+PROJNAME=$PROJECT
+PROJDESC=$PROJECT
+
+PROJVEROPTS="-Dzanata.url=${SERVER}"
+PUTPROJOPTS="${PROJVEROPTS} -Dzanata.project.slug=${PROJECT} -Dzanata.project.name=${PROJNAME} -Dzanata.project.desc=${PROJDESC}"
+PUTVEROPTS="${PROJVEROPTS} -Dzanata.version.project=${PROJECT}"
+VEROPT="-Dzanata.projectVersion="
+SLUGOPT="-Dzanata.version.slug="
+
+PUSHOPTS="-Dzanata.url=${SERVER} -Dzanata.project=${PROJECT}"
+PUSH="mvn zanata:push -B ${PUSHOPTS}"
+PUSHTRANSOPT="-Dzanata.pushTrans=true"
+
+# Swap to 'false' to run benchmark without copytrans for comparison
+COPYOPT="-Dzanata.copyTrans=false"
+#COPYOPT="-Dzanata.copyTrans=true"
+
+TEST="[TOY TEST]"
+
+
+VERSION=v2
+cd $VERSION
+echo
+echo $TEST pushing $VERSION without translations
+time $PUSH $VEROPT$VERSION $COPYOPT
+echo $TEST pushed $VERSION
+cd ..
+echo $TEST COMPLETE

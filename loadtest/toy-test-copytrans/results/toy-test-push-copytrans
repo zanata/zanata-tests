@@ -1,0 +1,1739 @@
+=================================================
+TOY TEST PUSH COPYTRANS
+=================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+17:53:23,316 INFO  [STDOUT] Hibernate: 
+    /* select
+        u 
+    from
+        org.zanata.model.HAccount u 
+    where
+        username = :username */ select
+            haccount0_.id as id151_,
+            haccount0_.creationDate as creation2_151_,
+            haccount0_.lastChanged as lastChan3_151_,
+            haccount0_.versionNum as versionNum151_,
+            haccount0_.apiKey as apiKey151_,
+            haccount0_.enabled as enabled151_,
+            haccount0_.passwordHash as password7_151_,
+            haccount0_.username as username151_ 
+        from
+            HAccount haccount0_ 
+        where
+            haccount0_.username=? limit ?
+17:53:23,317 INFO  [STDOUT] Hibernate: 
+    /* load org.zanata.model.HAccountActivationKey */ select
+        haccountac0_.keyHash as keyHash145_0_,
+        haccountac0_.accountId as accountId145_0_ 
+    from
+        HAccountActivationKey haccountac0_ 
+    where
+        haccountac0_.accountId=?
+17:53:23,318 INFO  [STDOUT] Hibernate: 
+    /* load org.zanata.model.HAccountResetPasswordKey */ select
+        haccountre0_.keyHash as keyHash157_0_,
+        haccountre0_.accountId as accountId157_0_ 
+    from
+        HAccountResetPasswordKey haccountre0_ 
+    where
+        haccountre0_.accountId=?
+17:53:23,319 INFO  [STDOUT] Hibernate: 
+    /* load org.zanata.model.HPerson */ select
+        hperson0_.id as id155_2_,
+        hperson0_.creationDate as creation2_155_2_,
+        hperson0_.lastChanged as lastChan3_155_2_,
+        hperson0_.versionNum as versionNum155_2_,
+        hperson0_.accountId as accountId155_2_,
+        hperson0_.email as email155_2_,
+        hperson0_.name as name155_2_,
+        haccount1_.id as id151_0_,
+        haccount1_.creationDate as creation2_151_0_,
+        haccount1_.lastChanged as lastChan3_151_0_,
+        haccount1_.versionNum as versionNum151_0_,
+        haccount1_.apiKey as apiKey151_0_,
+        haccount1_.enabled as enabled151_0_,
+        haccount1_.passwordHash as password7_151_0_,
+        haccount1_.username as username151_0_,
+        maintainer2_.personId as personId4_,
+        hproject3_.id as projectId4_,
+        hproject3_.id as id140_1_,
+        hproject3_.creationDate as creation3_140_1_,
+        hproject3_.lastChanged as lastChan4_140_1_,
+        hproject3_.versionNum as versionNum140_1_,
+        hproject3_.slug as slug140_1_,
+        hproject3_.description as descript7_140_1_,
+        hproject3_.homeContent as homeCont8_140_1_,
+        hproject3_.name as name140_1_,
+        hproject3_.overrideLocales as overrid10_140_1_,
+        hproject3_.projecttype as projectt1_140_1_ 
+    from
+        HPerson hperson0_ 
+    left outer join
+        HAccount haccount1_ 
+            on hperson0_.accountId=haccount1_.id 
+    left outer join
+        HProject_Maintainer maintainer2_ 
+            on hperson0_.id=maintainer2_.personId 
+    left outer join
+        HProject hproject3_ 
+            on maintainer2_.projectId=hproject3_.id 
+    where
+        hperson0_.accountId=?
+17:53:23,323 INFO  [STDOUT] Hibernate: 
+    /* select
+        u 
+    from
+        org.zanata.model.HAccount u 
+    where
+        username = :username */ select
+            haccount0_.id as id151_,
+            haccount0_.creationDate as creation2_151_,
+            haccount0_.lastChanged as lastChan3_151_,
+            haccount0_.versionNum as versionNum151_,
+            haccount0_.apiKey as apiKey151_,
+            haccount0_.enabled as enabled151_,
+            haccount0_.passwordHash as password7_151_,
+            haccount0_.username as username151_ 
+        from
+            HAccount haccount0_ 
+        where
+            haccount0_.username=? limit ?
+17:53:23,324 INFO  [AuthenticationEvents] Account admin authenticated
+17:53:23,325 INFO  [STDOUT] Hibernate: 
+    /* select
+        u 
+    from
+        org.zanata.model.HAccount u 
+    where
+        username = :username */ select
+            haccount0_.id as id151_,
+            haccount0_.creationDate as creation2_151_,
+            haccount0_.lastChanged as lastChan3_151_,
+            haccount0_.versionNum as versionNum151_,
+            haccount0_.apiKey as apiKey151_,
+            haccount0_.enabled as enabled151_,
+            haccount0_.passwordHash as password7_151_,
+            haccount0_.username as username151_ 
+        from
+            HAccount haccount0_ 
+        where
+            haccount0_.username=? limit ?
+17:53:23,327 INFO  [STDOUT] Hibernate: 
+    /* load collection org.zanata.model.HAccount.roles */ select
+        roles0_.accountId as accountId1_,
+        roles0_.memberOf as memberOf1_,
+        haccountro1_.id as id138_0_,
+        haccountro1_.conditional as conditio2_138_0_,
+        haccountro1_.name as name138_0_ 
+    from
+        HAccountMembership roles0_ 
+    left outer join
+        HAccountRole haccountro1_ 
+            on roles0_.memberOf=haccountro1_.id 
+    where
+        roles0_.accountId=?
+17:53:23,330 INFO  [STDOUT] Hibernate: 
+    /* select
+        r 
+    from
+        org.zanata.model.HAccountRole r 
+    where
+        name = :role */ select
+            haccountro0_.id as id138_,
+            haccountro0_.conditional as conditio2_138_,
+            haccountro0_.name as name138_ 
+        from
+            HAccountRole haccountro0_ 
+        where
+            haccountro0_.name=? limit ?
+17:53:23,331 INFO  [STDOUT] Hibernate: 
+    /* load collection org.zanata.model.HAccountRole.groups */ select
+        groups0_.roleId as roleId1_,
+        groups0_.memberOf as memberOf1_,
+        haccountro1_.id as id138_0_,
+        haccountro1_.conditional as conditio2_138_0_,
+        haccountro1_.name as name138_0_ 
+    from
+        HAccountRoleGroup groups0_ 
+    left outer join
+        HAccountRole haccountro1_ 
+            on groups0_.memberOf=haccountro1_.id 
+    where
+        groups0_.roleId=?
+17:53:23,332 INFO  [STDOUT] Hibernate: 
+    /* select
+        r 
+    from
+        org.zanata.model.HAccountRole r 
+    where
+        name = :role */ select
+            haccountro0_.id as id138_,
+            haccountro0_.conditional as conditio2_138_,
+            haccountro0_.name as name138_ 
+        from
+            HAccountRole haccountro0_ 
+        where
+            haccountro0_.name=? limit ?
+17:53:23,333 INFO  [STDOUT] Hibernate: 
+    /* load collection org.zanata.model.HAccountRole.groups */ select
+        groups0_.roleId as roleId1_,
+        groups0_.memberOf as memberOf1_,
+        haccountro1_.id as id138_0_,
+        haccountro1_.conditional as conditio2_138_0_,
+        haccountro1_.name as name138_0_ 
+    from
+        HAccountRoleGroup groups0_ 
+    left outer join
+        HAccountRole haccountro1_ 
+            on groups0_.memberOf=haccountro1_.id 
+    where
+        groups0_.roleId=?
+17:53:23,566 INFO  [STDOUT] Hibernate: 
+    /* select
+        u 
+    from
+        org.zanata.model.HAccount u 
+    where
+        username = :username */ select
+            haccount0_.id as id151_,
+            haccount0_.creationDate as creation2_151_,
+            haccount0_.lastChanged as lastChan3_151_,
+            haccount0_.versionNum as versionNum151_,
+            haccount0_.apiKey as apiKey151_,
+            haccount0_.enabled as enabled151_,
+            haccount0_.passwordHash as password7_151_,
+            haccount0_.username as username151_ 
+        from
+            HAccount haccount0_ 
+        where
+            haccount0_.username=? limit ?
+17:53:23,567 INFO  [STDOUT] Hibernate: 
+    /* load org.zanata.model.HAccountActivationKey */ select
+        haccountac0_.keyHash as keyHash145_0_,
+        haccountac0_.accountId as accountId145_0_ 
+    from
+        HAccountActivationKey haccountac0_ 
+    where
+        haccountac0_.accountId=?
+17:53:23,567 INFO  [STDOUT] Hibernate: 
+    /* load org.zanata.model.HAccountResetPasswordKey */ select
+        haccountre0_.keyHash as keyHash157_0_,
+        haccountre0_.accountId as accountId157_0_ 
+    from
+        HAccountResetPasswordKey haccountre0_ 
+    where
+        haccountre0_.accountId=?
+17:53:23,567 INFO  [STDOUT] Hibernate: 
+    /* load org.zanata.model.HPerson */ select
+        hperson0_.id as id155_2_,
+        hperson0_.creationDate as creation2_155_2_,
+        hperson0_.lastChanged as lastChan3_155_2_,
+        hperson0_.versionNum as versionNum155_2_,
+        hperson0_.accountId as accountId155_2_,
+        hperson0_.email as email155_2_,
+        hperson0_.name as name155_2_,
+        haccount1_.id as id151_0_,
+        haccount1_.creationDate as creation2_151_0_,
+        haccount1_.lastChanged as lastChan3_151_0_,
+        haccount1_.versionNum as versionNum151_0_,
+        haccount1_.apiKey as apiKey151_0_,
+        haccount1_.enabled as enabled151_0_,
+        haccount1_.passwordHash as password7_151_0_,
+        haccount1_.username as username151_0_,
+        maintainer2_.personId as personId4_,
+        hproject3_.id as projectId4_,
+        hproject3_.id as id140_1_,
+        hproject3_.creationDate as creation3_140_1_,
+        hproject3_.lastChanged as lastChan4_140_1_,
+        hproject3_.versionNum as versionNum140_1_,
+        hproject3_.slug as slug140_1_,
+        hproject3_.description as descript7_140_1_,
+        hproject3_.homeContent as homeCont8_140_1_,
+        hproject3_.name as name140_1_,
+        hproject3_.overrideLocales as overrid10_140_1_,
+        hproject3_.projecttype as projectt1_140_1_ 
+    from
+        HPerson hperson0_ 
+    left outer join
+        HAccount haccount1_ 
+            on hperson0_.accountId=haccount1_.id 
+    left outer join
+        HProject_Maintainer maintainer2_ 
+            on hperson0_.id=maintainer2_.personId 
+    left outer join
+        HProject hproject3_ 
+            on maintainer2_.projectId=hproject3_.id 
+    where
+        hperson0_.accountId=?
+17:53:23,570 INFO  [STDOUT] Hibernate: 
+    /* select
+        u 
+    from
+        org.zanata.model.HAccount u 
+    where
+        username = :username */ select
+            haccount0_.id as id151_,
+            haccount0_.creationDate as creation2_151_,
+            haccount0_.lastChanged as lastChan3_151_,
+            haccount0_.versionNum as versionNum151_,
+            haccount0_.apiKey as apiKey151_,
+            haccount0_.enabled as enabled151_,
+            haccount0_.passwordHash as password7_151_,
+            haccount0_.username as username151_ 
+        from
+            HAccount haccount0_ 
+        where
+            haccount0_.username=? limit ?
+17:53:23,570 INFO  [AuthenticationEvents] Account admin authenticated
+17:53:23,571 INFO  [STDOUT] Hibernate: 
+    /* select
+        u 
+    from
+        org.zanata.model.HAccount u 
+    where
+        username = :username */ select
+            haccount0_.id as id151_,
+            haccount0_.creationDate as creation2_151_,
+            haccount0_.lastChanged as lastChan3_151_,
+            haccount0_.versionNum as versionNum151_,
+            haccount0_.apiKey as apiKey151_,
+            haccount0_.enabled as enabled151_,
+            haccount0_.passwordHash as password7_151_,
+            haccount0_.username as username151_ 
+        from
+            HAccount haccount0_ 
+        where
+            haccount0_.username=? limit ?
+17:53:23,572 INFO  [STDOUT] Hibernate: 
+    /* load collection org.zanata.model.HAccount.roles */ select
+        roles0_.accountId as accountId1_,
+        roles0_.memberOf as memberOf1_,
+        haccountro1_.id as id138_0_,
+        haccountro1_.conditional as conditio2_138_0_,
+        haccountro1_.name as name138_0_ 
+    from
+        HAccountMembership roles0_ 
+    left outer join
+        HAccountRole haccountro1_ 
+            on roles0_.memberOf=haccountro1_.id 
+    where
+        roles0_.accountId=?
+17:53:23,573 INFO  [STDOUT] Hibernate: 
+    /* select
+        r 
+    from
+        org.zanata.model.HAccountRole r 
+    where
+        name = :role */ select
+            haccountro0_.id as id138_,
+            haccountro0_.conditional as conditio2_138_,
+            haccountro0_.name as name138_ 
+        from
+            HAccountRole haccountro0_ 
+        where
+            haccountro0_.name=? limit ?
+17:53:23,574 INFO  [STDOUT] Hibernate: 
+    /* load collection org.zanata.model.HAccountRole.groups */ select
+        groups0_.roleId as roleId1_,
+        groups0_.memberOf as memberOf1_,
+        haccountro1_.id as id138_0_,
+        haccountro1_.conditional as conditio2_138_0_,
+        haccountro1_.name as name138_0_ 
+    from
+        HAccountRoleGroup groups0_ 
+    left outer join
+        HAccountRole haccountro1_ 
+            on groups0_.memberOf=haccountro1_.id 
+    where
+        groups0_.roleId=?
+17:53:23,575 INFO  [STDOUT] Hibernate: 
+    /* select
+        r 
+    from
+        org.zanata.model.HAccountRole r 
+    where
+        name = :role */ select
+            haccountro0_.id as id138_,
+            haccountro0_.conditional as conditio2_138_,
+            haccountro0_.name as name138_ 
+        from
+            HAccountRole haccountro0_ 
+        where
+            haccountro0_.name=? limit ?
+17:53:23,575 INFO  [STDOUT] Hibernate: 
+    /* load collection org.zanata.model.HAccountRole.groups */ select
+        groups0_.roleId as roleId1_,
+        groups0_.memberOf as memberOf1_,
+        haccountro1_.id as id138_0_,
+        haccountro1_.conditional as conditio2_138_0_,
+        haccountro1_.name as name138_0_ 
+    from
+        HAccountRoleGroup groups0_ 
+    left outer join
+        HAccountRole haccountro1_ 
+            on groups0_.memberOf=haccountro1_.id 
+    where
+        groups0_.roleId=?
+17:53:23,578 INFO  [STDOUT] Hibernate: 
+    /* criteria query */ select
+        this_.id as id140_0_,
+        this_.creationDate as creation3_140_0_,
+        this_.lastChanged as lastChan4_140_0_,
+        this_.versionNum as versionNum140_0_,
+        this_.slug as slug140_0_,
+        this_.description as descript7_140_0_,
+        this_.homeContent as homeCont8_140_0_,
+        this_.name as name140_0_,
+        this_.overrideLocales as overrid10_140_0_,
+        this_.projecttype as projectt1_140_0_ 
+    from
+        HProject this_ 
+    where
+        (
+            this_.slug=?
+        )
+17:53:23,580 INFO  [STDOUT] Hibernate: 
+    /* criteria query */ select
+        this_.id as id147_2_,
+        this_.creationDate as creation2_147_2_,
+        this_.lastChanged as lastChan3_147_2_,
+        this_.versionNum as versionNum147_2_,
+        this_.slug as slug147_2_,
+        this_.active as active147_2_,
+        this_.overrideLocales as override7_147_2_,
+        this_.parentId as parentId147_2_,
+        this_.project_id as project9_147_2_,
+        hprojectit2_.id as id147_0_,
+        hprojectit2_.creationDate as creation2_147_0_,
+        hprojectit2_.lastChanged as lastChan3_147_0_,
+        hprojectit2_.versionNum as versionNum147_0_,
+        hprojectit2_.slug as slug147_0_,
+        hprojectit2_.active as active147_0_,
+        hprojectit2_.overrideLocales as override7_147_0_,
+        hprojectit2_.parentId as parentId147_0_,
+        hprojectit2_.project_id as project9_147_0_,
+        hiteration3_.id as id140_1_,
+        hiteration3_.creationDate as creation3_140_1_,
+        hiteration3_.lastChanged as lastChan4_140_1_,
+        hiteration3_.versionNum as versionNum140_1_,
+        hiteration3_.slug as slug140_1_,
+        hiteration3_.description as descript7_140_1_,
+        hiteration3_.homeContent as homeCont8_140_1_,
+        hiteration3_.name as name140_1_,
+        hiteration3_.overrideLocales as overrid10_140_1_ 
+    from
+        HProjectIteration this_ 
+    left outer join
+        HProjectIteration hprojectit2_ 
+            on this_.parentId=hprojectit2_.id 
+    inner join
+        HProject hiteration3_ 
+            on this_.project_id=hiteration3_.id 
+    where
+        (
+            this_.project_id=? 
+            and this_.slug=?
+        )
+17:53:23,581 INFO  [STDOUT] Hibernate: 
+    /* select
+        d.revision 
+    from
+        HDocument d 
+    where
+        d.projectIteration =:iteration 
+        and d.obsolete = false */ select
+            hdocument0_.revision as col_0_0_ 
+        from
+            HDocument hdocument0_ 
+        where
+            hdocument0_.project_iteration_id=? 
+            and hdocument0_.obsolete=0
+17:53:23,582 INFO  [STDOUT] Hibernate: 
+    /* load one-to-many org.zanata.model.HProjectIteration.documents */ select
+        documents0_.project_iteration_id as project14_3_,
+        documents0_.id as id3_,
+        documents0_.docId as formula23_3_,
+        documents0_.id as id142_2_,
+        documents0_.creationDate as creation2_142_2_,
+        documents0_.lastChanged as lastChan3_142_2_,
+        documents0_.versionNum as versionNum142_2_,
+        documents0_.contentType as contentT5_142_2_,
+        documents0_.docId as docId142_2_,
+        documents0_.last_modified_by_id as last11_142_2_,
+        documents0_.locale as locale142_2_,
+        documents0_.name as name142_2_,
+        documents0_.obsolete as obsolete142_2_,
+        documents0_.path as path142_2_,
+        documents0_.poHeader_id as poHeader13_142_2_,
+        documents0_.project_iteration_id as project14_142_2_,
+        documents0_.revision as revision142_2_,
+        hperson1_.id as id155_0_,
+        hperson1_.creationDate as creation2_155_0_,
+        hperson1_.lastChanged as lastChan3_155_0_,
+        hperson1_.versionNum as versionNum155_0_,
+        hperson1_.accountId as accountId155_0_,
+        hperson1_.email as email155_0_,
+        hperson1_.name as name155_0_,
+        hlocale2_.id as id148_1_,
+        hlocale2_.creationDate as creation2_148_1_,
+        hlocale2_.lastChanged as lastChan3_148_1_,
+        hlocale2_.versionNum as versionNum148_1_,
+        hlocale2_.active as active148_1_,
+        hlocale2_.localeId as localeId148_1_ 
+    from
+        HDocument documents0_ 
+    left outer join
+        HPerson hperson1_ 
+            on documents0_.last_modified_by_id=hperson1_.id 
+    inner join
+        HLocale hlocale2_ 
+            on documents0_.locale=hlocale2_.id 
+    where
+        (
+            documents0_.obsolete=0
+        )  
+        and documents0_.project_iteration_id=? 
+    order by
+        documents0_.path asc,
+        documents0_.name asc
+17:53:23,671 INFO  [STDOUT] Hibernate: 
+    /* select
+        u 
+    from
+        org.zanata.model.HAccount u 
+    where
+        username = :username */ select
+            haccount0_.id as id151_,
+            haccount0_.creationDate as creation2_151_,
+            haccount0_.lastChanged as lastChan3_151_,
+            haccount0_.versionNum as versionNum151_,
+            haccount0_.apiKey as apiKey151_,
+            haccount0_.enabled as enabled151_,
+            haccount0_.passwordHash as password7_151_,
+            haccount0_.username as username151_ 
+        from
+            HAccount haccount0_ 
+        where
+            haccount0_.username=? limit ?
+17:53:23,673 INFO  [STDOUT] Hibernate: 
+    /* load org.zanata.model.HAccountActivationKey */ select
+        haccountac0_.keyHash as keyHash145_0_,
+        haccountac0_.accountId as accountId145_0_ 
+    from
+        HAccountActivationKey haccountac0_ 
+    where
+        haccountac0_.accountId=?
+17:53:23,674 INFO  [STDOUT] Hibernate: 
+    /* load org.zanata.model.HAccountResetPasswordKey */ select
+        haccountre0_.keyHash as keyHash157_0_,
+        haccountre0_.accountId as accountId157_0_ 
+    from
+        HAccountResetPasswordKey haccountre0_ 
+    where
+        haccountre0_.accountId=?
+17:53:23,675 INFO  [STDOUT] Hibernate: 
+    /* load org.zanata.model.HPerson */ select
+        hperson0_.id as id155_2_,
+        hperson0_.creationDate as creation2_155_2_,
+        hperson0_.lastChanged as lastChan3_155_2_,
+        hperson0_.versionNum as versionNum155_2_,
+        hperson0_.accountId as accountId155_2_,
+        hperson0_.email as email155_2_,
+        hperson0_.name as name155_2_,
+        haccount1_.id as id151_0_,
+        haccount1_.creationDate as creation2_151_0_,
+        haccount1_.lastChanged as lastChan3_151_0_,
+        haccount1_.versionNum as versionNum151_0_,
+        haccount1_.apiKey as apiKey151_0_,
+        haccount1_.enabled as enabled151_0_,
+        haccount1_.passwordHash as password7_151_0_,
+        haccount1_.username as username151_0_,
+        maintainer2_.personId as personId4_,
+        hproject3_.id as projectId4_,
+        hproject3_.id as id140_1_,
+        hproject3_.creationDate as creation3_140_1_,
+        hproject3_.lastChanged as lastChan4_140_1_,
+        hproject3_.versionNum as versionNum140_1_,
+        hproject3_.slug as slug140_1_,
+        hproject3_.description as descript7_140_1_,
+        hproject3_.homeContent as homeCont8_140_1_,
+        hproject3_.name as name140_1_,
+        hproject3_.overrideLocales as overrid10_140_1_,
+        hproject3_.projecttype as projectt1_140_1_ 
+    from
+        HPerson hperson0_ 
+    left outer join
+        HAccount haccount1_ 
+            on hperson0_.accountId=haccount1_.id 
+    left outer join
+        HProject_Maintainer maintainer2_ 
+            on hperson0_.id=maintainer2_.personId 
+    left outer join
+        HProject hproject3_ 
+            on maintainer2_.projectId=hproject3_.id 
+    where
+        hperson0_.accountId=?
+17:53:23,678 INFO  [STDOUT] Hibernate: 
+    /* select
+        u 
+    from
+        org.zanata.model.HAccount u 
+    where
+        username = :username */ select
+            haccount0_.id as id151_,
+            haccount0_.creationDate as creation2_151_,
+            haccount0_.lastChanged as lastChan3_151_,
+            haccount0_.versionNum as versionNum151_,
+            haccount0_.apiKey as apiKey151_,
+            haccount0_.enabled as enabled151_,
+            haccount0_.passwordHash as password7_151_,
+            haccount0_.username as username151_ 
+        from
+            HAccount haccount0_ 
+        where
+            haccount0_.username=? limit ?
+17:53:23,679 INFO  [AuthenticationEvents] Account admin authenticated
+17:53:23,680 INFO  [STDOUT] Hibernate: 
+    /* select
+        u 
+    from
+        org.zanata.model.HAccount u 
+    where
+        username = :username */ select
+            haccount0_.id as id151_,
+            haccount0_.creationDate as creation2_151_,
+            haccount0_.lastChanged as lastChan3_151_,
+            haccount0_.versionNum as versionNum151_,
+            haccount0_.apiKey as apiKey151_,
+            haccount0_.enabled as enabled151_,
+            haccount0_.passwordHash as password7_151_,
+            haccount0_.username as username151_ 
+        from
+            HAccount haccount0_ 
+        where
+            haccount0_.username=? limit ?
+17:53:23,681 INFO  [STDOUT] Hibernate: 
+    /* load collection org.zanata.model.HAccount.roles */ select
+        roles0_.accountId as accountId1_,
+        roles0_.memberOf as memberOf1_,
+        haccountro1_.id as id138_0_,
+        haccountro1_.conditional as conditio2_138_0_,
+        haccountro1_.name as name138_0_ 
+    from
+        HAccountMembership roles0_ 
+    left outer join
+        HAccountRole haccountro1_ 
+            on roles0_.memberOf=haccountro1_.id 
+    where
+        roles0_.accountId=?
+17:53:23,682 INFO  [STDOUT] Hibernate: 
+    /* select
+        r 
+    from
+        org.zanata.model.HAccountRole r 
+    where
+        name = :role */ select
+            haccountro0_.id as id138_,
+            haccountro0_.conditional as conditio2_138_,
+            haccountro0_.name as name138_ 
+        from
+            HAccountRole haccountro0_ 
+        where
+            haccountro0_.name=? limit ?
+17:53:23,683 INFO  [STDOUT] Hibernate: 
+    /* load collection org.zanata.model.HAccountRole.groups */ select
+        groups0_.roleId as roleId1_,
+        groups0_.memberOf as memberOf1_,
+        haccountro1_.id as id138_0_,
+        haccountro1_.conditional as conditio2_138_0_,
+        haccountro1_.name as name138_0_ 
+    from
+        HAccountRoleGroup groups0_ 
+    left outer join
+        HAccountRole haccountro1_ 
+            on groups0_.memberOf=haccountro1_.id 
+    where
+        groups0_.roleId=?
+17:53:23,684 INFO  [STDOUT] Hibernate: 
+    /* select
+        r 
+    from
+        org.zanata.model.HAccountRole r 
+    where
+        name = :role */ select
+            haccountro0_.id as id138_,
+            haccountro0_.conditional as conditio2_138_,
+            haccountro0_.name as name138_ 
+        from
+            HAccountRole haccountro0_ 
+        where
+            haccountro0_.name=? limit ?
+17:53:23,685 INFO  [STDOUT] Hibernate: 
+    /* load collection org.zanata.model.HAccountRole.groups */ select
+        groups0_.roleId as roleId1_,
+        groups0_.memberOf as memberOf1_,
+        haccountro1_.id as id138_0_,
+        haccountro1_.conditional as conditio2_138_0_,
+        haccountro1_.name as name138_0_ 
+    from
+        HAccountRoleGroup groups0_ 
+    left outer join
+        HAccountRole haccountro1_ 
+            on groups0_.memberOf=haccountro1_.id 
+    where
+        groups0_.roleId=?
+17:53:23,689 INFO  [STDOUT] Hibernate: 
+    /* criteria query */ select
+        this_.id as id140_0_,
+        this_.creationDate as creation3_140_0_,
+        this_.lastChanged as lastChan4_140_0_,
+        this_.versionNum as versionNum140_0_,
+        this_.slug as slug140_0_,
+        this_.description as descript7_140_0_,
+        this_.homeContent as homeCont8_140_0_,
+        this_.name as name140_0_,
+        this_.overrideLocales as overrid10_140_0_,
+        this_.projecttype as projectt1_140_0_ 
+    from
+        HProject this_ 
+    where
+        (
+            this_.slug=?
+        )
+17:53:23,690 INFO  [STDOUT] Hibernate: 
+    /* criteria query */ select
+        this_.id as id147_2_,
+        this_.creationDate as creation2_147_2_,
+        this_.lastChanged as lastChan3_147_2_,
+        this_.versionNum as versionNum147_2_,
+        this_.slug as slug147_2_,
+        this_.active as active147_2_,
+        this_.overrideLocales as override7_147_2_,
+        this_.parentId as parentId147_2_,
+        this_.project_id as project9_147_2_,
+        hprojectit2_.id as id147_0_,
+        hprojectit2_.creationDate as creation2_147_0_,
+        hprojectit2_.lastChanged as lastChan3_147_0_,
+        hprojectit2_.versionNum as versionNum147_0_,
+        hprojectit2_.slug as slug147_0_,
+        hprojectit2_.active as active147_0_,
+        hprojectit2_.overrideLocales as override7_147_0_,
+        hprojectit2_.parentId as parentId147_0_,
+        hprojectit2_.project_id as project9_147_0_,
+        hiteration3_.id as id140_1_,
+        hiteration3_.creationDate as creation3_140_1_,
+        hiteration3_.lastChanged as lastChan4_140_1_,
+        hiteration3_.versionNum as versionNum140_1_,
+        hiteration3_.slug as slug140_1_,
+        hiteration3_.description as descript7_140_1_,
+        hiteration3_.homeContent as homeCont8_140_1_,
+        hiteration3_.name as name140_1_,
+        hiteration3_.overrideLocales as overrid10_140_1_ 
+    from
+        HProjectIteration this_ 
+    left outer join
+        HProjectIteration hprojectit2_ 
+            on this_.parentId=hprojectit2_.id 
+    inner join
+        HProject hiteration3_ 
+            on this_.project_id=hiteration3_.id 
+    where
+        (
+            this_.project_id=? 
+            and this_.slug=?
+        )
+17:53:23,709 INFO  [STDOUT] Hibernate: 
+    /* DocumentDAO.getById */ /* criteria query */ select
+        this_.id as id142_3_,
+        this_.creationDate as creation2_142_3_,
+        this_.lastChanged as lastChan3_142_3_,
+        this_.versionNum as versionNum142_3_,
+        this_.contentType as contentT5_142_3_,
+        this_.docId as docId142_3_,
+        this_.last_modified_by_id as last11_142_3_,
+        this_.locale as locale142_3_,
+        this_.name as name142_3_,
+        this_.obsolete as obsolete142_3_,
+        this_.path as path142_3_,
+        this_.poHeader_id as poHeader13_142_3_,
+        this_.project_iteration_id as project14_142_3_,
+        this_.revision as revision142_3_,
+        hperson2_.id as id155_0_,
+        hperson2_.creationDate as creation2_155_0_,
+        hperson2_.lastChanged as lastChan3_155_0_,
+        hperson2_.versionNum as versionNum155_0_,
+        hperson2_.accountId as accountId155_0_,
+        hperson2_.email as email155_0_,
+        hperson2_.name as name155_0_,
+        hlocale3_.id as id148_1_,
+        hlocale3_.creationDate as creation2_148_1_,
+        hlocale3_.lastChanged as lastChan3_148_1_,
+        hlocale3_.versionNum as versionNum148_1_,
+        hlocale3_.active as active148_1_,
+        hlocale3_.localeId as localeId148_1_,
+        hprojectit4_.id as id147_2_,
+        hprojectit4_.creationDate as creation2_147_2_,
+        hprojectit4_.lastChanged as lastChan3_147_2_,
+        hprojectit4_.versionNum as versionNum147_2_,
+        hprojectit4_.slug as slug147_2_,
+        hprojectit4_.active as active147_2_,
+        hprojectit4_.overrideLocales as override7_147_2_,
+        hprojectit4_.parentId as parentId147_2_,
+        hprojectit4_.project_id as project9_147_2_ 
+    from
+        HDocument this_ 
+    left outer join
+        HPerson hperson2_ 
+            on this_.last_modified_by_id=hperson2_.id 
+    inner join
+        HLocale hlocale3_ 
+            on this_.locale=hlocale3_.id 
+    inner join
+        HProjectIteration hprojectit4_ 
+            on this_.project_iteration_id=hprojectit4_.id 
+    where
+        (
+            this_.docId=? 
+            and this_.project_iteration_id=?
+        )
+17:53:23,711 INFO  [STDOUT] Hibernate: 
+    /* criteria query */ select
+        this_.id as id148_0_,
+        this_.creationDate as creation2_148_0_,
+        this_.lastChanged as lastChan3_148_0_,
+        this_.versionNum as versionNum148_0_,
+        this_.active as active148_0_,
+        this_.localeId as localeId148_0_ 
+    from
+        HLocale this_ 
+    where
+        (
+            this_.localeId=?
+        )
+17:53:23,712 INFO  [STDOUT] Hibernate: 
+    /* load one-to-many org.zanata.model.HProjectIteration.documents */ select
+        documents0_.project_iteration_id as project14_3_,
+        documents0_.id as id3_,
+        documents0_.docId as formula23_3_,
+        documents0_.id as id142_2_,
+        documents0_.creationDate as creation2_142_2_,
+        documents0_.lastChanged as lastChan3_142_2_,
+        documents0_.versionNum as versionNum142_2_,
+        documents0_.contentType as contentT5_142_2_,
+        documents0_.docId as docId142_2_,
+        documents0_.last_modified_by_id as last11_142_2_,
+        documents0_.locale as locale142_2_,
+        documents0_.name as name142_2_,
+        documents0_.obsolete as obsolete142_2_,
+        documents0_.path as path142_2_,
+        documents0_.poHeader_id as poHeader13_142_2_,
+        documents0_.project_iteration_id as project14_142_2_,
+        documents0_.revision as revision142_2_,
+        hperson1_.id as id155_0_,
+        hperson1_.creationDate as creation2_155_0_,
+        hperson1_.lastChanged as lastChan3_155_0_,
+        hperson1_.versionNum as versionNum155_0_,
+        hperson1_.accountId as accountId155_0_,
+        hperson1_.email as email155_0_,
+        hperson1_.name as name155_0_,
+        hlocale2_.id as id148_1_,
+        hlocale2_.creationDate as creation2_148_1_,
+        hlocale2_.lastChanged as lastChan3_148_1_,
+        hlocale2_.versionNum as versionNum148_1_,
+        hlocale2_.active as active148_1_,
+        hlocale2_.localeId as localeId148_1_ 
+    from
+        HDocument documents0_ 
+    left outer join
+        HPerson hperson1_ 
+            on documents0_.last_modified_by_id=hperson1_.id 
+    inner join
+        HLocale hlocale2_ 
+            on documents0_.locale=hlocale2_.id 
+    where
+        (
+            documents0_.obsolete=0
+        )  
+        and documents0_.project_iteration_id=? 
+    order by
+        documents0_.path asc,
+        documents0_.name asc
+17:53:23,729 INFO  [STDOUT] Hibernate: 
+    /* insert org.zanata.model.HDocument
+        */ insert 
+        into
+            HDocument
+            (creationDate, lastChanged, versionNum, contentType, docId, last_modified_by_id, locale, name, obsolete, path, poHeader_id, project_iteration_id, revision) 
+        values
+            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+17:53:23,730 INFO  [HDocument] persist entity: HDocument(name:doc0 path:org/zanata/ docID:org/zanata/doc0 locale:HLocale(id=1 en-US) rev:1)
+17:53:23,730 INFO  [STDOUT] Hibernate: 
+    /* insert org.zanata.model.HSimpleComment
+        */ insert 
+        into
+            HSimpleComment
+            (comment) 
+        values
+            (?)
+17:53:23,731 INFO  [STDOUT] Hibernate: 
+    /* insert org.zanata.model.HTextFlow
+        */ insert 
+        into
+            HTextFlow
+            (comment_id, content, obsolete, potEntryData_id, resId, revision, wordCount, document_id, pos) 
+        values
+            (?, ?, ?, ?, ?, ?, ?, ?, ?)
+17:53:23,731 INFO  [STDOUT] Hibernate: 
+    /* insert org.zanata.model.HSimpleComment
+        */ insert 
+        into
+            HSimpleComment
+            (comment) 
+        values
+            (?)
+17:53:23,731 INFO  [STDOUT] Hibernate: 
+    /* insert org.zanata.model.HTextFlow
+        */ insert 
+        into
+            HTextFlow
+            (comment_id, content, obsolete, potEntryData_id, resId, revision, wordCount, document_id, pos) 
+        values
+            (?, ?, ?, ?, ?, ?, ?, ?, ?)
+17:53:23,732 INFO  [STDOUT] Hibernate: 
+    /* update
+        org.zanata.model.HProjectIteration */ update
+            HProjectIteration 
+        set
+            creationDate=?,
+            lastChanged=?,
+            versionNum=?,
+            active=?,
+            overrideLocales=?,
+            parentId=? 
+        where
+            id=? 
+            and versionNum=?
+17:53:23,733 INFO  [STDOUT] Hibernate: 
+    /* create one-to-many row org.zanata.model.HDocument.textFlows */ update
+        HTextFlow 
+    set
+        document_id=?,
+        pos=? 
+    where
+        id=?
+17:53:23,733 INFO  [STDOUT] Hibernate: 
+    /* create one-to-many row org.zanata.model.HDocument.textFlows */ update
+        HTextFlow 
+    set
+        document_id=?,
+        pos=? 
+    where
+        id=?
+17:53:23,735 INFO  [STDOUT] Hibernate: 
+    /* DocumentDAO.getById */ /* criteria query */ select
+        this_.id as id142_3_,
+        this_.creationDate as creation2_142_3_,
+        this_.lastChanged as lastChan3_142_3_,
+        this_.versionNum as versionNum142_3_,
+        this_.contentType as contentT5_142_3_,
+        this_.docId as docId142_3_,
+        this_.last_modified_by_id as last11_142_3_,
+        this_.locale as locale142_3_,
+        this_.name as name142_3_,
+        this_.obsolete as obsolete142_3_,
+        this_.path as path142_3_,
+        this_.poHeader_id as poHeader13_142_3_,
+        this_.project_iteration_id as project14_142_3_,
+        this_.revision as revision142_3_,
+        hperson2_.id as id155_0_,
+        hperson2_.creationDate as creation2_155_0_,
+        hperson2_.lastChanged as lastChan3_155_0_,
+        hperson2_.versionNum as versionNum155_0_,
+        hperson2_.accountId as accountId155_0_,
+        hperson2_.email as email155_0_,
+        hperson2_.name as name155_0_,
+        hlocale3_.id as id148_1_,
+        hlocale3_.creationDate as creation2_148_1_,
+        hlocale3_.lastChanged as lastChan3_148_1_,
+        hlocale3_.versionNum as versionNum148_1_,
+        hlocale3_.active as active148_1_,
+        hlocale3_.localeId as localeId148_1_,
+        hprojectit4_.id as id147_2_,
+        hprojectit4_.creationDate as creation2_147_2_,
+        hprojectit4_.lastChanged as lastChan3_147_2_,
+        hprojectit4_.versionNum as versionNum147_2_,
+        hprojectit4_.slug as slug147_2_,
+        hprojectit4_.active as active147_2_,
+        hprojectit4_.overrideLocales as override7_147_2_,
+        hprojectit4_.parentId as parentId147_2_,
+        hprojectit4_.project_id as project9_147_2_ 
+    from
+        HDocument this_ 
+    left outer join
+        HPerson hperson2_ 
+            on this_.last_modified_by_id=hperson2_.id 
+    inner join
+        HLocale hlocale3_ 
+            on this_.locale=hlocale3_.id 
+    inner join
+        HProjectIteration hprojectit4_ 
+            on this_.project_iteration_id=hprojectit4_.id 
+    where
+        (
+            this_.docId=? 
+            and this_.project_iteration_id=?
+        )
+17:53:23,884 INFO  [STDOUT] Hibernate: 
+    /* UPGRADE lock org.zanata.model.HDocument */ select
+        id 
+    from
+        HDocument 
+    where
+        id =? 
+        and versionNum =? for update
+            
+17:53:23,885 INFO  [CopyTransServiceImpl] copyTrans start: document "org/zanata/doc0"
+17:53:23,886 INFO  [STDOUT] Hibernate: 
+    /* criteria query */ select
+        this_.id as id140_0_,
+        this_.creationDate as creation3_140_0_,
+        this_.lastChanged as lastChan4_140_0_,
+        this_.versionNum as versionNum140_0_,
+        this_.slug as slug140_0_,
+        this_.description as descript7_140_0_,
+        this_.homeContent as homeCont8_140_0_,
+        this_.name as name140_0_,
+        this_.overrideLocales as overrid10_140_0_,
+        this_.projecttype as projectt1_140_0_ 
+    from
+        HProject this_ 
+    where
+        (
+            this_.slug=?
+        )
+17:53:23,887 INFO  [STDOUT] Hibernate: 
+    /* criteria query */ select
+        this_.id as id147_2_,
+        this_.creationDate as creation2_147_2_,
+        this_.lastChanged as lastChan3_147_2_,
+        this_.versionNum as versionNum147_2_,
+        this_.slug as slug147_2_,
+        this_.active as active147_2_,
+        this_.overrideLocales as override7_147_2_,
+        this_.parentId as parentId147_2_,
+        this_.project_id as project9_147_2_,
+        hprojectit2_.id as id147_0_,
+        hprojectit2_.creationDate as creation2_147_0_,
+        hprojectit2_.lastChanged as lastChan3_147_0_,
+        hprojectit2_.versionNum as versionNum147_0_,
+        hprojectit2_.slug as slug147_0_,
+        hprojectit2_.active as active147_0_,
+        hprojectit2_.overrideLocales as override7_147_0_,
+        hprojectit2_.parentId as parentId147_0_,
+        hprojectit2_.project_id as project9_147_0_,
+        hiteration3_.id as id140_1_,
+        hiteration3_.creationDate as creation3_140_1_,
+        hiteration3_.lastChanged as lastChan4_140_1_,
+        hiteration3_.versionNum as versionNum140_1_,
+        hiteration3_.slug as slug140_1_,
+        hiteration3_.description as descript7_140_1_,
+        hiteration3_.homeContent as homeCont8_140_1_,
+        hiteration3_.name as name140_1_,
+        hiteration3_.overrideLocales as overrid10_140_1_ 
+    from
+        HProjectIteration this_ 
+    left outer join
+        HProjectIteration hprojectit2_ 
+            on this_.parentId=hprojectit2_.id 
+    inner join
+        HProject hiteration3_ 
+            on this_.project_id=hiteration3_.id 
+    where
+        (
+            this_.project_id=? 
+            and this_.slug=?
+        )
+17:53:23,889 INFO  [STDOUT] Hibernate: 
+    /* ProjectDAO.getBySlug */ /* criteria query */ select
+        this_.id as id140_0_,
+        this_.creationDate as creation3_140_0_,
+        this_.lastChanged as lastChan4_140_0_,
+        this_.versionNum as versionNum140_0_,
+        this_.slug as slug140_0_,
+        this_.description as descript7_140_0_,
+        this_.homeContent as homeCont8_140_0_,
+        this_.name as name140_0_,
+        this_.overrideLocales as overrid10_140_0_,
+        this_.projecttype as projectt1_140_0_ 
+    from
+        HProject this_ 
+    where
+        (
+            this_.slug=?
+        )
+17:53:23,891 INFO  [STDOUT] Hibernate: 
+    /* criteria query */ select
+        this_.id as id148_0_,
+        this_.creationDate as creation2_148_0_,
+        this_.lastChanged as lastChan3_148_0_,
+        this_.versionNum as versionNum148_0_,
+        this_.active as active148_0_,
+        this_.localeId as localeId148_0_ 
+    from
+        HLocale this_ 
+    where
+        this_.active=?
+17:53:23,895 INFO  [STDOUT] Hibernate: 
+    /* select
+        t 
+    from
+        HTextFlowTarget t 
+    where
+        t.textFlow.resId = :resid 
+        and t.textFlow.content = :content 
+        and t.textFlow.document.docId =:docId 
+        and t.locale = :locale 
+        and t.state = :state 
+    order by
+        t.lastChanged desc */ select
+            htextflowt0_.id as id149_,
+            htextflowt0_.creationDate as creation2_149_,
+            htextflowt0_.lastChanged as lastChan3_149_,
+            htextflowt0_.versionNum as versionNum149_,
+            htextflowt0_.comment_id as comment8_149_,
+            htextflowt0_.content as content149_,
+            htextflowt0_.last_modified_by_id as last9_149_,
+            htextflowt0_.locale as locale149_,
+            htextflowt0_.state as state149_,
+            htextflowt0_.tf_id as tf11_149_,
+            htextflowt0_.tf_revision as tf7_149_ 
+        from
+            HTextFlowTarget htextflowt0_,
+            HTextFlow htextflow1_,
+            HDocument hdocument4_ 
+        where
+            htextflowt0_.tf_id=htextflow1_.id 
+            and htextflow1_.document_id=hdocument4_.id 
+            and htextflow1_.resId=? 
+            and htextflow1_.content=? 
+            and hdocument4_.docId=? 
+            and htextflowt0_.locale=? 
+            and htextflowt0_.state=? 
+        order by
+            htextflowt0_.lastChanged desc limit ?
+17:53:23,898 INFO  [STDOUT] Hibernate: 
+    /* select
+        t 
+    from
+        HTextFlowTarget t 
+    where
+        t.textFlow.resId = :resid 
+        and t.textFlow.content = :content 
+        and t.textFlow.document.docId =:docId 
+        and t.locale = :locale 
+        and t.state = :state 
+    order by
+        t.lastChanged desc */ select
+            htextflowt0_.id as id149_,
+            htextflowt0_.creationDate as creation2_149_,
+            htextflowt0_.lastChanged as lastChan3_149_,
+            htextflowt0_.versionNum as versionNum149_,
+            htextflowt0_.comment_id as comment8_149_,
+            htextflowt0_.content as content149_,
+            htextflowt0_.last_modified_by_id as last9_149_,
+            htextflowt0_.locale as locale149_,
+            htextflowt0_.state as state149_,
+            htextflowt0_.tf_id as tf11_149_,
+            htextflowt0_.tf_revision as tf7_149_ 
+        from
+            HTextFlowTarget htextflowt0_,
+            HTextFlow htextflow1_,
+            HDocument hdocument4_ 
+        where
+            htextflowt0_.tf_id=htextflow1_.id 
+            and htextflow1_.document_id=hdocument4_.id 
+            and htextflow1_.resId=? 
+            and htextflow1_.content=? 
+            and hdocument4_.docId=? 
+            and htextflowt0_.locale=? 
+            and htextflowt0_.state=? 
+        order by
+            htextflowt0_.lastChanged desc limit ?
+17:53:23,902 INFO  [CopyTransServiceImpl] copyTrans: 0 en-US translations for document "org/zanata/doc0" 
+17:53:23,904 INFO  [STDOUT] Hibernate: 
+    /* select
+        t 
+    from
+        HTextFlowTarget t 
+    where
+        t.textFlow.resId = :resid 
+        and t.textFlow.content = :content 
+        and t.textFlow.document.docId =:docId 
+        and t.locale = :locale 
+        and t.state = :state 
+    order by
+        t.lastChanged desc */ select
+            htextflowt0_.id as id149_,
+            htextflowt0_.creationDate as creation2_149_,
+            htextflowt0_.lastChanged as lastChan3_149_,
+            htextflowt0_.versionNum as versionNum149_,
+            htextflowt0_.comment_id as comment8_149_,
+            htextflowt0_.content as content149_,
+            htextflowt0_.last_modified_by_id as last9_149_,
+            htextflowt0_.locale as locale149_,
+            htextflowt0_.state as state149_,
+            htextflowt0_.tf_id as tf11_149_,
+            htextflowt0_.tf_revision as tf7_149_ 
+        from
+            HTextFlowTarget htextflowt0_,
+            HTextFlow htextflow1_,
+            HDocument hdocument4_ 
+        where
+            htextflowt0_.tf_id=htextflow1_.id 
+            and htextflow1_.document_id=hdocument4_.id 
+            and htextflow1_.resId=? 
+            and htextflow1_.content=? 
+            and hdocument4_.docId=? 
+            and htextflowt0_.locale=? 
+            and htextflowt0_.state=? 
+        order by
+            htextflowt0_.lastChanged desc limit ?
+17:53:23,908 INFO  [STDOUT] Hibernate: 
+    /* select
+        t 
+    from
+        HTextFlowTarget t 
+    where
+        t.textFlow.resId = :resid 
+        and t.textFlow.content = :content 
+        and t.textFlow.document.docId =:docId 
+        and t.locale = :locale 
+        and t.state = :state 
+    order by
+        t.lastChanged desc */ select
+            htextflowt0_.id as id149_,
+            htextflowt0_.creationDate as creation2_149_,
+            htextflowt0_.lastChanged as lastChan3_149_,
+            htextflowt0_.versionNum as versionNum149_,
+            htextflowt0_.comment_id as comment8_149_,
+            htextflowt0_.content as content149_,
+            htextflowt0_.last_modified_by_id as last9_149_,
+            htextflowt0_.locale as locale149_,
+            htextflowt0_.state as state149_,
+            htextflowt0_.tf_id as tf11_149_,
+            htextflowt0_.tf_revision as tf7_149_ 
+        from
+            HTextFlowTarget htextflowt0_,
+            HTextFlow htextflow1_,
+            HDocument hdocument4_ 
+        where
+            htextflowt0_.tf_id=htextflow1_.id 
+            and htextflow1_.document_id=hdocument4_.id 
+            and htextflow1_.resId=? 
+            and htextflow1_.content=? 
+            and hdocument4_.docId=? 
+            and htextflowt0_.locale=? 
+            and htextflowt0_.state=? 
+        order by
+            htextflowt0_.lastChanged desc limit ?
+17:53:23,913 INFO  [CopyTransServiceImpl] copyTrans: 0 ar translations for document "org/zanata/doc0" 
+17:53:23,915 INFO  [STDOUT] Hibernate: 
+    /* select
+        t 
+    from
+        HTextFlowTarget t 
+    where
+        t.textFlow.resId = :resid 
+        and t.textFlow.content = :content 
+        and t.textFlow.document.docId =:docId 
+        and t.locale = :locale 
+        and t.state = :state 
+    order by
+        t.lastChanged desc */ select
+            htextflowt0_.id as id149_,
+            htextflowt0_.creationDate as creation2_149_,
+            htextflowt0_.lastChanged as lastChan3_149_,
+            htextflowt0_.versionNum as versionNum149_,
+            htextflowt0_.comment_id as comment8_149_,
+            htextflowt0_.content as content149_,
+            htextflowt0_.last_modified_by_id as last9_149_,
+            htextflowt0_.locale as locale149_,
+            htextflowt0_.state as state149_,
+            htextflowt0_.tf_id as tf11_149_,
+            htextflowt0_.tf_revision as tf7_149_ 
+        from
+            HTextFlowTarget htextflowt0_,
+            HTextFlow htextflow1_,
+            HDocument hdocument4_ 
+        where
+            htextflowt0_.tf_id=htextflow1_.id 
+            and htextflow1_.document_id=hdocument4_.id 
+            and htextflow1_.resId=? 
+            and htextflow1_.content=? 
+            and hdocument4_.docId=? 
+            and htextflowt0_.locale=? 
+            and htextflowt0_.state=? 
+        order by
+            htextflowt0_.lastChanged desc limit ?
+17:53:23,919 INFO  [STDOUT] Hibernate: 
+    /* select
+        t 
+    from
+        HTextFlowTarget t 
+    where
+        t.textFlow.resId = :resid 
+        and t.textFlow.content = :content 
+        and t.textFlow.document.docId =:docId 
+        and t.locale = :locale 
+        and t.state = :state 
+    order by
+        t.lastChanged desc */ select
+            htextflowt0_.id as id149_,
+            htextflowt0_.creationDate as creation2_149_,
+            htextflowt0_.lastChanged as lastChan3_149_,
+            htextflowt0_.versionNum as versionNum149_,
+            htextflowt0_.comment_id as comment8_149_,
+            htextflowt0_.content as content149_,
+            htextflowt0_.last_modified_by_id as last9_149_,
+            htextflowt0_.locale as locale149_,
+            htextflowt0_.state as state149_,
+            htextflowt0_.tf_id as tf11_149_,
+            htextflowt0_.tf_revision as tf7_149_ 
+        from
+            HTextFlowTarget htextflowt0_,
+            HTextFlow htextflow1_,
+            HDocument hdocument4_ 
+        where
+            htextflowt0_.tf_id=htextflow1_.id 
+            and htextflow1_.document_id=hdocument4_.id 
+            and htextflow1_.resId=? 
+            and htextflow1_.content=? 
+            and hdocument4_.docId=? 
+            and htextflowt0_.locale=? 
+            and htextflowt0_.state=? 
+        order by
+            htextflowt0_.lastChanged desc limit ?
+17:53:23,922 INFO  [STDOUT] Hibernate: 
+    /* load org.zanata.model.HTextFlow */ select
+        htextflow0_.id as id143_1_,
+        htextflow0_.comment_id as comment8_143_1_,
+        htextflow0_.content as content143_1_,
+        htextflow0_.document_id as document9_143_1_,
+        htextflow0_.obsolete as obsolete143_1_,
+        htextflow0_.pos as pos143_1_,
+        htextflow0_.potEntryData_id as potEntr10_143_1_,
+        htextflow0_.resId as resId143_1_,
+        htextflow0_.revision as revision143_1_,
+        htextflow0_.wordCount as wordCount143_1_,
+        hdocument1_.id as id142_0_,
+        hdocument1_.creationDate as creation2_142_0_,
+        hdocument1_.lastChanged as lastChan3_142_0_,
+        hdocument1_.versionNum as versionNum142_0_,
+        hdocument1_.contentType as contentT5_142_0_,
+        hdocument1_.docId as docId142_0_,
+        hdocument1_.last_modified_by_id as last11_142_0_,
+        hdocument1_.locale as locale142_0_,
+        hdocument1_.name as name142_0_,
+        hdocument1_.obsolete as obsolete142_0_,
+        hdocument1_.path as path142_0_,
+        hdocument1_.poHeader_id as poHeader13_142_0_,
+        hdocument1_.project_iteration_id as project14_142_0_,
+        hdocument1_.revision as revision142_0_ 
+    from
+        HTextFlow htextflow0_ 
+    inner join
+        HDocument hdocument1_ 
+            on htextflow0_.document_id=hdocument1_.id 
+    where
+        htextflow0_.id=?
+17:53:23,924 INFO  [STDOUT] Hibernate: 
+    /* load org.zanata.model.HProjectIteration */ select
+        hprojectit0_.id as id147_2_,
+        hprojectit0_.creationDate as creation2_147_2_,
+        hprojectit0_.lastChanged as lastChan3_147_2_,
+        hprojectit0_.versionNum as versionNum147_2_,
+        hprojectit0_.slug as slug147_2_,
+        hprojectit0_.active as active147_2_,
+        hprojectit0_.overrideLocales as override7_147_2_,
+        hprojectit0_.parentId as parentId147_2_,
+        hprojectit0_.project_id as project9_147_2_,
+        hprojectit1_.id as id147_0_,
+        hprojectit1_.creationDate as creation2_147_0_,
+        hprojectit1_.lastChanged as lastChan3_147_0_,
+        hprojectit1_.versionNum as versionNum147_0_,
+        hprojectit1_.slug as slug147_0_,
+        hprojectit1_.active as active147_0_,
+        hprojectit1_.overrideLocales as override7_147_0_,
+        hprojectit1_.parentId as parentId147_0_,
+        hprojectit1_.project_id as project9_147_0_,
+        hiteration2_.id as id140_1_,
+        hiteration2_.creationDate as creation3_140_1_,
+        hiteration2_.lastChanged as lastChan4_140_1_,
+        hiteration2_.versionNum as versionNum140_1_,
+        hiteration2_.slug as slug140_1_,
+        hiteration2_.description as descript7_140_1_,
+        hiteration2_.homeContent as homeCont8_140_1_,
+        hiteration2_.name as name140_1_,
+        hiteration2_.overrideLocales as overrid10_140_1_ 
+    from
+        HProjectIteration hprojectit0_ 
+    left outer join
+        HProjectIteration hprojectit1_ 
+            on hprojectit0_.parentId=hprojectit1_.id 
+    inner join
+        HProject hiteration2_ 
+            on hprojectit0_.project_id=hiteration2_.id 
+    where
+        hprojectit0_.id=?
+17:53:23,927 INFO  [STDOUT] Hibernate: 
+    /* insert org.zanata.model.HSimpleComment
+        */ insert 
+        into
+            HSimpleComment
+            (comment) 
+        values
+            (?)
+17:53:23,928 INFO  [STDOUT] Hibernate: 
+    /* insert org.zanata.model.HTextFlowTarget
+        */ insert 
+        into
+            HTextFlowTarget
+            (creationDate, lastChanged, versionNum, comment_id, content, last_modified_by_id, locale, state, tf_id, tf_revision) 
+        values
+            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+17:53:24,076 INFO  [CopyTransServiceImpl] copyTrans: 1 ja translations for document "org/zanata/doc0" 
+17:53:24,078 INFO  [STDOUT] Hibernate: 
+    /* select
+        t 
+    from
+        HTextFlowTarget t 
+    where
+        t.textFlow.resId = :resid 
+        and t.textFlow.content = :content 
+        and t.textFlow.document.docId =:docId 
+        and t.locale = :locale 
+        and t.state = :state 
+    order by
+        t.lastChanged desc */ select
+            htextflowt0_.id as id149_,
+            htextflowt0_.creationDate as creation2_149_,
+            htextflowt0_.lastChanged as lastChan3_149_,
+            htextflowt0_.versionNum as versionNum149_,
+            htextflowt0_.comment_id as comment8_149_,
+            htextflowt0_.content as content149_,
+            htextflowt0_.last_modified_by_id as last9_149_,
+            htextflowt0_.locale as locale149_,
+            htextflowt0_.state as state149_,
+            htextflowt0_.tf_id as tf11_149_,
+            htextflowt0_.tf_revision as tf7_149_ 
+        from
+            HTextFlowTarget htextflowt0_,
+            HTextFlow htextflow1_,
+            HDocument hdocument4_ 
+        where
+            htextflowt0_.tf_id=htextflow1_.id 
+            and htextflow1_.document_id=hdocument4_.id 
+            and htextflow1_.resId=? 
+            and htextflow1_.content=? 
+            and hdocument4_.docId=? 
+            and htextflowt0_.locale=? 
+            and htextflowt0_.state=? 
+        order by
+            htextflowt0_.lastChanged desc limit ?
+17:53:24,081 INFO  [STDOUT] Hibernate: 
+    /* select
+        t 
+    from
+        HTextFlowTarget t 
+    where
+        t.textFlow.resId = :resid 
+        and t.textFlow.content = :content 
+        and t.textFlow.document.docId =:docId 
+        and t.locale = :locale 
+        and t.state = :state 
+    order by
+        t.lastChanged desc */ select
+            htextflowt0_.id as id149_,
+            htextflowt0_.creationDate as creation2_149_,
+            htextflowt0_.lastChanged as lastChan3_149_,
+            htextflowt0_.versionNum as versionNum149_,
+            htextflowt0_.comment_id as comment8_149_,
+            htextflowt0_.content as content149_,
+            htextflowt0_.last_modified_by_id as last9_149_,
+            htextflowt0_.locale as locale149_,
+            htextflowt0_.state as state149_,
+            htextflowt0_.tf_id as tf11_149_,
+            htextflowt0_.tf_revision as tf7_149_ 
+        from
+            HTextFlowTarget htextflowt0_,
+            HTextFlow htextflow1_,
+            HDocument hdocument4_ 
+        where
+            htextflowt0_.tf_id=htextflow1_.id 
+            and htextflow1_.document_id=hdocument4_.id 
+            and htextflow1_.resId=? 
+            and htextflow1_.content=? 
+            and hdocument4_.docId=? 
+            and htextflowt0_.locale=? 
+            and htextflowt0_.state=? 
+        order by
+            htextflowt0_.lastChanged desc limit ?
+17:53:24,084 INFO  [CopyTransServiceImpl] copyTrans: 0 ru translations for document "org/zanata/doc0" 
+17:53:24,086 INFO  [STDOUT] Hibernate: 
+    /* select
+        t 
+    from
+        HTextFlowTarget t 
+    where
+        t.textFlow.resId = :resid 
+        and t.textFlow.content = :content 
+        and t.textFlow.document.docId =:docId 
+        and t.locale = :locale 
+        and t.state = :state 
+    order by
+        t.lastChanged desc */ select
+            htextflowt0_.id as id149_,
+            htextflowt0_.creationDate as creation2_149_,
+            htextflowt0_.lastChanged as lastChan3_149_,
+            htextflowt0_.versionNum as versionNum149_,
+            htextflowt0_.comment_id as comment8_149_,
+            htextflowt0_.content as content149_,
+            htextflowt0_.last_modified_by_id as last9_149_,
+            htextflowt0_.locale as locale149_,
+            htextflowt0_.state as state149_,
+            htextflowt0_.tf_id as tf11_149_,
+            htextflowt0_.tf_revision as tf7_149_ 
+        from
+            HTextFlowTarget htextflowt0_,
+            HTextFlow htextflow1_,
+            HDocument hdocument4_ 
+        where
+            htextflowt0_.tf_id=htextflow1_.id 
+            and htextflow1_.document_id=hdocument4_.id 
+            and htextflow1_.resId=? 
+            and htextflow1_.content=? 
+            and hdocument4_.docId=? 
+            and htextflowt0_.locale=? 
+            and htextflowt0_.state=? 
+        order by
+            htextflowt0_.lastChanged desc limit ?
+17:53:24,089 INFO  [STDOUT] Hibernate: 
+    /* select
+        t 
+    from
+        HTextFlowTarget t 
+    where
+        t.textFlow.resId = :resid 
+        and t.textFlow.content = :content 
+        and t.textFlow.document.docId =:docId 
+        and t.locale = :locale 
+        and t.state = :state 
+    order by
+        t.lastChanged desc */ select
+            htextflowt0_.id as id149_,
+            htextflowt0_.creationDate as creation2_149_,
+            htextflowt0_.lastChanged as lastChan3_149_,
+            htextflowt0_.versionNum as versionNum149_,
+            htextflowt0_.comment_id as comment8_149_,
+            htextflowt0_.content as content149_,
+            htextflowt0_.last_modified_by_id as last9_149_,
+            htextflowt0_.locale as locale149_,
+            htextflowt0_.state as state149_,
+            htextflowt0_.tf_id as tf11_149_,
+            htextflowt0_.tf_revision as tf7_149_ 
+        from
+            HTextFlowTarget htextflowt0_,
+            HTextFlow htextflow1_,
+            HDocument hdocument4_ 
+        where
+            htextflowt0_.tf_id=htextflow1_.id 
+            and htextflow1_.document_id=hdocument4_.id 
+            and htextflow1_.resId=? 
+            and htextflow1_.content=? 
+            and hdocument4_.docId=? 
+            and htextflowt0_.locale=? 
+            and htextflowt0_.state=? 
+        order by
+            htextflowt0_.lastChanged desc limit ?
+17:53:24,093 INFO  [CopyTransServiceImpl] copyTrans: 0 th translations for document "org/zanata/doc0" 
+17:53:24,095 INFO  [STDOUT] Hibernate: 
+    /* select
+        t 
+    from
+        HTextFlowTarget t 
+    where
+        t.textFlow.resId = :resid 
+        and t.textFlow.content = :content 
+        and t.textFlow.document.docId =:docId 
+        and t.locale = :locale 
+        and t.state = :state 
+    order by
+        t.lastChanged desc */ select
+            htextflowt0_.id as id149_,
+            htextflowt0_.creationDate as creation2_149_,
+            htextflowt0_.lastChanged as lastChan3_149_,
+            htextflowt0_.versionNum as versionNum149_,
+            htextflowt0_.comment_id as comment8_149_,
+            htextflowt0_.content as content149_,
+            htextflowt0_.last_modified_by_id as last9_149_,
+            htextflowt0_.locale as locale149_,
+            htextflowt0_.state as state149_,
+            htextflowt0_.tf_id as tf11_149_,
+            htextflowt0_.tf_revision as tf7_149_ 
+        from
+            HTextFlowTarget htextflowt0_,
+            HTextFlow htextflow1_,
+            HDocument hdocument4_ 
+        where
+            htextflowt0_.tf_id=htextflow1_.id 
+            and htextflow1_.document_id=hdocument4_.id 
+            and htextflow1_.resId=? 
+            and htextflow1_.content=? 
+            and hdocument4_.docId=? 
+            and htextflowt0_.locale=? 
+            and htextflowt0_.state=? 
+        order by
+            htextflowt0_.lastChanged desc limit ?
+17:53:24,098 INFO  [STDOUT] Hibernate: 
+    /* select
+        t 
+    from
+        HTextFlowTarget t 
+    where
+        t.textFlow.resId = :resid 
+        and t.textFlow.content = :content 
+        and t.textFlow.document.docId =:docId 
+        and t.locale = :locale 
+        and t.state = :state 
+    order by
+        t.lastChanged desc */ select
+            htextflowt0_.id as id149_,
+            htextflowt0_.creationDate as creation2_149_,
+            htextflowt0_.lastChanged as lastChan3_149_,
+            htextflowt0_.versionNum as versionNum149_,
+            htextflowt0_.comment_id as comment8_149_,
+            htextflowt0_.content as content149_,
+            htextflowt0_.last_modified_by_id as last9_149_,
+            htextflowt0_.locale as locale149_,
+            htextflowt0_.state as state149_,
+            htextflowt0_.tf_id as tf11_149_,
+            htextflowt0_.tf_revision as tf7_149_ 
+        from
+            HTextFlowTarget htextflowt0_,
+            HTextFlow htextflow1_,
+            HDocument hdocument4_ 
+        where
+            htextflowt0_.tf_id=htextflow1_.id 
+            and htextflow1_.document_id=hdocument4_.id 
+            and htextflow1_.resId=? 
+            and htextflow1_.content=? 
+            and hdocument4_.docId=? 
+            and htextflowt0_.locale=? 
+            and htextflowt0_.state=? 
+        order by
+            htextflowt0_.lastChanged desc limit ?
+17:53:24,102 INFO  [STDOUT] Hibernate: 
+    /* load org.zanata.model.HTextFlow */ select
+        htextflow0_.id as id143_1_,
+        htextflow0_.comment_id as comment8_143_1_,
+        htextflow0_.content as content143_1_,
+        htextflow0_.document_id as document9_143_1_,
+        htextflow0_.obsolete as obsolete143_1_,
+        htextflow0_.pos as pos143_1_,
+        htextflow0_.potEntryData_id as potEntr10_143_1_,
+        htextflow0_.resId as resId143_1_,
+        htextflow0_.revision as revision143_1_,
+        htextflow0_.wordCount as wordCount143_1_,
+        hdocument1_.id as id142_0_,
+        hdocument1_.creationDate as creation2_142_0_,
+        hdocument1_.lastChanged as lastChan3_142_0_,
+        hdocument1_.versionNum as versionNum142_0_,
+        hdocument1_.contentType as contentT5_142_0_,
+        hdocument1_.docId as docId142_0_,
+        hdocument1_.last_modified_by_id as last11_142_0_,
+        hdocument1_.locale as locale142_0_,
+        hdocument1_.name as name142_0_,
+        hdocument1_.obsolete as obsolete142_0_,
+        hdocument1_.path as path142_0_,
+        hdocument1_.poHeader_id as poHeader13_142_0_,
+        hdocument1_.project_iteration_id as project14_142_0_,
+        hdocument1_.revision as revision142_0_ 
+    from
+        HTextFlow htextflow0_ 
+    inner join
+        HDocument hdocument1_ 
+            on htextflow0_.document_id=hdocument1_.id 
+    where
+        htextflow0_.id=?
+17:53:24,103 INFO  [STDOUT] Hibernate: 
+    /* load org.zanata.model.HProjectIteration */ select
+        hprojectit0_.id as id147_2_,
+        hprojectit0_.creationDate as creation2_147_2_,
+        hprojectit0_.lastChanged as lastChan3_147_2_,
+        hprojectit0_.versionNum as versionNum147_2_,
+        hprojectit0_.slug as slug147_2_,
+        hprojectit0_.active as active147_2_,
+        hprojectit0_.overrideLocales as override7_147_2_,
+        hprojectit0_.parentId as parentId147_2_,
+        hprojectit0_.project_id as project9_147_2_,
+        hprojectit1_.id as id147_0_,
+        hprojectit1_.creationDate as creation2_147_0_,
+        hprojectit1_.lastChanged as lastChan3_147_0_,
+        hprojectit1_.versionNum as versionNum147_0_,
+        hprojectit1_.slug as slug147_0_,
+        hprojectit1_.active as active147_0_,
+        hprojectit1_.overrideLocales as override7_147_0_,
+        hprojectit1_.parentId as parentId147_0_,
+        hprojectit1_.project_id as project9_147_0_,
+        hiteration2_.id as id140_1_,
+        hiteration2_.creationDate as creation3_140_1_,
+        hiteration2_.lastChanged as lastChan4_140_1_,
+        hiteration2_.versionNum as versionNum140_1_,
+        hiteration2_.slug as slug140_1_,
+        hiteration2_.description as descript7_140_1_,
+        hiteration2_.homeContent as homeCont8_140_1_,
+        hiteration2_.name as name140_1_,
+        hiteration2_.overrideLocales as overrid10_140_1_ 
+    from
+        HProjectIteration hprojectit0_ 
+    left outer join
+        HProjectIteration hprojectit1_ 
+            on hprojectit0_.parentId=hprojectit1_.id 
+    inner join
+        HProject hiteration2_ 
+            on hprojectit0_.project_id=hiteration2_.id 
+    where
+        hprojectit0_.id=?
+17:53:24,106 INFO  [STDOUT] Hibernate: 
+    /* insert org.zanata.model.HSimpleComment
+        */ insert 
+        into
+            HSimpleComment
+            (comment) 
+        values
+            (?)
+17:53:24,107 INFO  [STDOUT] Hibernate: 
+    /* insert org.zanata.model.HTextFlowTarget
+        */ insert 
+        into
+            HTextFlowTarget
+            (creationDate, lastChanged, versionNum, comment_id, content, last_modified_by_id, locale, state, tf_id, tf_revision) 
+        values
+            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+17:53:24,245 INFO  [CopyTransServiceImpl] copyTrans: 1 zh translations for document "org/zanata/doc0" 
+17:53:24,245 INFO  [CopyTransServiceImpl] copyTrans finished: document "org/zanata/doc0"
+
+

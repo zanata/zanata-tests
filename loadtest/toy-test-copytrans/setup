@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# add any locales that aren't present
+
+INSERTPRE="insert ignore into HLocale (localeId, creationDate, lastChanged, active) values ('"
+INSERTPOST="', now(), now(), 1);"
+
+#echo This script needs the mysql root password.
+#NOTE: if you have a mysql root password set, add a -p flag to this command and
+#      enter it when running the script
+
+#NOTE: this should be disabled if pushing to a server other than localhost
+#mysql -u root<<-EOFMYSQL
+#    use zanata
+#    ${INSERTPRE}en-US${INSERTPOST}
+#    ${INSERTPRE}ja${INSERTPOST}
+#    ${INSERTPRE}ru${INSERTPOST}
+#    ${INSERTPRE}zh${INSERTPOST}
+#EOFMYSQL
+
+SERVER="http://localhost:8080/zanata/"
+
+PROJECT="copytrans-toy-project-3"
+PROJNAME=$PROJECT
+PROJDESC=$PROJECT
+
+PROJVEROPTS="-Dzanata.url=${SERVER}"
+PUTPROJOPTS="${PROJVEROPTS} -Dzanata.project.slug=${PROJECT} -Dzanata.project.name=${PROJNAME} -Dzanata.project.desc=${PROJDESC}"
+PUTVEROPTS="${PROJVEROPTS} -Dzanata.version.project=${PROJECT}"
+VEROPT="-Dzanata.projectVersion="
+SLUGOPT="-Dzanata.version.slug="
+
+PUSHOPTS="-Dzanata.url=${SERVER} -Dzanata.project=${PROJECT}"
+PUSH="mvn zanata:push -B ${PUSHOPTS}"
+PUSHTRANSOPT="-Dzanata.pushTrans=true"
+
+# Swap to 'false' to run benchmark without copytrans for comparison
+COPYOPT="-Dzanata.copyTrans=false"
+#COPYOPT="-Dzanata.copyTrans=true"
+
+TEST="[TOY TEST SETUP]"
+
+cd v1
+mvn zanata:putproject $PUTPROJOPTS
+cd ..
+
+VERSION=v1
+echo 
+echo $TEST preparing to push $VERSION
+cd $VERSION
+mvn zanata:putversion $PUTVEROPTS $VEROPT$VERSION $SLUGOPT$VERSION
+echo
+echo $TEST pushing $VERSION with translations - should not trigger copyTrans
+time $PUSH $PUSHTRANSOPT $VEROPT$VERSION $COPYOPT
+echo $TEST pushed $VERSION translations
+cd ..
+
+VERSION=v2
+echo 
+echo $TEST preparing to push $VERSION
+cd $VERSION
+mvn zanata:putversion $PUTVEROPTS $VEROPT$VERSION $SLUGOPT$VERSION
+echo $TEST ready to push $VERSION
+cd ..
+echo $TEST COMPLETE
