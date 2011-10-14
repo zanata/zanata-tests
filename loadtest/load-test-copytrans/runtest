@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# add any locales that aren't present
+
+INSERTPRE="insert ignore into HLocale (localeId, creationDate, lastChanged, active) values ('"
+INSERTPOST="', now(), now(), 1);"
+
+#echo This script needs the mysql root password.
+#NOTE: if you have a mysql root password set, add a -p flag to this command and
+#      enter it when running the script
+
+#NOTE: this should be disabled if pushing to a server other than localhost
+mysql -u root<<-EOFMYSQL
+    use zanata
+    ${INSERTPRE}en-US${INSERTPOST}
+    ${INSERTPRE}ja${INSERTPOST}
+    ${INSERTPRE}ru${INSERTPOST}
+    ${INSERTPRE}zh${INSERTPOST}
+EOFMYSQL
+
+
+#TODO make sure you set up the username and api key for any server you use in
+#     ~/.config/zanata.ini
+
+#change these to run tests against different servers
+SERVER="http://localhost:8080/zanata/"
+#SERVER="http://zanata-endeavour.lab.eng.bne.redhat.com:8080/"
+#SERVER="http://zanata-empire.lab.eng.bne.redhat.com:8080/"
+
+PROJECT="copytrans-test-project-6"
+PROJNAME=$PROJECT
+PROJDESC=$PROJECT
+
+PROJVEROPTS="-Dzanata.url=${SERVER}"
+PUTPROJOPTS="${PROJVEROPTS} -Dzanata.project.slug=${PROJECT} -Dzanata.project.name=${PROJNAME} -Dzanata.project.desc=${PROJDESC}"
+PUTVEROPTS="${PROJVEROPTS} -Dzanata.version.project=${PROJECT}"
+VEROPT="-Dzanata.projectVersion="
+SLUGOPT="-Dzanata.version.slug="
+
+PUSHOPTS="-Dzanata.url=${SERVER} -Dzanata.project=${PROJECT}"
+PUSH="mvn zanata:push -B ${PUSHOPTS}"
+PUSHTRANSOPT="-Dzanata.pushTrans=true"
+
+# Swap to 'false' to run benchmark without copytrans for comparison
+#COPYOPT="-Dzanata.copyTrans=false"
+COPYOPT="-Dzanata.copyTrans=true"
+
+TEST="[LOAD TEST]"
+
+cd v1
+mvn zanata:putproject $PUTPROJOPTS
+cd ..
+
+for VERSION in v1 v2 v3 v4 v5
+do
+    echo 
+    echo $TEST preparing to push $VERSION
+    cd $VERSION
+    mvn zanata:putversion $PUTVEROPTS $VEROPT$VERSION $SLUGOPT$VERSION
+    echo
+    echo $TEST pushing $VERSION without translations
+    time $PUSH $VEROPT$VERSION $COPYOPT
+    echo $TEST pushed $VERSION
+    if [ "$VERSION" != "v5" ]; then #don't push translations for the final version
+        echo
+        echo $TEST now pushing $VERSION with translations - should not trigger copyTrans
+        time $PUSH $PUSHTRANSOPT $VEROPT$VERSION $COPYOPT
+        echo $TEST pushed $VERSION translations
+    fi
+    cd ..
+done
+echo $TEST TEST COMPLETE
