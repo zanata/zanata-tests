@@ -13,12 +13,12 @@
 </thead><tbody>
 <tr>
 	<td>store</td>
-	<td>bem</td>
+	<td>Bemba</td>
 	<td>lang</td>
 </tr>
 <tr>
 	<td>store</td>
-	<td>css=td:contains(&quot;${lang}&quot;)</td>
+	<td>ui=langListPages::langRow(column=2, value=${lang})</td>
 	<td>langRow</td>
 </tr>
 <tr>
@@ -61,7 +61,7 @@
 <!--Enable language-->
 <tr>
 	<td>storeElementPresent</td>
-	<td>${langRow} ~ td &gt;input[value=&quot;Disable&quot;]</td>
+	<td>${langRow}-&gt;//input[@value=&quot;Disable&quot;]</td>
 	<td>langEnabled</td>
 </tr>
 <tr>
@@ -71,7 +71,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>${langRow} ~ td &gt;input[value=&quot;Enable&quot;]</td>
+	<td>${langRow}-&gt;//input[@value=&quot;Enable&quot;]</td>
 	<td></td>
 </tr>
 <tr>
