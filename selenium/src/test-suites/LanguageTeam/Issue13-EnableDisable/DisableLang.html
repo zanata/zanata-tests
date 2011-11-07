@@ -18,7 +18,7 @@
 </tr>
 <tr>
 	<td>store</td>
-	<td>css=td:contains(&quot;${lang}&quot;)</td>
+	<td>ui=langListPages::langRow(column=1, value=${lang})</td>
 	<td>langRow</td>
 </tr>
 <tr>
@@ -28,7 +28,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>${langRow} ~ td &gt;input</td>
+	<td>${langRow}-&gt;//input[@value=&quot;Disable&quot;]</td>
 	<td></td>
 </tr>
 <tr>

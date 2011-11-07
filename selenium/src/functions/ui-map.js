@@ -81,7 +81,7 @@ myMap.addElement('langListPages', {
     , getLocator: function(args){
 	var column=args['column'];
 	var value=args['value'];
-	return '//tr[td[' + column + '][contains(text(),"' + value+ '")]]';
+	return '//tr[td[' + column + '][contains(descendant::text(),"' + value+ '")]]';
     }
     , testcase1: {
 	args: { column:1, value:"en-US"}
@@ -96,7 +96,20 @@ myMap.addElement('langListPages', {
 	    +'<td> English (United States)</td>'
 	    +'<td> English (United States)</td>'
 	    +'<td></td></tr>'
-	}
     }
-);
+    , testcase2: {
+	args: { column:1, value:"en-US"}
+	,xhtml:
+	    '<tr class="rich-table-row rich-table-firstrow ">'
+	    +'<td><a>de</a></td>'
+	    +'<td>German</td>'
+	    +'<td>Deut</td>'
+	    +'<td></td></tr>'
+	    +'<tr expected-result="1" class="rich-table-row rich-table-firstrow ">'
+	    +'<td>en-US</td>'
+	    +'<td> English (United States)</td>'
+	    +'<td> English (United States)</td>'
+	    +'<td></td></tr>'
+    }
+});
 
