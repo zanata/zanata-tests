@@ -9,53 +9,76 @@ var myMap = new UIMap();
 // string, all backslashes must be escaped with an additional backslash. Also
 // note that the URL being matched will always have any trailing forward slash
 // stripped.
-//myMap.addPageset({
-//    name: 'allPages'
-//    , description: 'all pages'
-//    , pathRegexp: '.*'
-//});
 
-//myMap.addPageset({
-//    name: 'langPages'
-//    , description: 'Language pages'
-//    , pathRegexp: '/language/.*'
-//});
+/*************
+ * All pages
+ */
+myMap.addPageset({
+    name: 'allPages'
+    , description: 'all pages'
+    , pathRegexp: '.*'
+});
 
+myMap.addElement('allPages', {
+    name: 'langMenuitem'
+    , description: 'Menuitem in languages'
+    , args: [
+	{
+	    name: 'lang'
+	    , description: 'Language'
+	    , defaultValues: [ 'de', 'ja', 'zh-Hans']
+	}
+    ]
+    , getLocator: function(args){
+	var lang=args['lang'];
+	return 'css=li#Language_'+lang;
+    }
+});
 
-//myMap.addElement('langPages', {
-//    name: 'langListTable'
-//    , description: 'Table that shows list of language'
-//    , locator: 'css=table[id$=latestTribes]'
-//    , testcase1: {
-//        xhtml: '<table id="j_id67:latestTribes" class="rich-table" cellspacing="0" cellpadding="0" border="0">'
-//    }
-//});
+/*************
+* Language Page
+*/
+myMap.addPageset({
+    name: 'langPages'
+    , description: 'Language page'
+    , pathRegexp: '/language*'
+});
 
-//myMap.addElement('langPages', {
-//    name: 'langLink'
-//    , description: 'Link to specified language'
-//    , args: [
-//        {
-//            name: 'column'
-//            , description: 'Column for reference'
-//            , defaultValues: range(1,4)
-//        }
-//        ,{
-//            name: 'value'
-//            , description: 'value to match'
-//        }
-//    ]
-//    , getLocator: function(args){
-//        var column=args['column'];
-//        var value=args['value'];
-//        return "//tr[td[" + column+ "][contains(text(),\"" + value+ "\")]]//a"
-//    }
-//    , testcase1: {
-//        xhtml: '<tr class="rich-table-row "><td id="j_id67:latestTribes:3:j_id68" class="rich-table-cell "><a id="j_id67:latestTribes:3:j_id70" class="table_link" href="/language/view/de">de</a></td><td id="j_id67:latestTribes:3:j_id72" class="rich-table-cell "> German</td><td id="j_id67:latestTribes:3:j_id75" class="rich-table-cell "> Deutsch</td><td id="j_id67:latestTribes:3:j_id78" class="rich-table-cell "> 0</td></tr>'
-//    }
-//});
+myMap.addElement('langPages', {
+    name: 'actionMenuitem'
+    , description: 'Item in action menu'
+    , args: [
+	{
+	    name: 'action'
+	    , description: 'action name'
+	    , defaultValues: [
+		"Join Language Team"
+		, "Leave Language Team"
+		, "Request To Join"
+		, "Contact Team Coordinators"
+	        , "Add Team Member"
+	    ]
+	}
+    ]
+    , getLocator: function(args){
+	var action=args['action'];
+	return 'css=form#Language_team_member_toggle_form a:contains("'+action+'")'
+    }
+    , testcase1: {
+	args: { action:"Join Language Team"}
+	, xhtml:
+	    '<form id="Language_team_member_toggle_form">'
+	    + '<a expected-result="1" id="Language_team_member_toggle_form:Join"> Join Language Team</a>'
+            + '<a id="Language_team_member_toggle_form:j_id92">Request To Join Team</a>'
+	    + '<a id="Language_team_member_toggle_form:j_id94">Contact Team Coordinators</a>'
+	    + '<a class="action_link">Add Team Member</a>'
+	    + '</form>'
+    }
+});
 
-
+/*************
+ * langListPages
+ */
 myMap.addPageset({
     name: 'langListPages'
     , description: 'Language pages'
