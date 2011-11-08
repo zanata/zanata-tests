@@ -25,7 +25,7 @@ myMap.addElement('allPages', {
     , args: [
 	{
 	    name: 'lang'
-	    , description: 'Language'
+	    , description: 'language'
 	    , defaultValues: [ 'de', 'ja', 'zh-Hans']
 	}
     ]
@@ -34,6 +34,42 @@ myMap.addElement('allPages', {
 	return 'css=li#Language_'+lang;
     }
 });
+
+myMap.addElement('allPages', {
+    name: 'tableRow'
+    , description: 'Table that contains specified language'
+    , args: [
+	{
+	    name: 'column'
+	    , description: 'Column for reference'
+	    , defaultValues: range(1,3)
+        }
+	,{
+	    name: 'value'
+	    , description: 'Value to match'
+	    , defaultValues: []
+	}
+    ]
+    , getLocator: function(args){
+	var column=args['column'];
+	var value=args['value'];
+	return '//tr[td[' + column + '][contains(descendant::text(),"' + value+ '")]]';
+    }
+    , testcase1: {
+	args: { column:1, value:"JBoss As"}
+	,xhtml:
+	    '<tr class="rich-table-row rich-table-firstrow ">'
+	    +'<td><a>Spacewalk</a></td>'
+	    +'<td>Spacewalk</td>'
+	    +'<td>Nov 8, 2011</td></tr>'
+	    +'<tr expected-result="1" class="rich-table-row rich-table-firstrow ">'
+	    +'<td><a>JBoss As</a></td>'
+	    +'<td>JBoss As</td>'
+	    +'<td>Nov 8, 2011</td></tr>'
+    }
+});
+
+
 
 /*************
 * Language Page
@@ -86,53 +122,17 @@ myMap.addPageset({
 });
 
 
-myMap.addElement('langListPages', {
-    name: 'langRow'
-    , description: 'Table that contains specified language'
-    , args: [
-	{
-	    name: 'column'
-	    , description: 'Column for reference'
-	    , defaultValues: range(1,3)
-        }
-	,{
-	    name: 'value'
-	    , description: 'Value to match'
-	    , defaultValues: []
-	}
-    ]
-    , getLocator: function(args){
-	var column=args['column'];
-	var value=args['value'];
-	return '//tr[td[' + column + '][contains(descendant::text(),"' + value+ '")]]';
-    }
-    , testcase1: {
-	args: { column:1, value:"en-US"}
-	,xhtml:
-	    '<tr class="rich-table-row rich-table-firstrow ">'
-	    +'<td>de</td>'
-	    +'<td>German</td>'
-	    +'<td>Deut</td>'
-	    +'<td></td></tr>'
-	    +'<tr expected-result="1" class="rich-table-row rich-table-firstrow ">'
-	    +'<td>en-US</td>'
-	    +'<td> English (United States)</td>'
-	    +'<td> English (United States)</td>'
-	    +'<td></td></tr>'
-    }
-    , testcase2: {
-	args: { column:1, value:"en-US"}
-	,xhtml:
-	    '<tr class="rich-table-row rich-table-firstrow ">'
-	    +'<td><a>de</a></td>'
-	    +'<td>German</td>'
-	    +'<td>Deut</td>'
-	    +'<td></td></tr>'
-	    +'<tr expected-result="1" class="rich-table-row rich-table-firstrow ">'
-	    +'<td>en-US</td>'
-	    +'<td> English (United States)</td>'
-	    +'<td> English (United States)</td>'
-	    +'<td></td></tr>'
-    }
+
+
+/*************
+ * projListPages
+ */
+
+myMap.addPageset({
+    name: 'projListPages'
+    , description: 'Project list pages'
+    , pathRegexp: '/project/list.*'
 });
+
+
 
