@@ -34,32 +34,12 @@
 <tr>
 	<td>type</td>
 	<td>${lastEntry} textarea</td>
-	<td>Test</td>
+	<td>Issue50</td>
 </tr>
-<!--Simulate Save Hotkey (Ctrl-Enter)-->
+<!--Simulate Save-->
 <tr>
-	<td>controlKeyDown</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>keyDown</td>
-	<td>${lastEntry} textarea</td>
-	<td>\13</td>
-</tr>
-<tr>
-	<td>keyPress</td>
-	<td>${lastEntry} textarea</td>
-	<td>\13</td>
-</tr>
-<tr>
-	<td>keyUp</td>
-	<td>${lastEntry} textarea</td>
-	<td>\13</td>
-</tr>
-<tr>
-	<td>controlKeyUp</td>
-	<td></td>
+	<td>click</td>
+	<td>css=tr.TableEditorRow:last-child div[title^=&quot;Save as Approved&quot;]</td>
 	<td></td>
 </tr>
 <!--Should be on Page3  Entry 1-->

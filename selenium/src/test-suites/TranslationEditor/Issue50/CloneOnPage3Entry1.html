@@ -13,7 +13,12 @@
 </thead><tbody>
 <tr>
 	<td>store</td>
-	<td>css=tr.TableEditorRow:nth-child(2)&gt;td.TableEditorCell-Target</td>
+	<td>css=tr.TableEditorRow:nth-child(2)</td>
+	<td>row1</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>${row1}&gt;td.TableEditorCell-Target</td>
 	<td>entry1</td>
 </tr>
 <tr>
@@ -28,28 +33,13 @@
 </tr>
 <!--Simulate Clone+Save Hotkey (Ctrl-End)-->
 <tr>
-	<td>controlKeyDown</td>
+	<td>click</td>
+	<td>${row1} img[title^=&quot;Copy&quot;]</td>
 	<td></td>
-	<td></td>
 </tr>
 <tr>
-	<td>keyDown</td>
-	<td>${entry1} textarea</td>
-	<td>\35</td>
-</tr>
-<tr>
-	<td>keyPress</td>
-	<td>${entry1} textarea</td>
-	<td>\35</td>
-</tr>
-<tr>
-	<td>keyUp</td>
-	<td>${entry1} textarea</td>
-	<td>\35</td>
-</tr>
-<tr>
-	<td>controlKeyUp</td>
-	<td></td>
+	<td>click</td>
+	<td>css=tr.TableEditorRow:last-child div[title^=&quot;Save as Approved&quot;]</td>
 	<td></td>
 </tr>
 <!--Should move to next row-->
