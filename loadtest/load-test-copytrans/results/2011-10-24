@@ -1,0 +1,86 @@
+! didn't drop DB
+build HEAD skipping unused locales
+copytrans=true
+load-test-copytrans/runtest
+
+real	0m12.033s
+[LOAD TEST] pushed v1
+real	0m10.050s
+[LOAD TEST] pushed v2
+real	0m9.463s
+[LOAD TEST] pushed v3
+real	0m12.786s
+[LOAD TEST] pushed v4
+real	0m13.018s
+[LOAD TEST] pushed v5
+
+real	0m13.215s
+[LOAD TEST] pushed v1 translations
+real	0m21.290s
+[LOAD TEST] pushed v2 translations
+real	0m20.372s
+[LOAD TEST] pushed v3 translations
+real	0m32.438s
+[LOAD TEST] pushed v4 translations
+
+FAILED TO COPY TRANSLATIONS
+
+
+dropzanatadb
+build HEAD skipping unused locales passing docId properly
+copyTrans=true
+load-test-copytrans/runtest
+
+real	0m10.812s
+[LOAD TEST] pushed v1
+real	0m27.043s
+[LOAD TEST] pushed v2
+real	0m30.799s
+[LOAD TEST] pushed v3
+real	0m45.770s
+[LOAD TEST] pushed v4
+real	1m5.065s
+[LOAD TEST] pushed v5
+
+
+real	0m14.868s
+[LOAD TEST] pushed v1 translations
+real	0m23.041s
+[LOAD TEST] pushed v2 translations
+real	0m21.719s
+[LOAD TEST] pushed v3 translations
+real	0m30.526s
+[LOAD TEST] pushed v4 translations
+
+
+
+
+! didn't dropzanatadb
+build HEAD with new query (no group by)
+copyTrans=true
+load-test-copytrans/runtest
+
+
+real	0m25.253s
+[LOAD TEST] pushed v1
+real	0m42.279s
+[LOAD TEST] pushed v2
+real	0m42.762s
+[LOAD TEST] pushed v3
+real	1m2.102s
+[LOAD TEST] pushed v4
+real	1m3.231s
+[LOAD TEST] pushed v5
+
+
+real	0m11.840s
+[LOAD TEST] pushed v1 translations
+real	0m20.020s
+[LOAD TEST] pushed v2 translations
+real	0m19.545s
+[LOAD TEST] pushed v3 translations
+real	0m27.261s
+[LOAD TEST] pushed v4 translations
+
+
+

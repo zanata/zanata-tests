@@ -1,0 +1,53 @@
+
+dropzanatadb
+build ee7b1c555239710d4c1a3bb9ca1ad0f3e499aa12
+copytrans=true
+load-test-copytrans/runtest
+
+real	0m18.094s
+[LOAD TEST] pushed v1
+real	0m31.673s
+[LOAD TEST] pushed v2
+real	0m32.076s
+[LOAD TEST] pushed v3
+real	0m50.297s
+[LOAD TEST] pushed v4
+real	1m6.047s
+[LOAD TEST] pushed v5
+
+real	0m12.851s
+[LOAD TEST] pushed v1 translations
+real	0m19.882s
+[LOAD TEST] pushed v2 translations
+real	0m19.543s
+[LOAD TEST] pushed v3 translations
+real	0m27.291s
+[LOAD TEST] pushed v4 translations
+
+
+
+dropzanatadb
+build ee7b1c555239710d4c1a3bb9ca1ad0f3e499aa12
+copytrans=true
+load-test-copytrans/runtest
+
+real	0m17.765s
+[LOAD TEST] pushed v1
+real	0m31.978s
+[LOAD TEST] pushed v2
+real	0m30.448s
+[LOAD TEST] pushed v3
+real	0m48.893s
+[LOAD TEST] pushed v4
+real	1m3.520s
+[LOAD TEST] pushed v5
+
+real	0m12.678s
+[LOAD TEST] pushed v1 translations
+real	0m19.940s
+[LOAD TEST] pushed v2 translations
+real	0m19.436s
+[LOAD TEST] pushed v3 translations
+real	0m26.499s
+[LOAD TEST] pushed v4 translations
+

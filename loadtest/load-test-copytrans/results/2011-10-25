@@ -1,0 +1,155 @@
+
+dropzanatadb
+build with transactions per-document
+copytrans=true
+[damason@damason load-test-copytrans]$ ./runtest
+
+real	0m10.176s
+user	0m5.467s
+sys	0m0.185s
+[LOAD TEST] pushed v1
+real	0m23.850s
+user	0m5.575s
+sys	0m0.164s
+[LOAD TEST] pushed v2
+real	0m27.980s
+user	0m5.473s
+sys	0m0.220s
+[LOAD TEST] pushed v3
+real	0m41.426s
+user	0m5.716s
+sys	0m0.201s
+[LOAD TEST] pushed v4
+real	0m58.752s
+user	0m5.721s
+sys	0m0.229s
+[LOAD TEST] pushed v5
+
+
+
+
+
+
+real	0m14.969s
+user	0m6.268s
+sys	0m0.210s
+[LOAD TEST] pushed v1 translations
+real	0m20.846s
+user	0m6.356s
+sys	0m0.197s
+[LOAD TEST] pushed v2 translations
+real	0m19.897s
+user	0m6.264s
+sys	0m0.199s
+[LOAD TEST] pushed v3 translations
+real	0m27.283s
+user	0m6.509s
+sys	0m0.228s
+[LOAD TEST] pushed v4 translations
+
+
+
+
+change project name, leave database dirty
+
+real	0m21.580s
+user	0m5.837s
+sys	0m0.197s
+[LOAD TEST] pushed v1
+real	0m41.241s
+user	0m5.557s
+sys	0m0.198s
+[LOAD TEST] pushed v2
+real	0m41.484s
+user	0m5.878s
+sys	0m0.183s
+[LOAD TEST] pushed v3
+real	1m1.323s
+user	0m5.905s
+sys	0m0.220s
+[LOAD TEST] pushed v4
+real	1m1.130s
+user	0m5.739s
+sys	0m0.205s
+[LOAD TEST] pushed v5
+
+
+
+real	0m10.927s
+user	0m5.655s
+sys	0m0.197s
+[LOAD TEST] pushed v1 translations
+real	0m18.641s
+user	0m6.246s
+sys	0m0.208s
+[LOAD TEST] pushed v2 translations
+real	0m18.512s
+user	0m6.577s
+sys	0m0.216s
+[LOAD TEST] pushed v3 translations
+real	0m25.787s
+user	0m6.507s
+sys	0m0.212s
+[LOAD TEST] pushed v4 translations
+
+
+
+
+
+dropzanatadb
+build with transactions per-textflow
+copytrans=true
+[damason@damason load-test-copytrans]$ ./runtest
+
+real	0m13.903s
+user	0m6.371s
+sys	0m0.183s
+[LOAD TEST] pushed v1
+real	1m34.297s
+user	0m6.163s
+sys	0m0.213s
+[LOAD TEST] pushed v2
+real	1m37.151s
+user	0m6.160s
+sys	0m0.190s
+[LOAD TEST] pushed v3
+real	2m55.160s
+user	0m6.350s
+sys	0m0.218s
+[LOAD TEST] pushed v4
+real	4m7.969s
+user	0m6.439s
+sys	0m0.228s
+[LOAD TEST] pushed v5
+
+
+
+
+
+real	0m14.644s
+user	0m6.501s
+sys	0m0.211s
+[LOAD TEST] pushed v1 translations
+real	0m22.488s
+user	0m6.976s
+sys	0m0.249s
+[LOAD TEST] pushed v2 translations
+real	0m21.548s
+user	0m7.069s
+sys	0m0.224s
+[LOAD TEST] pushed v3 translations
+real	0m30.560s
+user	0m7.155s
+sys	0m0.247s
+[LOAD TEST] pushed v4 translations
+
+
+
+
+
+
+
+
+
+
+

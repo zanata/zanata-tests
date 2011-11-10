@@ -66,3 +66,60 @@ sys	0m0.217s
 Test run with copytrans disabled, same database as previous (so 1 more project
 there than before).
 ================================================================================
+[LOAD TEST] pushing v1 without translations
+real	0m7.171s
+user	0m5.537s
+sys	0m0.183s
+[LOAD TEST] pushed v1
+
+[LOAD TEST] now pushing v1 with translations - should not trigger copyTrans
+real	0m11.811s
+user	0m5.842s
+sys	0m0.178s
+[LOAD TEST] pushed v1 translations
+
+
+[LOAD TEST] pushing v2 without translations
+real	0m9.448s
+user	0m5.840s
+sys	0m0.216s
+[LOAD TEST] pushed v2
+
+[LOAD TEST] now pushing v2 with translations - should not trigger copyTrans
+real	0m20.318s
+user	0m6.230s
+sys	0m0.178s
+[LOAD TEST] pushed v2 translations
+
+
+[LOAD TEST] pushing v3 without translations
+real	0m9.608s
+user	0m5.511s
+sys	0m0.173s
+[LOAD TEST] pushed v3
+
+[LOAD TEST] now pushing v3 with translations - should not trigger copyTrans
+real	0m20.444s
+user	0m6.301s
+sys	0m0.203s
+[LOAD TEST] pushed v3 translations
+
+
+[LOAD TEST] pushing v4 without translations
+real	0m12.184s
+user	0m5.729s
+sys	0m0.215s
+[LOAD TEST] pushed v4
+
+[LOAD TEST] now pushing v4 with translations - should not trigger copyTrans
+real	0m29.314s
+user	0m6.553s
+sys	0m0.218s
+[LOAD TEST] pushed v4 translations
+
+
+[LOAD TEST] pushing v5 without translations
+real	0m12.268s
+user	0m5.864s
+sys	0m0.157s
+[LOAD TEST] pushed v5

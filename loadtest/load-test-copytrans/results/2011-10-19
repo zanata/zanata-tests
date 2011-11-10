@@ -1,0 +1,132 @@
+
+      drop zanata db
+      build 1.4 (f30989daae98296ad53573fd1f490baf6eae33b2)
+      copyTrans=true
+10:05 load-test-copytrans/runtest
+real	0m17.272s
+[LOAD TEST] pushed v1
+real	0m38.580s
+[LOAD TEST] pushed v2
+real	0m38.098s
+[LOAD TEST] pushed v3
+real	0m59.097s
+[LOAD TEST] pushed v4
+real	1m9.350s
+[LOAD TEST] pushed v5
+
+NOTE: these were interleaved with above output, removed for clarity
+real	0m12.738s
+[LOAD TEST] pushed v1 translations
+real	0m20.838s
+[LOAD TEST] pushed v2 translations
+real	0m19.660s
+[LOAD TEST] pushed v3 translations
+real	0m27.674s
+[LOAD TEST] pushed v4 translations
+
+
+10:15 dropzanatadb
+10:15 build 1.4 (f30989daae98296ad53573fd1f490baf6eae33b2)
+      copyTrans=false
+10:18 load-test-copytrans/runtest
+real	0m10.384s
+[LOAD TEST] pushed v1
+real	0m13.242s
+[LOAD TEST] pushed v2
+real	0m9.808s
+[LOAD TEST] pushed v3
+real	0m13.127s
+[LOAD TEST] pushed v4
+real	0m13.372s
+[LOAD TEST] pushed v5
+
+NOTE: these were interleaved with above output, removed for clarity
+real	0m13.352s
+[LOAD TEST] pushed v1 translations
+real	0m21.492s
+[LOAD TEST] pushed v2 translations
+real	0m20.862s
+[LOAD TEST] pushed v3 translations
+real	0m28.795s
+[LOAD TEST] pushed v4 translations
+
+
+10:32 dropzanatadb
+10:34 build 2aeddaa33b9dc9047717b41bd8026780e02a7423
+      copyTrans=true
+10:36 load-test-copytrans/runtest
+real	0m17.729s
+[LOAD TEST] pushed v1
+real	0m38.915s
+[LOAD TEST] pushed v2
+real	0m38.299s
+[LOAD TEST] pushed v3
+real	1m1.860s
+[LOAD TEST] pushed v4
+real	1m8.232s
+[LOAD TEST] pushed v5
+
+real	0m13.356s
+[LOAD TEST] pushed v1 translations
+real	0m20.861s
+[LOAD TEST] pushed v2 translations
+real	0m19.935s
+[LOAD TEST] pushed v3 translations
+real	0m27.283s
+[LOAD TEST] pushed v4 translations
+
+
+10:51 dropzanatadb
+10:52 build 30034e69d37ef72e3473389907296e4f3fcb29d5
+      copyTrans=true
+10:56 load-test-copytrans/runtest
+real	0m17.598s
+[LOAD TEST] pushed v1
+real	0m39.356s
+[LOAD TEST] pushed v2
+real	0m38.265s
+[LOAD TEST] pushed v3
+real	1m1.413s
+[LOAD TEST] pushed v4
+real	1m10.832s
+[LOAD TEST] pushed v5
+
+real	0m13.141s
+[LOAD TEST] pushed v1 translations
+real	0m20.373s
+[LOAD TEST] pushed v2 translations
+real	0m19.946s
+[LOAD TEST] pushed v3 translations
+real	0m26.757s
+[LOAD TEST] pushed v4 translations
+
+
+13:26 dropzanatadb
+13:26 build 1e4517cdd664dbe3b3695ade5a8a2c0d1595b4fb
+      copytrans=true
+13:29 load-test-copytrans/runtest
+real	0m17.342s
+[LOAD TEST] pushed v1
+real	0m38.494s
+[LOAD TEST] pushed v2
+real	0m37.924s
+[LOAD TEST] pushed v3
+real	0m59.417s
+[LOAD TEST] pushed v4
+real	1m5.128s
+[LOAD TEST] pushed v5
+
+real	0m13.408s
+[LOAD TEST] pushed v1 translations
+real	0m21.553s
+[LOAD TEST] pushed v2 translations
+real	0m19.703s
+[LOAD TEST] pushed v3 translations
+real	0m28.292s
+[LOAD TEST] pushed v4 translations
+
+
+
+
+
+
