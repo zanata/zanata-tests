@@ -10,40 +10,65 @@ INSERTPOST="', now(), now(), 1);"
 #      enter it when running the script
 
 #NOTE: this should be disabled if pushing to a server other than localhost
-mysql -u root<<-EOFMYSQL
-    use zanata
-    ${INSERTPRE}en-US${INSERTPOST}
-    ${INSERTPRE}ja${INSERTPOST}
-    ${INSERTPRE}ru${INSERTPOST}
-    ${INSERTPRE}zh${INSERTPOST}
-EOFMYSQL
+#mysql -u root<<-EOFMYSQL
+#    use zanata
+#    ${INSERTPRE}en-US${INSERTPOST}
+#    ${INSERTPRE}ja${INSERTPOST}
+#    ${INSERTPRE}ru${INSERTPOST}
+#    ${INSERTPRE}zh${INSERTPOST}
+#EOFMYSQL
 
 
 #TODO make sure you set up the username and api key for any server you use in
 #     ~/.config/zanata.ini
 
 #change these to run tests against different servers
-SERVER="http://localhost:8080/zanata/"
+#SERVER="http://localhost:8080/zanata/"
 #SERVER="http://zanata-endeavour.lab.eng.bne.redhat.com:8080/"
-#SERVER="http://zanata-empire.lab.eng.bne.redhat.com:8080/"
+SERVER="http://zanata-empire.lab.eng.bne.redhat.com:8080/"
 
-PROJECT="copytrans-test-project-6"
+PROJECT="copytrans-test-project-4"
 PROJNAME=$PROJECT
 PROJDESC=$PROJECT
 
-PROJVEROPTS="-Dzanata.url=${SERVER}"
-PUTPROJOPTS="${PROJVEROPTS} -Dzanata.project.slug=${PROJECT} -Dzanata.project.name=${PROJNAME} -Dzanata.project.desc=${PROJDESC}"
-PUTVEROPTS="${PROJVEROPTS} -Dzanata.version.project=${PROJECT}"
-VEROPT="-Dzanata.projectVersion="
-SLUGOPT="-Dzanata.version.slug="
 
-PUSHOPTS="-Dzanata.url=${SERVER} -Dzanata.project=${PROJECT}"
+# old keys, some still valid, others overridden below
+URLKEY=zanata.url
+PKEY=zanata.project
+PSKEY=zanata.project.slug
+PNKEY=zanata.project.name
+PDKEY=zanata.project.desc
+VPKEY=zanata.version.project
+PVKEY=zanata.projectVersion
+VSKEY=zanata.version.slug
+CTKEY=zanata.copyTrans
+PTKEY=zanata.pushTrans
+
+
+# Looks like these changed for 1.5
+# TODO comment out or make a switch to build with old keys
+PSKEY=zanata.projectSlug
+PNKEY=zanata.projectName
+PDKEY=zanata.projectDesc
+VPKEY=zanata.versionProject
+VSKEY=zanata.versionSlug
+
+
+
+
+PROJVEROPTS="-D${URLKEY}=${SERVER}"
+PUTPROJOPTS="${PROJVEROPTS} -D${PSKEY}=${PROJECT} -D${PNKEY}=${PROJNAME} -D${PDKEY}=${PROJDESC}"
+PUTVEROPTS="${PROJVEROPTS} -D${VPKEY}=${PROJECT}"
+VEROPT="-D${PVKEY}="
+SLUGOPT="-D${VSKEY}="
+
+PUSHOPTS="-D${URLKEY}=${SERVER} -D${PKEY}=${PROJECT}"
 PUSH="mvn zanata:push -B ${PUSHOPTS}"
-PUSHTRANSOPT="-Dzanata.pushTrans=true"
+PUSHTRANSOPT="-D${PTKEY}=true"
 
 # Swap to 'false' to run benchmark without copytrans for comparison
 #COPYOPT="-Dzanata.copyTrans=false"
-COPYOPT="-Dzanata.copyTrans=true"
+COPYOPT="-D${CTKEY}=true"
 
 TEST="[LOAD TEST]"
 
