@@ -22,6 +22,7 @@ SignOut.html
 
 *.swp
 *.xml
+!pom.xml
 *~
 zanata.ini
 apikey.*
