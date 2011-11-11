@@ -39,7 +39,12 @@
 <!--Simulate Save-->
 <tr>
 	<td>click</td>
-	<td>css=tr.TableEditorRow:last-child div[title^=&quot;Save as Approved&quot;]</td>
+	<td>css=tr.TableEditorRow:last-child div[title^=&quot;Save as Approved&quot;]&gt;img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementNotPresent</td>
+	<td>css=tr.TableEditorRow:last-child div[title^=&quot;Save as Approved&quot;]&gt;img</td>
 	<td></td>
 </tr>
 <!--Should be on Page3  Entry 1-->

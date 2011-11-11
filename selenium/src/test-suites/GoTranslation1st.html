@@ -17,18 +17,23 @@
 	<td>ver</td>
 </tr>
 <tr>
+	<td>store</td>
+	<td>ui=projViewPages::versLangRow(ver=f13, lang=ja)-&gt;//a[contains(text(),&quot;Translate&quot;)]</td>
+	<td>transLink</td>
+</tr>
+<tr>
 	<td>waitForElementPresent</td>
-	<td>css=div#iteration_list_view_item_${ver}&gt;table tr:first-child&gt;td&gt;a</td>
+	<td>${transLink}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>storeAttribute</td>
-	<td>css=div#iteration_list_view_item_${ver}&gt;table tr:first-child&gt;td&gt;a@href</td>
+	<td>${transLink}@href</td>
 	<td>localeHref</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=div#iteration_list_view_item_${ver}&gt;table tr:first-child&gt;td&gt;a</td>
+	<td>${transLink}</td>
 	<td></td>
 </tr>
 <!--Update the URL in original browser window-->

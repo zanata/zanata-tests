@@ -134,5 +134,59 @@ myMap.addPageset({
     , pathRegexp: '/project/list.*'
 });
 
+/*************
+ * projViewPages
+ */
+myMap.addPageset({
+    name: 'projViewPages'
+    , description: 'Project list pages'
+    , pathRegexp: '/project/view/.*'
+});
+
+myMap.addElement('projViewPages', {
+    name: 'versLangRow'
+    , description: 'Table row for given version and lang'
+    , args: [
+	{
+	    name: 'ver'
+	    , description: 'Project version'
+	    , defaultValues: [ "f11", "f13", "trunk", "master"]
+	}
+	,{
+	    name: 'lang'
+	    , description: 'Language to translatte'
+	    , defaultValues: [ "ja" ]
+	}
+    ]
+    , getLocator: function(args){
+	var ver=args['ver'];
+	var lang=args['lang'];
+	return '//div[@id="iteration_list_view_item_'+ver+'"]//tr[td[1][contains(descendant::text(),"['+ lang +']")]]';
+    }
+    , testcase1: {
+	args: { ver:"f13", lang:"ja" }
+	,xhtml:
+	    '<div id="iteration_list_view_item_f13">'
+	    + '<div class="list_view_header">'
+	    + '<div class="menu_items">'
+	    + '<a id="activeIterations:2:j_id73">Config file</a>'
+	    + '<img />'
+	    + '<a>Statistics</a>'
+	    + '<img />'
+	    + '<a>Edit Version</a>'
+	    + '</div>'
+	    + '</div>'
+	    + '<table>'
+	    + '<tbody>'
+	    + '<tr class="rich-table-row rich-table-firstrow odd">'
+	    + '<td>English (United States) [en-US]</td>'
+	    + '<td><a> Translate</a></td></tr>'
+	    + '<tr expected-result="1" class="rich-table-row">'
+	    + '<td>日本語 [ja]</td>'
+	    + '<td><a> Translate</a></td></tr>'
+	    + '</tbody></table>'
+	    + '</div>'
+    }
+});
 
 
