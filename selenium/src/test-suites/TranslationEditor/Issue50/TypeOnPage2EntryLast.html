@@ -13,7 +13,7 @@
 </thead><tbody>
 <tr>
 	<td>store</td>
-	<td>css=tr.TableEditorRow:last-child&gt;td.TableEditorCell-Target</td>
+	<td>ui=webtranPages::targetCell(row=-1)</td>
 	<td>lastEntry</td>
 </tr>
 <tr>
@@ -28,26 +28,36 @@
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>${lastEntry} textarea</td>
+	<td>${lastEntry}-&gt;//textarea</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>${lastEntry} textarea</td>
-	<td>Issue50</td>
+	<td>${lastEntry}-&gt;//textarea</td>
+	<td>Issue501</td>
 </tr>
 <!--Simulate Save-->
 <tr>
-	<td>click</td>
-	<td>css=tr.TableEditorRow:last-child div[title^=&quot;Save as Approved&quot;]&gt;img</td>
+	<td>mouseOver</td>
+	<td>css=div[title^=&quot;Save as Approved&quot;]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForElementNotPresent</td>
-	<td>css=tr.TableEditorRow:last-child div[title^=&quot;Save as Approved&quot;]&gt;img</td>
+	<td>mouseDown</td>
+	<td>css=div[title^=&quot;Save as Approved&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>css=div[title^=&quot;Save as Approved&quot;]</td>
 	<td></td>
 </tr>
 <!--Should be on Page3  Entry 1-->
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Saved change to Translation Unit</td>
+	<td></td>
+</tr>
 <tr>
 	<td>waitForElementPresent</td>
 	<td>css=a[title~=&quot;Previous Page&quot;]+img+input</td>
@@ -60,7 +70,7 @@
 </tr>
 <tr>
 	<td>verifyElementPresent</td>
-	<td>css=tr.TableEditorRow:nth-child(2)&gt;td.TableEditorCell-Target</td>
+	<td>ui=webtranPages::targetCell(row=1)</td>
 	<td></td>
 </tr>
 </tbody></table>

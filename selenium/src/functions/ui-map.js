@@ -121,9 +121,6 @@ myMap.addPageset({
     , pathRegexp: '/lang.*'
 });
 
-
-
-
 /*************
  * projListPages
  */
@@ -189,4 +186,164 @@ myMap.addElement('projViewPages', {
     }
 });
 
+/*************
+ * Webtran Pages
+ */
+
+myMap.addPageset({
+    name: 'webtranPages'
+    , description: 'Translation Editor pages'
+    , pathRegexp: '/webtran/Application\.html.*'
+});
+
+/** Document List View */
+myMap.addElement('webtranPages', {
+    name: 'documentListTable'
+    , description: 'Document List Table'
+    , args: []
+    , locator: 'css=table.DocumentListTable'
+});
+
+myMap.addElement('webtranPages', {
+    name: 'documentRowByName'
+    , description: 'Select document by document name in document list view'
+    , args: [
+       {
+	   name: 'name'
+	   , description: 'Search document row by name'
+	   , defaultValues: []
+       }
+    ]
+    , getLocator: function(args){
+	var name=args['name'];
+	return '//table[contains(@class, "DocumentListTable")]//div[contains(text(),"' +name+ '")]';
+    }
+    , testcase1: {
+	args: { name: "Pam" }
+	, xhtml:
+	 '<table class="DocumentListTable">'
+         + '<tr><td></td><td><div><div><div></div><div>Nmap</div></div></div></td></tr>'
+	 + '<tr><td></td><td><div><div><div></div><div expected-result="1">Pam</div></div></div></td></tr>'
+	 + '<tr><td></td><td><div><div><div></div><div>Preface</div></div></div></td></tr>'
+         + '</table>'
+    }
+});
+
+function webtranPages_get_locator(row){
+    if (row < 0){
+	var lastNum= -1 -row;
+	return '//tr[contains(@class,"TableEditorRow")][position()=last()-'+lastNum+']';
+    }
+    return '//tr[contains(@class,"TableEditorRow")]['+ row +']';
+}
+
+/** Message List View */
+myMap.addElement('webtranPages', {
+    name: 'messageRow'
+    , description: 'Select message by row number in table editor'
+    , args: [
+	{
+	    name: 'row'
+	    , description: 'Row number, start from  1, -1 is the last row'
+	    , defaultValues: [ -1, 1, 2, 3]
+	}
+    ]
+    , getLocator: function(args){
+	var row=args['row'];
+	return webtranPages_get_locator(row);
+    }
+    , testcase1: {
+	args: { row:1 }
+	,xhtml:
+	    '<table class="TableEditor"><colgroup></colgroup>'
+	    + '<tr><td></td><td></td></tr>'
+	    + '<tr expected-result="1" class="TableEditorRow odd-row">'
+	    +     '<td class="TableEditorCell-Source"><table class="TableEditorSource"><tr><td>Source1</td></tr></table></td>'
+	    +     '<td class="TableEditorCell-Target"><span class="xml-text">Click here to start translating</span></td>'
+	    + '</tr>'
+	    + '<tr class="TableEditorRow even-row">'
+	    +     '<td class="TableEditorCell-Source"><table class="TableEditorSource"><tr><td>Source2</td></tr></table></td>'
+	    +     '<td class="TableEditorCell-Target"><span class="xml-text">Click here to start translating</span></td>'
+	    + '</tr>'
+	    + '<tr class="TableEditorRow odd-row">'
+	    + 	  '<td class="TableEditorCell-Source"><table class="TableEditorSource"><tr><td>SourceLast</td></tr></table></td>'
+	    +     '<td class="TableEditorCell-Target"><span class="xml-text">Click here to start translating</span></td>'
+	    + '</tr>'
+	    + '</table>'
+    }
+    , testcase2: {
+	args: { row:2 }
+	,xhtml:
+	    '<table class="TableEditor"><colgroup></colgroup>'
+	    + '<tr><td></td><td></td></tr>'
+	    + '<tr class="TableEditorRow odd-row">'
+	    +     '<td class="TableEditorCell-Source"><table class="TableEditorSource"><tr><td>Source1</td></tr></table></td>'
+	    +     '<td class="TableEditorCell-Target"><span class="xml-text">Click here to start translating</span></td>'
+	    + '</tr>'
+	    + '<tr expected-result="1" class="TableEditorRow even-row">'
+	    +     '<td class="TableEditorCell-Source"><table class="TableEditorSource"><tr><td>Source2</td></tr></table></td>'
+	    +     '<td class="TableEditorCell-Target"><span class="xml-text">Click here to start translating</span></td>'
+	    + '</tr>'
+	    + '<tr class="TableEditorRow odd-row">'
+	    + 	  '<td class="TableEditorCell-Source"><table class="TableEditorSource"><tr><td>SourceLast</td></tr></table></td>'
+	    +     '<td class="TableEditorCell-Target"><span class="xml-text">Click here to start translating</span></td>'
+	    + '</tr>'
+	    + '</table>'
+    }
+    , testcase3: {
+	args: { row:-1 }
+	,xhtml:
+	    '<table class="TableEditor"><colgroup></colgroup>'
+	    + '<tr><td></td><td></td></tr>'
+	    + '<tr class="TableEditorRow odd-row">'
+	    +     '<td class="TableEditorCell-Source"><table class="TableEditorSource"><tr><td>Source1</td></tr></table></td>'
+	    +     '<td class="TableEditorCell-Target"><span class="xml-text">Click here to start translating</span></td>'
+	    + '</tr>'
+	    + '<tr class="TableEditorRow even-row">'
+	    +     '<td class="TableEditorCell-Source"><table class="TableEditorSource"><tr><td>Source2</td></tr></table></td>'
+	    +     '<td class="TableEditorCell-Target"><span class="xml-text">Click here to start translating</span></td>'
+	    + '</tr>'
+	    + '<tr expected-result="1" class="TableEditorRow odd-row">'
+	    + 	  '<td class="TableEditorCell-Source"><table class="TableEditorSource"><tr><td>SourceLast</td></tr></table></td>'
+	    +     '<td class="TableEditorCell-Target"><span class="xml-text">Click here to start translating</span></td>'
+	    + '</tr>'
+	    + '</table>'
+    }
+});
+
+
+myMap.addElement('webtranPages', {
+    name: 'targetCell'
+    , description: 'Select message by row number in table editor'
+    , args: [
+	{
+	    name: 'row'
+	    , description: 'Row number, start from  1, -1 is the last row'
+	    , defaultValues: [ -1, 1, 2, 3]
+	}
+    ]
+    , getLocator: function(args){
+	var row=args['row'];
+	return webtranPages_get_locator(row) + '//td[contains(@class,"TableEditorCell-Target")]';
+    }
+    , testcase1: {
+	args: { row:1 }
+	,xhtml:
+	    '<table class="TableEditor"><colgroup></colgroup>'
+	    + '<tr><td></td><td></td></tr>'
+	    + '<tr class="TableEditorRow odd-row">'
+	    +     '<td class="TableEditorCell-Source"><table class="TableEditorSource"><tr><td>Source1</td></tr></table></td>'
+	    +     '<td  expected-result="1" class="TableEditorCell-Target"><span class="xml-text">Click here to start translating</span></td>'
+	    + '</tr>'
+	    + '<tr class="TableEditorRow even-row">'
+	    +     '<td class="TableEditorCell-Source"><table class="TableEditorSource"><tr><td>Source2</td></tr></table></td>'
+	    +     '<td class="TableEditorCell-Target"><span class="xml-text">Click here to start translating</span></td>'
+	    + '</tr>'
+	    + '<tr class="TableEditorRow odd-row">'
+	    + 	  '<td class="TableEditorCell-Source"><table class="TableEditorSource"><tr><td>SourceLast</td></tr></table></td>'
+	    +     '<td class="TableEditorCell-Target"><span class="xml-text">Click here to start translating</span></td>'
+	    + '</tr>'
+	    + '</table>'
+    }
+});
 
