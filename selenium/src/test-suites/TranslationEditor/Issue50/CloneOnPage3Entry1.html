@@ -13,44 +13,40 @@
 </thead><tbody>
 <tr>
 	<td>store</td>
-	<td>css=tr.TableEditorRow:nth-child(2)</td>
-	<td>row1</td>
-</tr>
-<tr>
-	<td>store</td>
-	<td>${row1}&gt;td.TableEditorCell-Target</td>
-	<td>entry1</td>
+	<td>ui=webtranPages::targetCell(row=1)</td>
+	<td>target1</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>${entry1}</td>
+	<td>${target1}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>${entry1} textarea</td>
+	<td>${target1}-&gt;//textarea</td>
 	<td></td>
 </tr>
-<!--Simulate Clone+Save Hotkey (Ctrl-End)-->
+<!--Simulate Clone-->
 <tr>
 	<td>click</td>
-	<td>${row1} img[title^=&quot;Copy&quot;]</td>
+	<td>ui=webtranPages::copySrcButton(row=1)</td>
 	<td></td>
 </tr>
+<!--Simulate Save-->
 <tr>
-	<td>click</td>
-	<td>css=tr.TableEditorRow:last-child div[title^=&quot;Save as Approved&quot;]&gt;imeg</td>
-	<td></td>
+	<td>rollup</td>
+	<td>sim_click</td>
+	<td>loc=css=div[title^=&quot;Save as Approved&quot;]</td>
 </tr>
-<!--Should move to next row-->
+<!--Should move to row 2-->
 <tr>
 	<td>waitForElementPresent</td>
-	<td>css=tr.TableEditorRow:nth-child(3)&gt;td.TableEditorCell-Target textarea</td>
+	<td>ui=webtranPages::targetCell(row=2)-&gt;//textarea</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyText</td>
-	<td>${entry1}</td>
+	<td>${target1}</td>
 	<td>Refer to the &lt;filename&gt;pam_timestamp_check&lt;/filename&gt; man page for more information about destroying the timestamp file using &lt;command&gt;pam_timestamp_check&lt;/command&gt;.</td>
 </tr>
 </tbody></table>

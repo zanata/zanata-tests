@@ -13,19 +13,30 @@
 </thead><tbody>
 <!--Remove Page 3 entry 1-->
 <tr>
-	<td>createCookie</td>
-	<td>saveString=</td>
+	<td>store</td>
+	<td>ui=webtranPages::targetCell(row=1)</td>
+	<td>target</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>${target}</td>
 	<td></td>
 </tr>
 <tr>
-	<td>createCookie</td>
-	<td>entryNo=nth-child(2)</td>
+	<td>waitForElementPresent</td>
+	<td>${target}-&gt;//textarea</td>
 	<td></td>
 </tr>
 <tr>
-	<td>createCookie</td>
-	<td>saveType=Approved</td>
+	<td>type</td>
+	<td>${target}-&gt;//textarea</td>
 	<td></td>
+</tr>
+<!--Simulate Save-->
+<tr>
+	<td>rollup</td>
+	<td>sim_click</td>
+	<td>loc=css=div[title^=&quot;Save as Approved&quot;]</td>
 </tr>
 </tbody></table>
 </body>

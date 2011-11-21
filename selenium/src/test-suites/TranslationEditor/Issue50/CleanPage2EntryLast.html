@@ -19,29 +19,28 @@
 </tr>
 <tr>
 	<td>waitForValue</td>
-	<td>css=a[title~=&quot;Previous Page&quot;]+img+input</td>
+	<td>ui=webtranPages::pageEntry()</td>
 	<td>2</td>
 </tr>
 <!--Clean page 2, last entry.-->
 <tr>
 	<td>store</td>
-	<td>css=tr.TableEditorRow:last-child&gt;td.TableEditorCell-Target</td>
-	<td>rowLast</td>
+	<td>ui=webtranPages::targetCell(row=-1)</td>
+	<td>target1</td>
 </tr>
-<!--Remove Page 3 entry 1-->
 <tr>
-	<td>createCookie</td>
-	<td>saveString=</td>
+	<td>click</td>
+	<td>${target1}</td>
 	<td></td>
 </tr>
 <tr>
-	<td>createCookie</td>
-	<td>entryNo=last-child</td>
+	<td>waitForElementPresent</td>
+	<td>${target1}-&gt;//textarea</td>
 	<td></td>
 </tr>
 <tr>
-	<td>createCookie</td>
-	<td>saveType=Approved</td>
+	<td>type</td>
+	<td>${target1}-&gt;//textarea</td>
 	<td></td>
 </tr>
 </tbody></table>
