@@ -501,33 +501,70 @@ manager.addRollupRule({
             , defaultValues: []
         }
     ]
-    , commandMatchers: []
+    , commandMatchers: [
+//        {
+//            command: 'waitForElementPresent'
+//            , target: '.+->//div'
+//            , updateArgs: function(command, args){
+//                var s=command.target.replace(/^ui=/, '');
+//                s=s.replace(/->\/\/div/, '');
+//                var uiSpecifier=new UISpecifier(s);
+//                args.row=uiSpecifier.args.row;
+//                return args;
+//            }
+//        }
+//        ,{
+//            command: 'verify.+'
+//            , target: '.+'
+//            , updateArgs: function(command, args){
+//                if( command.target.match('//div[@class="TableEditorContent-Empty"]')){
+//                    args.text='';
+//                }else{
+//                    args.text=command.value;
+//                }
+//                return args;
+//            }
+//        }
+//        , {
+//            command: 'verifyAttribute'
+//            , target: '.+@class'
+//            , value: '\\*.+StateDecoration\\*'
+//            , updateArgs: function(command, args){
+//                var s=command.value.replace(/^\*/,'');
+//                args.type=s.replace(/StateDecoration\*/, '');
+//                return args;
+//            }
+//        }
+    ]
     , getExpandedCommands: function(args) {
 	var commands = [];
 	var row=args.row;
 
 	commands.push({
-	    command: 'storeAttribute'
-	    , target: webtranPages_get_locator(row)+'@class'
-	    , value: 'rowDecorators'
+	    command: 'waitForElementPresent'
+	    , target: 'ui=webtranPages::targetCell(row=' + row +')->//div'
 	});
 
-	commands.push({
-	    command: 'verifyEval'
-	    , target: 'javascript{storedVars["rowDecorators"].contains("'+ type +'StateDecoration")}'
-	    , value: 'true'
-	});
-
-	if (args.str.length == 0){
+	if (args.text.length == 0){
 	    commands.push({
 		command: 'verifyElementPresent'
-		, target: 'ui=webtransPages::targetCell(row=' + row +')->//div[@class="TableEditorContent-Empty"]'
+		, target: 'ui=webtranPages::targetCell(row=' + row +')->//div[@class="TableEditorContent-Empty"]'
+	    });
+	    commands.push({
+		command: 'verifyAttribute'
+		, target: webtranPages_get_locator(row)+'@class'
+		, value: '*NewStateDecoration*'
 	    });
 	}else{
 	    commands.push({
 		command: 'verifyText'
-		, target: 'ui=webtransPages::targetCell(row=' + row +')'
+		, target: 'ui=webtranPages::targetCell(row=' + row +')'
 		, value: args.text
+	    });
+	    commands.push({
+		command: 'verifyAttribute'
+		, target: webtranPages_get_locator(row)+'@class'
+		, value: '*' + args.type +'StateDecoration*'
 	    });
 	}
         return commands;
@@ -564,7 +601,7 @@ manager.addRollupRule({
 	 */
 	var commands = [];
 	var row=args.row;
-	var target='ui=webtransPages::targetCell(row=' + row +')';
+	var target='ui=webtranPages::targetCell(row=' + row +')';
 
 	commands.push({
 	    command:  'storeText'
@@ -574,7 +611,7 @@ manager.addRollupRule({
 
 	commands.push({
 	    command:  'storeValue'
-	    , target: 'ui=webtransPages::pageEntry()'
+	    , target: 'ui=webtranPages::pageEntry()'
 	    , value: 'origPageNum'
 	});
 
@@ -593,14 +630,14 @@ manager.addRollupRule({
 	commands.push({
 	    command:  'type'
 	    , target: targetTextarea
-	    , value: args.str
+	    , value: args.text
 	});
 
-	var button='ui=webtransPages::messageRow(row=' +row +')->//div[starts-with(@title,"Save as Approved")]';
+	var button='ui=webtranPages::messageRow(row=' +row +')->//div[starts-with(@title,"Save as Approved")]';
 	if (args.type=='Fuzzy'){
-	    button='ui=webtransPages::messageRow(row=' +row +')->//div[starts-with(@title,"Save as Fuzzy")]';
+	    button='ui=webtranPages::messageRow(row=' +row +')->//div[starts-with(@title,"Save as Fuzzy")]';
 	}else if (args.type=='Cancel'){
-	    button='ui=webtransPages::messageRow(row=' +row +')->//div[starts-with(@title,"Cancel")]';
+	    button='ui=webtranPages::messageRow(row=' +row +')->//div[starts-with(@title,"Cancel")]';
 	}
 
 	commands.push({

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://flies-devel.englab.bne.redhat.com/" />
+<title>SaveOnEntry05</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">SaveOnEntry05</td></tr>
+</thead><tbody>
+<!--Save empty on row 2-->
+<tr>
+	<td>store</td>
+	<td>5</td>
+	<td>row</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>ui=webtranPages::targetCell(row=${row})</td>
+	<td>tCell</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>${tCell}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>${tCell}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>${tCell}-&gt;//textarea</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>${tCell}-&gt;//textarea</td>
+	<td></td>
+</tr>
+<!--Simulate Save-->
+<tr>
+	<td>rollup</td>
+	<td>sim_click</td>
+	<td>loc=css=div[title^=&quot;Save as Approved&quot;]</td>
+</tr>
+<!--Verify focus-->
+<tr>
+	<td>storeEval</td>
+	<td>${row}+1</td>
+	<td>newRow</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>ui=webtranPages::targetCell(row=${newRow})-&gt;//textarea</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>ui=webtranPages::targetCell(row=${newRow})-&gt;//textarea</td>
+	<td></td>
+</tr>
+<!--Verify text-->
+<tr>
+	<td>rollup</td>
+	<td>verify_text</td>
+	<td>type=Approved, row=2, text=</td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

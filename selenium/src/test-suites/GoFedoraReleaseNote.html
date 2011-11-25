@@ -17,8 +17,58 @@
 	<td></td>
 </tr>
 <tr>
+	<td>label</td>
+	<td>SearchProj</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeElementPresent</td>
+	<td>ui=allPages::tableRow(column=1, value=Fedora Security Guide)</td>
+	<td>isProjInPage</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>${isProjInPage}</td>
+	<td>EnterProject</td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>css=td.rich-datascr-button-dsbld:contains(&quot;»&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>css=td.rich-datascr-act</td>
+	<td>pageNum</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=td.rich-datascr-button:contains(&quot;»&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForNotText</td>
+	<td>css=td.rich-datascr-act</td>
+	<td>${pageNum}</td>
+</tr>
+<tr>
+	<td>goto</td>
+	<td>SearchProj</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>EnterProject</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>link=Fedora Release Notes</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>End</td>
 	<td></td>
 </tr>
 </tbody></table>

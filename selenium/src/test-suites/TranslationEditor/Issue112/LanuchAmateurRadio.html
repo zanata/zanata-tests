@@ -13,17 +13,17 @@
 </thead><tbody>
 <tr>
 	<td>store</td>
-	<td>css=table.DocumentListTable td&gt;div&gt;div&gt;div:contains(AmateurRadio)</td>
-	<td>actionElement</td>
+	<td>AmateurRadio</td>
+	<td>docItem</td>
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>${actionElement}</td>
+	<td>ui=allPages::tableRow(column=2, value=${docItem})</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>${actionElement}</td>
+	<td>ui=allPages::tableRow(column=2, value=${docItem})-&gt;/td[2]</td>
 	<td></td>
 </tr>
 </tbody></table>
