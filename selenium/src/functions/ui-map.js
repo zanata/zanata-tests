@@ -502,39 +502,39 @@ manager.addRollupRule({
         }
     ]
     , commandMatchers: [
-//        {
-//            command: 'waitForElementPresent'
-//            , target: '.+->//div'
-//            , updateArgs: function(command, args){
-//                var s=command.target.replace(/^ui=/, '');
-//                s=s.replace(/->\/\/div/, '');
-//                var uiSpecifier=new UISpecifier(s);
-//                args.row=uiSpecifier.args.row;
-//                return args;
-//            }
-//        }
-//        ,{
-//            command: 'verify.+'
-//            , target: '.+'
-//            , updateArgs: function(command, args){
-//                if( command.target.match('//div[@class="TableEditorContent-Empty"]')){
-//                    args.text='';
-//                }else{
-//                    args.text=command.value;
-//                }
-//                return args;
-//            }
-//        }
-//        , {
-//            command: 'verifyAttribute'
-//            , target: '.+@class'
-//            , value: '\\*.+StateDecoration\\*'
-//            , updateArgs: function(command, args){
-//                var s=command.value.replace(/^\*/,'');
-//                args.type=s.replace(/StateDecoration\*/, '');
-//                return args;
-//            }
-//        }
+        {
+            command: 'waitForElementPresent'
+            , target: '.+->//div'
+            , updateArgs: function(command, args){
+                var s=command.target.replace(/^ui=/, '');
+                s=s.replace(/->\/\/div/, '');
+                var uiSpecifier=new UISpecifier(s);
+                args.row=uiSpecifier.args.row;
+                return args;
+            }
+        }
+        ,{
+            command: 'verify.+'
+            , target: '.+'
+            , updateArgs: function(command, args){
+                if( command.target.match('//div[@class="TableEditorContent-Empty"]')){
+                    args.text='';
+                }else{
+                    args.text=command.value;
+                }
+                return args;
+            }
+        }
+        , {
+            command: 'verifyAttribute'
+            , target: '.+@class'
+            , value: '\\*.+StateDecoration\\*'
+            , updateArgs: function(command, args){
+                var s=command.value.replace(/^\*/,'');
+                args.type=s.replace(/StateDecoration\*/, '');
+                return args;
+            }
+        }
     ]
     , getExpandedCommands: function(args) {
 	var commands = [];
