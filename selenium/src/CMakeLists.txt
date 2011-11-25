@@ -163,7 +163,11 @@ FOREACH(testSuiteRaw ${TEST_SUITES_RAW})
     GENERATE_TEST_FOREACH_ROLE(${testSuitePath} ${testSuiteName})
 ENDFOREACH(testSuiteRaw ${TEST_SUITES_RAW})
 
-
+ADD_CUSTOM_TARGET(test_selenium_stable
+    COMMAND ctest -E "^US-"
+    COMMENT "Testing stable selenium suites"
+    VERBATIM
+    )
 
 ### Privilege tests
 #EXECUTE_PROCESS(COMMAND ${CMAKE_SOURCE_DIR}/scripts/generate_privilege_test_suite.sh ${PRIVILEGE_TEST_ROOT_ABSOLUTE})
