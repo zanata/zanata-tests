@@ -2,23 +2,25 @@
 # Test Settings
 #
 
-SET(BROWSER_DEFAULT "firefox")
-IF("${BROWSER}" STREQUAL "")
-    SET(BROWSER ${BROWSER_DEFAULT})
-ENDIF("${BROWSER}" STREQUAL "")
-SET(BROWSER_STR "*${BROWSER}\\ ${${BROWSER}_BIN}")
-
-# MESSAGE("TEST_ROOT_ABSOLUTE=${TEST_ROOT_ABSOLUTE}")
-FIND_FILES_IN_DIR(TEST_SUITES_RAW  "0-*.html" "${TEST_ROOT_ABSOLUTE}")
-
-# MESSAGE("TEST_SUITES_RAW=${TEST_SUITES_RAW}")
-
 #===================================================================
 # Selenium settings
 #
-# Flow control extension
+SET(SELENIUM_DIR "${CMAKE_SOURCE_DIR}/selenium")
+SET(SELENIUM_FLOWCONTROL "${SELENIUM_DIR}/dependencies/goto_sel08.js")
+SET(SELENIUM_UIMAP "${SELENIUM_DIR}/src/functions/ui-map.js")
 SET(SELENIUM_EXTENSION
-    "${CMAKE_SOURCE_DIR}/selenium/dependencies/user-extensions.js")
+    "${SELENIUM_DIR}/user-extensions.js")
+
+ADD_CUSTOM_COMMAND(OUTPUT ${SELENIUM_EXTENSION}
+    COMMAND eval "cat ${SELENIUM_FLOWCONTROL} ${SELENIUM_UIMAP} > ${SELENIUM_EXTENSION}"
+    DEPENDS ${SELENIUM_FLOWCONTROL} ${SELENIUM_UIMAP}
+    COMMENT "Making ${SELENIUM_EXTENSION}"
+    VERBATIM
+)
+
+ADD_CUSTOM_TARGET(generate_user_extension_js ALL
+    DEPENDS ${SELENIUM_EXTENSION}
+)
 
 LIST(APPEND SELENIUM_SERVER_ARG -port ${SELENIUM_SERVER_PORT} -debug
     -userExtensions ${SELENIUM_EXTENSION})
@@ -56,6 +58,7 @@ ADD_CUSTOM_TARGET(initial_setup
 # Test generating macros
 #
 
+#===================================================================
 # Generate test suite for each browser
 MACRO(GENERATE_TEST_FOREACH_BROWSER testSuiteDir testSuiteName testRole suiteFile)
     IF(EXISTS "${testSuiteDir}/UNSTABLE")
@@ -75,7 +78,7 @@ MACRO(GENERATE_TEST_FOREACH_BROWSER testSuiteDir testSuiteName testRole suiteFil
     ENDFOREACH()
 ENDMACRO()
 
-
+#===================================================================
 # Generate test suite for role
 MACRO(GENERATE_TEST_FOR_ROLE testSuiteDir testSuiteName testRole)
     IF(NOT "${${testRole}_SISO}" STREQUAL "")
@@ -120,7 +123,7 @@ MACRO(GENERATE_TEST_FOR_ROLE testSuiteDir testSuiteName testRole)
     ENDIF(NOT "${${testRole}_SISO}" STREQUAL "")
 ENDMACRO(GENERATE_TEST_FOR_ROLE testSuiteDir testSuiteName testRole)
 
-
+#===================================================================
 # Generate test for each role
 MACRO(GENERATE_TEST_FOREACH_ROLE testSuiteDir testSuiteName)
     IF(EXISTS "${testSuiteDir}/TEST_Prelogin")
@@ -141,6 +144,12 @@ ENDMACRO(GENERATE_TEST_FOREACH_ROLE testSuiteDir testSuiteName)
 
 #===================================================================
 # Generate test suites.
+
+## Find test suites
+# MESSAGE("TEST_ROOT_ABSOLUTE=${TEST_ROOT_ABSOLUTE}")
+FIND_FILES_IN_DIR(TEST_SUITES_RAW  "0-*.html" "${TEST_ROOT_ABSOLUTE}")
+
+# MESSAGE("TEST_SUITES_RAW=${TEST_SUITES_RAW}")
 
 ## General tests
 MESSAGE("Generating General Test Suites:")
