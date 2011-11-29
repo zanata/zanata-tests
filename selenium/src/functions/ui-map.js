@@ -428,6 +428,33 @@ myMap.addElement('webtranPages', {
     , locator: 'css=a[title^="Previous Page"]~input'
 });
 
+myMap.addElement('webtranPages', {
+    name: 'pageButton'
+    , description: 'Page navigation button'
+    , args: [
+	{
+	    name: 'action'
+            , description: 'First, Previous, Next or Last'
+	    , defaultValues: [ 'First', 'Previous', 'Next' , 'Last' ]
+	}
+    ]
+    , getLocator: function(args){
+	return 'css=a[title^="' + args['action'] + ' Page"]';
+    }
+    , testcase1: {
+	args: { active:Previous }
+	,xhtml:
+	    '<div>'
+	    +'<a title="First Page (Shortcut: Home)"><img /></a>'
+	    +'<a expected-result="1" title="Previous Page (Shortcut: PageUp)"><img /></a>'
+	    +'<input />'
+	    +'<div> of 3</div>'
+	    +'<a title="Next Page (Shortcut: PageDown)"><img /></a>'
+	    +'<a title="Last Page (Shortcut: PageDown)"><img /></a>'
+	    +'</div>'
+
+});
+
 manager.addRollupRule({
     name: 'sim_click'
     , description: 'Simulate a click if normal click does not work'
