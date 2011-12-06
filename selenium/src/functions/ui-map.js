@@ -452,7 +452,7 @@ myMap.addElement('webtranPages', {
 	    +'<a title="Next Page (Shortcut: PageDown)"><img /></a>'
 	    +'<a title="Last Page (Shortcut: PageDown)"><img /></a>'
 	    +'</div>'
-
+    }
 });
 
 manager.addRollupRule({
