@@ -7,31 +7,42 @@
 function print_usage(){
     cat <<END
     $0 - Whether  2 PO files are identical
-Usage: $0 [options] potFile poFile1 poFile2
+Usage: $0 [-v] potFile poFile1 poFile2
 Options:
+    -v: Verbose mode
     potFile: pot file as reference
     poFile1, poFile2:  2 po files to be compared.
 END
 }
+verbose=0
+quietOpt=
 
-
-if [ $# -ne 3 ];then
+if [ $# -lt 3 ];then
     print_usage
     exit -1
 fi
-potF=$1
-poF1=$2
-poF2=$3
 
-tmp1="1.tmp"
-tmp2="2.tmp"
+if [ "$1" = "-v" ];then
+    verbose=1
+    shift
+else
+    quietOpt="-q"
+fi
+potF="$1"
+poF1="$2"
+poF2="$3"
 
-msgcmp -m ${poF1} ${potF} > ${tmp1} 2>&1
-msgcmp -m ${poF2} ${potF} > ${tmp2} 2>&1
+tmp1="$poF1.tmp"
+tmp2="$poF2.tmp"
+
+[ $verbose -gt 0 ] && echo "Info: Comparing ${poF1} and ${poF2} with ${potF}"
+msgcmp -m "${poF1}" "${potF}" | cut -d ':' -f 3,4 > ${tmp1} 2>&1
+msgcmp -m "${poF2}" "${potF}" | cut -d ':' -f 3,4 > ${tmp2} 2>&1
 
 ret=0
-if diff ${tmp1} ${tmp2}; then
+if diff $quietOpt ${tmp1} ${tmp2}; then
     echo "${poF1} and ${poF2} are equivalent"
+    rm -f ${tmp1} ${tmp2}
 else
     ret=1
     echo "Error: ${poF1} and ${poF2} are NOT equivalent"  > /dev/stderr

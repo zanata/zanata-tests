@@ -28,7 +28,8 @@ END
 
 function findLangs(){
     langNameTemplate=$1
-#    echo "langNameTemplate=${langNameTemplate}"
+#    echo "langNameTemplate=${langNameTemplate}" > /dev/stderr
+#   _r: result
     _r=
 
     # find the files/directories that match langNameTemplate
@@ -37,12 +38,12 @@ function findLangs(){
     else
 	_pA=(`find $baseDir -wholename "*/$langNameTemplate/*.po" -exec dirname '{}' \; | sort -u`)
     fi
-    #echo "_pA[*]=${_pA[*]}"
+#    echo "_pA[*]=${_pA[*]}" > /dev/stderr
     if [ ${#_pA[*]} -gt 0 ];then
 	for((_i=0; $_i < ${#_pA[*]}; _i++ )); do
 	    # _rPath: relative path from baseDir
 	    _rPath=$(${scriptDir}/relative_path.sh ${baseDir} ${_pA[$_i]})
-	    #echo "baseDir=${baseDir} _pA[$_i]=${_pA[$_i]} _rPath=$_rPath"
+#	    echo "baseDir=${baseDir} _pA[$_i]=${_pA[$_i]} _rPath=$_rPath" > /dev/stderr
 	    _is_valid=0
 	    if [ $_fileMode -eq 1 ]; then
 		# In file mode, just pass the found files.
@@ -54,13 +55,14 @@ function findLangs(){
 
 		# _pPath: corresponding path in pot_dir
 		_pPath=${_potDir}/${_rPath#$langNameTemplate/}
-		# echo "_rPath=$_rPath _pPath=$_pPath"
-		if [ -e $_pPath ]; then
+#		 echo "_rPath=$_rPath _pPath=$_pPath" > /dev/stderr
+		if [ -e "$_pPath" ]; then
 		    # Has corresponding pot directory
 		    _is_valid=1
 		fi
 	    fi
 
+#	    echo "_is_valid=$_is_valid" > /dev/stderr
 	    if [ $_is_valid -eq 1 ]; then
 		if [  -z "$_r" ];then
 		    _r=${_rPath%%/}
@@ -73,6 +75,7 @@ function findLangs(){
 	    fi
 
 	done
+	#echo "_r=$_r" > /dev/stderr
 	if [ -n "$_r" ];then
 	    echo "$_r"
 	else
@@ -133,6 +136,7 @@ _langA=(`echo "$langList" | sed -e 's/;/ /g'`)
 _out=
 
 for(( _i=0 ;$_i < ${#_langA[*]}; _i++)); do
+#    echo "_langA[$_i]=${_langA[$_i]}"
     case ${_langA[$_i]} in
 	zh*CN | zh*Hans )
 	    _ret=`findLangs "zh*CN"`
