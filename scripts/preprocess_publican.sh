@@ -22,17 +22,17 @@ do
 done
 #echo "_langs_final=${_langs_final}"
 
-
-if [ -e /usr/bin/publican ] ; then
-    if [ -e publican.cfg ]; then
+if [ -e publican.cfg ]; then
+    if [ -n `which publican` ] ; then
 	sed -e "s/brand:.*//" publican.cfg > publican.cfg.striped
 	publican update_pot --config publican.cfg.striped \
 	&& publican update_po --config publican.cfg.striped --langs ${_langs_final}
     else
-	touch publican.cfg.striped
+	echo "[Error] publican is not installed" > /dev/stderr
+	exit 1
     fi
 else
     touch publican.cfg.striped
 fi
-
+exit 0
 
