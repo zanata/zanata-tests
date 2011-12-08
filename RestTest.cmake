@@ -14,6 +14,40 @@ ADD_CUSTOM_TARGET(prepare_all_projects
     )
 
 
+
+#===================================================================
+# Macros
+#
+MACRO(REST_VERIFY proj ver projType client baseDir pullDest)
+    # Note that verifing properties projects is not implemented yet
+    # MESSAGE("proj=${proj} ver=${ver} projType=|${projType}| client=${client}")
+    IF("${projType}" STREQUAL "podir")
+	ADD_CUSTOM_TARGET(rest_verify_${client}_${proj}_${ver}
+	    COMMAND scripts/compare_translation_dir.sh
+	    ${baseDir}/${SRC_DIR}
+	    ${baseDir}/${TRANS_DIR} ${_pull_dest_dir_${client}} "${LANGS}"
+	    COMMENT "  [${client}] Verifying the pulled contents with original translation."
+	    VERBATIM
+	    )
+    ELSEIF("${projType}" STREQUAL "gettext")
+	ADD_CUSTOM_TARGET(rest_verify_${client}_${proj}_${ver}
+		COMMAND scripts/compare_translation_dir.sh -g
+		${baseDir}/${${proj}_POT}
+		${baseDir}/${TRANS_DIR} ${pullDest} "${LANGS}"
+		COMMENT "  [${client}] Verifying the pulled contents with original translation."
+		VERBATIM
+		)
+    ELSE("${projType}" STREQUAL "podir")
+	# Verification on other project types are not supported yet
+	ADD_DEPENDENCIES(rest_test_${client}_${proj}_${ver} zanata_pull_${client}_${proj}_${ver})
+    ENDIF("${projType}" STREQUAL "podir")
+
+    IF(TARGET rest_verify_${client}_${proj}_${ver})
+	ADD_DEPENDENCIES(rest_test_${client}_${proj}_${ver} rest_verify_${client}_${proj}_${ver})
+    ENDIF(TARGET rest_verify_${client}_${proj}_${ver})
+ENDMACRO(REST_VERIFY proj ver projType client)
+
+
 #===================================================================
 # Source project targets
 #
@@ -276,27 +310,8 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	ADD_DEPENDENCIES(zanata_pull_mvn_${proj}_${_ver}
 	    zanata_push_mvn_${proj}_${_ver}  zanata_putversion_mvn_${proj}_${_ver})
 
-	# Verify
-	# Note that verifing properties projects is not implemented yet
-	IF(_projType STREQUAL "properties")
-	    ADD_DEPENDENCIES(rest_test_mvn_${proj}_${_ver} zanata_pull_mvn_${proj}_${_ver})
-	ELSEIF(_projType STREQUAL "xliff")
-	    ADD_DEPENDENCIES(rest_test_mvn_${proj}_${_ver} zanata_pull_mvn_${proj}_${_ver})
-	ELSE(_projType STREQUAL "properties")
-	    ADD_CUSTOM_TARGET(zanata_rest_verify_mvn_${proj}_${_ver}
-		COMMAND scripts/compare_translation_dir.sh
-		${_proj_ver_base_dir_absolute}/${SRC_DIR}
-		${_proj_ver_base_dir_absolute}/${TRANS_DIR} ${_pull_dest_dir_mvn} "${LANGS}"
-		COMMENT "  [Mvn] Verifying the pulled contents with original translation."
-		VERBATIM
-		)
-
-	    ADD_DEPENDENCIES(zanata_rest_verify_mvn_${proj}_${_ver}
-		zanata_pull_mvn_${proj}_${_ver})
-
-	    ADD_DEPENDENCIES(rest_test_mvn_${proj}_${_ver} zanata_rest_verify_mvn_${proj}_${_ver})
-
-	ENDIF(_projType STREQUAL "properties")
+	# Verify the pulled
+	REST_VERIFY(${proj} ${_ver} ${_projType} "mvn" "${_proj_ver_base_dir_absolute}" "${_pull_dest_dir_mvn}")
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${_pull_dest_dir_mvn}
 	    COMMAND ${CMAKE_COMMAND} -E make_directory ${_pull_dest_dir_mvn}
@@ -325,6 +340,10 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	)
 
     FOREACH(_ver ${_projVers})
+	#MESSAGE("[py] proj=${proj} ver=${_ver}")
+	ADD_CUSTOM_TARGET(rest_test_py_${proj}_${_ver})
+	ADD_DEPENDENCIES(rest_test_py rest_test_py_${proj}_${_ver})
+
 	SET(_pull_dest_dir_py ${PULL_DEST_DIR_ABSOLUTE}/py/${proj}/${_ver})
 	SET(_proj_ver_dir_absolute ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver})
 	SET(_zanata_xml_path
@@ -333,6 +352,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    ${_proj_ver_dir_absolute}/${${proj}_BASE_DIR})
 	SET(_proj_ver_publican_cfg_absolute
 	    ${_proj_ver_base_dir_absolute}/publican.cfg)
+
 
 	#MESSAGE("[py] proj=${proj} ver=${_ver}")
 	SET(ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS
@@ -419,33 +439,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    zanata_push_py_${proj}_${_ver}  zanata_version_create_py_${proj}_${_ver})
 
 	# Verify the pulled
-	IF("${${proj}_PROJECT_TYPE}" STREQUAL "gettext")
-	    ADD_CUSTOM_TARGET(zanata_rest_verify_py_${proj}_${_ver}
-		COMMAND scripts/compare_translation_dir.sh -g
-		${_proj_ver_base_dir_absolute}/${${proj}_POT}
-		${_proj_ver_base_dir_absolute}/${TRANS_DIR} ${_pull_dest_dir_py} "${LANGS}"
-		COMMENT "  [Py] Verifying the pulled contents with original translation."
-		VERBATIM
-		)
-	ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "gettext")
-	    ADD_CUSTOM_TARGET(zanata_rest_verify_py_${proj}_${_ver}
-		COMMAND scripts/compare_translation_dir.sh
-		${_proj_ver_base_dir_absolute}/${SRC_DIR}
-		${_proj_ver_base_dir_absolute}/${TRANS_DIR} ${_pull_dest_dir_py} "${LANGS}"
-		COMMENT "  [Py] Verifying the pulled contents with original translation."
-		VERBATIM
-		)
-	ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "gettext")
-
-
-	ADD_DEPENDENCIES(zanata_rest_verify_py_${proj}_${_ver}
-	    zanata_pull_py_${proj}_${_ver})
-
-
-	# REST test targets
-	ADD_CUSTOM_TARGET(rest_test_py_${proj}_${_ver})
-	ADD_DEPENDENCIES(rest_test_py_${proj}_${_ver} zanata_rest_verify_py_${proj}_${_ver})
-	ADD_DEPENDENCIES(rest_test_py rest_test_py_${proj}_${_ver})
+	REST_VERIFY(${proj} ${_ver} ${_projType} "py" "${_proj_ver_base_dir_absolute}" "${_pull_dest_dir_py}")
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${_pull_dest_dir_py}
 	    COMMAND ${CMAKE_COMMAND} -E make_directory ${_pull_dest_dir_py}
