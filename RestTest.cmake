@@ -104,8 +104,7 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	    )
 
 	# Prepare project: generate zanata.xml and pom.xml
-	ADD_CUSTOM_TARGET(prepare_${proj}_${_ver}
-	    DEPENDS ${_zanata_xml_path})
+	ADD_CUSTOM_TARGET(prepare_${proj}_${_ver})
 
 	ADD_DEPENDENCIES(prepare_${proj}_${_ver}
 	    preprocess_publican_${proj}_${_ver}
