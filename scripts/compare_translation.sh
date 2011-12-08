@@ -35,14 +35,17 @@ poF2="$3"
 tmp1="$poF1.tmp"
 tmp2="$poF2.tmp"
 
+
 [ $verbose -gt 0 ] && echo "Info: Comparing ${poF1} and ${poF2} with ${potF}"
-msgcmp -m "${poF1}" "${potF}" | cut -d ':' -f 3,4 > ${tmp1} 2>&1
-msgcmp -m "${poF2}" "${potF}" | cut -d ':' -f 3,4 > ${tmp2} 2>&1
+
+LANG=C
+msgcmp -m "${poF1}" "${potF}" 2>&1 | cut -d ':' -f 3,4 > ${tmp1}
+msgcmp -m "${poF2}" "${potF}" 2>&1 | cut -d ':' -f 3,4 > ${tmp2}
 
 ret=0
 if diff $quietOpt ${tmp1} ${tmp2}; then
     echo "${poF1} and ${poF2} are equivalent"
-    rm -f ${tmp1} ${tmp2}
+#    rm -f ${tmp1} ${tmp2}
 else
     ret=1
     echo "Error: ${poF1} and ${poF2} are NOT equivalent"  > /dev/stderr

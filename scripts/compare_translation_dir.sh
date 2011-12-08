@@ -5,12 +5,12 @@
 function print_usage(){
     cat <<END
     $0 - Whether po files under 2 directories are equivalent.
-Usage: $0 [options] potDir dir1 dir2 langList
+Usage: $0 [options] potPath dir1 dir2 langList
 Options:
     -h: This help
     -g: gettext mode
 Parameters:
-    potDir: Directory that contains pot files.
+    potPath: Directory that contains pot files.
     dir1, dir2: 2 directories to be compared.
     langList: list of languages, separated by ';'
 END
@@ -28,31 +28,37 @@ function is_dir_item_same(){
     return 0
 }
 
-function compare_dirs(){
-    _potDir=$1
-    _dir1=$2
-    _dir2=$3
-    _fileA0=(`find $_potDir -name '*.pot'| sort | xargs `)
-    _fileA1=(`find $_dir1 -name '*.po'| sort | xargs `)
-    _fileA2=(`find $_dir2 -name '*.po'| sort | xargs `)
-    if ! is_dir_item_same "$_potDir" ${#_fileA0[*]} "$_dir1" ${#_fileA1[*]} ; then
-	return 1
-    fi
-    if ! is_dir_item_same "$_potDir" ${#_fileA0[*]} "$_dir2" ${#_fileA2[*]} ; then
-	return 1
-    fi
-
-    # Number of items in _potDir, _dir1 and _dir2 should be same here
-    for((_i=0; $_i < ${#_fileA1[*]}; _i++));do
-	_bf=`basename ${_fileA1[$_i]} .po`
-	_d1=`dirname ${_fileA1[$_i]}`
-	_d2=`dirname ${_fileA2[$_i]}`
-	if ! $scriptDir/compare_translation.sh $_potDir/$_bf.pot $_d1/$_bf.po $_d2/$_bf.po; then
-	    echo "Error: [compare_translation_dir.sh] $_dir1 is different with $_dir2"  > /dev/stderr
+function compare_paths(){
+    _potPath=$1
+    _path1=$2
+    _path2=$3
+    if [ $gettext_mode -eq 1 ];then
+	if ! $scriptDir/compare_translation.sh $_potPath $_path1 $_path2; then
+	    echo "Error: [compare_translation_path.sh] $_path1 is different with $_path2"  > /dev/stderr
 	    return 1
 	fi
-    done
-    echo "Files of $_dir1 and $_dir2 are equivalent."
+    else
+	_fileA0=(`find $_potPath -name '*.pot'| sort | xargs `)
+	_fileA1=(`find $_path1 -name '*.po'| sort | xargs `)
+	_fileA2=(`find $_path2 -name '*.po'| sort | xargs `)
+	if ! is_dir_item_same "$_potPath" ${#_fileA0[*]} "$_path1" ${#_fileA1[*]} ; then
+	    return 1
+	fi
+	if ! is_dir_item_same "$_potPath" ${#_fileA0[*]} "$_path2" ${#_fileA2[*]} ; then
+	    return 1
+	fi
+	# Number of items in _potPath, _path1 and _path2 should be same here
+	for((_i=0; $_i < ${#_fileA1[*]}; _i++));do
+	    _bf=`basename ${_fileA1[$_i]} .po`
+	    _d1=`dirname ${_fileA1[$_i]}`
+	    _d2=`dirname ${_fileA2[$_i]}`
+	    if ! $scriptDir/compare_translation.sh $_potPath/$_bf.pot $_d1/$_bf.po $_d2/$_bf.po; then
+		echo "Error: [compare_translation_path.sh] $_path1 is different with $_path2"  > /dev/stderr
+		return 1
+	    fi
+	done
+    fi
+    echo "Files of $_path1 and $_path2 are equivalent."
     return 0
 
 }
@@ -79,30 +85,36 @@ if [ $# -ne 4 ]; then
 fi
 
 scriptDir=`dirname $0`
-potDir=$1
+potPath=$1
 dir1=$2
 dir2=$3
 langList=$4
 shift 4
 
-if [ -n $langList ]; then
-    if [ $gettext_mode -eq 1 ];then
-	_postFix1=(`$scriptDir/find_valid_langs.sh -f -p $potDir $dir1 $langList`)
-	_postFix2=(`$scriptDir/find_valid_langs.sh -f -p $potDir $dir2 $langList`)
-    else
-	_postFix1=(`$scriptDir/find_valid_langs.sh -m -p $potDir $dir1 $langList`)
-	_postFix2=(`$scriptDir/find_valid_langs.sh -m -p $potDir $dir2 $langList`)
-    fi
-    echo "_postFix1=${_postFix1} potDir=$potDir dir1=$dir1"
-    echo "_postFix2=${_postFix2} potDir=$potDir dir2=$dir2"
-    if [ ${#_postFix1[*]} -ne ${#_postFix2[*]} ]; then
-	echo "Error: [compare_translation_dir.sh] $dir1 contains ${#_postFix1[*]} valid locale dirs (${_postFix1[*]}), but $dir2 contains ${#_postFix2[*]}: (${_postFix2[*]})"  > /dev/stderr
+if [ -z "$langList" ]; then
+    echo "Error: Please specify langList" > /dev/stderr
+    print_usage
+    exit -1;
+fi
+
+if [ $gettext_mode -eq 1 ];then
+    _postFix1=(`$scriptDir/find_valid_langs.sh -f -p $potPath $dir1 $langList`)
+    _postFix2=(`$scriptDir/find_valid_langs.sh -f -p $potPath $dir2 $langList`)
+
+else
+    _postFix1=(`$scriptDir/find_valid_langs.sh -m -p $potPath $dir1 $langList`)
+    _postFix2=(`$scriptDir/find_valid_langs.sh -m -p $potPath $dir2 $langList`)
+fi
+#echo "_postFix1=${_postFix1} potPath=$potPath dir1=$dir1"
+#echo "_postFix2=${_postFix2} potPath=$potPath dir2=$dir2"
+
+if [ ${#_postFix1[*]} -ne ${#_postFix2[*]} ]; then
+    echo "Error: [compare_translation_dir.sh] $dir1 contains ${#_postFix1[*]} valid locale dirs (${_postFix1[*]}), but $dir2 contains ${#_postFix2[*]}: (${_postFix2[*]})"  > /dev/stderr
+    exit 1
+fi
+for((_i=0; $_i < ${#_postFix1[*]} ; _i++));do
+    if ! compare_paths $potPath $dir1/${_postFix1[$_i]} $dir2/${_postFix2[$_i]}; then
 	exit 1
     fi
-    for((_i=0; $_i < ${#_postFix1[*]} ; _i++));do
-	if ! compare_dirs $potDir $dir1/${_postFix1[$_i]} $dir2/${_postFix2[$_i]}; then
-	    exit 1
-	fi
-    done
-fi
+done
 
