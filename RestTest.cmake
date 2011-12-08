@@ -44,6 +44,7 @@ MACRO(REST_VERIFY proj ver projType client baseDir pullDest)
 
     IF(TARGET rest_verify_${client}_${proj}_${ver})
 	ADD_DEPENDENCIES(rest_test_${client}_${proj}_${ver} rest_verify_${client}_${proj}_${ver})
+	ADD_DEPENDENCIES(rest_verify_${client}_${proj}_${ver} zanata_pull_${client}_${proj}_${ver})
     ENDIF(TARGET rest_verify_${client}_${proj}_${ver})
 ENDMACRO(REST_VERIFY proj ver projType client)
 
@@ -83,9 +84,13 @@ MACRO(ADD_SOURCE_PROJECT proj)
 
     ADD_CUSTOM_TARGET(prepare_${proj})
     ADD_DEPENDENCIES(prepare_all_projects prepare_${proj})
-    SET_TARGET_PROPERTIES(prepare_${proj} PROPERTIES EXISTS TRUE)
 
     FOREACH(_ver ${_projVers})
+	# Prepare project: To make project workable with zanata,
+	# such as generate zanata.xml, pot, pom.xml and publican
+	ADD_CUSTOM_TARGET(prepare_${proj}_${_ver})
+	ADD_DEPENDENCIES(prepare_${proj} prepare_${proj}_${_ver})
+
 	SET(_proj_ver_dir_absolute
 	    ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver})
 	SET(_zanata_xml_path
@@ -94,10 +99,6 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	    ${_proj_ver_dir_absolute}/${${proj}_BASE_DIR})
 	SET(_proj_ver_publican_cfg_absolute
 	    ${_proj_ver_base_dir_absolute}/publican.cfg)
-
-	ADD_CUSTOM_TARGET(generate_zanata_xml_${proj}_${_ver}
-	    DEPENDS ${_zanata_xml_path}
-	    )
 
 	IF("${${proj}_PROJECT_TYPE}" STREQUAL "")
 	    SET(_projType_opt "")
@@ -114,6 +115,15 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	    VERBATIM
 	    )
 
+	ADD_CUSTOM_TARGET(generate_zanata_xml_${proj}_${_ver}
+	    DEPENDS ${_zanata_xml_path}
+	    )
+
+	ADD_DEPENDENCIES(prepare_${proj}_${_ver}
+	    preprocess_publican_${proj}_${_ver}
+	    )
+
+
 	IF(NOT "${${proj}_POT_GEN_CMD}" STREQUAL "")
 	    ADD_CUSTOM_TARGET(generate_pot_${proj}_${_ver}
 		COMMAND eval "${${proj}_POT_GEN_CMD}"
@@ -121,13 +131,9 @@ MACRO(ADD_SOURCE_PROJECT proj)
 		COMMENT "   Generate pot for ${proj} ${_ver}"
 		VERBATIM
 		)
-	    ADD_DEPENDENCIES(generate_zanata_xml_${proj}_${_ver} generate_pot_${proj}_${_ver})
+	    ADD_DEPENDENCIES(prepare_${proj}_${_ver} generate_pot_${proj}_${_ver})
 	ENDIF(NOT "${${proj}_POT_GEN_CMD}" STREQUAL "")
 
-
-	ADD_CUSTOM_TARGET(preprocess_publican_${proj}_${_ver}
-	    DEPENDS ${_proj_ver_publican_cfg_absolute}.striped
-	    )
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${_proj_ver_publican_cfg_absolute}.striped
 	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/preprocess_publican.sh "${LANGS}"
@@ -137,16 +143,6 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	    VERBATIM
 	    )
 
-	# Prepare project: generate zanata.xml and pom.xml
-	ADD_CUSTOM_TARGET(prepare_${proj}_${_ver})
-
-	ADD_DEPENDENCIES(prepare_${proj}_${_ver}
-	    preprocess_publican_${proj}_${_ver}
-	    generate_zanata_xml_${proj}_${_ver}
-	    )
-
-	ADD_DEPENDENCIES(prepare_${proj} prepare_${proj}_${_ver})
-
 	ADD_CUSTOM_COMMAND(OUTPUT ${_proj_ver_dir_absolute}
 	    COMMAND perl scripts/get_project.pl ${SAMPLE_PROJ_DIR_ABSOLUTE} ${proj}
 	    ${${proj}_REPO_TYPE} ${_ver} ${${proj}_URL_${_ver}}
@@ -154,6 +150,13 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	    COMMENT "   Get sources of ${proj} ${_ver}:${${proj}_NAME} from ${${proj}_URL_${_ver}}"
 	    VERBATIM
 	    )
+
+	IF(NOT TARGET preprocess_publican_${proj}_${_ver})
+	    ADD_CUSTOM_TARGET(preprocess_publican_${proj}_${_ver}
+		DEPENDS ${_proj_ver_publican_cfg_absolute}.striped
+		)
+	    ADD_DEPENDENCIES(prepare_${proj}_${_ver} preprocess_publican_${proj}_${_ver})
+	ENDIF(NOT TARGET preprocess_publican_${proj}_${_ver})
     ENDFOREACH(_ver ${_projVers})
 
 ENDMACRO(ADD_SOURCE_PROJECT proj)
@@ -269,8 +272,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    )
 
 	ADD_DEPENDENCIES(zanata_putversion_mvn_${proj}_${_ver} zanata_putproject_mvn_${proj}
-	    generate_zanata_xml_${proj}_${_ver})
-
+	    prepare_${proj}_${_ver})
 
 	# Generic push
 	ADD_CUSTOM_TARGET(zanata_push_mvn_${proj}_${_ver}
@@ -405,7 +407,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    )
 
 	ADD_DEPENDENCIES(zanata_version_create_py_${proj}_${_ver}
-	    zanata_project_create_py_${proj})
+	    zanata_project_create_py_${proj} prepare_${proj}_${_ver})
 
 	# Generic push
 	ADD_CUSTOM_TARGET(zanata_push_py_${proj}_${_ver}
