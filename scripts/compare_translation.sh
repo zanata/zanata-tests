@@ -36,16 +36,23 @@ tmp1="$poF1.tmp"
 tmp2="$poF2.tmp"
 
 
-[ $verbose -gt 0 ] && echo "Info: Comparing ${poF1} and ${poF2} with ${potF}"
 
 LANG=C
-msgcmp -m "${poF1}" "${potF}" 2>&1 | cut -d ':' -f 3,4 > ${tmp1}
-msgcmp -m "${poF2}" "${potF}" 2>&1 | cut -d ':' -f 3,4 > ${tmp2}
+# Whether pulled matches the pot
+[ $verbose -gt 0 ] && echo "Info: Matching ${poF2} with ${potF}" > /dev/stderr
+potPullDiff=`msgcomm -u --no-wrap "${poF1}" "${potF}"`
+if [ -n "${potPullDiff}" ];then
+    echo "Error: ${poF2} does not match ${potF}" > /dev/stderr
+    exit 1
+fi
 
+[ $verbose -gt 0 ] && echo "Info: Does ${poF2} has every valid messages in ${poF1} " > /dev/stderr
+msgcomm -s --more-than 1 --no-wrap "${poF1}" "${poF2}" > ${tmp1}
+msgcomm -s --more-than 1 --no-wrap "${poF2}" "${poF1}" > ${tmp2}
 ret=0
 if diff $quietOpt ${tmp1} ${tmp2}; then
     echo "${poF1} and ${poF2} are equivalent"
-#    rm -f ${tmp1} ${tmp2}
+    rm -f ${tmp1} ${tmp2}
 else
     ret=1
     echo "Error: ${poF1} and ${poF2} are NOT equivalent"  > /dev/stderr
