@@ -5,6 +5,37 @@
 # Base requirement
 #
 
+MACRO(REQUIRE_CMD var cmd)
+    FIND_PROGRAM(${var} "${cmd}" ${ARGN})
+    IF("${${var}}" MATCHES "NOTFOUND$")
+	MESSAGE(FATAL "${cmd} is not installed")
+    ENDIF("${${var}}" MATCHES "NOTFOUND$")
+ENDMACRO(REQUIRE_CMD var cmd)
+
+REQUIRE_CMD(PUBLICAN_CMD publican)
+REQUIRE_CMD(ZANATA_MVN_CMD mvn)
+
+# ZANATA_PY_PATH: The preferred location of zanata.
+IF(NOT "${ZANATA_PY_PATH}" STREQUAL "")
+    IF(NOT EXISTS ${ZANATA_PY_PATH})
+	# Clone the python client if ZANATA_PY_PATH does not exist.
+	FILE(MAKE_DIRECTORY ${ZANATA_PY_PATH})
+	EXECUTE_PROCESS(COMMAND git clone ${PYTHON_CLIENT_REPO} ${ZANATA_PY_PATH})
+    ENDIF(NOT EXISTS ${ZANATA_PY_PATH})
+    # Update python client.
+    ADD_CUSTOM_TARGET(python_client_update
+	COMMAND git pull
+	COMMAND git rev-parse
+	COMMAND make clean
+	COMMAND make
+	COMMENT "Update python client"
+	WORKING_DIRECTORY ${ZANATA_PY_PATH}
+	)
+ENDIF(NOT "${ZANATA_PY_PATH}" STREQUAL "")
+REQUIRE_CMD(ZANATA_PY_CMD zanata HINTS ${ZANATA_PY_PATH} /usr/bin /bin NO_DEFAULT_PATH)
+
+
+
 ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR_ABSOLUTE}
     COMMAND ${CMAKE_COMMAND} -E make_directory ${SAMPLE_PROJ_DIR_ABSOLUTE}
     )
@@ -48,6 +79,31 @@ MACRO(REST_VERIFY proj ver projType client baseDir pullDest)
     ENDIF(TARGET rest_verify_${client}_${proj}_${ver})
 ENDMACRO(REST_VERIFY proj ver projType client)
 
+MACRO(SET_LOCAL_VARS proj ver client)
+    SET(_proj_ver_dir_absolute
+	${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${ver})
+    SET(_proj_ver_base_dir_absolute
+	${_proj_ver_dir_absolute}/${${proj}_BASE_DIR})
+    SET(_proj_ver_publican_cfg_absolute
+	${_proj_ver_base_dir_absolute}/publican.cfg)
+
+    IF(NOT "${client}" STREQUAL "src")
+	SET(_pull_dest_dir_absolute ${PULL_DEST_DIR_ABSOLUTE}/${client}/${proj}/${_ver})
+    ENDIF(NOT "${client}" STREQUAL "src")
+
+    IF(${proj}_ZANATA_XML})
+        SET(_zanata_xml_path ${_proj_ver_dir_absolute}/${${proj}_ZANATA_XML})
+    ELSE(${proj}_ZANATA_XML})
+        SET(_zanata_xml_path ${_proj_ver_dir_absolute}/${ZANATA_XML_DEFAULT})
+    ENDIF(${proj}_ZANATA_XML})
+
+    IF("${${proj}_PROJECT_TYPE}" STREQUAL "")
+        SET(_projType ${PROJECT_TYPE_DEFAULT})
+    ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "")
+        SET(_projType ${${proj}_PROJECT_TYPE})
+    ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "")
+ENDMACRO(SET_LOCAL_VARS proj ver)
+
 
 #===================================================================
 # Source project targets
@@ -90,15 +146,7 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	# such as generate zanata.xml, pot, pom.xml and publican
 	ADD_CUSTOM_TARGET(prepare_${proj}_${_ver})
 	ADD_DEPENDENCIES(prepare_${proj} prepare_${proj}_${_ver})
-
-	SET(_proj_ver_dir_absolute
-	    ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver})
-	SET(_zanata_xml_path
-	    ${_proj_ver_dir_absolute}/${${proj}_ZANATA_XML})
-	SET(_proj_ver_base_dir_absolute
-	    ${_proj_ver_dir_absolute}/${${proj}_BASE_DIR})
-	SET(_proj_ver_publican_cfg_absolute
-	    ${_proj_ver_base_dir_absolute}/publican.cfg)
+	SET_LOCAL_VARS("${proj}" "${_ver}" "src")
 
 	IF("${${proj}_PROJECT_TYPE}" STREQUAL "")
 	    SET(_projType_opt "")
@@ -154,7 +202,7 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	IF(NOT TARGET preprocess_publican_${proj}_${_ver})
 	    ADD_CUSTOM_TARGET(preprocess_publican_${proj}_${_ver}
 		DEPENDS ${_proj_ver_publican_cfg_absolute}.striped
-		)
+	    	)
 	    ADD_DEPENDENCIES(prepare_${proj}_${_ver} preprocess_publican_${proj}_${_ver})
 	ENDIF(NOT TARGET preprocess_publican_${proj}_${_ver})
     ENDFOREACH(_ver ${_projVers})
@@ -194,27 +242,15 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	#MESSAGE("[mvn] proj=${proj} ver=${_ver}")
 	ADD_CUSTOM_TARGET(rest_test_mvn_${proj}_${_ver})
 	ADD_DEPENDENCIES(rest_test_mvn rest_test_mvn_${proj}_${_ver})
+	SET_LOCAL_VARS(${proj} "${_ver}" "mvn")
 
-	SET(_pull_dest_dir_mvn ${PULL_DEST_DIR_ABSOLUTE}/mvn/${proj}/${_ver})
-	SET(_proj_ver_dir_absolute ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver})
-	SET(_zanata_xml_path
-	    ${_proj_ver_dir_absolute}/${${proj}_ZANATA_XML})
-	SET(_proj_ver_base_dir_absolute
-	    ${_proj_ver_dir_absolute}/${${proj}_BASE_DIR})
 	SET(_proj_ver_pom_xml_absolute
 	    ${_proj_ver_base_dir_absolute}/pom.xml)
-	SET(_proj_ver_publican_cfg_absolute
-	    ${_proj_ver_base_dir_absolute}/publican.cfg)
 
-	SET(ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS
-	    -Dzanata.projectConfig=${_zanata_xml_path}
-	    )
-
-	IF("${${proj}_PROJECT_TYPE}" STREQUAL "")
-	    SET(_projType ${PROJECT_TYPE_DEFAULT})
-	ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "")
-	    SET(_projType ${${proj}_PROJECT_TYPE})
-	ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "")
+	SET(ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS "")
+	IF(${proj}_ZANATA_XML)
+	    LIST(APPEND ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS "-Dzanata.projectConfig=${_zanata_xml_path}")
+	ENDIF(${proj}_ZANATA_XML)
 
 	IF(_projType STREQUAL "xliff")
 		SET(zanata_includes "-Dzanata.includes=**/StringResource_en_US.xml")
@@ -222,37 +258,33 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 		SET(zanata_includes "")
 	ENDIF(_projType STREQUAL "xliff")
 
-	LIST(APPEND ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS
-	    "-Dzanata.projectType=${_projType}")
+	IF(${proj}_PROJ_TYPE)
+	    LIST(APPEND ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS "-Dzanata.projectType=${_projType}")
+	ENDIF(${proj}_PROJ_TYPE)
 
+	SET(ZANATA_MVN_PUSH_OPTS "")
 	IF("${${proj}_SRC_DIR}" STREQUAL "")
 	    IF("${_projType}" STREQUAL "podir")
 		SET(SRC_DIR "pot")
-		SET(_srcdir_opt "-Dzanata.srcDir=${SRC_DIR}")
+		LIST(APPEND ZANATA_MVN_PUSH_OPTS "-Dzanata.srcDir=${SRC_DIR}")
 	    ELSE("${_projType}" STREQUAL "podir")
 		SET(SRC_DIR ".")
-		SET(_srcdir_opt "")
 	    ENDIF("${_projType}" STREQUAL "podir")
 	ELSE()
 	    SET(SRC_DIR "${${proj}_SRC_DIR}")
-	    SET(_srcdir_opt "-Dzanata.srcDir=${SRC_DIR}")
-	ENDIF()
-	IF("${${proj}_TRANS_DIR}" STREQUAL "")
-	    SET(TRANS_DIR ".")
-	    SET(_transdir_opt "")
-	ELSE()
-	    SET(TRANS_DIR "${${proj}_TRANS_DIR}")
-	    SET(_transdir_opt "-Dzanata.transDir=${TRANS_DIR}")
+	    LIST(APPEND ZANATA_MVN_PUSH_OPTS "-Dzanata.srcDir=${SRC_DIR}")
 	ENDIF()
 
+	IF("${${proj}_TRANS_DIR}" STREQUAL "")
+	    SET(TRANS_DIR ".")
+	ELSE()
+	    SET(TRANS_DIR "${${proj}_TRANS_DIR}")
+	    LIST(APPEND ZANATA_MVN_PUSH_OPTS "-Dzanata.transDir=${TRANS_DIR}")
+	ENDIF()
+
+
 	# Generate pom.xml
-	ADD_CUSTOM_COMMAND(OUTPUT ${_proj_ver_pom_xml_absolute}
-	    COMMAND scripts/generate_pom_xml.pl ${CMAKE_SOURCE_DIR}/pom.xml.in
-	    ${_proj_ver_pom_xml_absolute} MVN_CLIENT_VER=${MVN_CLIENT_VER}
-	    SRC_DIR=${SRC_DIR} TRANS_DIR=${TRANS_DIR}
-	    DEPENDS ${_proj_ver_dir_absolute}
-	    COMMENT "Generating pom.xml for ${proj} ${_ver}"
-	    )
+	CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/pom.xml.in ${_proj_ver_pom_xml_absolute} @ONLY)
 
 	# Put version
 	ADD_CUSTOM_TARGET(zanata_putversion_mvn_${proj}_${_ver}
@@ -264,9 +296,6 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    -Dzanata.versionSlug=${_ver}
 	    -Dzanata.versionProject=${proj}
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
-	    DEPENDS ${_proj_ver_pom_xml_absolute}
-	    ${_zanata_xml_path}
-	    ${_proj_ver_publican_cfg_absolute}.striped
 	    COMMENT "  [Mvn] Creating version: proj ${proj} ver ${_ver} to ${ZANATA_URL}"
 	    VERBATIM
 	    )
@@ -281,17 +310,19 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    ${MVN_GOAL_PREFIX}:push
 	    ${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS}
-	    ${_srcdir_opt} ${_transdir_opt}
+	    ${ZANATA_MVN_PUSH_OPTS}
 	    ${zanata_includes}
 	    -Dzanata.pushTrans
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
-	    DEPENDS ${_proj_ver_pom_xml_absolute}
-	    ${_zanata_xml_path}
 	    COMMENT "  [Mvn] Pushing pot and po for proj ${proj} ver ${_ver} to ${ZANATA_URL}"
 	    VERBATIM
 	    )
 
 	ADD_DEPENDENCIES(zanata_push_mvn_${proj}_${_ver} zanata_putversion_mvn_${proj}_${_ver})
+
+	SET(ZANATA_MVN_PULL_OPTS "")
+	LIST(APPEND ZANATA_MVN_PULL_OPTS "-Dzanata.srcDir=${_pull_dest_dir_absolute}/${SRC_DIR}")
+	LIST(APPEND ZANATA_MVN_PULL_OPTS "-Dzanata.transDir=${_pull_dest_dir_absolute}/${TRANS_DIR}")
 
 	# Generic pull
 	ADD_CUSTOM_TARGET(zanata_pull_mvn_${proj}_${_ver}
@@ -300,11 +331,9 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    -B ${MVN_GOAL_PREFIX}:pull
 	    ${ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS}
-	    ${_srcdir_opt}
-	    -Dzanata.transDir=${_pull_dest_dir_mvn}
+	    ${ZANATA_MVN_PULL_OPTS}
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
-	    DEPENDS ${_zanata_xml_path}
-	    ${_pull_dest_dir_mvn}
+	    DEPENDS ${_pull_dest_dir_absolute}
 	    COMMENT "  [Mvn] Pulling pot and po for proj ${proj} ver ${_ver} from  ${ZANATA_URL}"
 	    VERBATIM
 	    )
@@ -313,11 +342,11 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    zanata_push_mvn_${proj}_${_ver}  zanata_putversion_mvn_${proj}_${_ver})
 
 	# Verify the pulled
-	REST_VERIFY(${proj} ${_ver} ${_projType} "mvn" "${_proj_ver_base_dir_absolute}" "${_pull_dest_dir_mvn}")
+	REST_VERIFY(${proj} ${_ver} ${_projType} "mvn" "${_proj_ver_base_dir_absolute}" "${_pull_dest_dir_absolute}")
 
-	ADD_CUSTOM_COMMAND(OUTPUT ${_pull_dest_dir_mvn}
-	    COMMAND ${CMAKE_COMMAND} -E make_directory ${_pull_dest_dir_mvn}
-	    )
+	ADD_CUSTOM_COMMAND(OUTPUT ${_pull_dest_dir_absolute}
+	    COMMAND ${CMAKE_COMMAND} -E make_directory ${_pull_dest_dir_absolute}
+	        )
     ENDFOREACH(_ver ${_projVers})
 ENDMACRO(ADD_MVN_CLIENT_TARGETS proj)
 
@@ -345,63 +374,48 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	#MESSAGE("[py] proj=${proj} ver=${_ver}")
 	ADD_CUSTOM_TARGET(rest_test_py_${proj}_${_ver})
 	ADD_DEPENDENCIES(rest_test_py rest_test_py_${proj}_${_ver})
+	SET_LOCAL_VARS("${proj}" "${_ver}" "py")
 
-	SET(_pull_dest_dir_py ${PULL_DEST_DIR_ABSOLUTE}/py/${proj}/${_ver})
-	SET(_proj_ver_dir_absolute ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj}/${_ver})
-	SET(_zanata_xml_path
-	    ${_proj_ver_dir_absolute}/${${proj}_ZANATA_XML})
-	SET(_proj_ver_base_dir_absolute
-	    ${_proj_ver_dir_absolute}/${${proj}_BASE_DIR})
-	SET(_proj_ver_publican_cfg_absolute
-	    ${_proj_ver_base_dir_absolute}/publican.cfg)
-
-
-	#MESSAGE("[py] proj=${proj} ver=${_ver}")
 	SET(ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS
 	    --project-id=${proj}
 	    --project-version=${_ver}
-	    --project-config=${_zanata_xml_path}
 	    )
 
-	IF("${${proj}_PROJECT_TYPE}" STREQUAL "")
-	    SET(_projType ${PROJECT_TYPE_DEFAULT})
-	ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "")
-	    SET(_projType ${${proj}_PROJECT_TYPE})
-	ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "")
+	SET(ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS "")
+	IF(${proj}_ZANATA_XML)
+	    LIST(APPEND ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS "--project-config=${_zanata_xml_path}")
+	ENDIF(${proj}_ZANATA_XML)
 
+	IF(${proj}_PROJ_TYPE)
+	    LIST(APPEND ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS "--project-type=${_projType}")
+	ENDIF(${proj}_PROJ_TYPE)
+
+	SET(ZANATA_PY_PUSH_OPTS "")
 	IF("${${proj}_SRC_DIR}" STREQUAL "")
 	    IF("${_projType}" STREQUAL "podir")
 		SET(SRC_DIR "pot")
-		SET(_srcdir_opt "--srcdir=${SRC_DIR}")
+		LIST(APPEND ZANATA_PY_PUSH_OPTS "--srcdir=${SRC_DIR}")
 	    ELSE("${_projType}" STREQUAL "podir")
 		SET(SRC_DIR ".")
-		SET(_srcdir_opt "")
 	    ENDIF("${_projType}" STREQUAL "podir")
 	ELSE()
 	    SET(SRC_DIR "${${proj}_SRC_DIR}")
-	    SET(_srcdir_opt "--srcdir=${SRC_DIR}")
-	ENDIF()
-	IF("${${proj}_TRANS_DIR}" STREQUAL "")
-	    SET(TRANS_DIR ".")
-	    SET(_transdir_opt "")
-	ELSE()
-	    SET(TRANS_DIR "${${proj}_TRANS_DIR}")
-	    SET(_transdir_opt "--transdir=${TRANS_DIR}")
+	    LIST(APPEND ZANATA_PY_PUSH_OPTS "--srcdir=${SRC_DIR}")
 	ENDIF()
 
-	LIST(APPEND ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS
-	    "--project-type=${_projType}")
+	IF("${${proj}_TRANS_DIR}" STREQUAL "")
+	    SET(TRANS_DIR ".")
+	ELSE()
+	    SET(TRANS_DIR "${${proj}_TRANS_DIR}")
+	    LIST(APPEND ZANATA_PY_PUSH_OPTS "--transdir=${TRANS_DIR}")
+	ENDIF()
 
 	# Put version
 	ADD_CUSTOM_TARGET(zanata_version_create_py_${proj}_${_ver}
 	    COMMAND  ${ZANATA_PY_CMD} version create ${_ver}
 	    ${ZANATA_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS}
-	    --version-name=Ver\ ${_ver}
-	    --version-desc=Desc\ of\ ${_ver}
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
-	    DEPENDS ${_zanata_xml_path}
-	    ${_proj_ver_publican_cfg_absolute}.striped
 	    COMMENT "  [Py] Creating version: proj ${proj} ver ${_ver} to ${ZANATA_URL}"
 	    VERBATIM
 	    )
@@ -414,7 +428,7 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    COMMAND yes | ${ZANATA_PY_CMD} push
 	    ${ZANATA_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS}
-	    ${_srcdir_opt} ${_transdir_opt}
+	    ${ZANATA_PY_PUSH_OPTS}
 	    --push-trans
 	    DEPENDS ${_zanata_xml_path}
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
@@ -424,14 +438,17 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 
 	ADD_DEPENDENCIES(zanata_push_py_${proj}_${_ver} zanata_version_create_py_${proj}_${_ver})
 
+	SET(ZANATA_PY_PULL_OPTS "")
+	LIST(APPEND ZANATA_PY_PULL_OPTS "--srcdir=${_pull_dest_dir_absolute}/${SRC_DIR}")
+	LIST(APPEND ZANATA_PY_PULL_OPTS "--transdir=${_pull_dest_dir_absolute}/${TRANS_DIR}")
+
 	# Generic pull
 	ADD_CUSTOM_TARGET(zanata_pull_py_${proj}_${_ver}
 	    COMMAND ${ZANATA_PY_CMD} pull
 	    ${ZANATA_PY_CLIENT_COMMON_ADMIN_OPTS}
 	    ${ZANATA_PY_CLIENT_PRJ_ADMIN_OPTS}
-	    ${_srcdir_opt}
-	    --transdir=${_pull_dest_dir_py}
-	    DEPENDS ${_zanata_xml_path} ${_pull_dest_dir_py}
+	    ${ZANATA_PY_PULL_OPTS}
+	    DEPENDS ${_pull_dest_dir_absolute}
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
 	    COMMENT "  [Py] Pulling pot and po for proj ${proj} ver ${_ver} from  ${ZANATA_URL}"
 	    VERBATIM
@@ -441,10 +458,10 @@ MACRO(ADD_PY_CLIENT_TARGETS proj )
 	    zanata_push_py_${proj}_${_ver}  zanata_version_create_py_${proj}_${_ver})
 
 	# Verify the pulled
-	REST_VERIFY(${proj} ${_ver} ${_projType} "py" "${_proj_ver_base_dir_absolute}" "${_pull_dest_dir_py}")
+	REST_VERIFY(${proj} ${_ver} ${_projType} "py" "${_proj_ver_base_dir_absolute}" "${_pull_dest_dir_absolute}")
 
-	ADD_CUSTOM_COMMAND(OUTPUT ${_pull_dest_dir_py}
-	    COMMAND ${CMAKE_COMMAND} -E make_directory ${_pull_dest_dir_py}
+	ADD_CUSTOM_COMMAND(OUTPUT ${_pull_dest_dir_absolute}
+	    COMMAND ${CMAKE_COMMAND} -E make_directory ${_pull_dest_dir_absolute}
 	    )
     ENDFOREACH(_ver ${_projVers})
 ENDMACRO(ADD_PY_CLIENT_TARGETS proj)
@@ -464,10 +481,9 @@ MACRO(GENERATE_REST_TEST_CLIENT_TARGETS clientId)
 	    )
 
 	FOREACH(_proj ${${_clientDisplay}_PROJECTS})
-	    GET_TARGET_PROPERTY(_target_exist prepare_${_proj} EXISTS)
-	    IF(_target_exist STREQUAL "_target_exist-NOTFOUND")
+	    IF(NOT TARGET prepare_${_proj})
 		ADD_SOURCE_PROJECT(${_proj})
-	    ENDIF(_target_exist STREQUAL "_target_exist-NOTFOUND")
+	    ENDIF(NOT TARGET prepare_${_proj})
 	    IF("${clientId}" STREQUAL "py")
 		ADD_PY_CLIENT_TARGETS(${_proj})
 	    ELSE("${clientId}" STREQUAL "py")
@@ -478,28 +494,8 @@ MACRO(GENERATE_REST_TEST_CLIENT_TARGETS clientId)
     ENDIF("${ZANATA_${_clientDisplay}_CMD}" STREQUAL "ZANATA_${_clientDisplay}_CMD-NOTFOUND")
 ENDMACRO(GENERATE_REST_TEST_CLIENT_TARGETS clientId)
 
-FIND_PROGRAM(ZANATA_MVN_CMD mvn)
 GENERATE_REST_TEST_CLIENT_TARGETS(mvn)
 
-# ZANATA_PY_PATH: The preferred location of zanata.
-IF(NOT "${ZANATA_PY_PATH}" STREQUAL "")
-    IF(NOT EXISTS ${ZANATA_PY_PATH})
-	# Clone the python client if ZANATA_PY_PATH does not exist.
-	FILE(MAKE_DIRECTORY ${ZANATA_PY_PATH})
-	EXECUTE_PROCESS(COMMAND git clone ${PYTHON_CLIENT_REPO} ${ZANATA_PY_PATH})
-    ENDIF(NOT EXISTS ${ZANATA_PY_PATH})
-    # Update python client.
-    ADD_CUSTOM_TARGET(python_client_update
-	COMMAND git pull
-	COMMAND git rev-parse
-	COMMAND make clean
-	COMMAND make
-	COMMENT "Update python client"
-	WORKING_DIRECTORY ${ZANATA_PY_PATH}
-	)
-ENDIF(NOT "${ZANATA_PY_PATH}" STREQUAL "")
-
-FIND_PROGRAM(ZANATA_PY_CMD zanata HINTS ${ZANATA_PY_PATH} /usr/bin /bin NO_DEFAULT_PATH)
 GENERATE_REST_TEST_CLIENT_TARGETS(py)
 
 #===================================================================

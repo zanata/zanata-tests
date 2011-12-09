@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/bash
 # Compares 2 directories that contains po files.
 #
 
@@ -41,17 +41,20 @@ function compare_paths(){
 	_fileA0=(`find $_potPath -name '*.pot'| sort | xargs `)
 	_fileA1=(`find $_path1 -name '*.po'| sort | xargs `)
 	_fileA2=(`find $_path2 -name '*.po'| sort | xargs `)
-	if ! is_dir_item_same "$_potPath" ${#_fileA0[*]} "$_path1" ${#_fileA1[*]} ; then
-	    return 1
-	fi
+	# Number of items in potPath  _path2 should be same here
+	# But _path1 may contain obsolete po or missing po.
 	if ! is_dir_item_same "$_potPath" ${#_fileA0[*]} "$_path2" ${#_fileA2[*]} ; then
 	    return 1
 	fi
-	# Number of items in _potPath, _path1 and _path2 should be same here
-	for((_i=0; $_i < ${#_fileA1[*]}; _i++));do
-	    _bf=`basename ${_fileA1[$_i]} .po`
+	echo "fileA0=${_fileA0}"
+	echo "fileA1=${_fileA1}"
+	echo "fileA2=${_fileA2}"
+	j=0
+	for((_i=0; $_i < ${#_fileA0[*]}; _i++));do
+	    _bf=`basename ${_fileA0[$_i]} .pot`
 	    _d1=`dirname ${_fileA1[$_i]}`
 	    _d2=`dirname ${_fileA2[$_i]}`
+	    # Sometimes po has more files than pot
 	    if ! $scriptDir/compare_translation.sh $_potPath/$_bf.pot $_d1/$_bf.po $_d2/$_bf.po; then
 		echo "Error: [compare_translation_path.sh] $_path1 is different with $_path2"  > /dev/stderr
 		return 1
