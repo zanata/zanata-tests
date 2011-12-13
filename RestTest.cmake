@@ -56,7 +56,7 @@ MACRO(REST_VERIFY proj ver projType client baseDir pullDest)
 	ADD_CUSTOM_TARGET(rest_verify_${client}_${proj}_${ver}
 	    COMMAND scripts/compare_translation_dir.sh
 	    ${baseDir}/${SRC_DIR}
-	    ${baseDir}/${TRANS_DIR} ${_pull_dest_dir_${client}} "${LANGS}"
+	    ${baseDir}/${TRANS_DIR} ${pullDest} "${LANGS}"
 	    COMMENT "  [${client}] Verifying the pulled contents with original translation."
 	    VERBATIM
 	    )
@@ -88,7 +88,7 @@ MACRO(SET_LOCAL_VARS proj ver client)
 	${_proj_ver_base_dir_absolute}/publican.cfg)
 
     IF(NOT "${client}" STREQUAL "src")
-	SET(_pull_dest_dir_absolute ${PULL_DEST_DIR_ABSOLUTE}/${client}/${proj}/${_ver})
+	SET(_pull_dest_dir_absolute ${PULL_DEST_DIR_ABSOLUTE}/${client}/${proj}/${ver})
     ENDIF(NOT "${client}" STREQUAL "src")
 
     IF(${proj}_ZANATA_XML})
