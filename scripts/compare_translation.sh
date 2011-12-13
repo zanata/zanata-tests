@@ -51,14 +51,25 @@ fi
 
 [ $verbose -gt 0 ] && echo "Info: Does ${poF2} has every valid messages in ${poF1} " > /dev/stderr
 # header need to be cut
-msgcomm -s --more-than 1 --no-wrap "${poF1}" "${poF2}" | csplit -s -f ${tmpPrefix}S - '/^\s*$/1'
-msgcomm -s --more-than 1 --no-wrap "${poF2}" "${poF1}" | csplit -s -f ${tmpPrefix}T - '/^\s*$/1'
+msgcomm -s --more-than 1 --no-wrap "${poF1}" "${poF2}" > ${tmp1}
+msgcomm -s --more-than 1 --no-wrap "${poF2}" "${poF1}" > ${tmp2}
+
+if [ -s ${tmp1} ]; then
+    csplit -s -f ${tmpPrefix}S ${tmp1} '/^\s*$/1'
+else
+    rm -f ${tmpPrefix}S01; touch ${tmpPrefix}S01
+fi
+if [ -s ${tmp2} ]; then
+    csplit -s -f ${tmpPrefix}T ${tmp2} '/^\s*$/1'
+else
+    rm -f ${tmpPrefix}T01; touch ${tmpPrefix}T01
+fi
 ret=0
 
 # Compare the tail part
 if diff $quietOpt ${tmpPrefix}S01 ${tmpPrefix}T01; then
     echo "${poF1} and ${poF2} are equivalent"
-    rm -f ${tmpPrefix}S0? ${tmpPrefix}T0?
+    rm -f ${tmpPrefix}?0?  ${tmp1} ${tmp2}
 else
     ret=1
     echo "Error: ${poF1} and ${poF2} are NOT equivalent"  > /dev/stderr

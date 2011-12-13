@@ -46,9 +46,9 @@ function compare_paths(){
 	if ! is_dir_item_same "$_potPath" ${#_fileA0[*]} "$_path2" ${#_fileA2[*]} ; then
 	    return 1
 	fi
-	echo "fileA0=${_fileA0}"
-	echo "fileA1=${_fileA1}"
-	echo "fileA2=${_fileA2}"
+	#echo "fileA0=${_fileA0}"
+	#echo "fileA1=${_fileA1}"
+	#echo "fileA2=${_fileA2}"
 	j=0
 	for((_i=0; $_i < ${#_fileA0[*]}; _i++));do
 	    _bf=`basename ${_fileA0[$_i]} .pot`
