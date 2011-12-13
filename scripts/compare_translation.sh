@@ -32,6 +32,8 @@ potF="$1"
 poF1="$2"
 poF2="$3"
 
+tmpPrefix='comparePo'
+
 tmp1="$poF1.tmp"
 tmp2="$poF2.tmp"
 
@@ -40,19 +42,23 @@ tmp2="$poF2.tmp"
 LANG=C
 # Whether pulled matches the pot
 [ $verbose -gt 0 ] && echo "Info: Matching ${poF2} with ${potF}" > /dev/stderr
-potPullDiff=`msgcomm -u --no-wrap "${poF1}" "${potF}"`
+potPullDiff=`msgcomm -u --no-wrap "${poF2}" "${potF}"`
 if [ -n "${potPullDiff}" ];then
     echo "Error: ${poF2} does not match ${potF}" > /dev/stderr
+    echo "${potPullDiff}"  > /dev/stderr
     exit 1
 fi
 
 [ $verbose -gt 0 ] && echo "Info: Does ${poF2} has every valid messages in ${poF1} " > /dev/stderr
-msgcomm -s --more-than 1 --no-wrap "${poF1}" "${poF2}" > ${tmp1}
-msgcomm -s --more-than 1 --no-wrap "${poF2}" "${poF1}" > ${tmp2}
+# header need to be cut
+msgcomm -s --more-than 1 --no-wrap "${poF1}" "${poF2}" | csplit -s -f ${tmpPrefix}S - '/^\s*$/1'
+msgcomm -s --more-than 1 --no-wrap "${poF2}" "${poF1}" | csplit -s -f ${tmpPrefix}T - '/^\s*$/1'
 ret=0
-if diff $quietOpt ${tmp1} ${tmp2}; then
+
+# Compare the tail part
+if diff $quietOpt ${tmpPrefix}S01 ${tmpPrefix}T01; then
     echo "${poF1} and ${poF2} are equivalent"
-    rm -f ${tmp1} ${tmp2}
+    rm -f ${tmpPrefix}S0? ${tmpPrefix}T0?
 else
     ret=1
     echo "Error: ${poF1} and ${poF2} are NOT equivalent"  > /dev/stderr
