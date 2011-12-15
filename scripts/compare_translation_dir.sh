@@ -16,18 +16,6 @@ Parameters:
 END
 }
 
-function is_dir_item_same(){
-    _d1=$1
-    _d1Content=$2
-    _d2=$3
-    _d2Content=$4
-    if [[ $_d1Content != $_d2Content ]];then
-	echo "Error: [compare_translation_dir.sh] $_d1 has $_d1Content items, but $_d2 has $_d2Content items"  > /dev/stderr
-	return 1
-    fi
-    return 0
-}
-
 function compare_paths(){
     _potPath=$1
     _path1=$2
@@ -39,25 +27,31 @@ function compare_paths(){
 	fi
     else
 	_fileA0=(`find $_potPath -name '*.pot'| sort | xargs `)
-	_fileA1=(`find $_path1 -name '*.po'| sort | xargs `)
-	_fileA2=(`find $_path2 -name '*.po'| sort | xargs `)
-	# Number of items in potPath  _path2 should be same here
-	# But _path1 may contain obsolete po or missing po.
-	if ! is_dir_item_same "$_potPath" ${#_fileA0[*]} "$_path2" ${#_fileA2[*]} ; then
-	    return 1
-	fi
-	#echo "fileA0=${_fileA0}"
-	#echo "fileA1=${_fileA1}"
-	#echo "fileA2=${_fileA2}"
-	j=0
+	#echo "fileA0=${_fileA0[*]}"
 	for((_i=0; $_i < ${#_fileA0[*]}; _i++));do
-	    _bf=`basename ${_fileA0[$_i]} .pot`
-	    _d1=`dirname ${_fileA1[$_i]}`
-	    _d2=`dirname ${_fileA2[$_i]}`
-	    # Sometimes po has more files than pot
-	    if ! $scriptDir/compare_translation.sh $_potPath/$_bf.pot $_d1/$_bf.po $_d2/$_bf.po; then
-		echo "Error: [compare_translation_path.sh] $_path1 is different with $_path2"  > /dev/stderr
+	    _potF="${_fileA0[$_i]#${_potPath}}"
+	    _relDir=`dirname ${_potF}`
+	    _bf=`basename ${_potF} .pot`
+	    _d1="${_path1}/${_relDir}"
+	    _d2="${_path2}/${_relDir}"
+	    # Sometimes source po has more files than pot
+	    # But number of target po and pot should match.
+	    if [ ! -r  $_d2/$_bf.po ]; then
+		echo "Error: $_d2/$_bf.po is not pulled" > /dev/stderr
 		return 1
+	    fi
+
+	    if [ -r  $_d1/$_bf.po ]; then
+		if ! $scriptDir/compare_translation.sh ${_fileA0[$_i]} $_d1/$_bf.po $_d2/$_bf.po; then
+		    echo "Error: [compare_translation_path.sh] $_path1 is different with $_path2"  > /dev/stderr
+		    return 1
+		fi
+	    else
+		# If source po does not exist, then just compare it with the pot
+		if ! $scriptDir/compare_translation.sh ${_fileA0[$_i]} $_d2/$_bf.po $_d2/$_bf.po; then
+		    echo "Error: [compare_translation_path.sh] $_d2/$_bf.po is not pulled correctly" > /dev/stderr
+		    return 1
+		fi
 	    fi
 	done
     fi
