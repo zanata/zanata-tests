@@ -30,11 +30,11 @@ if ($scm eq "git"){
 if (-d "${projDir}/$ver"){
     if ($update == 1){
 	print "    ${projDir}/$ver exists, updating.\n";
-	system("cd ${projDir}/$ver;$update_action");
+	system("cd ${projDir}/$ver;$update_action")==0 or die "Failed to update $proj $ver ($?)";
     }
 }else{
     print "    ${projDir}/$ver does not exist, clone now.\n";
-    system("$clone_action $url $projDir/$ver");
+    system("$clone_action $url $projDir/$ver")==0 or die "Failed to download $proj $ver ($?)";
     if ($scm eq "git"){
 	unless ($ver eq "master"){
 	    system("cd ${projDir}/$ver;git checkout origin/${ver} --track -b $ver");

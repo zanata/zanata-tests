@@ -102,6 +102,10 @@ MACRO(SET_LOCAL_VARS proj ver client)
     ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "")
         SET(_projType ${${proj}_PROJECT_TYPE})
     ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "")
+
+    IF("${${proj}_REPO_TYPE}" STREQUAL "")
+	SET(${proj}_REPO_TYPE "git")
+    ENDIF("${${proj}_REPO_TYPE}" STREQUAL "")
 ENDMACRO(SET_LOCAL_VARS proj ver)
 
 
@@ -171,11 +175,20 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	    preprocess_publican_${proj}_${_ver}
 	    )
 
+	SET(_proj_ver_dir_scm "${_proj_ver_dir_absolute}/.${${proj}_REPO_TYPE}")
+	ADD_CUSTOM_COMMAND(OUTPUT ${_proj_ver_dir_scm}
+	    COMMAND perl scripts/get_project.pl ${SAMPLE_PROJ_DIR_ABSOLUTE} ${proj}
+	    ${${proj}_REPO_TYPE} ${_ver} ${${proj}_URL_${_ver}}
+	    DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}
+	    COMMENT "   Get sources of ${proj} ${_ver}:${${proj}_NAME} from ${${proj}_URL_${_ver}}"
+	    VERBATIM
+	    )
 
 	IF(NOT "${${proj}_POT_GEN_CMD}" STREQUAL "")
 	    ADD_CUSTOM_TARGET(generate_pot_${proj}_${_ver}
 		COMMAND eval "${${proj}_POT_GEN_CMD}"
 		WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
+		DEPENDS ${_proj_ver_dir_scm}
 		COMMENT "   Generate pot for ${proj} ${_ver}"
 		VERBATIM
 		)
@@ -186,18 +199,11 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	ADD_CUSTOM_COMMAND(OUTPUT ${_proj_ver_publican_cfg_absolute}.striped
 	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/preprocess_publican.sh "${LANGS}"
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
-	    DEPENDS ${_zanata_xml_path}
+	    DEPENDS ${_zanata_xml_path} ${_proj_ver_dir_scm}
 	    COMMENT "   Strip missing publican refs for project ${proj}/${_ver} "
 	    VERBATIM
 	    )
 
-	ADD_CUSTOM_COMMAND(OUTPUT ${_proj_ver_dir_absolute}
-	    COMMAND perl scripts/get_project.pl ${SAMPLE_PROJ_DIR_ABSOLUTE} ${proj}
-	    ${${proj}_REPO_TYPE} ${_ver} ${${proj}_URL_${_ver}}
-	    DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}
-	    COMMENT "   Get sources of ${proj} ${_ver}:${${proj}_NAME} from ${${proj}_URL_${_ver}}"
-	    VERBATIM
-	    )
 
 	IF(NOT TARGET preprocess_publican_${proj}_${_ver})
 	    ADD_CUSTOM_TARGET(preprocess_publican_${proj}_${_ver}
