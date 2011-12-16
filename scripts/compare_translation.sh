@@ -51,8 +51,8 @@ fi
 
 [ $verbose -gt 0 ] && echo "Info: Does ${poF2} has every valid messages in ${poF1} " > /dev/stderr
 # header need to be cut
-msgcomm -s --more-than 1 --no-wrap "${poF1}" "${poF2}" > ${tmp1}
-msgcomm -s --more-than 1 --no-wrap "${poF2}" "${poF1}" > ${tmp2}
+msgcomm -s --more-than 1 --no-wrap --no-location "${poF1}" "${poF2}" > ${tmp1}
+msgcomm -s --more-than 1 --no-wrap --no-location "${poF2}" "${poF1}" > ${tmp2}
 
 if [ -s ${tmp1} ]; then
     csplit -s -f ${tmpPrefix}S ${tmp1} '/^\s*$/1'
