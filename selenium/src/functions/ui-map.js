@@ -442,7 +442,7 @@ myMap.addElement('webtranPages', {
 	return 'css=a[title^="' + args['action'] + ' Page"]';
     }
     , testcase1: {
-	args: { active:Previous }
+	args: { action:"Previous" }
 	,xhtml:
 	    '<div>'
 	    +'<a title="First Page (Shortcut: Home)"><img /></a>'
