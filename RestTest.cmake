@@ -170,7 +170,7 @@ MACRO(ADD_SOURCE_PROJECT proj)
 
 	ADD_CUSTOM_COMMAND(OUTPUT ${_proj_ver_publican_cfg_absolute}.striped
 	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/generate_trans_template.sh
-	    "${LANGS}" "${${proj}_POT_GEN_CMD}"
+	    "${LANGS}" "${${proj}_POST_DOWNLOAD_CMD}"
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
 	    DEPENDS ${_proj_ver_dir_scm}
 	    COMMENT "[${proj}-${_ver}] Translation template files (.pot and .po)"
