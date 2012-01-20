@@ -4,8 +4,8 @@
   <artifactId>null</artifactId>
   <version>@MVN_CLIENT_VER@</version>
   <properties>
-      <zanata.srcDir>@SRC_DIR@</zanata.srcDir>
-      <zanata.transDir>@TRANS_DIR@</zanata.transDir>
+      <zanata.srcDir>.</zanata.srcDir>
+      <zanata.transDir>.</zanata.transDir>
   </properties>
 
   <build>

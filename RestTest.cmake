@@ -236,9 +236,21 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	#MESSAGE("[mvn] proj=${proj} ver=${_ver}")
 	SET_LOCAL_VARS(${proj} "${_ver}" "mvn")
 	# Generate pom.xml
-	SET(_proj_ver_pom_xml_absolute
-	    ${_proj_ver_base_dir_absolute}/pom.xml)
-	CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/pom.xml.in ${_proj_ver_pom_xml_absolute} @ONLY)
+	SET(_proj_ver_pom_xml_absolute ${_proj_ver_base_dir_absolute}/pom.xml)
+
+	# Generate pom.xml
+	IF(EXISTS ${_proj_ver_pom_xml_absolute})
+	    SET(_pom_xml_input ${_proj_ver_pom_xml_absolute})
+	ELSE(EXISTS ${_proj_ver_pom_xml_absolute})
+	    SET(_pom_xml_input ${CMAKE_SOURCE_DIR}/pom.xml.in)
+	ENDIF(EXISTS ${_proj_ver_pom_xml_absolute})
+	SET(_proj_ver_pom_xml_absolute_stamp "${_proj_ver_pom_xml_absolute}.stamp")
+
+	ADD_CUSTOM_COMMAND(OUTPUT "${_proj_ver_pom_xml_absolute_stamp}"
+	    COMMAND scripts/generate_pom_xml.pl ${_pom_xml_input} ${_proj_ver_pom_xml_absolute} ${proj}
+	    DEPENDS ${_pom_xml_input}
+	    VERBATIM
+	    )
 
 	# Other options
 	SET(ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS "")
@@ -286,7 +298,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    -Dzanata.versionSlug=${_ver}
 	    -Dzanata.versionProject=${proj}
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
-	    DEPENDS  ${_zanata_xml_path}
+	    DEPENDS  ${_zanata_xml_path} ${_proj_ver_pom_xml_absolute_stamp}
 	    COMMENT "[Mvn][${proj}-${_ver}] putversion to ${ZANATA_URL}"
 	    VERBATIM
 	    )
@@ -303,6 +315,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    ${ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS}
 	    ${ZANATA_MVN_PUSH_OPTS}
 	    ${zanata_includes}
+	    DEPENDS  ${_zanata_xml_path} ${_proj_ver_pom_xml_absolute_stamp}
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
 	    COMMENT "[Mvn][${proj}-${_ver}] push with options: ${ZANATA_MVN_PUSH_OPTS}"
 	    VERBATIM
@@ -323,7 +336,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	    ${ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS}
 	    ${ZANATA_MVN_PULL_OPTS}
 	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
-	    DEPENDS ${_pull_dest_dir_absolute}
+	    DEPENDS  ${_zanata_xml_path} ${_proj_ver_pom_xml_absolute_stamp} ${_pull_dest_dir_absolute}
 	    COMMENT "[Mvn][${proj}-${_ver}] pull with options: ${ZANATA_MVN_PULL_OPTS}"
 	    VERBATIM
 	    )
