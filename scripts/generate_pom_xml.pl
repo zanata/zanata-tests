@@ -17,7 +17,13 @@ my $scriptDir=dirname($0);
 # Subroutines
 sub print_usage {
     die <<END
-generate_pom_xml.pl <original pom.xml> <pom.xml> [projName] [Var1=Value1 [Var2=Vale2] ...]
+Usage: $0 [-p] <pom.xml.in> <pom.xml> [projName] [Var1=Value1 [Var2=Vale2] ...]
+    Generate pom.xml or insert zanata information to existing pom.xml
+
+Options:
+    -p: Insert pluginRepositories
+    pom.xml.in: Input pom.xml
+    pom.xml: Output pom.xml
 END
 }
 
@@ -45,11 +51,37 @@ sub expand_string {
     unquote($_[0]);
 }
 
+
+# Add sub tag to a tag
+# $_[0]: working tag
+# $_[1]: subtag
+# $_[2]: content
+sub tag_add_subtag{
+    #warn "_[0] is |$_[0]|";
+    unless(defined $_[0]){
+	$_[0]=> {};
+    }
+    unless(defined $_[0]{$_[1]}){
+	$_[0]{$_[1]}=> [];
+    }
+    my $subTagA=\@{$_[0]{$_[1]}};
+    push(@{$subTagA}, $_[2]);
+}
+
 if (scalar(@ARGV)<2){
     print_usage;
 }
+
+my $insertPluginRepository=0;
+
+if ($ARGV[0] eq "-p"){
+    $insertPluginRepository=1;
+    shift;
+}
+
 my $pom_xml_in=$ARGV[0];
 shift;
+
 my $pom_xml=$ARGV[0];
 shift;
 
@@ -91,11 +123,10 @@ if ( $ENV{'MVN_CLIENT_VER'} ne "" ){
     $varH{'MVN_CLIENT_VER'}=$ENV{'MVN_CLIENT_VER'};
 }
 
-
-my %configH;
+my $buildConfig={};
 
 # fill in from configure file
-my $BASE_DIR=".";
+my $BASE_DIR="";
 if ( defined $projName){
     my %cfgToPomKeys=(
 	"BASE_DIR" => "baseDir"
@@ -104,6 +135,8 @@ if ( defined $projName){
 	, "ENABLE_MODULES" => "enableModules"
 	, "SKIP" => "skip"
 	, "PROJECT_CONFIG" => "projectConfig"
+	, "INCLUDES" => "includes"
+	, "EXCLUDES" => "excludes"
     );
 
     foreach my $cfg ( keys %cfgToPomKeys){
@@ -111,24 +144,16 @@ if ( defined $projName){
 	if ( defined  $varH{$keyName}){
 	    if ( $cfg eq "BASE_DIR"){
 		$BASE_DIR=$varH{ $keyName};
-	    }elsif ( $cfg eq "SRC_DIR"){
-		$configH{$cfgToPomKeys{$cfg}}="$BASE_DIR/$varH{$keyName}";
-	    }elsif ( $cfg eq "TRANS_DIR"){
-		$configH{$cfgToPomKeys{$cfg}}="$BASE_DIR/$varH{$keyName}";
-	    }elsif ( $cfg eq "ENABLE_MODULES"){
+	    }elsif ( $cfg =~ m{_DIR$}){
+		tag_add_subtag($buildConfig,  $cfgToPomKeys{$cfg}, ($BASE_DIR) ? "$BASE_DIR/$varH{$keyName}": "$varH{$keyName}");
+	    }elsif ( $cfg =~ m{ENABLE_} or $cfg eq 'SKIP'){
 		if ($varH{$keyName} and ($varH{$keyName} !~ m/[Ff]alse/)){
-		    $configH{$cfgToPomKeys{$cfg}}="true";
+		    tag_add_subtag($buildConfig,  $cfgToPomKeys{$cfg}, 'true');
 		}else{
-		    $configH{$cfgToPomKeys{$cfg}}="false";
-		}
-	    }elsif ( $cfg eq "SKIP"){
-		if ($varH{$keyName} and ($varH{$keyName} !~ m/[Ff]alse/)){
-		    $configH{$cfgToPomKeys{$cfg}}="true";
-		}else{
-		    $configH{$cfgToPomKeys{$cfg}}="false";
+		    tag_add_subtag($buildConfig,  $cfgToPomKeys{$cfg}, 'false');
 		}
 	    }else{
-		$configH{$cfgToPomKeys{$cfg}}="$varH{$keyName}";
+		tag_add_subtag($buildConfig,  $cfgToPomKeys{$cfg}, $varH{$keyName});
 	    }
 	}
     }
@@ -137,13 +162,15 @@ if ( defined $projName){
 # Read var and corresponding value from command line
 foreach my $varStr (@ARGV){
     my ($var, $val)=split(/=/,$varStr,2);
-    $configH{$var}=$val;
+    tag_add_subtag($buildConfig,  $var, $val);
 }
 
-if (keys( %configH ) == 0){
-    $configH{'srcDir'} = '${zanata.srcDir}';
-    $configH{'transDir'} = '${zanata.transDir}';
+if (keys(%$buildConfig) <= 0){
+    tag_add_subtag($buildConfig, 'srcDir', '${zanata.srcDir}');
+    tag_add_subtag($buildConfig, 'transDir', '${zanata.transDir}');
 }
+
+#print "buildConfig=$buildConfig content=" . Dumper($buildConfig) . "\n";
 
 # Create XML object
 my $xs=new XML::Simple;
@@ -156,13 +183,13 @@ my $data= $xs->XMLin($pom_xml_in
 
 # insert Zanata plugin if not exists
 my $hasZanata=0;
-my $pluginA= \@{$data->{project}->[0]->{build}->[0]->{plugins}->[0]->{plugin}};
+my $pluginS= \$data->{project}->[0]->{build}->[0]->{plugins}->[0];
+my $pluginA=\@{${$pluginS}->{plugin}};
 #print "pluginA=" . Dumper @{$pluginA} . "\n";
 
 foreach my $plugin (@{$pluginA}){
     #print "plugin=" . Dumper($plugin) . "\n";
-    #print "groupId=$plugin->{groupId}\n";
-    if ($plugin->{groupId} eq  "org.zanata") {
+    if ($plugin->{groupId}->[0]->{content} eq  "org.zanata") {
 	$hasZanata=1;
 	last;
     }
@@ -170,71 +197,70 @@ foreach my $plugin (@{$pluginA}){
 
 if ($hasZanata == 0){
     # Insert zanata plugin
-    my $zanataPlugin={(
-	"groupId" => 'org.zanata'
-	, "artifactId" =>  'zanata-maven-plugin'
-	, "version" => $varH{'MVN_CLIENT_VER'}
-	, "configuration" => { %configH }
-   )};
+    my $zanataPlugin={};
+    tag_add_subtag($zanataPlugin, 'groupId', 'org.zanata');
+    tag_add_subtag($zanataPlugin, 'artifactId', 'zanata-maven-plugin');
+    tag_add_subtag($zanataPlugin, 'version', $varH{'MVN_CLIENT_VER'});
+    tag_add_subtag($zanataPlugin, 'configuration', $buildConfig);
+    $modified=1;
 
-   $modified=1;
-   push(@{$pluginA}, $zanataPlugin);
+    tag_add_subtag(${$pluginS}, 'plugin', $zanataPlugin);
 }
+#print Dumper(${$pluginS});
 
+if ($insertPluginRepository){
+   # insert Zanata pluginRepositories if not exists
+    my $hasZanataPluginRepositories=0;
 
-# insert Zanata pluginRepositories if not exists
-my $hasZanataPluginRepositories=0;
+    unless(defined $data->{project}->[0]->{pluginRepositories}){
+	$data->{project}->[0]->{pluginRepositories}=[];
+    }
 
-if (not defined $data->{project}->[0]->{pluginRepositories}){
-    $data->{project}->[0]->{pluginRepositories}=[];
-}
-if (not defined $data->{project}->[0]->{pluginRepositories}->[0]->{pluginRepository}){
-    $data->{project}->[0]->{pluginRepositories}->[0]->{pluginRepository}=[];
-}
+    unless(defined $data->{project}->[0]->{pluginRepositories}->[0]->{pluginRepository}){
+	$data->{project}->[0]->{pluginRepositories}->[0]->{pluginRepository}=[];
+    }
 
-my $pluginRepos= \$data->{project}->[0]->{pluginRepositories}->[0]->{pluginRepository};
+    my $pluginRepoS= \$data->{project}->[0]->{pluginRepositories}->[0];
+    my $pluginRepoA= \@{${$pluginRepoS}->{pluginRepository}};
 
-# Force to convert to array
-if (ref(${$pluginRepos}) ne 'ARRAY'){
-    ${$pluginRepos}= [ ${$pluginRepos} ];
-}
+    foreach my $repo (@{$pluginRepoA}){
+	#print "repo=" . Dumper($repo) . "\n";
+	if ($repo->{id}->[0]->{content} =~ m/zanata/) {
+	    $hasZanataPluginRepositories=1;
+	    last;
+	}
+    }
 
-foreach my $repo (@{${$pluginRepos}}){
-    # print "repo=" . Dumper($repo) . "\n";
-    # print "id=$repo->{id}\n";
-    if ($repo->{id} =~ m/zanata/) {
-	$hasZanataPluginRepositories=1;
-	last;
+    if ($hasZanataPluginRepositories==0){
+	# Insert zanata plugin repositories
+	my @zanataRepos=split(/;/,$varH{'ZANATA_MVN_REPOS'});
+	my $enableTag={};
+	tag_add_subtag($enableTag, 'enabled', 'true');
+
+	foreach my $zRepoStr (@zanataRepos){
+	    my $zRepo={};
+	    tag_add_subtag($zRepo, 'id', $varH{"$zRepoStr" . "_ID"});
+	    tag_add_subtag($zRepo, 'name', $varH{"$zRepoStr" . "_NAME"});
+	    tag_add_subtag($zRepo, 'url', $varH{"$zRepoStr" . "_URL"});
+	    tag_add_subtag($zRepo, 'releases', $enableTag);
+	    tag_add_subtag($zRepo, 'snapshots', $enableTag);
+	    $modified=1;
+	    tag_add_subtag(${$pluginRepoS}, 'pluginRepository', $zRepo);
+	}
     }
 }
 
-if ($hasZanataPluginRepositories==0){
-    # Insert zanata plugin repositories
-    my @zanataRepos=split(/;/,$varH{'ZANATA_MVN_REPOS'});
-
-    foreach my $zRepoStr (@zanataRepos){
-	my $zRepo={(
-		'id' => $varH{"$zRepoStr" . "_ID"}
-		, 'name' => $varH{"$zRepoStr" . "_NAME"}
-		, 'url'=> $varH{"$zRepoStr" . "_URL"}
-		, 'releases' => {
-		    'enabled' => 'true'
-		}
-		,  'snapshots' => {
-		    'enabled' => 'true'
-		}
-	)};
-        $modified=1;
-	push(@{${$pluginRepos}}, $zRepo);
-    }
-}
+open my $fh, ">", "$pom_xml" or die "open($pom_xml): $!";
 
 my $xml=$xs->XMLout($data
    , NoSort => 1
    , KeepRoot => 1
-   , OutputFile=> $pom_xml
+   , OutputFile=> $fh
    , XMLDecl => 1
 ) or die "Cannot open $pom_xml";
+
+#print $fh, "$xml";
+close($fh);
 
 system "touch $pom_xml.stamp";
 
