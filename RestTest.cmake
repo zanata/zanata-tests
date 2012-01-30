@@ -304,6 +304,10 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	SET(_copyTransOpts "")
     ENDIF(COPY_TRANS EQUAL 0)
 
+    IF(NOT TARGET generate_pom_xml)
+	ADD_CUSTOM_TARGET(generate_pom_xml)
+    ENDIF(NOT TARGET generate_pom_xml)
+
     FOREACH(_ver ${_projVers})
 	#MESSAGE("[mvn] proj=${proj} ver=${_ver}")
 	SET_LOCAL_VARS(${proj} "${_ver}" "mvn")
@@ -312,6 +316,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 
 	# Generate pom.xml
 	ADD_CUSTOM_TARGET(generate_pom_xml_${proj}_${_ver})
+	ADD_DEPENDENCIES(generate_pom_xml generate_pom_xml_${proj}_${_ver})
 	ADD_CUSTOM_TARGET(clean_pom_xml_${proj}_${_ver})
 	ADD_DEPENDENCIES(clean_pom_xml clean_pom_xml_${proj}_${_ver})
 	SET(_stamp_list "")
