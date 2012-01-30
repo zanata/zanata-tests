@@ -248,7 +248,7 @@ MACRO(GENERATE_POM_XML stampList scm pomXml proj ver varPrefix)
 	ADD_CUSTOM_TARGET(clean_pom_xml_${proj}_${ver}_${varPrefix}
 	    COMMAND ${CMAKE_COMMAND} -E remove -f ${_pomXml_stamp}
 	    COMMAND scripts/restore_file.sh -s ${scm} ${pomXml}
-	    COMMENT "Clean ${pomXml} for ${proj}-${ver}"
+	    COMMENT "Restore ${pomXml} for ${proj}-${ver}"
 	    VERBATIM
 	    )
     ELSE(${file_in_scm} EQUAL 0)
@@ -257,7 +257,7 @@ MACRO(GENERATE_POM_XML stampList scm pomXml proj ver varPrefix)
 	ADD_CUSTOM_TARGET(clean_pom_xml_${proj}_${ver}_${varPrefix}
 	    COMMAND ${CMAKE_COMMAND} -E remove -f ${_pomXml_stamp}
 	    COMMAND ${CMAKE_COMMAND} -E remove -f ${pomXml}
-	    COMMENT "Clean ${pomXml} for ${proj}-${ver}"
+	    COMMENT "Remove ${pomXml} for ${proj}-${ver}"
 	    VERBATIM
 	    )
     ENDIF(${file_in_scm} EQUAL 0)
