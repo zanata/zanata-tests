@@ -46,10 +46,11 @@ for f in $@;do
 	    if [ $testOnly -eq 0 ];then
 		git checkout "$basename"
 	    else
-		ret=`git ls-files "$basename"`
-		if [ -z "$ret" ];then
+		if git ls-files --error-unmatch "$basename";then
+		    echo ""
+		else
 		    echo "$basename is not in $SCM" > /dev/stderr
-		    dirty=1;
+		    dirty=1
 		fi
 	    fi
 	    ;;
@@ -58,8 +59,10 @@ for f in $@;do
 		svn revert "$basename"
 	    else
 		if svn list "$basename"; then
+		    echo ""
+		else
 		    echo "$basename is not in $SCM" > /dev/stderr
-		    dirty=1;
+		    dirty=1
 		fi
 	    fi
 	    ;;

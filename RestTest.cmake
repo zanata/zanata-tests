@@ -242,6 +242,7 @@ MACRO(GENERATE_POM_XML stampList scm pomXml proj ver varPrefix)
 	SET(_insertPluginRepositories "-p")
     ENDIF("${proj}" STREQUAL "${varPrefix}")
 
+    #MESSAGE("file_in_scm=${file_in_scm}")
     IF(${file_in_scm} EQUAL 0)
 	SET(_pom_xml_input "${pomXml}")
 	SET(_generate_pom_xml_msg "Insert zanata plugin to ${pomXml}")
