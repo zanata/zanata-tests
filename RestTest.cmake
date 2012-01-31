@@ -233,48 +233,42 @@ SET(ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS
 #===================================================================
 # Generate pom.xml
 #
-MACRO(GENERATE_POM_XML stampList scm pomXml proj ver varPrefix)
-    EXECUTE_PROCESS(COMMAND scripts/restore_file.sh -s ${scm} -t ${pomXml}
-	RESULT_VARIABLE file_in_scm)
-    SET(_pomXml_stamp "${pomXml}.stamp")
-    SET(_insertPluginRepositories "")
-    IF("${proj}" STREQUAL "${varPrefix}")
-	SET(_insertPluginRepositories "-p")
-    ENDIF("${proj}" STREQUAL "${varPrefix}")
+MACRO(GENERATE_POM_XML proj ver)
+    SET(_pomXml "${_proj_ver_base_dir_absolute}/pom.xml")
+    ADD_CUSTOM_COMMAND(OUTPUT "${_pomXml}.stamp"
+	COMMAND scripts/pomXml_generate.pl -p -s "${${proj}_REPO_TYPE}" "${_pomXml}" "${proj}"
+	COMMENT "Generating ${_pomXml} for ${proj}"
+	VERBATIM
+	)
+    SET(_clean_pom_xml_cmd "scripts/pomXml_generate.pl -c -s ${${proj}_REPO_TYPE} ${_pomXml} ${proj}")
+    SET(_stamp_list "${_pomXml}.stamp")
 
-    #MESSAGE("file_in_scm=${file_in_scm}")
-    IF(${file_in_scm} EQUAL 0)
-	SET(_pom_xml_input "${pomXml}")
-	SET(_generate_pom_xml_msg "Insert zanata plugin to ${pomXml}")
-	ADD_CUSTOM_TARGET(clean_pom_xml_${proj}_${ver}_${varPrefix}
-	    COMMAND ${CMAKE_COMMAND} -E remove -f ${_pomXml_stamp}
-	    COMMAND scripts/restore_file.sh -s ${scm} ${pomXml}
-	    COMMENT "Restore ${pomXml} for ${proj}-${ver}"
+
+    # Generate additional pom.xml
+    FOREACH(_pomXmlProf ${${proj}_POM_XML_LIST})
+	SET(_pomXml "${_proj_ver_dir_absolute}/${${_pomXmlProf}}")
+	#    MESSAGE("_pomXml=${_pomXml}")
+	ADD_CUSTOM_COMMAND(OUTPUT "${_pomXml}.stamp"
+	    COMMAND scripts/pomXml_generate.pl -s "${${proj}_REPO_TYPE}" "${_pomXml}" "${_pomXmlProf}"
+	    COMMENT "Generating ${_pomXml} for ${_pomXmlProf}"
 	    VERBATIM
 	    )
-    ELSE(${file_in_scm} EQUAL 0)
-	SET(_pom_xml_input "${CMAKE_SOURCE_DIR}/pom.xml")
-	SET(_generate_pom_xml_msg "Generate pom.xml")
-	ADD_CUSTOM_TARGET(clean_pom_xml_${proj}_${ver}_${varPrefix}
-	    COMMAND ${CMAKE_COMMAND} -E remove -f ${_pomXml_stamp}
-	    COMMAND ${CMAKE_COMMAND} -E remove -f ${pomXml}
-	    COMMENT "Remove ${pomXml} for ${proj}-${ver}"
-	    VERBATIM
-	    )
-    ENDIF(${file_in_scm} EQUAL 0)
-    ADD_DEPENDENCIES(clean_pom_xml_${proj}_${ver} clean_pom_xml_${proj}_${ver}_${varPrefix})
-    ADD_CUSTOM_COMMAND(OUTPUT ${_pomXml_stamp}
-	COMMAND scripts/generate_pom_xml.pl ${_insertPluginRepositories} ${_pom_xml_input} ${pomXml} ${varPrefix}
-	COMMENT "${_generate_pom_xml_msg} for ${proj}-${_ver}"
-	DEPENDS "${_proj_ver_publican_cfg_striped_absolute}"
-	)
+	LIST(APPEND _clean_pom_xml_cmd "scripts/pomXml_generate.pl -c -s ${${proj}_REPO_TYPE} ${_pomXml} ${proj}")
+	LIST(APPEND _stamp_list "${_pomXml}.stamp")
+    ENDFOREACH(_pomXmlProf ${${proj}_POM_XML_LIST})
 
-    ADD_CUSTOM_TARGET(generate_pom_xml_${proj}_${ver}_${varPrefix}
-	DEPENDS ${_pomXml_stamp}
-	)
 
-    ADD_DEPENDENCIES(generate_pom_xml_${proj}_${ver} generate_pom_xml_${proj}_${ver}_${varPrefix})
-    LIST(APPEND ${stampList} ${_pomXml_stamp})
+    ADD_CUSTOM_TARGET(generate_pom_xml_${proj}_${ver}
+	DEPENDS ${_stamp_list}
+	)
+    ADD_DEPENDENCIES(generate_pom_xml generate_pom_xml_${proj}_${ver})
+
+    ADD_CUSTOM_TARGET(clean_pom_xml_${proj}_${ver}
+	COMMAND eval "${_clean_pom_xml_cmd}"
+	COMMENT "Clean ${_pomXml} for ${proj}"
+	VERBATIM
+	)
+    ADD_DEPENDENCIES(clean_pom_xml clean_pom_xml_${proj}_${ver})
 ENDMACRO(GENERATE_POM_XML stampList scm pomXml proj ver varPrefix)
 
 #===================================================================
@@ -313,21 +307,7 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
 	#MESSAGE("[mvn] proj=${proj} ver=${_ver}")
 	SET_LOCAL_VARS(${proj} "${_ver}" "mvn")
 	# Generate pom.xml
-	SET(_proj_ver_pom_xml_absolute ${_proj_ver_base_dir_absolute}/pom.xml)
-
-	# Generate pom.xml
-	ADD_CUSTOM_TARGET(generate_pom_xml_${proj}_${_ver})
-	ADD_DEPENDENCIES(generate_pom_xml generate_pom_xml_${proj}_${_ver})
-	ADD_CUSTOM_TARGET(clean_pom_xml_${proj}_${_ver})
-	ADD_DEPENDENCIES(clean_pom_xml clean_pom_xml_${proj}_${_ver})
-	SET(_stamp_list "")
-	GENERATE_POM_XML(_stamp_list ${${proj}_REPO_TYPE} ${_proj_ver_pom_xml_absolute} ${proj} ${_ver} ${proj})
-
-	# Generate additional pom.xml
-	FOREACH(_pomXmlProf ${${proj}_POM_XML_LIST})
-	    SET(_pomXml "${_proj_ver_dir_absolute}/${${_pomXmlProf}}")
-	    GENERATE_POM_XML(_stamp_list ${${proj}_REPO_TYPE} "${_pomXml}" ${proj} ${_ver} "${_pomXmlProf}")
-	ENDFOREACH(_pomXmlProf ${${proj}_POM_XML_LIST})
+	GENERATE_POM_XML("${proj}" "${_ver}")
 
 	# Other options
 	SET(ZANATA_MVN_CLIENT_PRJ_ADMIN_OPTS "")

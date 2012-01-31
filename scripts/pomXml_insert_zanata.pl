@@ -17,8 +17,8 @@ my $scriptDir=dirname($0);
 # Subroutines
 sub print_usage {
     die <<END
-Usage: $0 [-p] <pom.xml.in> <pom.xml> [projName] [Var1=Value1 [Var2=Vale2] ...]
-    Generate pom.xml or insert zanata information to existing pom.xml
+Usage: $0 [-p] <pom.xml.in> <pom.xml> <projName> [Var1=Value1 [Var2=Vale2] ...]
+    Insert zanata data existing pom.xml
 
 Options:
     -p: Insert pluginRepositories
