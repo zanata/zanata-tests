@@ -44,8 +44,6 @@ ADD_CUSTOM_TARGET(prepare
     COMMENT "Prepare all projects"
     )
 
-
-
 #===================================================================
 # Macros
 #
@@ -124,6 +122,8 @@ MACRO(SET_LOCAL_VARS proj ver client)
     IF("${${proj}_REPO_TYPE}" STREQUAL "")
 	SET(${proj}_REPO_TYPE "git")
     ENDIF("${${proj}_REPO_TYPE}" STREQUAL "")
+
+    SET(_proj_ver_dir_scm "${_proj_ver_dir_absolute}/.${${proj}_REPO_TYPE}")
 ENDMACRO(SET_LOCAL_VARS proj ver)
 
 
@@ -168,7 +168,6 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	# Prepare project: To make project workable with zanata,
 	# such as generate zanata.xml, pot, pom.xml and publican
 	SET_LOCAL_VARS("${proj}" "${_ver}" "src")
-	SET(_proj_ver_dir_scm "${_proj_ver_dir_absolute}/.${${proj}_REPO_TYPE}")
 
 
 	IF("${${proj}_PROJECT_TYPE}" STREQUAL "")
@@ -184,7 +183,6 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	    COMMENT "[${proj}-${_ver}] Download source from ${${proj}_URL_${_ver}}"
 	    VERBATIM
 	    )
-
 
 	ADD_CUSTOM_COMMAND(OUTPUT "${_proj_ver_publican_cfg_striped_absolute}" "${_proj_ver_base_dir_absolute}/${_proj_src_dir}" "${_proj_ver_base_dir_absolute}/${_proj_trans_dir}"
 	    COMMAND ${CMAKE_SOURCE_DIR}/scripts/generate_trans_template.sh
@@ -218,11 +216,6 @@ ENDMACRO(ADD_SOURCE_PROJECT proj)
 #
 CONFIGURE_FILE(pom.xml.in pom.xml @ONLY)
 
-ADD_CUSTOM_TARGET(clean_pom_xml
-    COMMENT "Clean all pom.xml"
-    )
-
-
 SET(ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS
     -Dzanata.url=${ZANATA_URL}
     -Dzanata.userConfig=${CMAKE_SOURCE_DIR}/zanata.ini
@@ -235,9 +228,11 @@ SET(ZANATA_MVN_CLIENT_COMMON_ADMIN_OPTS
 #
 MACRO(GENERATE_POM_XML proj ver)
     SET(_pomXml "${_proj_ver_base_dir_absolute}/pom.xml")
+    #MESSAGE("_proj_ver_dir_scm=${_proj_ver_dir_scm}")
     ADD_CUSTOM_COMMAND(OUTPUT "${_pomXml}.stamp"
 	COMMAND scripts/pomXml_generate.pl -p -s "${${proj}_REPO_TYPE}" "${_pomXml}" "${proj}"
 	COMMENT "Generating ${_pomXml} for ${proj}"
+	DEPENDS "${_proj_ver_dir_scm}"
 	VERBATIM
 	)
     SET(_clean_pom_xml_cmd "scripts/pomXml_generate.pl -c -s ${${proj}_REPO_TYPE} ${_pomXml} ${proj}")
@@ -251,6 +246,7 @@ MACRO(GENERATE_POM_XML proj ver)
 	ADD_CUSTOM_COMMAND(OUTPUT "${_pomXml}.stamp"
 	    COMMAND scripts/pomXml_generate.pl -s "${${proj}_REPO_TYPE}" "${_pomXml}" "${_pomXmlProf}"
 	    COMMENT "Generating ${_pomXml} for ${_pomXmlProf}"
+	    DEPENDS "${_proj_ver_dir_scm}"
 	    VERBATIM
 	    )
 	LIST(APPEND _clean_pom_xml_cmd "scripts/pomXml_generate.pl -c -s ${${proj}_REPO_TYPE} ${_pomXml} ${proj}")
@@ -302,6 +298,12 @@ MACRO(ADD_MVN_CLIENT_TARGETS proj )
     IF(NOT TARGET generate_pom_xml)
 	ADD_CUSTOM_TARGET(generate_pom_xml)
     ENDIF(NOT TARGET generate_pom_xml)
+
+    IF(NOT TARGET clean_pom_xml)
+	ADD_CUSTOM_TARGET(clean_pom_xml
+	    COMMENT "Clean all pom.xml"
+	    )
+    ENDIF(NOT TARGET clean_pom_xml)
 
     FOREACH(_ver ${_projVers})
 	#MESSAGE("[mvn] proj=${proj} ver=${_ver}")
