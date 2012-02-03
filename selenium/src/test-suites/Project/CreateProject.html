@@ -14,7 +14,7 @@
 <tr>
 	<td>store</td>
 	<td>SomeProject</td>
-	<td>projectId</td>
+	<td>projectPrefix</td>
 </tr>
 <tr>
 	<td>store</td>
@@ -27,6 +27,11 @@
 	<td>projectDesc</td>
 </tr>
 <tr>
+	<td>store</td>
+	<td>0</td>
+	<td>projectSerial</td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>id=Projects</td>
 	<td></td>
@@ -35,16 +40,6 @@
 	<td>clickAndWait</td>
 	<td>link=Create project</td>
 	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=projectForm:nameField:name</td>
-	<td>${projectName}</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=projectForm:slugField:slug</td>
-	<td>${projectId}</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -70,7 +65,7 @@
 <tr>
 	<td>typeKeys</td>
 	<td>id=tinymce</td>
-	<td>Chewing is an input method</td>
+	<td>${projectDesc}</td>
 </tr>
 <tr>
 	<td>keyPress</td>
@@ -80,7 +75,7 @@
 <tr>
 	<td>typeKeys</td>
 	<td>id=tinymce</td>
-	<td>that supports Zhu</td>
+	<td>Some testing project</td>
 </tr>
 <tr>
 	<td>keyPress</td>
@@ -93,10 +88,41 @@
 	<td>relative=top</td>
 	<td></td>
 </tr>
+<!--Find unoccupied name-->
+<tr>
+	<td>label</td>
+	<td>InputSlug</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>${projectSerial}+1</td>
+	<td>projectSerial</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=projectForm:slugField:slug</td>
+	<td>${projectPrefix}${projectSerial}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=projectForm:nameField:name</td>
+	<td>${projectName} ${projectSerial}</td>
+</tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>css=input[name=&quot;projectForm:save&quot;]</td>
 	<td></td>
+</tr>
+<tr>
+	<td>storeElementPresent</td>
+	<td>css=span.errors:contains(&quot;This slug is not available&quot;)</td>
+	<td>slugUnavailable</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>${slugUnavailable}</td>
+	<td>InputSlug</td>
 </tr>
 <!--Verify-->
 <tr>
@@ -106,7 +132,7 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>${projectName}</td>
+	<td>${projectName} ${projectSerial}</td>
 	<td></td>
 </tr>
 </tbody></table>
