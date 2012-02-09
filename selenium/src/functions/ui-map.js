@@ -474,7 +474,7 @@ manager.addRollupRule({
 	    }
 	}
         ,{
-	    command: 'mouseDown'
+	    command: 'mouseDownAt'
             , target: '.+'
 	    , updateArgs: function(command, args) {
 		args.loc=command.target;
@@ -482,7 +482,7 @@ manager.addRollupRule({
 	    }
 	}
         ,{
-	    command: 'mouseUp'
+	    command: 'mouseUpAt'
             , target: '.+'
 	    , updateArgs: function(command, args) {
 		args.loc=command.target;
@@ -504,6 +504,69 @@ manager.addRollupRule({
 	    command: 'mouseUp'
 	    , target: args.loc
 	});
+	return commands;
+    }
+});
+
+manager.addRollupRule({
+    name: 'sim_clickat'
+    , description: 'Simulate a click using clickAt'
+    , args: [
+        {
+            name: 'loc'
+            , description: 'locator to be click'
+        }
+	,{
+	    name: 'coord'
+	    , description: 'coordination string like (-10,20)'
+	}
+    ]
+    , commandMatchers: [
+        {
+	    command: 'mouseOver'
+            , target: '.+'
+	    , updateArgs: function(command, args) {
+		args.loc=command.target;
+	        return args;
+	    }
+	}
+        ,{
+	    command: 'mouseDownAt'
+            , target: '.+'
+	    , value: '.+'
+	    , updateArgs: function(command, args) {
+		args.loc=command.target;
+		args.coord=command.value;
+	        return args;
+	    }
+	}
+        ,{
+	    command: 'mouseUpAt'
+            , target: '.+'
+	    , value: '.+'
+	    , updateArgs: function(command, args) {
+		args.loc=command.target;
+		args.coord=command.value;
+		return args;
+	    }
+	}
+    ]
+    , getExpandedCommands: function(args) {
+        var commands = [];
+	commands.push({
+	    command: 'mouseOver'
+	    , target: args.loc
+	});
+	commands.push({
+	    command: 'mouseDownAt'
+	    , target: args.loc
+	    , value: args.coord
+	});
+	commands.push({
+	    command: 'mouseUpAt'
+	    , target: args.loc
+	    , value: args.coord
+	    });
 	return commands;
     }
 });
