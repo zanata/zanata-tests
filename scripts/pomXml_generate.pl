@@ -65,6 +65,7 @@ if ($opts{'c'}){
 }else{
     # Normal mode
     my $insert_zanata_opts="$insertPluginRepository $pomXml_in $pomXml $varPrefix";
+    print("$scriptDir/pomXml_insert_zanata.pl $insert_zanata_opts\n");
     unless (system("$scriptDir/pomXml_insert_zanata.pl $insert_zanata_opts")==0){
 	die "Failed generate $pomXml from $pomXml_in\n";
     }

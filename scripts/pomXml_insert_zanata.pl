@@ -250,7 +250,7 @@ if ($insertPluginRepository){
     }
 }
 
-open my $fh, ">", "$pom_xml" or die "open($pom_xml): $!";
+open(my $fh, ">$pom_xml") or die "open($pom_xml): $!";
 
 my $xml=$xs->XMLout($data
    , NoSort => 1
