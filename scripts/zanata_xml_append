@@ -7,9 +7,6 @@ use strict;
 use Getopt::Std;
 use Pod::Usage;
 use XML::LibXML;
-use Data::Dumper;
-use File::Basename;
-use File::Copy;
 use File::Slurp;
 
 my $modified=0;
@@ -18,11 +15,13 @@ my $scriptDir=dirname($0);
 # Subroutines
 sub print_usage {
     die <<END
-    Usage:
-        $0 -h
-        $0 [ -c <content_file> ] <input.xml> <parent_xpath> <tagName>
-        $0 [ -x <content.xml>] <input.xml> <parent_xpath>
-    Append an element to a parent node of an XML file.
+Append a child XML element to parent elements specified by XPath.
+The result XML is outputted to standard output.
+
+Usage:
+    $0 -h
+    $0 [ -c <content_file> ] <input.xml> <parent_xpath> <tagName>
+    $0 [ -x <content.xml>] <input.xml> <parent_xpath>
 
     Options:
     -h: Display this help.
