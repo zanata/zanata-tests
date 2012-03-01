@@ -1,0 +1,9 @@
+<plugin>
+   <groupId>org.zanata</groupId>
+   <artifactId>zanata-maven-plugin</artifactId>
+   <version>1.5.0-alpha-3-SNAPSHOT</version>
+   <configuration>
+       <srcDir>${zanata.srcDir}</srcDir>
+       <transDir>${zanata.transDir}</transDir>
+   </configuration>
+</plugin>
