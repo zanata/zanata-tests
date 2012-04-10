@@ -180,12 +180,13 @@ sub parse_options{
 	    }
 	    $lastArgOpt=undef;
 	}else{
-	    $arg=~s/^[-]+//;
 	    my @tokens=split(/=/ , $arg);
-	    $lastArgOpt=$tokens[0];
 	    if ($isArgumentOpt){
+		$lastArgOpt=$tokens[0];
+		$lastArgOpt=~s/^[-]+//;
 		$argumentOptH{$lastArgOpt}=$tokens[1];
 	    }else{
+		$lastArgOpt=$tokens[0];
 		$passThroughOptH{$lastArgOpt}=$tokens[1];
 	    }
 	    $lastArgOpt=undef if ($tokens[1]);
@@ -234,8 +235,7 @@ sub cmdList_add_zanata_option{
 	my $optName=to_zanata_maven_option_name($opt,1);
 	push @$cmdLRef, ($optValue) ? qq{-D$optName='$optValue'} : qq{-D$optName};
     }else{
-	push @$cmdLRef, $opt;
-	push @$cmdLRef, $optValue if ($optValue);
+	push @$cmdLRef, '--' . $opt ,$optValue;
     }
 }
 
@@ -244,8 +244,7 @@ sub cmdList_add_pass_option{
     if ($optH{'client'} eq 'mvn'){
 	push @$cmdLRef, ($optValue) ? qq{-$opt='$optValue'} : qq{-$opt};
     }else{
-	push @$cmdLRef, $opt;
-	push @$cmdLRef, $optValue if ($optValue);
+	push @$cmdLRef, $opt ,$optValue;
     }
 }
 
@@ -289,14 +288,7 @@ if ($optH{'client'} eq 'mvn'){
     if ($help){
 	push @cmdL, 'help';
     }
-    push @cmdL, $argumentMavenGoalH{$argument};
-}
-
-
-
-## Option 'basedir'
-if ($optH{'basedir'}){
-    unshift @cmdL, 'pushd', $optH{'basedir'}, ';';
+    push @cmdL, $argumentPythonGoalH{$argument}, $argumentValue;
 }
 
 ## Option 'yes'
@@ -306,6 +298,11 @@ if ($optH{'yes'}){
     }else{
 	unshift @cmdL, 'yes', '|'
     }
+}
+
+## Option 'basedir'
+if ($optH{'basedir'}){
+    unshift @cmdL, 'pushd', $optH{'basedir'}, ';';
 }
 
 ## Convert argumentOptions to client options
