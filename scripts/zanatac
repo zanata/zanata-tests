@@ -1,0 +1,337 @@
+#!/usr/bin/env perl
+#
+
+=pod
+
+=head1 NAME
+
+zanatac - Common Zanata client
+
+=head1 SYNOPSIS
+
+zanatac -h | --help
+
+zanatac [GlobalOptions] <argument> [ArgumentOptions] [-- [maven or python only options]]
+
+=head1 DESCRIPTION
+The zanatac program wrap complex maven commands and provide a frontend closer
+to a typical Unix command.
+
+=head1 ARGUMENTS
+
+=over 4
+
+=item help
+
+Display help and exit
+
+=item pull
+
+Pulls translated text from Zanata.
+
+=item push
+
+Pushes source text to a Zanata project version so that it can be translated,
+and optionally push translated text as well. NB: Any documents which exist on
+the server but not locally will be deleted as obsolete. If
+deleteObsoleteModules is true, documents belonging to unknown/obsolete modules
+will be deleted as well.
+
+=item project-put
+
+Creates or updates a Zanata project.
+
+=item version-put
+
+Creates or updates a Zanata project.
+
+=back
+
+=head1 OPTIONS
+
+There are 3 types of options: global options, argument options, and maven options.
+Global options are options can be used in any arguments;
+argument options are options specific to a argument;
+every thing else will be passed to maven.
+
+=head2 Global options
+
+=over 4
+
+=item B<-h, --help>: Print help message and exits.
+
+=item B<-b, --basedir=DIR>: Set base dir
+
+=item B<-c, --client=STRING>: client to be use.
+
+'mvn' for maven client, 'py' for python
+
+=item B<-s, --show>: Show the actual command.
+
+=item B<-y, --yes>: Assume yes to all questions.
+
+=back
+
+=head2 Argument options
+
+The argument options are options for the argument.
+Python client argument option name convention are used.
+That is, even for maven client backend you need to use 'project-type'
+instead of 'projectType'
+
+Please refer help on the argument for available argument options.
+
+=cut
+
+# Ensure it runs on RHEL5
+use 5.008_008;
+use strict;
+use Data::Dumper;
+use File::Basename;
+use File::Spec;
+use File::Copy;
+use File::Find;
+use Getopt::Long qw(:config require_order pass_through);
+use Pod::Usage;
+use autodie;
+
+# path variables
+my $scriptDir=dirname($0);
+
+# Definition
+my $backupSuffix=".bak";
+my $zanataNameSpace='http://zanata.org/namespace/config/';
+my $mvnClient='mvn';
+my $mvn=`which $mvnClient`;
+chomp($mvn);
+
+my $pythonClient='zanata';
+my $py=($ENV{'ZANATA_PY_PATH'} ) ? File::Spec::join($ENV{'ZANATA_PY_PATH'}, $pythonClient) : `which $pythonClient`;
+chomp($py);
+
+my %argumentMavenGoalH=(
+    help =>'help'
+    , pull => 'pull'
+    , push => 'push'
+    , 'project-put' =>'putproject'
+    , 'version-put' =>'putversion'
+);
+
+my %argumentPythonGoalH=(
+    help =>'help'
+    , pull => 'pull'
+    , push => 'push'
+    , 'project-put' => 'project create'
+    , 'version-put' => 'version create'
+);
+
+## Parse options
+my $help=0;
+
+### Display help
+my %optH=(
+    help => \$help
+    , yes => 0
+    , client => 'mvn'
+    , show => 0
+);
+
+GetOptions(\%optH,
+    , 'help|h'
+    , 'basedir|b=s'
+    , 'client|c=s'
+    , 'show|s'
+    , 'yes|y'
+    , '<>' => \&parse_options
+) or pod2usage(-1);
+pod2usage( {-verbose=>1}) if @ARGV == 0;
+
+my @mavenOptL=();
+my $argument;
+my $argumentValue;
+my %argumentOptH=();
+my %passThroughOptH=();
+my $opt=undef;
+my $optValue=undef;
+
+
+###########################################################
+# Subroutines
+#
+
+my $lastArgOpt=undef;
+my $isArgumentOpt=1;
+
+sub parse_options{
+    my ($arg)=@_;
+
+    if ($arg eq '--'){
+	$isArgumentOpt=0;
+	next;
+    }
+
+    if ($arg =~ /^-/){
+	if ($lastArgOpt){
+	    ## Still a value for an argument option
+	    if ($isArgumentOpt){
+		$argumentOptH{$lastArgOpt}=$arg;
+	    }else{
+		$passThroughOptH{$lastArgOpt}=$arg;
+	    }
+	    $lastArgOpt=undef;
+	}else{
+	    $arg=~s/^[-]+//;
+	    my @tokens=split(/=/ , $arg);
+	    $lastArgOpt=$tokens[0];
+	    if ($isArgumentOpt){
+		$argumentOptH{$lastArgOpt}=$tokens[1];
+	    }else{
+		$passThroughOptH{$lastArgOpt}=$tokens[1];
+	    }
+	    $lastArgOpt=undef if ($tokens[1]);
+	}
+    }else{
+	if ($lastArgOpt){
+	    $argumentOptH{$lastArgOpt}=$arg;
+	    $lastArgOpt=undef;
+	}elsif( $argument ){
+	    $argumentValue=$arg;
+	}else{
+	    ## Argument have not set
+	    $argument=$arg;
+	}
+    }
+}
+
+sub to_zanata_maven_option_name{
+    my ($optName, $isZanata)=@_;
+
+    if( $optName eq 'srcdir'){
+	$optName='srcDir';
+    }elsif( $optName eq 'transdir'){
+	$optName='transDir';
+    }elsif( $optName eq 'apikey'){
+	$optName='key';
+    }elsif( $optName eq 'project-id' and $argument='version-put'){
+	$optName='versionProject'
+    }elsif ($optName =~ /[-]/){
+	## Covert dashed to camelCase
+	my @names=split(/[-]/, $optName);
+	$optName=$names[0];
+	for(my $i=1; $i<=$#names; $i++){
+	    $optName.= ucfirst $names[$i];
+	}
+    }
+    if ($isZanata){
+	$optName='zanata.' . $optName;
+    }
+    return $optName;
+}
+
+sub cmdList_add_zanata_option{
+    my ($cmdLRef, $opt, $optValue)=@_;
+    if ($optH{'client'} eq 'mvn'){
+	my $optName=to_zanata_maven_option_name($opt,1);
+	push @$cmdLRef, ($optValue) ? qq{-D$optName='$optValue'} : qq{-D$optName};
+    }else{
+	push @$cmdLRef, $opt;
+	push @$cmdLRef, $optValue if ($optValue);
+    }
+}
+
+sub cmdList_add_pass_option{
+    my ($cmdLRef, $opt, $optValue)=@_;
+    if ($optH{'client'} eq 'mvn'){
+	push @$cmdLRef, ($optValue) ? qq{-$opt='$optValue'} : qq{-$opt};
+    }else{
+	push @$cmdLRef, $opt;
+	push @$cmdLRef, $optValue if ($optValue);
+    }
+}
+
+###########################################################
+# Main program
+#
+
+foreach (@ARGV){
+    parse_options($_);
+}
+
+#print "argument=$argument\n";
+
+#print "argumentOptH=" . Dumper(%argumentOptH) . "\n";
+
+## Show usage if argument is not recognized
+unless($argumentMavenGoalH{$argument}){
+    print {*STDERR} "Unrecognized argument: $argument \n";
+    pod2usage( {-exitval=>1, -verbose=>1});
+}
+
+## Make the command and it's argument
+my @cmdL;
+
+if ($optH{'client'} eq 'mvn'){
+    push @cmdL, $mvn, '-e';
+    if ($help){
+	push @cmdL, 'zanata:help', '-Ddetail' , "-Dgoal=" . $argumentMavenGoalH{$argument};
+    }else{
+	push @cmdL, 'zanata:' . $argumentMavenGoalH{$argument};
+	## Argument specific operation
+	if ($argument eq "project-put"){
+	    push @cmdL, '-Dzanata.projectSlug=' . $argumentValue;
+	}elsif ($argument eq "version-put"){
+	    push @cmdL, '-Dzanata.versionSlug=' . $argumentValue;
+	}
+    }
+
+}else{
+    push @cmdL, $py;
+    if ($help){
+	push @cmdL, 'help';
+    }
+    push @cmdL, $argumentMavenGoalH{$argument};
+}
+
+
+
+## Option 'basedir'
+if ($optH{'basedir'}){
+    unshift @cmdL, 'pushd', $optH{'basedir'}, ';';
+}
+
+## Option 'yes'
+if ($optH{'yes'}){
+    if ($optH{'client'} eq 'mvn'){
+	push @cmdL, '-B'
+    }else{
+	unshift @cmdL, 'yes', '|'
+    }
+}
+
+## Convert argumentOptions to client options
+while(my ($opt,$value)=each %argumentOptH){
+    #print "opt=$opt value=$value\n";
+    cmdList_add_zanata_option(\@cmdL, $opt, $value);
+}
+
+## Convert optH to client options
+while(my ($opt,$value)=each %passThroughOptH){
+    #print "2 opt=$opt value=$value\n";
+    cmdList_add_pass_option(\@cmdL, $opt, $value);
+}
+
+## pop 'basedir'
+if ($optH{'basedir'}){
+    push @cmdL, ';', 'popd';
+}
+
+
+## Show command if --show
+if ($optH{'show'}){
+    print "Command: " . join(' ', @cmdL) . "\n";
+}
+
+## Execute command
+system(join(' ', @cmdL))==0 or die "Command run failed $?: "  . join(' ', @cmdL);
+
+
