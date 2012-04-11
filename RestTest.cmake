@@ -13,28 +13,12 @@ MACRO(REQUIRE_CMD var cmd)
 ENDMACRO(REQUIRE_CMD var cmd)
 
 REQUIRE_CMD(PUBLICAN_CMD publican)
-REQUIRE_CMD(ZANATA_MVN_CMD mvn)
+REQUIRE_CMD(ZANATA_ZANATA_XML_MAKE_CMD zanata_zanata_xml_make)
+REQUIRE_CMD(ZANATA_POM_XML_MAKE_CMD zanata_pom_xml_make)
 
-# ZANATA_PY_PATH: The preferred location of zanata.
-IF(NOT "${ZANATA_PY_PATH}" STREQUAL "")
-    IF(NOT EXISTS ${ZANATA_PY_PATH})
-	# Clone the python client if ZANATA_PY_PATH does not exist.
-	FILE(MAKE_DIRECTORY ${ZANATA_PY_PATH})
-	EXECUTE_PROCESS(COMMAND git clone ${PYTHON_CLIENT_REPO} ${ZANATA_PY_PATH})
-    ENDIF(NOT EXISTS ${ZANATA_PY_PATH})
-    # Update python client.
-    ADD_CUSTOM_TARGET(python_client_update
-	COMMAND git pull
-	COMMAND git rev-parse
-	COMMAND make clean
-	COMMAND make
-	COMMENT "Update python client"
-	WORKING_DIRECTORY ${ZANATA_PY_PATH}
-	)
-ENDIF(NOT "${ZANATA_PY_PATH}" STREQUAL "")
-REQUIRE_CMD(ZANATA_PY_CMD zanata HINTS ${ZANATA_PY_PATH} /usr/bin /bin NO_DEFAULT_PATH)
-
-
+SET(ZANATAC_CMD "${SCRIPT_DIR}/zanatac" "--yes" "--show")
+SET(ZANATA_MVN_CMD ${ZANATAC_CMD})
+SET(ZANATA_PY_CMD  ${ZANATAC_CMD} --client py)
 
 ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR_ABSOLUTE}
     COMMAND ${CMAKE_COMMAND} -E make_directory ${SAMPLE_PROJ_DIR_ABSOLUTE}
@@ -91,11 +75,11 @@ MACRO(SET_LOCAL_VARS proj ver client)
 	SET(_pull_dest_dir_absolute ${PULL_DEST_DIR_ABSOLUTE}/${client}/${proj}/${ver})
     ENDIF(NOT "${client}" STREQUAL "src")
 
-    IF(${proj}_ZANATA_XML})
-        SET(_zanata_xml_path ${_proj_ver_dir_absolute}/${${proj}_ZANATA_XML})
-    ELSE(${proj}_ZANATA_XML})
-        SET(_zanata_xml_path ${_proj_ver_dir_absolute}/${ZANATA_XML_DEFAULT})
-    ENDIF(${proj}_ZANATA_XML})
+    IF("${${proj}_ZANATA_XML}" STREQUAL "")
+	SET(_zanata_xml_path ${_proj_ver_base_dir_absolute}/zanata.xml)
+    ELSE("${${proj}_ZANATA_XML}" STREQUAL "")
+	SET(_zanata_xml_path ${_proj_ver_base_dir_absolute}/${${proj}_ZANATA_XML})
+    ENDIF("${${proj}_ZANATA_XML}" STREQUAL "")
 
     IF("${${proj}_PROJECT_TYPE}" STREQUAL "")
         SET(_proj_type ${PROJECT_TYPE_DEFAULT})
@@ -146,18 +130,20 @@ MACRO(ADD_SOURCE_PROJECT proj)
 
     # Project wide zanata.xml (means: no ver info yet)
     SET(_proj_dir_absolute ${SAMPLE_PROJ_DIR_ABSOLUTE}/${proj})
-    SET(_zanata_xml_path ${_proj_dir_absolute}/zanata.xml)
+    SET(_proj_base_zanata_xml_path ${_proj_dir_absolute}/zanata.xml)
 
     ADD_CUSTOM_COMMAND(OUTPUT ${_proj_dir_absolute}
 	COMMAND ${CMAKE_COMMAND} -E make_directory ${_proj_dir_absolute}
 	DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}
 	)
 
-    ADD_CUSTOM_COMMAND(OUTPUT ${_zanata_xml_path}
-	COMMAND scripts/generate_zanata_xml.sh ${_proj_dir_absolute}
-	${ZANATA_URL} ${proj}
+    SET(BASE_ZANATA_XML_MAKE_OPTS "--projectType" "${${proj}_PROJECT_TYPE}")
+
+    ADD_CUSTOM_COMMAND(OUTPUT ${_proj_base_zanata_xml_path}
+	COMMAND ${ZANATA_ZANATA_XML_MAKE_CMD} ${BASE_ZANATA_XML_MAKE_OPTS} ${ZANATA_URL} ${proj}
 	DEPENDS ${_proj_dir_absolute}
-	COMMENT "   Generate ${_zanata_xml_path}"
+	COMMENT "[${proj}] make ${_proj_base_zanata_xml_path}"
+	WORKING_DIRECTORY ${_proj_dir_absolute}
 	VERBATIM
 	)
 
@@ -169,17 +155,10 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	# such as generate zanata.xml, pot, pom.xml and publican
 	SET_LOCAL_VARS("${proj}" "${_ver}" "src")
 
-
-	IF("${${proj}_PROJECT_TYPE}" STREQUAL "")
-	    SET(_proj_type_opt "")
-	ELSE("${${proj}_PROJECT_TYPE}" STREQUAL "")
-		SET(_proj_type_opt -t ${${proj}_PROJECT_TYPE})
-	ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "")
-
 	ADD_CUSTOM_COMMAND(OUTPUT ${_proj_ver_dir_scm}
 	    COMMAND perl scripts/get_project.pl ${SAMPLE_PROJ_DIR_ABSOLUTE} ${proj}
 	    ${${proj}_REPO_TYPE} ${_ver} ${${proj}_URL_${_ver}}
-	    DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}
+	    DEPENDS ${_proj_base_zanata_xml_path}
 	    COMMENT "[${proj}-${_ver}] Download source from ${${proj}_URL_${_ver}}"
 	    VERBATIM
 	    )
@@ -193,18 +172,31 @@ MACRO(ADD_SOURCE_PROJECT proj)
 	    VERBATIM
 	    )
 
+	SET(ZANATA_XML_MAKE_OPTS ${BASE_ZANATA_XML_MAKE_OPTS})
+
+	IF(NOT "${${proj}_ZANATA_XML}" STREQUAL "")
+	    LIST(APPEND ZANATA_XML_MAKE_OPTS "--zanataXml" "${${proj}_ZANATA_XML}")
+	ENDIF(NOT "${${proj}_ZANATA_XML}" STREQUAL "")
+
+	IF(NOT "${${proj}_SRC_DIR}" STREQUAL "")
+	    LIST(APPEND ZANATA_XML_MAKE_OPTS "--srcDir" "${${proj}_SRC_DIR}")
+	ENDIF(NOT "${${proj}_SRC_DIR}" STREQUAL "")
+
+	IF(NOT "${${proj}_TRANS_DIR}" STREQUAL "")
+	    LIST(APPEND ZANATA_XML_MAKE_OPTS "--transDir" "${${proj}_TRANS_DIR}")
+	ENDIF(NOT "${${proj}_TRANS_DIR}" STREQUAL "")
+
 	ADD_CUSTOM_COMMAND(OUTPUT ${_zanata_xml_path}
-	    COMMAND scripts/generate_zanata_xml.sh ${_proj_type_opt}
-	    -v ${_ver}  -l "${LANGS}"
-	    -z ${_zanata_xml_path} ${_proj_ver_base_dir_absolute} ${ZANATA_URL} ${proj}
+	    COMMAND ${ZANATA_ZANATA_XML_MAKE_CMD} ${ZANATA_XML_MAKE_OPTS} ${ZANATA_URL} ${proj} ${_ver}
 	    DEPENDS "${_proj_ver_publican_cfg_striped_absolute}"
-	    COMMENT "[${proj}-${_ver}] ${_zanata_xml_path}"
+	    COMMENT "[${proj}-${_ver}] make ${_zanata_xml_path}"
+	    WORKING_DIRECTORY ${_proj_ver_base_dir_absolute}
 	    VERBATIM
 	    )
 
 	ADD_CUSTOM_TARGET(prepare_${proj}_${_ver}
 	    DEPENDS ${_zanata_xml_path}
-	    COMMENT "[${proj}-${_ver}] Prepare for using zanata"
+	    COMMENT "[${proj}-${_ver}] Preparing zanata related files"
 	    )
 	ADD_DEPENDENCIES(prepare_${proj} prepare_${proj}_${_ver})
 
