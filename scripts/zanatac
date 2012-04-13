@@ -49,10 +49,13 @@ Creates or updates a Zanata project.
 
 =head1 OPTIONS
 
-There are 3 types of options: global options, argument options, and maven options.
+There are 3 types of options: global options, argument options, and maven/python options.
+
 Global options are options can be used in any arguments;
-argument options are options specific to a argument;
-every thing else will be passed to maven.
+
+Argument options are options specific to a argument;
+
+every thing else will be passed to maven/python client directory.
 
 =head2 Global options
 
@@ -162,6 +165,18 @@ my $optValue=undef;
 my $lastArgOpt=undef;
 my $isArgumentOpt=1;
 
+sub to_hyphen_name{
+    my ($optName)=@_;
+    # print "optName=|$optName|\n";
+    if ($optName eq "srcDir"){
+	return "srcdir";
+    }elsif ($optName eq "transDir"){
+	return "transdir";
+    }
+    $optName=~ s/([A-Z])/'-' . lc($1)/ge;
+    return $optName;
+}
+
 sub parse_options{
     my ($arg)=@_;
 
@@ -171,26 +186,27 @@ sub parse_options{
     }
 
     if ($arg =~ /^-/){
-	if ($lastArgOpt){
-	    ## Still a value for an argument option
-	    if ($isArgumentOpt){
-		$argumentOptH{$lastArgOpt}=$arg;
-	    }else{
-		$passThroughOptH{$lastArgOpt}=$arg;
+	my @tokens=split(/=/ , $arg);
+	if ($isArgumentOpt){
+	    $tokens[0]=~s/^[-]+//;
+	    my $value=$tokens[1];
+	    $lastArgOpt=to_hyphen_name($tokens[0]);
+	    ## inverse options: "--no-xxx" will be turn to --xxx false"
+	    if ($lastArgOpt=~ m/^no[-]/){
+		$lastArgOpt=~ s/^no[-]//;
+		if ($value=~/false/i or $value=~/no/i or $value=~/off/i or $value eq "0"){
+		    $value='true';
+		}else{
+		    $value='false';
+		}
 	    }
-	    $lastArgOpt=undef;
+	    $argumentOptH{$lastArgOpt}=$value;
 	}else{
-	    my @tokens=split(/=/ , $arg);
-	    if ($isArgumentOpt){
-		$lastArgOpt=$tokens[0];
-		$lastArgOpt=~s/^[-]+//;
-		$argumentOptH{$lastArgOpt}=$tokens[1];
-	    }else{
-		$lastArgOpt=$tokens[0];
-		$passThroughOptH{$lastArgOpt}=$tokens[1];
-	    }
-	    $lastArgOpt=undef if ($tokens[1]);
+	    $lastArgOpt=$tokens[0];
+	    $passThroughOptH{$lastArgOpt}=$tokens[1];
 	}
+	$lastArgOpt=undef if ($tokens[1]);
+
     }else{
 	if ($lastArgOpt){
 	    $argumentOptH{$lastArgOpt}=$arg;
@@ -204,13 +220,29 @@ sub parse_options{
     }
 }
 
-sub to_zanata_maven_option_name{
-    my ($optName, $isZanata)=@_;
+sub add_zanata_python_option{
+    my ($cmdLRef, $optName, $optValue)=@_;
+    if ($optName eq "copytrans"){
+	if ($optValue eq 'true'){
+	    return "";
+	}
+	$optName="no-" . $optName;
+	$optValue="";
+    }
+    push @$cmdLRef, "--" . $optName;
+    push @$cmdLRef, qq{"$optValue"} if ($optValue ne "");
+}
+
+
+sub add_zanata_maven_option{
+    my ($cmdLRef, $optName, $optValue)=@_;
 
     if( $optName eq 'srcdir'){
 	$optName='srcDir';
     }elsif( $optName eq 'transdir'){
 	$optName='transDir';
+    }elsif( $optName eq 'copytrans'){
+	$optName='copyTrans'
     }elsif( $optName eq 'apikey'){
 	$optName='key';
     }elsif( $optName eq 'project-id' and $argument='version-put'){
@@ -223,19 +255,16 @@ sub to_zanata_maven_option_name{
 	    $optName.= ucfirst $names[$i];
 	}
     }
-    if ($isZanata){
-	$optName='zanata.' . $optName;
-    }
-    return $optName;
+    $optName='zanata.' . $optName;
+    push @$cmdLRef, ($optValue ne "") ? qq{-D$optName='$optValue'} : qq{-D$optName};
 }
 
 sub cmdList_add_zanata_option{
     my ($cmdLRef, $opt, $optValue)=@_;
     if ($optH{'client'} eq 'mvn'){
-	my $optName=to_zanata_maven_option_name($opt,1);
-	push @$cmdLRef, ($optValue) ? qq{-D$optName='$optValue'} : qq{-D$optName};
+	add_zanata_maven_option($cmdLRef, $opt, $optValue);
     }else{
-	push @$cmdLRef, '--' . $opt ,$optValue;
+	add_zanata_python_option($cmdLRef, $opt, $optValue);
     }
 }
 
