@@ -109,7 +109,7 @@ my $mvn=`which $mvnClient`;
 chomp($mvn);
 
 my $pythonClient='zanata';
-my $py=($ENV{'ZANATA_PY_PATH'} ) ? File::Spec::join($ENV{'ZANATA_PY_PATH'}, $pythonClient) : `which $pythonClient`;
+my $py=($ENV{'ZANATA_PY_PATH'} ) ? File::Spec->join($ENV{'ZANATA_PY_PATH'}, $pythonClient) : `which $pythonClient`;
 chomp($py);
 
 my %argumentMavenGoalH=(

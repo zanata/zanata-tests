@@ -292,11 +292,17 @@ MACRO(PREPARE_PROJECT proj ver)
 	VERBATIM
 	)
 
+    SET(_post_download_cmd "")
+    IF(NOT "${${proj}_POST_DOWNLOAD_CMD}" STREQUAL "")
+	SET(_post_download_cmd "COMMAND" "eval" "${${proj}_POST_DOWNLOAD_CMD}")
+    ENDIF(NOT "${${proj}_POST_DOWNLOAD_CMD}" STREQUAL "")
+
     ADD_CUSTOM_COMMAND(OUTPUT "${_proj_ver_publican_cfg_striped}" "${_proj_ver_src_dir}" "${_proj_ver_trans_dir}"
-	COMMAND ${SCRIPT_DIR}/generate_trans_template.sh "${LANGS}" "${${proj}_POST_DOWNLOAD_CMD}"
+	${_post_download_cmd}
+	COMMAND ${SCRIPT_DIR}/generate_trans_template.sh "${LANGS}"
 	WORKING_DIRECTORY ${_proj_ver_base_dir}
 	DEPENDS "${_proj_ver_scm_dir}"
-	COMMENT "[${proj}-${ver}] Translation template files (.pot and .po)"
+	COMMENT "[${proj}-${ver}] Generating translation files (.pot and .po)"
 	VERBATIM
 	)
 

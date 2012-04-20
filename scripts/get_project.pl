@@ -2,13 +2,11 @@
 # Ensure it runs on RHEL5
 use 5.008_008;
 use strict;
+use Archive::Tar;
 use Getopt::Std;
 use Pod::Usage;
 use File::Spec;
-use File::Path;
-use LWP::Simple;
 use Cwd;
-use Archive::Tar;
 
 my $currDir=getcwd;
 my $update=0;
@@ -68,8 +66,7 @@ sub clone_project{
 	    system(qq{svn co $url $ver})
 	}elsif($scm eq "tar"){
 	    my $tarball="$proj-$ver.$scm";
-	    #system(qq{wget -c -O $tarball $url});
-	    #mirror($url, $tarball);
+	    system(qq{wget -c -O $tarball $url});
 	    my $tar=Archive::Tar->new($tarball);
 	    my @fileL=$tar->list_files();
 	    my $f=$fileL[0];
