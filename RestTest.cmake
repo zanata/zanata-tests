@@ -230,7 +230,7 @@ MACRO(MAKE_POM_XML proj ver proj_ver_dir)
 	    COMMAND ${CMAKE_COMMAND} -E touch "${${_pomXmlProf}}.stamp"
 	    WORKING_DIRECTORY ${_proj_ver_base_dir}
 	    DEPENDS "${_proj_ver_scm_dir}"
-	    COMMENT "[${proj}-${ver}] Updating ${${_pom_xml}}"
+	    COMMENT "[${proj}-${ver}] Updating ${_pom_xml}"
 	    )
 
 	ADD_CUSTOM_TARGET(${_targetNamePrefix}_${_pomXmlProf}
@@ -238,7 +238,7 @@ MACRO(MAKE_POM_XML proj ver proj_ver_dir)
 	    COMMAND ${CMAKE_COMMAND} -E touch "${${_pomXmlProf}}.stamp"
 	    WORKING_DIRECTORY ${_proj_ver_base_dir}
 	    DEPENDS "${_proj_ver_scm_dir}"
-	    COMMENT "[${proj}-${ver}] Updating ${${_pom_xml}}"
+	    COMMENT "[${proj}-${ver}] Updating ${_pom_xml}"
 	    )
 
 	LIST(APPEND _stamp_list "${_pom_xml_stamp}")
@@ -284,10 +284,11 @@ MACRO(PREPARE_PROJECT proj ver)
 
     ## Download
     ADD_CUSTOM_COMMAND(OUTPUT ${_proj_ver_scm_dir}
-	COMMAND perl scripts/get_project.pl ${SAMPLE_PROJ_DIR_ABSOLUTE} ${proj}
-	${${proj}_REPO_TYPE} ${ver} ${${proj}_URL_${ver}}
+	COMMAND perl scripts/get_project.pl  ${proj} ${ver}
+	${${proj}_REPO_TYPE} ${${proj}_URL_${ver}}
 	DEPENDS ${_proj_dir_stamp}
 	COMMENT "[${proj}-${ver}] Download source from ${${proj}_URL_${ver}}"
+	WORKING_DIRECTORY ${SAMPLE_PROJ_DIR_ABSOLUTE}
 	VERBATIM
 	)
 
@@ -416,7 +417,8 @@ MACRO(ADD_PROJECT proj client)
 		MAKE_OPTS(_zanatac_arg_opts ${proj} ${ver})
 
 		IF(NOT "${${proj}_ZANATA_XML}" STREQUAL "")
-		    LIST(APPEND _zanatac_arg_opts "--project-config" ${_proj_ver_base_dir}/${${proj}_ZANATA_XML})
+		    LIST(APPEND _zanatac_arg_opts "--project-config"
+			"${_proj_ver_base_dir}/${${proj}_ZANATA_XML}")
 		ENDIF(NOT "${${proj}_ZANATA_XML}" STREQUAL "")
 
 		## Target specific options
