@@ -5,6 +5,7 @@ use strict;
 use Getopt::Std;
 use Pod::Usage;
 use File::Spec;
+use File::Path;
 use LWP::Simple;
 use Cwd;
 use Archive::Tar;
@@ -36,6 +37,7 @@ my ($proj, $ver, $scm, $url)=@ARGV;
 
 my $projDir=$proj;
 my $projVerDir=File::Spec->catfile($proj, $ver);
+my $stampFile=File::Spec->catfile($proj, $ver, "." . $scm);
 
 sub update_project{
     chdir($projVerDir) or die "Cannot change dir to $projVerDir: $!";
@@ -46,7 +48,7 @@ sub update_project{
 	system(qq{svn co})
     }elsif($scm eq "tar"){
 	my $tarball=File::Spec->catfile('..', "$proj-$ver.$scm");
-	#system(qq{wget -c -o $tarball $url});
+	system(qq{wget -c -O $tarball $url});
     }
     chdir(File::Spec->catfile('..' , '..'));
 }
@@ -54,26 +56,39 @@ sub update_project{
 sub clone_project{
     mkdir $proj unless ( -d $proj);
     chdir($proj) or die "Cannot change dir to $proj: $!";
+    unless(-d $ver){
+	if ($scm eq "git"){
+	    system(qq{git clone $url $ver});
+	    unless ($ver eq "master"){
+		chdir($ver);
+		system(qq{git checkout origin/$ver --track -b $ver});
+		chdir('..');
+	    }
+	}elsif($scm eq "svn"){
+	    system(qq{svn co $url $ver})
+	}elsif($scm eq "tar"){
+	    my $tarball="$proj-$ver.$scm";
+	    #system(qq{wget -c -O $tarball $url});
+	    #mirror($url, $tarball);
+	    my $tar=Archive::Tar->new($tarball);
+	    my @fileL=$tar->list_files();
+	    my $f=$fileL[0];
 
-    if ($scm eq "git"){
-	system(qq{git clone $url $ver});
-	unless ($ver eq "master"){
-	    chdir($ver);
-	    system(qq{git checkout origin/$ver --track -b $ver});
-	    chdir('..');
-	}
-    }elsif($scm eq "svn"){
-	system(qq{svn co $url $ver})
-    }elsif($scm eq "tar"){
-	my $tarball="$proj-$ver.$scm";
-	#system(qq{wget -c -o $tarball $url});
-	#mirror($url, $tarball);
-	my $tar=Archive::Tar->new($tarball);
-	$tar->extract();
-	my @props=['name', 'prefix'];
-	my $tarHRef=$tar->list_files( \@props);
-	while(my ($key,$value)=each %$tarHRef){
-	    print "key=$key value=$value\n";
+	    print "f=$f\n";
+	    if ($f =~ m|/$|){
+		# Extract in subdirectory
+		$tar->extract();
+		die "Cannot rename $f to $ver" unless rename($f, $ver);
+	    }else{
+		# Extract in current directory
+		mkdir $ver;
+		chdir $ver;
+		$tar->extract();
+		chdir '..';
+	    }
+	    my $stampFile=File::Spec->catfile($ver, "." . $scm);
+	    open my $sF , ">", $stampFile;
+	    close $sF;
 	}
     }
     chdir('..');
@@ -84,15 +99,18 @@ sub clone_project{
 #
 if ($update){
     ## Update mode
-    if( -d $projVerDir){
+    if( -e $stampFile){
 	print "    ${projVerDir} exists. Updating...\n";
 	update_project;
+	exit 0;
     }
 }else{
     ## Clone mode
-    unless( -d $projVerDir){
-	print "    ${projVerDir} does not exist, Cloning.\n";
+    unless( -e $stampFile){
+	print "    ${projVerDir} is not ready, Cloning.\n";
 	clone_project;
+    }else{
+	print "    ${projVerDir} is ready.\n";
     }
 }
 

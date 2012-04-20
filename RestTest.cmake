@@ -284,7 +284,7 @@ MACRO(PREPARE_PROJECT proj ver)
 
     ## Download
     ADD_CUSTOM_COMMAND(OUTPUT ${_proj_ver_scm_dir}
-	COMMAND perl scripts/get_project.pl  ${proj} ${ver}
+	COMMAND perl ${SCRIPT_DIR}/get_project.pl  ${proj} ${ver}
 	${${proj}_REPO_TYPE} ${${proj}_URL_${ver}}
 	DEPENDS ${_proj_dir_stamp}
 	COMMENT "[${proj}-${ver}] Download source from ${${proj}_URL_${ver}}"
