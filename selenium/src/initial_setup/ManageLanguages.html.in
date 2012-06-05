@@ -22,105 +22,36 @@
     <td></td>
 </tr>
 <tr>
-    <td>clickAndWait</td>
-    <td>link=Add New Language</td>
-    <td></td>
+    <td>rollup</td>
+    <td>add_new_language</td>
+    <td>lang=en-US</td>
 </tr>
 <tr>
-    <td>store</td>
-    <td>css=[id*="localeField:localeName"]</td>
-    <td>SELECT_LOCALE_PULLDOWN</td>
+    <td>rollup</td>
+    <td>add_new_language</td>
+    <td>lang=de</td>
 </tr>
 <tr>
-    <td>store</td>
-    <td>css=div.actionButtons&gt;input[type=&quot;submit&quot;]</td>
-    <td>SUBMIT_BUTTON</td>
+    <td>rollup</td>
+    <td>add_new_language</td>
+    <td>lang=ja</td>
 </tr>
 <tr>
-    <td>type</td>
-    <td>${SELECT_LOCALE_PULLDOWN}</td>
-    <td>en-US</td>
+    <td>rollup</td>
+    <td>add_new_language</td>
+    <td>lang=zh-Hans</td>
 </tr>
 <tr>
-    <td>clickAndWait</td>
-    <td>${SUBMIT_BUTTON}</td>
-    <td></td>
+    <td>rollup</td>
+    <td>add_new_language</td>
+    <td>lang=zh-Hant</td>
 </tr>
 <tr>
-    <td>clickAndWait</td>
-    <td>link=Add New Language</td>
-    <td></td>
+    <td>rollup</td>
+    <td>add_new_language</td>
+    <td>lang=cgg</td>
 </tr>
-<tr>
-    <td>type</td>
-    <td>${SELECT_LOCALE_PULLDOWN}</td>
-    <td>de</td>
-</tr>
-<tr>
-    <td>clickAndWait</td>
-    <td>${SUBMIT_BUTTON}</td>
-    <td></td>
-</tr>
-<tr>
-    <td>clickAndWait</td>
-    <td>link=Add New Language</td>
-    <td></td>
-</tr>
-<tr>
-    <td>type</td>
-    <td>${SELECT_LOCALE_PULLDOWN}</td>
-    <td>ja</td>
-</tr>
-<tr>
-    <td>clickAndWait</td>
-    <td>${SUBMIT_BUTTON}</td>
-    <td></td>
-</tr>
-<tr>
-    <td>clickAndWait</td>
-    <td>link=Add New Language</td>
-    <td></td>
-</tr>
-<tr>
-    <td>type</td>
-    <td>${SELECT_LOCALE_PULLDOWN}</td>
-    <td>zh-Hans</td>
-</tr>
-<tr>
-    <td>clickAndWait</td>
-    <td>${SUBMIT_BUTTON}</td>
-    <td></td>
-</tr>
-<tr>
-    <td>clickAndWait</td>
-    <td>link=Add New Language</td>
-    <td></td>
-</tr>
-<tr>
-    <td>type</td>
-    <td>${SELECT_LOCALE_PULLDOWN}</td>
-    <td>zh-Hant</td>
-</tr>
-<tr>
-    <td>clickAndWait</td>
-    <td>${SUBMIT_BUTTON}</td>
-    <td></td>
-</tr>
-<tr>
-    <td>clickAndWait</td>
-    <td>link=Add New Language</td>
-    <td></td>
-</tr>
-<tr>
-    <td>type</td>
-    <td>${SELECT_LOCALE_PULLDOWN}</td>
-    <td>cgg</td>
-</tr>
-<tr>
-    <td>clickAndWait</td>
-    <td>${SUBMIT_BUTTON}</td>
-    <td></td>
-</tr>
+
 </tbody></table>
 </body>
 </html>

@@ -15,6 +15,7 @@ var manager = new RollupManager();
  */
 
 const emptyEntryDisplayString="Click here to start translating";
+const LANGS=['en-US' , 'de', 'ja', 'zh-Hans', 'zh-Hant'];
 
 /*************
  * All pages
@@ -189,6 +190,90 @@ myMap.addElement('projViewPages', {
 	    + '<td><a> Translate</a></td></tr>'
 	    + '</tbody></table>'
 	    + '</div>'
+    }
+});
+
+/*************
+ * Admin pages
+ */
+myMap.addPageset({
+    name: 'adminPages'
+    , description: 'Admin pages'
+    , pathRegexp: '/admin/.*'
+});
+
+myMap.addElement('adminPages', {
+    name: 'manageLangTableRow'
+    , description: 'Row Language Table'
+    , args: [
+        {
+	   name: 'lang'
+	   , description: 'Specified row by language'
+	   , defaultValues: LANGS
+	}
+    ]
+    , getLocator: function(args){
+        var lang=args['lang'];
+	return '//table[contains(@class, "rich-table")]/tbody/tr[td[normalize-space(text())="'
+	    +lang+ '"]]';
+    }
+    , testcase1: {
+       args: { lang: "zh-Hans" }
+       , xhtml:
+	   '<table class="rich-table ">'
+	    + '<thead></thead>'
+	    + '<tbody>'
+	    + '<tr><td> en-US</td><td>English</td></tr>'
+	    + '<tr><td> zh-Hans-CN</td><td>English</td></tr>'
+	    + '<tr expected-result="1"><td> zh-Hans</td><td>English</td></tr>'
+	    + '</tbody>'
+	    +'</table>'
+    }
+});
+
+
+const languageSelectionPulldown='css=[id*="localeField:localeName"]';
+manager.addRollupRule({
+    name: 'add_new_language'
+    , description: 'Add new language',
+    args: [
+	{
+	    name:'lang'
+	    , description:'Language to be added'
+	    , exampleValues: LANGS
+	}
+    ]
+    , commandMatchers: []
+    , getExpandedCommands:function(args){
+	var commands=[];
+	var css='td:contains("'+args.lang+'")';
+	var langElt=document.querySelector(css);
+
+
+var retStr= (langElt==null)? 'null' : 'not null';
+alert('langElt='+ retStr);
+
+commands.push({
+	    command: 'echo'
+	    , target: retStr
+	    });
+
+	if (langElt.singleNodeValue==null){
+	    commands.push({
+		command:'clickAndWait'
+		, target: 'css=a:contains("Add New Language")'
+	    });
+	    commands.push({
+		command:'type'
+		, target: languageSelectionPulldown
+		, value: args.lang
+	    });
+	    commands.push({
+		command: 'clickAndWait'
+		, target: 'css=div.actionButtons>input[type="submit"]'
+	    });
+	}
+        return commands;
     }
 });
 
