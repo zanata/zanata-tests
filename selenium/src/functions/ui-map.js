@@ -246,33 +246,19 @@ manager.addRollupRule({
     , commandMatchers: []
     , getExpandedCommands:function(args){
 	var commands=[];
-	var css='td:contains("'+args.lang+'")';
-	var langElt=document.querySelector(css);
-
-
-var retStr= (langElt==null)? 'null' : 'not null';
-alert('langElt='+ retStr);
-
-commands.push({
-	    command: 'echo'
-	    , target: retStr
-	    });
-
-	if (langElt.singleNodeValue==null){
-	    commands.push({
-		command:'clickAndWait'
-		, target: 'css=a:contains("Add New Language")'
-	    });
-	    commands.push({
-		command:'type'
-		, target: languageSelectionPulldown
-		, value: args.lang
-	    });
-	    commands.push({
-		command: 'clickAndWait'
-		, target: 'css=div.actionButtons>input[type="submit"]'
-	    });
-	}
+	commands.push({
+	    command:'clickAndWait'
+	    , target: 'css=a:contains("Add New Language")'
+	});
+	commands.push({
+	    command:'type'
+	    , target: languageSelectionPulldown
+	    , value: args.lang
+	});
+	commands.push({
+	    command: 'clickAndWait'
+	    , target: 'css=div.actionButtons>input[type="submit"]'
+	});
         return commands;
     }
 });

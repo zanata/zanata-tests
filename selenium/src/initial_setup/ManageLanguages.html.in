@@ -21,36 +21,7 @@
     <td>id=Admin_Manage_languages_a</td>
     <td></td>
 </tr>
-<tr>
-    <td>rollup</td>
-    <td>add_new_language</td>
-    <td>lang=en-US</td>
-</tr>
-<tr>
-    <td>rollup</td>
-    <td>add_new_language</td>
-    <td>lang=de</td>
-</tr>
-<tr>
-    <td>rollup</td>
-    <td>add_new_language</td>
-    <td>lang=ja</td>
-</tr>
-<tr>
-    <td>rollup</td>
-    <td>add_new_language</td>
-    <td>lang=zh-Hans</td>
-</tr>
-<tr>
-    <td>rollup</td>
-    <td>add_new_language</td>
-    <td>lang=zh-Hant</td>
-</tr>
-<tr>
-    <td>rollup</td>
-    <td>add_new_language</td>
-    <td>lang=cgg</td>
-</tr>
+@ADD_LANGS_SNIPPET@
 
 </tbody></table>
 </body>
