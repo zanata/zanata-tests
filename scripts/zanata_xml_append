@@ -1,0 +1,86 @@
+#!/usr/bin/env perl
+# Append a child XML element to parent elements specified by XPath.
+
+# Ensure it runs on RHEL5
+use 5.008_008;
+use strict;
+use File::Basename;
+use File::Slurp;
+use Getopt::Std;
+use Pod::Usage;
+use XML::Twig;
+
+use lib "scripts";
+use Zanata::XML;
+
+my $modified=0;
+my $scriptDir=dirname($0);
+
+# Subroutines
+sub print_usage {
+    die <<END
+Append a child XML element to parent elements specified by XPath.
+The result XML is outputted to standard output.
+
+Usage:
+    $0 -h
+    $0 [ -c <content_file> | -C <content_string> ] <input.xml> <parent_xpath> <tag_name>
+    $0 [ -x <content.xml> | -X <xml_string> ] <input.xml> <parent_xpath>
+
+    Options:
+    -h: Display this help.
+    -c content_file: Plain text file to be inserted as content (text node).
+    -C content_string: Plain text string to be inserted as content (text node).
+    -x content.xml: XML file to be append as sub elements.
+    -X xml_string: XML string to be append as sub elements.
+END
+}
+
+
+## Parse arguments
+my %opts;
+getopts("ec:C:x:X:", \%opts);
+
+if ($opts{'h'}){
+    print_usage;
+    exit 0;
+}
+
+if (scalar(@ARGV)<2){
+    print_usage;
+    exit -1;
+}
+
+my $inputXml=$ARGV[0];
+my $parentXpath=$ARGV[1];
+my $tagName=$ARGV[2];
+
+## Read xml
+my $parser= XML::Twig->new( pretty_print=>'indented');
+my $doc=$parser->parsefile("$inputXml");
+my $root = $doc->root;
+
+
+## Generate new element
+my $new_element;
+if ($opts{'x'}){
+    $new_element=xml_element_new_xml_file($opts{'x'});
+}elsif ($opts{'X'}){
+    $new_element=xml_element_new_xml($opts{'X'});
+}elsif ($opts{'c'}){
+    $new_element=xml_element_new_file($tagName,$opts{'c'});
+}elsif ($opts{'C'}){
+    $new_element=xml_element_new($tagName, $opts{'C'});
+}else{
+    $new_element=xml_element_new($tagName);
+}
+
+## Find the parent node
+my @nodes=$root->find_nodes($parentXpath);
+
+## Append to all the parent node.
+foreach my $node (@nodes){
+    $node->appendChild($new_element);
+}
+print $root->toStringC14N();
+

@@ -46,6 +46,7 @@ FOREACH(_envVar  ${OVERRIDABLE_VARS})
 ENDFOREACH()
 
 SETTING_FILE_GET_ALL_VARIABLES("${TEST_CFG}" NOREPLACE NOESCAPE_SEMICOLON)
+SET(SCRIPT_DIR ${CMAKE_SOURCE_DIR}/scripts)
 
 ####################################################################
 # Profiles
@@ -89,7 +90,7 @@ ENDFOREACH()
 
 SET(ZANATA_INI zanata.ini)
 FILE(REMOVE ${ZANATA_INI})
-EXECUTE_PROCESS(COMMAND cmake -E copy zanata.ini.in ${ZANATA_INI})
+EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E copy zanata.ini.in ${ZANATA_INI})
 
 FOREACH(_pf ${SERVER_PROFILES})
     FILE(APPEND ${ZANATA_INI} "${_pf}.url=${${_pf}_SERVER_URL}\n")
@@ -141,7 +142,7 @@ MESSAGE("CMAKE_SOURCE_DIR=${CMAKE_SOURCE_DIR}")
 # Macro FIND_FILE_IN_DIRS
 MACRO(FIND_FILE_IN_DIRS var pattern searchPaths)
     #MESSAGE("pattern=${pattern} searchPaths=${searchPaths}")
-    EXECUTE_PROCESS(COMMAND ${CMAKE_SOURCE_DIR}/scripts/find_file_in_paths.sh ${pattern} "${searchPaths}"
+    EXECUTE_PROCESS(COMMAND ${SCRIPT_DIR}/find_file_in_paths.sh ${pattern} "${searchPaths}"
 	OUTPUT_VARIABLE _result OUTPUT_STRIP_TRAILING_WHITESPACE)
     MESSAGE("FIND_FILE_IN_DIRS ${var} _result=${_result}")
     SET( ${var} "${_result}")

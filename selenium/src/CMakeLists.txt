@@ -36,6 +36,36 @@ SET(INITIAL_SETUP_SCRIPT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/initial_setup)
 CONFIGURE_FILE(${INITIAL_SETUP_SCRIPT_DIR}/ServerConfiguration.html.in
     ${INITIAL_SETUP_SCRIPT_DIR}/ServerConfiguration.html @ONLY)
 
+
+SET(ENABLED_LANGUAGES "en-US;de;ja;zh-Hans;zh-Hant;cgg")
+MACRO(GENERATE_SELENIUM_COMMAND var cmd target value)
+    SET(${var} "<tr>\n  <td>${cmd}</td>\n  <td>${target}</td>\n  <td>${value}</td>\n</tr>")
+ENDMACRO(GENERATE_SELENIUM_COMMAND var cmd target value)
+
+MACRO(GENERATE_ADD_LANGUAGE_SNIPPET var lang)
+    GENERATE_SELENIUM_COMMAND(_header1
+	"storeElementPresent"
+	"ui=adminPages::manageLangTableRow(lang=${lang})"
+	"langExists")
+    MESSAGE("_header1=${_header1}")
+    GENERATE_SELENIUM_COMMAND(_header2
+	"gotoIf"
+	\\\${langExists}
+	"End_${lang}")
+    GENERATE_SELENIUM_COMMAND(_add_lang "rollup" "add_new_language"
+	"lang=${lang}")
+    GENERATE_SELENIUM_COMMAND(_footer "label" "End_${lang}" "")
+
+    SET(${var} "${_header1}\n${_header2}\n${_add_lang}\n${_footer}\n")
+ENDMACRO(GENERATE_ADD_LANGUAGE_SNIPPET)
+
+SET(ADD_LANGS_SNIPPET "")
+FOREACH(_lang ${ENABLED_LANGUAGES})
+    GENERATE_ADD_LANGUAGE_SNIPPET(_lStr "${_lang}")
+    MESSAGE("_lStr=${_lStr}")
+    SET(ADD_LANGS_SNIPPET "${ADD_LANGS_SNIPPET}${_lStr}")
+ENDFOREACH(_lang ${ENABLED_LANGUAGE})
+
 CONFIGURE_FILE(${INITIAL_SETUP_SCRIPT_DIR}/ManageLanguages.html.in
     ${INITIAL_SETUP_SCRIPT_DIR}/ManageLanguages.html @ONLY)
 
