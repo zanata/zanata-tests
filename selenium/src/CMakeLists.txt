@@ -50,7 +50,7 @@ MACRO(GENERATE_ADD_LANGUAGE_SNIPPET var lang)
     MESSAGE("_header1=${_header1}")
     GENERATE_SELENIUM_COMMAND(_header2
 	"gotoIf"
-	"\$\{langExist\}"
+	\\\${langExists}
 	"End_${lang}")
     GENERATE_SELENIUM_COMMAND(_add_lang "rollup" "add_new_language"
 	"lang=${lang}")
