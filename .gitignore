@@ -27,3 +27,5 @@ SignOut.html
 *~
 zanata.ini
 apikey.*
+*.tar
+*.gz
