@@ -47,7 +47,6 @@ MACRO(GENERATE_ADD_LANGUAGE_SNIPPET var lang)
 	"storeElementPresent"
 	"ui=adminPages::manageLangTableRow(lang=${lang})"
 	"langExists")
-    MESSAGE("_header1=${_header1}")
     GENERATE_SELENIUM_COMMAND(_header2
 	"gotoIf"
 	\\\${langExists}
@@ -62,7 +61,6 @@ ENDMACRO(GENERATE_ADD_LANGUAGE_SNIPPET)
 SET(ADD_LANGS_SNIPPET "")
 FOREACH(_lang ${ENABLED_LANGUAGES})
     GENERATE_ADD_LANGUAGE_SNIPPET(_lStr "${_lang}")
-    MESSAGE("_lStr=${_lStr}")
     SET(ADD_LANGS_SNIPPET "${ADD_LANGS_SNIPPET}${_lStr}")
 ENDFOREACH(_lang ${ENABLED_LANGUAGE})
 
