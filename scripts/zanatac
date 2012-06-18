@@ -145,6 +145,7 @@ GetOptions(\%optH,
     , 'client|c=s'
     , 'show|s'
     , 'yes|y'
+    , 'createskeletons|k'
     , '<>' => \&parse_options
 ) or pod2usage(-1);
 pod2usage( {-verbose=>1}) if @ARGV == 0;
@@ -247,6 +248,8 @@ sub add_zanata_maven_option{
 	$optName='key';
     }elsif( $optName eq 'project-id' and $argument='version-put'){
 	$optName='versionProject'
+    }elsif($optName eq 'createskeletons'){
+	$optName='createSkeletons';
     }elsif ($optName =~ /[-]/){
 	## Covert dashed to camelCase
 	my @names=split(/[-]/, $optName);
@@ -255,6 +258,7 @@ sub add_zanata_maven_option{
 	    $optName.= ucfirst $names[$i];
 	}
     }
+
     $optName='zanata.' . $optName;
     push @$cmdLRef, ($optValue ne "") ? qq{-D$optName='$optValue'} : qq{-D$optName};
 }
@@ -333,6 +337,7 @@ if ($optH{'yes'}){
 if ($optH{'basedir'}){
     unshift @cmdL, 'pushd', $optH{'basedir'}, ';';
 }
+
 
 ## Convert argumentOptions to client options
 while(my ($opt,$value)=each %argumentOptH){

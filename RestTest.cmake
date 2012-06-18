@@ -321,15 +321,15 @@ MACRO(PREPARE_PROJECT proj ver)
     ENDFOREACH(_target ${PREPARE_TARGET_SUBTARGETS})
 
     ## Build necessary directory and files for pull
-    FOREACH(_client "mvn" "py")
-	SET(_proj_ver_pull_dest_dir ${PULL_DEST_DIR_ABSOLUTE}/${_client}/${proj}/${ver})
-	ADD_CUSTOM_COMMAND(OUTPUT ${_proj_ver_pull_dest_dir}
-	    COMMAND ${CMAKE_COMMAND} -E make_directory ${_proj_ver_pull_dest_dir}
-	    COMMENT "[${proj}] make pull directory ${_proj_ver_pull_dest_dir}"
-	    VERBATIM
-	    )
-
-    ENDFOREACH(_client "mvn" "py")
+    #    FOREACH(_client "mvn" "py")
+    #	SET(_proj_ver_pull_dest_dir ${PULL_DEST_DIR_ABSOLUTE}/${_client}/${proj}/${ver})
+    #	ADD_CUSTOM_COMMAND(OUTPUT ${_proj_ver_pull_dest_dir}
+    #	    COMMAND ${CMAKE_COMMAND} -E make_directory ${_proj_ver_pull_dest_dir}
+    #	    COMMENT "[${proj}] make pull directory ${_proj_ver_pull_dest_dir}"
+    #	    VERBATIM
+    #	    )
+    #
+    #ENDFOREACH(_client "mvn" "py")
 ENDMACRO(PREPARE_PROJECT proj ver)
 
 MACRO(REST_VERIFY proj ver client)
@@ -415,6 +415,7 @@ MACRO(ADD_PROJECT proj client)
 	    ELSE()
 		SET(ZANATAC_CMD_OPTS "--client" "${client}")
 		SET(_add_custom_target_opts "")
+		SET(_pre_cmds "")
 
 		SET(_zanatac_arg_opts
 		    "--user-config"		"${CMAKE_SOURCE_DIR}/zanata.ini"
@@ -432,8 +433,10 @@ MACRO(ADD_PROJECT proj client)
 		    LIST(APPEND _zanatac_arg_opts "--push-trans"
 			"--no-copytrans")
 		ELSEIF("${_subtarget}" STREQUAL "pull")
+		    LIST(APPEND _pre_cmds COMMAND rm "-fr" "${_proj_ver_pull_dest_dir}")
+		    LIST(APPEND _pre_cmds COMMAND mkdir "-p" "${_proj_ver_pull_dest_dir}")
 		    LIST(APPEND _zanatac_arg_opts "--transdir" "${_proj_ver_pull_dest_dir}")
-		    LIST(APPEND _add_custom_target_opts "DEPENDS" "${_proj_ver_pull_dest_dir}")
+		    LIST(APPEND _zanatac_arg_opts "--createskeletons")
 		ELSEIF("${_subtarget}" STREQUAL "project-put")
 		    LIST(INSERT _zanatac_arg_opts 0 "${proj}")
 		    LIST(APPEND _zanatac_arg_opts
@@ -448,6 +451,7 @@ MACRO(ADD_PROJECT proj client)
 		ENDIF("${_subtarget}" STREQUAL "push")
 
 		ADD_CUSTOM_TARGET(${_projVerSubTargetName}
+		    ${_pre_cmds}
 		    COMMAND ${ZANATAC_CMD} ${ZANATAC_CMD_OPTS} ${_subtarget} ${_zanatac_arg_opts}
 		    WORKING_DIRECTORY ${_proj_ver_base_dir}
 		    COMMENT "[${client}:${proj}_${ver}] Doing ${_subtarget}"
