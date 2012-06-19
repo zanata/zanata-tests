@@ -32,7 +32,7 @@ ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR_ABSOLUTE}
 
 # Targets performed by clients
 SET(CLIENT_TARGET "rest")
-SET(CLIENT_TARGET_SUBTARGETS "verify" "pull" "push" "version-put" "project-put")
+SET(CLIENT_TARGET_SUBTARGETS "project-put" "version-put" "push" "pull" "verify"  )
 
 SET(PREPARE_TARGET "prepare")
 SET(PREPARE_TARGET_SUBTARGETS zanata_xml pom_xml)
@@ -320,16 +320,6 @@ MACRO(PREPARE_PROJECT proj ver)
 	ADD_DEPENDENCIES(${_projTargetName}_${ver} ${_target}_${proj}_${ver})
     ENDFOREACH(_target ${PREPARE_TARGET_SUBTARGETS})
 
-    ## Build necessary directory and files for pull
-    #    FOREACH(_client "mvn" "py")
-    #	SET(_proj_ver_pull_dest_dir ${PULL_DEST_DIR_ABSOLUTE}/${_client}/${proj}/${ver})
-    #	ADD_CUSTOM_COMMAND(OUTPUT ${_proj_ver_pull_dest_dir}
-    #	    COMMAND ${CMAKE_COMMAND} -E make_directory ${_proj_ver_pull_dest_dir}
-    #	    COMMENT "[${proj}] make pull directory ${_proj_ver_pull_dest_dir}"
-    #	    VERBATIM
-    #	    )
-    #
-    #ENDFOREACH(_client "mvn" "py")
 ENDMACRO(PREPARE_PROJECT proj ver)
 
 MACRO(REST_VERIFY proj ver client)
@@ -399,19 +389,25 @@ MACRO(ADD_PROJECT proj client)
 	ADD_CUSTOM_TARGET(${_projVerTargetName}
 	    COMMENT "[${proj}-${ver}] REST ${client} client test"
 	    )
+
+	# Add target as tests
+	ADD_TEST(${_projVerTargetName} make "${_projVerTargetName}")
+
 	ADD_DEPENDENCIES(${_projTargetName} ${_projVerTargetName})
 
 	SET_ABSOLUTE_PATHS(${proj} ${ver} ${client})
+
 	##
-	SET(_prev_subtarget "")
+	SET(_prev_subTarget "")
 
 	## Foreach client target
-	FOREACH(_subtarget ${CLIENT_TARGET_SUBTARGETS})
-	    ## Add subtarget
-	    SET(_projVerSubTargetName "${_projVerTargetName}_${_subtarget}")
-	    IF("${_subtarget}" STREQUAL "verify")
+	FOREACH(_subTarget ${CLIENT_TARGET_SUBTARGETS})
+	    ## Add subTarget
+	    SET(_projVerTargetName_subTarget "${_projVerTargetName}_${_subTarget}")
+
+	    IF("${_subTarget}" STREQUAL "verify")
 		REST_VERIFY(${proj} ${ver} ${client})
-		ADD_DEPENDENCIES(${_projVerTargetName} ${_projVerSubTargetName})
+		ADD_DEPENDENCIES(${_projVerTargetName} ${_projVerTargetName_subTarget})
 	    ELSE()
 		SET(ZANATAC_CMD_OPTS "--client" "${client}")
 		SET(_add_custom_target_opts "")
@@ -429,50 +425,51 @@ MACRO(ADD_PROJECT proj client)
 		ENDIF(NOT "${${proj}_ZANATA_XML}" STREQUAL "")
 
 		## Target specific options
-		IF("${_subtarget}" STREQUAL "push")
+		IF("${_subTarget}" STREQUAL "push")
 		    LIST(APPEND _zanatac_arg_opts "--push-trans"
 			"--no-copytrans")
-		ELSEIF("${_subtarget}" STREQUAL "pull")
+		ELSEIF("${_subTarget}" STREQUAL "pull")
 		    LIST(APPEND _pre_cmds COMMAND rm "-fr" "${_proj_ver_pull_dest_dir}")
 		    LIST(APPEND _pre_cmds COMMAND mkdir "-p" "${_proj_ver_pull_dest_dir}")
 		    LIST(APPEND _zanatac_arg_opts "--transdir" "${_proj_ver_pull_dest_dir}")
 		    LIST(APPEND _zanatac_arg_opts "--createskeletons")
-		ELSEIF("${_subtarget}" STREQUAL "project-put")
+		ELSEIF("${_subTarget}" STREQUAL "project-put")
 		    LIST(INSERT _zanatac_arg_opts 0 "${proj}")
 		    LIST(APPEND _zanatac_arg_opts
 			"--project-name" "${${proj}_NAME}"
 			"--project-desc" "${${proj}_DESC}"
 			)
-		ELSEIF("${_subtarget}" STREQUAL "version-put")
+		ELSEIF("${_subTarget}" STREQUAL "version-put")
 		    LIST(INSERT _zanatac_arg_opts 0 "${ver}")
 		    LIST(APPEND _zanatac_arg_opts
 			"--project-id" "${proj}"
 			)
-		ENDIF("${_subtarget}" STREQUAL "push")
+		ENDIF("${_subTarget}" STREQUAL "push")
 
-		ADD_CUSTOM_TARGET(${_projVerSubTargetName}
+		ADD_CUSTOM_TARGET(${_projVerTargetName_subTarget}
 		    ${_pre_cmds}
-		    COMMAND ${ZANATAC_CMD} ${ZANATAC_CMD_OPTS} ${_subtarget} ${_zanatac_arg_opts}
+		    COMMAND ${ZANATAC_CMD} ${ZANATAC_CMD_OPTS} ${_subTarget} ${_zanatac_arg_opts}
 		    WORKING_DIRECTORY ${_proj_ver_base_dir}
-		    COMMENT "[${client}:${proj}_${ver}] Doing ${_subtarget}"
+		    COMMENT "[${client}:${proj}_${ver}] Doing ${_subTarget}"
 		    ${_add_custom_target_opts}
 		    VERBATIM
 		    )
 	    ENDIF()
 
-	    ## Add this target as dependency of prev target
-	    IF(NOT "${_prev_subtarget}" STREQUAL "")
-		ADD_DEPENDENCIES(${_projVerTargetName}_${_prev_subtarget} ${_projVerSubTargetName})
+	    IF("${_prev_subTarget}" STREQUAL "")
+		## First subTarget should use prepare_proj_ver as dependency
+		ADD_DEPENDENCIES(${_projVerTargetName_subTarget}
+		    prepare_${proj}_${ver})
+	    ELSE()
+		## Other subTargets should use _prev_subTarget as dependency
+		ADD_DEPENDENCIES(${_projVerTargetName_subTarget}
+		    ${_projVerTargetName}_${_prev_subTarget})
 	    ENDIF()
 
 	    ## prev target <- this target
-	    SET(_prev_subtarget ${_subtarget})
+	    SET(_prev_subTarget "${_subTarget}")
 	ENDFOREACH()
 
-	IF(NOT "${_prev_subtarget}" STREQUAL "")
-	    ## tail target should use prepare_proj_ver as dependency
-	    ADD_DEPENDENCIES(${_projVerTargetName}_${_prev_subtarget} prepare_${proj}_${ver})
-	ENDIF()
     ENDFOREACH(ver ${${proj}_VERS})
 ENDMACRO(ADD_PROJECT proj client)
 
