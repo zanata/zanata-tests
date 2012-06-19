@@ -356,7 +356,6 @@ MACRO(REST_VERIFY proj ver client)
 	    )
 
     ENDIF("${${proj}_PROJECT_TYPE}" STREQUAL "podir")
-    ADD_TEST(${_targetName} make "${_targetName}/fast")
 
 ENDMACRO(REST_VERIFY proj ver client)
 
@@ -390,9 +389,14 @@ MACRO(ADD_PROJECT proj client)
 	ADD_CUSTOM_TARGET(${_projVerTargetName}
 	    COMMENT "[${proj}-${ver}] REST ${client} client test"
 	    )
+
+	# Add target as tests
+	ADD_TEST(${_projVerTargetName} make "${_projVerTargetName}")
+
 	ADD_DEPENDENCIES(${_projTargetName} ${_projVerTargetName})
 
 	SET_ABSOLUTE_PATHS(${proj} ${ver} ${client})
+
 	##
 	SET(_prev_subTarget "")
 
@@ -450,21 +454,20 @@ MACRO(ADD_PROJECT proj client)
 		    ${_add_custom_target_opts}
 		    VERBATIM
 		    )
+	    ENDIF()
 
-		IF("${_prev_subTarget}" STREQUAL "")
-		    ## First subTarget should use prepare_proj_ver as dependency
-		    ADD_DEPENDENCIES(${_projVerTargetName_subTarget}
-			prepare_${proj}_${ver})
-		ENDIF()
-
-		# Add target as tests
-		ADD_TEST(${_projVerTargetName_subTarget} make
-		    "${_projVerTargetName_subTarget}/fast")
-
+	    IF("${_prev_subTarget}" STREQUAL "")
+		## First subTarget should use prepare_proj_ver as dependency
+		ADD_DEPENDENCIES(${_projVerTargetName_subTarget}
+		    prepare_${proj}_${ver})
+	    ELSE()
+		## Other subTargets should use _prev_subTarget as dependency
+		ADD_DEPENDENCIES(${_projVerTargetName_subTarget}
+		    ${_projVerTargetName}_${_prev_subTarget})
 	    ENDIF()
 
 	    ## prev target <- this target
-	    SET(_prev_subTarget ${_subTarget})
+	    SET(_prev_subTarget "${_subTarget}")
 	ENDFOREACH()
 
     ENDFOREACH(ver ${${proj}_VERS})
