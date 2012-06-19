@@ -183,12 +183,19 @@ FOREACH(_browser ${BROWSERS_TO_TEST})
     ENDIF()
 ENDFOREACH()
 
-INCLUDE(RestTest)
-
 ####################################################################
 # Test Suites.
 ####################################################################
 ENABLE_TESTING()
+
+#===================================================================
+# REST client tests
+#
+INCLUDE(RestTest)
+
+#===================================================================
+# Selenium tests
+#
 ADD_CUSTOM_TARGET(clean_test_suites
     COMMAND find selenium/src/test-suites -name "[1-9]*.html" -delete
     COMMAND find selenium/src/test-suites -name "SignIn*.html" -delete
@@ -196,6 +203,9 @@ ADD_CUSTOM_TARGET(clean_test_suites
     COMMENT "Cleaning the generated test suite files"
     VERBATIM
     )
+
+
+
 
 #===================================================================
 # Generate test suites.
