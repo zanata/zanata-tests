@@ -109,7 +109,7 @@
 			</xsl:if>
 		    </xsl:for-each>
 		</xsl:variable>
-		<error message="{$failtype} ({$failcode})"><xsl:value-of select="Results/Measurement/Value/text()" /></error>
+		<failure message="{$failtype} ({$failcode})"><xsl:value-of select="Results/Measurement/Value/text()" /></failure>
 	    </xsl:if>
 	    <xsl:if test="@Status = 'notrun'">
 		<skipped><xsl:value-of select="Results/Measurement/Value/text()" /></skipped>
