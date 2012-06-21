@@ -82,7 +82,14 @@
 
     <xsl:template match="Testing/Test">
 	<xsl:variable name="testcasename"><xsl:value-of select= "Name"/></xsl:variable>
-	<xsl:variable name="testclassname"><xsl:value-of select= "Path"/></xsl:variable>
+	<xsl:variable name="testclassname">
+	    <xsl:choose>
+		<xsl:when test="Path = '.'">this</xsl:when>
+		<xsl:otherwise>
+		    <xsl:value-of select= "Path"/>
+		</xsl:otherwise>
+	    </xsl:choose>
+	</xsl:variable>
 	<xsl:variable name="exectime">
 	    <xsl:for-each select="Results/NamedMeasurement">
 		<xsl:if test="@name = 'Execution Time'">
