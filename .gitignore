@@ -1,5 +1,8 @@
 CMakeCache.txt
 /CMakeFiles/
+/client-tests/CMakeFiles/
+/client-tests/mvn/CMakeFiles/
+/client-tests/py/CMakeFiles/
 /selenium/src/CMakeFiles/
 CTestTestfile.cmake
 cmake_install.cmake
@@ -22,6 +25,10 @@ SignOut.html
 /results/
 /pulled/
 
+*.bak
+*.orig
+*.old
+*.log
 *.swp
 *.xml
 *~

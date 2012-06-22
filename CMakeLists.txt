@@ -22,15 +22,8 @@ SET(PROJECT_DESCRIPTION "Test system for project Zanata")
 # Macros
 ####################################################################
 
-# REAL_PATH(absolutePathToBeReturn path)
-MACRO(REAL_PATH var path)
-    IF (${path} MATCHES "^/")
-	SET(${var} "${path}")
-    ELSE(${path} MATCHES "^/")
-	SET(${var} "${CMAKE_SOURCE_DIR}/${path}")
-    ENDIF(${path} MATCHES "^/")
-ENDMACRO(REAL_PATH var path)
-
+# Utilities macro and functions
+INCLUDE(utils.cmake)
 
 ####################################################################
 # Settings
@@ -38,7 +31,7 @@ ENDMACRO(REAL_PATH var path)
 ### Override with environment variables
 SET(OVERRIDABLE_VARS  "ZANATA_URL" "BROWSERS_TO_TEST" "SELENIUM_SERVER_PORT"
     "SAMPLE_PROJ_DIR" "PULL_DEST_DIR" "ZANATA_PROFILE" "MVN_CLIENT_VER"
-    "ZANATA_PY_PATH" "PY_PROJECTS" "MVN_PROJECTS" "COPY_TRANS")
+    "PY_PROJECTS" "MVN_PROJECTS" "COPY_TRANS")
 FOREACH(_envVar  ${OVERRIDABLE_VARS})
     IF(NOT "$ENV{${_envVar}}" STREQUAL "")
 	SET(${_envVar} "$ENV{${_envVar}}")
@@ -112,6 +105,7 @@ ENDFOREACH(_pf ${SERVER_PROFILES})
 # Test environment
 #
 REAL_PATH(TEST_ROOT_ABSOLUTE "${TEST_ROOT}")
+MESSAGE("TEST_ROOT_ABSOLUTE=${TEST_ROOT_ABSOLUTE}")
 REAL_PATH(PRIVILEGE_TEST_ROOT_ABSOLUTE "${PRIVILEGE_TEST_ROOT}")
 REAL_PATH(RESULT_DIR_ABSOLUTE "${RESULT_DIR}")
 
@@ -189,9 +183,9 @@ ENDFOREACH()
 ENABLE_TESTING()
 
 #===================================================================
-# REST client tests
+# Client tests
 #
-INCLUDE(RestTest)
+ADD_SUBDIRECTORY(client-tests)
 
 #===================================================================
 # Selenium tests
@@ -203,9 +197,6 @@ ADD_CUSTOM_TARGET(clean_test_suites
     COMMENT "Cleaning the generated test suite files"
     VERBATIM
     )
-
-
-
 
 #===================================================================
 # Generate test suites.
