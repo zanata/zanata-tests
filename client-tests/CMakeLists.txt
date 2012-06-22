@@ -11,16 +11,18 @@
 # Base requirement
 #
 
-MACRO(REQUIRE_CMD var cmd)
-    FIND_PROGRAM(${var} "${cmd}" ${ARGN})
-    IF("${${var}}" MATCHES "NOTFOUND$")
-	MESSAGE(FATAL "${cmd} is not installed")
-    ENDIF("${${var}}" MATCHES "NOTFOUND$")
-ENDMACRO(REQUIRE_CMD var cmd)
-
 REQUIRE_CMD(PUBLICAN_CMD publican)
 REQUIRE_CMD(ZANATA_ZANATA_XML_MAKE_CMD zanata_zanata_xml_make)
 REQUIRE_CMD(ZANATA_POM_XML_MAKE_CMD zanata_pom_xml_make)
+REQUIRE_CMD(MVN_CMD "mvn")
+IF(NOT "$ENV{'ZANATA_PYTHON_CLIENT'}" STREQUAL "")
+    IF(EXISTS $ENV{'ZANATA_PYTHON_CLIENT'})
+	SET(ZANATA_PYTHON_CLIENT_CMD "$ENV{'ZANATA_PYTHON_CLIENT'}")
+    ENDIF(EXISTS $ENV{'ZANATA_PYTHON_CLIENT'})
+ENDIF(NOT "$ENV{'ZANATA_PYTHON_CLIENT'}" STREQUAL "")
+IF(NOT ZANATA_PYTHON_CLIENT_CMD)
+    REQUIRE_CMD(ZANATA_PTYHON_CLIENT_CMD "zanata")
+ENDIF(NOT ZANATA_PYTHON_CLIENT_CMD)
 
 SET(ZANATAC_CMD "${SCRIPT_DIR}/zanatac" "--yes" "--show")
 SET(ZANATA_MVN_CMD ${ZANATAC_CMD})
@@ -31,7 +33,7 @@ ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR_ABSOLUTE}
     )
 
 # Targets performed by clients
-SET(CLIENT_TARGET "rest")
+SET(CLIENT_TARGET "client")
 SET(CLIENT_TARGET_SUBTARGETS "project-put" "version-put" "push" "pull" "verify"  )
 
 SET(PREPARE_TARGET "prepare")
@@ -225,15 +227,8 @@ MACRO(MAKE_POM_XML proj ver proj_ver_dir)
 
 	MAKE_POM_XML_OPTS(_pom_xml_make_opts ${proj} ${_pomXmlProf})
 
-	ADD_CUSTOM_COMMAND(OUTPUT "${_pom_xml_stamp}"
-	    COMMAND ${ZANATA_POM_XML_MAKE_CMD} ${_pom_xml_make_opts} "${${_pomXmlProf}}"
-	    COMMAND ${CMAKE_COMMAND} -E touch "${${_pomXmlProf}}.stamp"
-	    WORKING_DIRECTORY ${_proj_ver_base_dir}
-	    DEPENDS "${_proj_ver_scm_dir}"
-	    COMMENT "[${proj}-${ver}] Updating ${_pom_xml}"
-	    )
-
-	ADD_CUSTOM_TARGET(${_targetNamePrefix}_${_pomXmlProf}
+	ADD_CUSTOM_TARGET_COMMAND(${_targetNamePrefix}_${_pomXmlProf}
+	    OUTPUT "${_pom_xml_stamp}"
 	    COMMAND ${ZANATA_POM_XML_MAKE_CMD} ${_pom_xml_make_opts} "${${_pomXmlProf}}"
 	    COMMAND ${CMAKE_COMMAND} -E touch "${${_pomXmlProf}}.stamp"
 	    WORKING_DIRECTORY ${_proj_ver_base_dir}
@@ -250,21 +245,13 @@ MACRO(MAKE_POM_XML proj ver proj_ver_dir)
 
     MAKE_POM_XML_OPTS(_pom_xml_make_opts ${proj} ${proj})
 
-    ADD_CUSTOM_COMMAND(OUTPUT "${_pom_xml_stamp}"
+    ADD_CUSTOM_TARGET_COMMAND(${_targetNamePrefix}_pom_xml
+	OUTPUT "${_pom_xml_stamp}"
 	COMMAND ${ZANATA_POM_XML_MAKE_CMD} ${_pom_xml_make_opts} pom.xml
 	COMMAND ${CMAKE_COMMAND} -E touch pom.xml.stamp
 	WORKING_DIRECTORY ${_proj_ver_base_dir}
 	DEPENDS "${_proj_ver_scm_dir}" ${_stamp_list}
 	COMMENT "[${proj}-${ver}] Updating ${_pom_xml}"
-	)
-
-
-    ADD_CUSTOM_TARGET(${_targetNamePrefix}_pom_xml
-	COMMAND ${ZANATA_POM_XML_MAKE_CMD} ${_pom_xml_make_opts} pom.xml
-	COMMAND ${CMAKE_COMMAND} -E touch pom.xml.stamp
-	WORKING_DIRECTORY ${_proj_ver_base_dir}
-	DEPENDS "${_proj_ver_scm_dir}"
-	COMMENT "[${proj}-${ver}] Making ${_pom_xml}"
 	)
 
     IF(_target_list)
@@ -390,14 +377,10 @@ MACRO(ADD_PROJECT proj client)
 	    COMMENT "[${proj}-${ver}] REST ${client} client test"
 	    )
 
-	# Add target as tests
-	ADD_TEST(${_projVerTargetName} make "${_projVerTargetName}")
-
 	ADD_DEPENDENCIES(${_projTargetName} ${_projVerTargetName})
 
 	SET_ABSOLUTE_PATHS(${proj} ${ver} ${client})
 
-	##
 	SET(_prev_subTarget "")
 
 	## Foreach client target
@@ -460,10 +443,20 @@ MACRO(ADD_PROJECT proj client)
 		## First subTarget should use prepare_proj_ver as dependency
 		ADD_DEPENDENCIES(${_projVerTargetName_subTarget}
 		    prepare_${proj}_${ver})
+
+		# Add target as tests
+		ADD_TEST(${_projVerTargetName_subTarget} make
+		    "${_projVerTargetName_subTarget}")
 	    ELSE()
 		## Other subTargets should use _prev_subTarget as dependency
 		ADD_DEPENDENCIES(${_projVerTargetName_subTarget}
 		    ${_projVerTargetName}_${_prev_subTarget})
+
+		# Add target as tests
+		ADD_TEST(${_projVerTargetName_subTarget} make
+		    "${_projVerTargetName_subTarget}/fast")
+		SET_TESTS_PROPERTIES(${_projVerTargetName_subTarget}
+		    PROPERTIES DEPENDS ${_projVerTargetName}_${_prev_subTarget})
 	    ENDIF()
 
 	    ## prev target <- this target
@@ -476,26 +469,7 @@ ENDMACRO(ADD_PROJECT proj client)
 #===================================================================
 # Start adding projects
 #
-FOREACH(_client mvn py)
-    FOREACH(_proj ${${_client}_PROJECTS})
-	ADD_PROJECT(${_proj} ${_client})
-    ENDFOREACH()
-ENDFOREACH(_client mvn py)
+ADD_SUBDIRECTORY(mvn)
+ADD_SUBDIRECTORY(py)
 
-#===================================================================
-# Targets to process only projects that have selenium tests associated.
-#
-ADD_CUSTOM_TARGET(selenium_projects
-    COMMENT "   Preparing projects for selenium tests"
-    )
-
-ADD_CUSTOM_TARGET(prepare_selenium_projects
-    COMMENT "   Generate zanata.xml for selenium testing projects"
-    )
-
-ADD_DEPENDENCIES(prepare_selenium_projects
-    prepare_ReleaseNotes_f13 prepare_SecurityGuide_f13)
-
-ADD_DEPENDENCIES(selenium_projects zanata_push_mvn_ReleaseNotes_f13
-    zanata_push_mvn_SecurityGuide_f13)
 

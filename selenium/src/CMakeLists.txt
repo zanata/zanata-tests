@@ -38,10 +38,6 @@ CONFIGURE_FILE(${INITIAL_SETUP_SCRIPT_DIR}/ServerConfiguration.html.in
 
 
 SET(ENABLED_LANGUAGES "en-US;de;ja;zh-Hans;zh-Hant;cgg")
-MACRO(GENERATE_SELENIUM_COMMAND var cmd target value)
-    SET(${var} "<tr>\n  <td>${cmd}</td>\n  <td>${target}</td>\n  <td>${value}</td>\n</tr>")
-ENDMACRO(GENERATE_SELENIUM_COMMAND var cmd target value)
-
 MACRO(GENERATE_ADD_LANGUAGE_SNIPPET var lang)
     GENERATE_SELENIUM_COMMAND(_header1
 	"storeElementPresent"
