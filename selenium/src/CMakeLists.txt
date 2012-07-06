@@ -37,7 +37,7 @@ CONFIGURE_FILE(${INITIAL_SETUP_SCRIPT_DIR}/ServerConfiguration.html.in
     ${INITIAL_SETUP_SCRIPT_DIR}/ServerConfiguration.html @ONLY)
 
 
-SET(ENABLED_LANGUAGES "en-US;de;ja;zh-Hans;zh-Hant;cgg")
+SET(ENABLED_LANGUAGES "de;ja;zh-Hans;zh-Hant;cgg")
 MACRO(GENERATE_ADD_LANGUAGE_SNIPPET var lang)
     GENERATE_SELENIUM_COMMAND(_header1
 	"storeElementPresent"
