@@ -31,56 +31,7 @@
 	<td>id=Admin_Server_configuration_a</td>
 	<td></td>
 </tr>
-<tr>
-	<td>click</td>
-	<td>css=input[id*="urlField:url"]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>css=input[id*="urlField:url"]</td>
-	<td>${SERVER_BASE}</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>css=input[id*="registerField:url"]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>css=input[id*="registerField:url"]</td>
-	<td>${SERVER_BASE}/register</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>css=input[id*="emailDomainField:url"]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>css=input[id*="emailDomainField:url"]</td>
-	<td>redhat.com</td>
-</tr>
-<tr>
-    <td>click</td>
-    <td>css=input[id*="adminEmailField"]</td>
-    <td></td>
-</tr>
-<tr>
-    <td>type</td>
-    <td>css=input[id*="adminEmailField"]</td>
-    <td>admin@${SERVER_HOST}</td>
-</tr>
-<tr>
-    <td>click</td>
-    <td>css=input[id*="fromEmailField"]</td>
-    <td></td>
-</tr>
-<tr>
-    <td>type</td>
-    <td>css=input[id*="fromEmailField"]</td>
-    <td>zanata@${SERVER_HOST}</td>
-</tr>
+@FILL_SERVER_CONFIGURATION_FIELDS@
 <tr>
     <td>clickAndWait</td>
     <td>css=input[value=&quot;Save&quot;]</td>
