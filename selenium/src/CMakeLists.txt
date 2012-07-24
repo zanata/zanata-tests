@@ -29,54 +29,9 @@ LIST(APPEND SELENIUM_SERVER_ARG -singleWindow -port ${SELENIUM_SERVER_PORT} -deb
 ####################################################################
 # Maintenance targets and macros
 #
-#===================================================================
-# Initial server setup
 
-SET(INITIAL_SETUP_SCRIPT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/initial_setup)
-CONFIGURE_FILE(${INITIAL_SETUP_SCRIPT_DIR}/ServerConfiguration.html.in
-    ${INITIAL_SETUP_SCRIPT_DIR}/ServerConfiguration.html @ONLY)
-
-
-SET(ENABLED_LANGUAGES "en-US;de;ja;zh-Hans;zh-Hant;cgg")
-MACRO(GENERATE_ADD_LANGUAGE_SNIPPET var lang)
-    GENERATE_SELENIUM_COMMAND(_header1
-	"storeElementPresent"
-	"ui=adminPages::manageLangTableRow(lang=${lang})"
-	"langExists")
-    GENERATE_SELENIUM_COMMAND(_header2
-	"gotoIf"
-	\\\${langExists}
-	"End_${lang}")
-    GENERATE_SELENIUM_COMMAND(_add_lang "rollup" "add_new_language"
-	"lang=${lang}")
-    GENERATE_SELENIUM_COMMAND(_footer "label" "End_${lang}" "")
-
-    SET(${var} "${_header1}\n${_header2}\n${_add_lang}\n${_footer}\n")
-ENDMACRO(GENERATE_ADD_LANGUAGE_SNIPPET)
-
-SET(ADD_LANGS_SNIPPET "")
-FOREACH(_lang ${ENABLED_LANGUAGES})
-    GENERATE_ADD_LANGUAGE_SNIPPET(_lStr "${_lang}")
-    SET(ADD_LANGS_SNIPPET "${ADD_LANGS_SNIPPET}${_lStr}")
-ENDFOREACH(_lang ${ENABLED_LANGUAGE})
-
-CONFIGURE_FILE(${INITIAL_SETUP_SCRIPT_DIR}/ManageLanguages.html.in
-    ${INITIAL_SETUP_SCRIPT_DIR}/ManageLanguages.html @ONLY)
-
-SET(SIGN_IN_USER "${ADMIN_USER}")
-SET(SIGN_IN_PASSWD "${ADMIN_PASSWD}")
-
-CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/functions/SignIn.html.in
-    ${INITIAL_SETUP_SCRIPT_DIR}/SignInAdmin.html @ONLY)
-
-ADD_CUSTOM_TARGET(initial_setup
-    ${SELENIUM_SERVER_CMD} ${SELENIUM_SERVER_ARG}
-    -port ${SELENIUM_SERVER_PORT}
-    -log ${RESULT_DIR_ABSOLUTE}/initial_setup.test.log
-    -htmlsuite "*firefox\ ${firefox_BIN}" ${ZANATA_URL}  ${INITIAL_SETUP_SCRIPT_DIR}/00-InitSetup.html
-    ${RESULT_DIR_ABSOLUTE}/initial_setup.html
-    VERBATIM
-    )
+SET(ENABLED_LANGUAGES "de;ja;zh-Hans;zh-Hant;cgg")
+ADD_SUBDIRECTORY(initial_setup)
 
 ####################################################################
 # Test generating macros

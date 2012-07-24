@@ -2,7 +2,8 @@
 # Ensure it runs on RHEL5
 use 5.008_008;
 use strict;
-use Archive::Tar;
+use Archive::Extract;
+use URI;
 use Getopt::Std;
 use Pod::Usage;
 use File::Spec;
@@ -37,6 +38,66 @@ my $projDir=$proj;
 my $projVerDir=File::Spec->catfile($proj, $ver);
 my $stampFile=File::Spec->catfile($proj, $ver, "." . $scm);
 
+my $uri = URI->new($url);
+my $tarball;
+if ($scm eq "tar"){
+    my $uriPath=$uri->path;
+    my ($volume,$directories,$file) = File::Spec->splitpath( $uri->path );
+    $tarball= $file;
+}
+print "tarball=$tarball\n";
+
+sub extract_tarball{
+    my ($tarball) =@_;
+    my $ae=Archive::Extract->new(archive=>$tarball);
+    print "ae->type=" . $ae->type . "\n";
+    my $extractInCurrent=0;
+    my $topDir='';
+    my @fileList=@{$ae->files};
+    foreach my $p (@fileList){
+	my ($v,$d,$f) = File::Spec->splitpath( $p );
+	print "p=$p d=$d f=$f topDir=$topDir\n";
+	if ($d =~ m?^([^/]+)/?){
+	    if ($topDir){
+		if ($topDir ne $d){
+		    $extractInCurrent=1;
+		    last;
+		}
+	    }else{
+		$topDir=$d;
+	    }
+	}else{
+	    $topDir='';
+	    $extractInCurrent=1;
+	    last;
+	}
+    }
+
+    if ($extractInCurrent){
+	# Extract in current directory
+	mkdir $ver;
+	chdir $ver;
+	$ae->extract();
+	chdir '..';
+    }else{
+	# Extract in subdirectory
+	$ae->extract();
+	die "Cannot rename $topDir to $ver" unless rename($topDir, $ver);
+    }
+}
+
+sub touch_stamp_file{
+    my $stampFile=File::Spec->catfile($ver, "." . $scm);
+    open my $sF , ">", $stampFile;
+    close $sF;
+}
+
+sub update_project_tar{
+    system(qq{wget -c -O $tarball $url});
+    extract_tarball($tarball);
+    touch_stamp_file;
+}
+
 sub update_project{
     chdir($projVerDir) or die "Cannot change dir to $projVerDir: $!";
 
@@ -45,10 +106,9 @@ sub update_project{
     }elsif($scm eq "svn"){
 	system(qq{svn co})
     }elsif($scm eq "tar"){
-	my $tarball=File::Spec->catfile('..', "$proj-$ver.$scm");
-	system(qq{wget -c -O $tarball $url});
+	update_project_tar;
     }
-    chdir(File::Spec->catfile('..' , '..'));
+    chdir($currDir);
 }
 
 sub clone_project{
@@ -65,27 +125,7 @@ sub clone_project{
 	}elsif($scm eq "svn"){
 	    system(qq{svn co $url $ver})
 	}elsif($scm eq "tar"){
-	    my $tarball="$proj-$ver.$scm";
-	    system(qq{wget -c -O $tarball $url});
-	    my $tar=Archive::Tar->new($tarball);
-	    my @fileL=$tar->list_files();
-	    my $f=$fileL[0];
-
-	    print "f=$f\n";
-	    if ($f =~ m|/$|){
-		# Extract in subdirectory
-		$tar->extract();
-		die "Cannot rename $f to $ver" unless rename($f, $ver);
-	    }else{
-		# Extract in current directory
-		mkdir $ver;
-		chdir $ver;
-		$tar->extract();
-		chdir '..';
-	    }
-	    my $stampFile=File::Spec->catfile($ver, "." . $scm);
-	    open my $sF , ">", $stampFile;
-	    close $sF;
+	    update_project_tar;
 	}
     }
     chdir('..');

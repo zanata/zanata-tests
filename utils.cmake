@@ -28,6 +28,12 @@ IF(NOT _UTILS_CMAKE_)
 	SET(${var} "<tr>\n  <td>${cmd}</td>\n  <td>${target}</td>\n  <td>${value}</td>\n</tr>")
     ENDMACRO(GENERATE_SELENIUM_COMMAND var cmd target value)
 
+    MACRO(SELENIUM_TYPE_ON_FIELD var fieldLocator value)
+	GENERATE_SELENIUM_COMMAND(_var1 "click" "${fieldLocator}" "")
+	GENERATE_SELENIUM_COMMAND(_var2 "type" "${fieldLocator}" "${value}")
+	SET(${var} "${_var1}\n${_var2}")
+    ENDMACRO(SELENIUM_TYPE_ON_FIELD var field value)
+
     # Always build when making the target, also specify the output files
     # ADD_CUSTOM_TARGET_COMMAND(target OUTPUT [file1 [file2 ..]]] COMMAND ...)
     MACRO(ADD_CUSTOM_TARGET_COMMAND target OUTPUT)
