@@ -62,7 +62,8 @@ ADD_CUSTOM_TARGET(initial_setup
     ${SELENIUM_SERVER_CMD} ${SELENIUM_SERVER_ARG}
     -port ${SELENIUM_SERVER_PORT}
     -log ${RESULT_DIR_ABSOLUTE}/initial_setup.test.log
-    -htmlsuite "*firefox\ ${firefox_BIN}" ${ZANATA_URL} 00-InitSetup.html
+    -htmlsuite "*firefox\ ${firefox_BIN}" ${ZANATA_URL}
+    ${CMAKE_CURRENT_SOURCE_DIR}/00-InitSetup.html
     ${RESULT_DIR_ABSOLUTE}/initial_setup.html
     VERBATIM
     )
