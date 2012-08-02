@@ -6,6 +6,8 @@ use Archive::Extract;
 use URI;
 use Getopt::Std;
 use Pod::Usage;
+use File::Copy;
+use File::Path;
 use File::Spec;
 use Cwd;
 
@@ -51,15 +53,23 @@ sub extract_tarball{
     my ($tarball) =@_;
     my $ae=Archive::Extract->new(archive=>$tarball);
     print "ae->type=" . $ae->type . "\n";
+    my $verTmpDir="${ver}-tmp";
+    mkdir $verTmpDir;
+    chdir $verTmpDir;
+    $ae->extract();
+
+    ## Determine whether the archive extract to current dir.
     my $extractInCurrent=0;
     my $topDir='';
     my @fileList=@{$ae->files};
     foreach my $p (@fileList){
 	my ($v,$d,$f) = File::Spec->splitpath( $p );
-	print "p=$p d=$d f=$f topDir=$topDir\n";
-	if ($d =~ m?^([^/]+)/?){
+	#print "p=$p d=$d f=$f topDir=$topDir extractInCurrent=$extractInCurrent\n";
+	if ($d){
 	    if ($topDir){
-		if ($topDir ne $d){
+		if ($d =~ m!^$topDir!){
+		}else{
+		    $topDir='';
 		    $extractInCurrent=1;
 		    last;
 		}
@@ -75,14 +85,14 @@ sub extract_tarball{
 
     if ($extractInCurrent){
 	# Extract in current directory
-	mkdir $ver;
-	chdir $ver;
-	$ae->extract();
 	chdir '..';
+	move($verTmpDir, $ver)
     }else{
-	# Extract in subdirectory
-	$ae->extract();
-	die "Cannot rename $topDir to $ver" unless rename($topDir, $ver);
+	# Files extracted to subdirectory
+	die "Cannot rename $topDir to $ver" unless move($topDir,
+	    "../$ver");
+	chdir '..';
+	rmtree($verTmpDir);
     }
 }
 
