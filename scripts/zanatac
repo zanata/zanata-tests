@@ -229,6 +229,14 @@ sub add_zanata_python_option{
 	}
 	$optName="no-" . $optName;
 	$optValue="";
+    }elsif($optName eq "createskeletons"){
+	if ($optValue eq 'true'){
+	    return "";
+	}elsif($optValue eq ''){
+	    return "";
+	}
+	$optName="no" . $optName;
+	$optValue="";
     }
     push @$cmdLRef, "--" . $optName;
     push @$cmdLRef, qq{"$optValue"} if ($optValue ne "");

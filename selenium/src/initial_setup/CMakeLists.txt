@@ -21,7 +21,7 @@ APPEND_FILL_SERVER_CONFIGURATION("adminEmailField" "admin@\${SERVER_HOST}")
 APPEND_FILL_SERVER_CONFIGURATION("fromEmailField" "zanata@\${SERVER_HOST}")
 IF(SERVER_HOST MATCHES "zanata-master")
     APPEND_FILL_SERVER_CONFIGURATION("piwikUrlField" "hiro.bne.redhat.com/piwik")
-    APPEND_FILL_SERVER_CONFIGURATION("piwikIdSiteField" "9")
+    APPEND_FILL_SERVER_CONFIGURATION("piwikIdSiteField" "11")
 ENDIF(SERVER_HOST MATCHES "zanata-master")
 
 CONFIGURE_FILE(ServerConfiguration.html.in
