@@ -21,14 +21,10 @@
     <td>@SERVER_HOST@</td>
     <td>SERVER_HOST</td>
 </tr>
-<tr>
-        <td>mouseOver</td>
-        <td>id=Administration</td>
-        <td></td>
-</tr>
+@VISIT_ADMIN_PAGE@
 <tr>
 	<td>clickAndWait</td>
-	<td>id=Admin_Server_configuration_a</td>
+	<td>css=a[id^=Admin_Server_configuration]</td>
 	<td></td>
 </tr>
 @FILL_SERVER_CONFIGURATION_FIELDS@

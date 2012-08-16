@@ -1,6 +1,28 @@
 #===================================================================
 # Initial server setup
 
+
+#-------------------------------------------------------------------
+# Snippet to admin page
+#
+SET(_VISIT_ADMIN_PAGE "")
+SELENIUM_APPEND(VISIT_ADMIN_PAGE
+    "storeElementPresent" "link=System" "menuSystemExist")
+SELENIUM_APPEND(VISIT_ADMIN_PAGE
+    "gotoIf" "! #{menuSystemExist}" "inAdminPage")
+# Post 1.7
+SELENIUM_APPEND(VISIT_ADMIN_PAGE
+    "mouseOver" "link=System" "")
+
+SELENIUM_APPEND(VISIT_ADMIN_PAGE
+    "clickAndWait" "id=Administration" "")
+
+SELENIUM_APPEND(VISIT_ADMIN_PAGE
+    "label" "inAdminPage" "")
+# End Post 1.7
+STRING(REPLACE "#{" "\${" VISIT_ADMIN_PAGE
+    "${VISIT_ADMIN_PAGE}")
+
 SET(FILL_SERVER_CONFIGURATION_FIELDS "")
 MACRO(APPEND_FILL_SERVER_CONFIGURATION field value)
     SELENIUM_TYPE_ON_FIELD(_snipplet
@@ -14,42 +36,44 @@ MACRO(APPEND_FILL_SERVER_CONFIGURATION field value)
     ENDIF(FILL_SERVER_CONFIGURATION_FIELDS)
 ENDMACRO(APPEND_FILL_SERVER_CONFIGURATION field value)
 
-APPEND_FILL_SERVER_CONFIGURATION("urlField" "\${SERVER_BASE}")
-APPEND_FILL_SERVER_CONFIGURATION("registerField" "\${SERVER_BASE}/register")
+APPEND_FILL_SERVER_CONFIGURATION("urlField" "#{SERVER_BASE}")
+APPEND_FILL_SERVER_CONFIGURATION("registerField" "#{SERVER_BASE}/register")
 APPEND_FILL_SERVER_CONFIGURATION("emailDomainField" "redhat.com")
-APPEND_FILL_SERVER_CONFIGURATION("adminEmailField" "admin@\${SERVER_HOST}")
-APPEND_FILL_SERVER_CONFIGURATION("fromEmailField" "zanata@\${SERVER_HOST}")
+APPEND_FILL_SERVER_CONFIGURATION("adminEmailField" "admin@#{SERVER_HOST}")
+APPEND_FILL_SERVER_CONFIGURATION("fromEmailField" "zanata@#{SERVER_HOST}")
 IF(SERVER_HOST MATCHES "zanata-master")
     APPEND_FILL_SERVER_CONFIGURATION("piwikUrlField" "hiro.bne.redhat.com/piwik")
     APPEND_FILL_SERVER_CONFIGURATION("piwikIdSiteField" "11")
 ENDIF(SERVER_HOST MATCHES "zanata-master")
 
+STRING(REPLACE "#{" "\${" FILL_SERVER_CONFIGURATION_FIELDS
+    "${FILL_SERVER_CONFIGURATION_FIELDS}")
+
 CONFIGURE_FILE(ServerConfiguration.html.in
     ${CMAKE_CURRENT_SOURCE_DIR}/ServerConfiguration.html @ONLY)
 
-MACRO(GENERATE_ADD_LANGUAGE_SNIPPET var lang)
+MACRO(APPEND_LANGUAGE_SNIPPET var lang)
     SELENIUM_APPEND(${var}
 	"storeElementPresent"
 	"ui=adminPages::manageLangTableRow(lang=${lang})"
 	"langExists")
-    MESSAGE("1${var}=${${var}}")
     SELENIUM_APPEND(${var}
 	"gotoIf"
-	\\\${langExists}
+	"#{langExists}"
 	"End_${lang}")
-    MESSAGE("2${var}=${${var}}")
     SELENIUM_APPEND(${var} "rollup" "add_new_language"
 	"lang=${lang}")
     SELENIUM_APPEND(${var} "label" "End_${lang}" "")
-    MESSAGE("3${var}=${${var}}")
-ENDMACRO(GENERATE_ADD_LANGUAGE_SNIPPET)
+ENDMACRO(APPEND_LANGUAGE_SNIPPET var lang)
 
-SET(ADD_LANGS_SNIPPET "")
+SET(_LANG_SNIPPETS "")
 FOREACH(_lang ${ENABLED_LANGUAGES})
-    GENERATE_ADD_LANGUAGE_SNIPPET(_lStr "${_lang}")
-    SET(ADD_LANGS_SNIPPET "${ADD_LANGS_SNIPPET}${_lStr}")
+    APPEND_LANGUAGE_SNIPPET(_LANG_SNIPPETS "${_lang}")
 ENDFOREACH(_lang ${ENABLED_LANGUAGE})
+#MESSAGE("_LANG_SNIPPETS=${_LANG_SNIPPETS}")
 
+STRING(REPLACE "#{" "\${" LANG_SNIPPETS
+    "${_LANG_SNIPPETS}")
 CONFIGURE_FILE(ManageLanguages.html.in
     ${CMAKE_CURRENT_SOURCE_DIR}/ManageLanguages.html @ONLY)
 

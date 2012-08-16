@@ -35,7 +35,6 @@ IF(NOT _UTILS_CMAKE_)
 	    SELENIUM_GENERATE(_cmd "${cmd}" "${target}" "${value}")
 	    SET(${var} "${${var}}\n${_cmd}")
 	ENDIF("${${var}}" STREQUAL "")
-	MESSAGE("### ${var}= ${${var}}")
     ENDMACRO(SELENIUM_APPEND var cmd target value)
 
     MACRO(SELENIUM_TYPE_ON_FIELD var fieldLocator value)
