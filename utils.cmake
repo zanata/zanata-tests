@@ -24,14 +24,23 @@ IF(NOT _UTILS_CMAKE_)
 	ENDIF("${${var}}" MATCHES "NOTFOUND$")
     ENDMACRO(REQUIRE_CMD var cmd)
 
-    MACRO(GENERATE_SELENIUM_COMMAND var cmd target value)
+    MACRO(SELENIUM_GENERATE var cmd target value)
 	SET(${var} "<tr>\n  <td>${cmd}</td>\n  <td>${target}</td>\n  <td>${value}</td>\n</tr>")
-    ENDMACRO(GENERATE_SELENIUM_COMMAND var cmd target value)
+    ENDMACRO(SELENIUM_GENERATE var cmd target value)
+
+    MACRO(SELENIUM_APPEND var cmd target value)
+	IF("${${var}}" STREQUAL "")
+	    SELENIUM_GENERATE(${var} "${cmd}" "${target}" "${value}")
+	ELSE("${${var}}" STREQUAL "")
+	    SELENIUM_GENERATE(_cmd "${cmd}" "${target}" "${value}")
+	    SET(${var} "${${var}}\n${_cmd}")
+	ENDIF("${${var}}" STREQUAL "")
+	MESSAGE("### ${var}= ${${var}}")
+    ENDMACRO(SELENIUM_APPEND var cmd target value)
 
     MACRO(SELENIUM_TYPE_ON_FIELD var fieldLocator value)
-	GENERATE_SELENIUM_COMMAND(_var1 "click" "${fieldLocator}" "")
-	GENERATE_SELENIUM_COMMAND(_var2 "type" "${fieldLocator}" "${value}")
-	SET(${var} "${_var1}\n${_var2}")
+	SELENIUM_APPEND(${var} "click" "${fieldLocator}" "")
+	SELENIUM_APPEND(${var} "type" "${fieldLocator}" "${value}")
     ENDMACRO(SELENIUM_TYPE_ON_FIELD var field value)
 
     # Always build when making the target, also specify the output files

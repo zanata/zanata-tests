@@ -28,19 +28,20 @@ CONFIGURE_FILE(ServerConfiguration.html.in
     ${CMAKE_CURRENT_SOURCE_DIR}/ServerConfiguration.html @ONLY)
 
 MACRO(GENERATE_ADD_LANGUAGE_SNIPPET var lang)
-    GENERATE_SELENIUM_COMMAND(_header1
+    SELENIUM_APPEND(${var}
 	"storeElementPresent"
 	"ui=adminPages::manageLangTableRow(lang=${lang})"
 	"langExists")
-    GENERATE_SELENIUM_COMMAND(_header2
+    MESSAGE("1${var}=${${var}}")
+    SELENIUM_APPEND(${var}
 	"gotoIf"
 	\\\${langExists}
 	"End_${lang}")
-    GENERATE_SELENIUM_COMMAND(_add_lang "rollup" "add_new_language"
+    MESSAGE("2${var}=${${var}}")
+    SELENIUM_APPEND(${var} "rollup" "add_new_language"
 	"lang=${lang}")
-    GENERATE_SELENIUM_COMMAND(_footer "label" "End_${lang}" "")
-
-    SET(${var} "${_header1}\n${_header2}\n${_add_lang}\n${_footer}\n")
+    SELENIUM_APPEND(${var} "label" "End_${lang}" "")
+    MESSAGE("3${var}=${${var}}")
 ENDMACRO(GENERATE_ADD_LANGUAGE_SNIPPET)
 
 SET(ADD_LANGS_SNIPPET "")
