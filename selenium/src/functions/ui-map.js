@@ -243,7 +243,25 @@ manager.addRollupRule({
 	    , exampleValues: LANGS
 	}
     ]
-    , commandMatchers: []
+    , commandMatchers: [
+	{
+	    command: 'clickAndWait'
+	    , target: 'css=a:contains("Add New Language")'
+	}
+	,{
+	    command: 'type'
+	    , target: languageSelectionPulldown
+	    , value: '.+'
+	    , updateArgs: function(command, args){
+		args.lang=command.value;
+		return args;
+	    }
+	}
+	, {
+	    command: 'clickAndWait'
+	    , target: 'css=div.actionButtons>input[type="submit"]'
+	}
+    ]
     , getExpandedCommands:function(args){
 	var commands=[];
 	commands.push({
@@ -523,6 +541,132 @@ myMap.addElement('webtranPages', {
 	    +'<a title="Next Page (Shortcut: PageDown)"><img /></a>'
 	    +'<a title="Last Page (Shortcut: PageDown)"><img /></a>'
 	    +'</div>'
+    }
+});
+
+
+/*********************************
+ * Rollup Rules
+ */
+manager.addRollupRule({
+    name: 'join_language'
+    , description: 'Join a language'
+    , args:[
+	{
+	    name: 'lang'
+	    , description: 'Locator of the field'
+	    , exampleValues: ['zh-Hans', 'ja']
+	}
+    ]
+    , commandMatchers:[
+	{
+	    command: 'clickAndWait'
+	    , target: 'id=Languages'
+	}
+	,{
+	    command: 'clickAndWait'
+	    , target: 'css=a\[.+\]'
+	    , updateArgs: function(command, args){
+		var langs=command.target.match('css=a\[href\*="([a-zA-Z_-]+)"\]');
+		args.lang=langs[1];
+		return args;
+	    }
+	}
+	,{
+	    command: 'storeElementPresent'
+	    , target: 'id=Language_team_member_toggle_form:Join'
+	}
+	,{
+	    command: 'gotoIf'
+	    , target: '.+'
+	}
+	,{
+	    command: 'click'
+	    , target: '.+'
+	}
+	,{
+	    command: 'label'
+	    , target: '.+'
+	}
+    ]
+    , getExpandedCommands: function(args) {
+	var commands = [];
+        commands.push({
+	    command: 'clickAndWait'
+	    , target: 'id=Languages'
+	});
+        commands.push({
+	    command: 'clickAndWait'
+	    , target: 'css=a[href*="'+ args.lang +'"]'
+	});
+        commands.push({
+	    command: 'storeElementPresent'
+	    , target: 'id=Language_team_member_toggle_form:Join'
+	    , value: '_isElementPresent'
+	});
+        commands.push({
+	    command: 'gotoIf'
+	    , target: '! ${_isElementPresent}'
+	    , value: 'joined_' + args.lang
+	});
+        commands.push({
+	    command: 'click'
+	    , target: 'id=Language_team_member_toggle_form:Join'
+	});
+        commands.push({
+	    command: 'label'
+	    , target: 'joined_' + args.lang
+	});
+	return commands;
+    }
+});
+
+manager.addRollupRule({
+    name: 'click_type'
+    , description: 'Click on a field and then type'
+    , args:
+    [
+	{
+	    name: 'loc'
+	    , description: 'Locator of the field'
+	}
+	,{
+	    name: 'value'
+	    , description: 'Value to be typed'
+	}
+    ]
+    , commandMatchers:
+    [
+	{
+	    command: 'click'
+	    , target: '.+'
+	    , updateArgs: function(command, args){
+		args.loc=command.target;
+		return args;
+	    }
+	}
+	,{
+	    command: 'type'
+	    , target: '.+'
+	    , updateArgs: function(command, args){
+		args.loc=command.target;
+		args.value=command.value;
+		return args;
+	    }
+	}
+    ]
+    , getExpandedCommands: function(args) {
+        var commands = [];
+	commands.push({
+	    command: 'click'
+	    , target: args.loc
+	});
+	commands.push({
+	    command: 'type'
+	    , target: args.loc
+	    , value: args.value
+	});
+	return commands;
     }
 });
 
