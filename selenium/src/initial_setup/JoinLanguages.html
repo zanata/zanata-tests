@@ -17,59 +17,64 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>css=a[href*=&quot;ja&quot;]</td>
-	<td></td>
+  <td>rollup</td>
+  <td>join_language</td>
+  <td>lang=ja</td>
 </tr>
 <tr>
-	<td>storeElementPresent</td>
-	<td>id=Language_team_member_toggle_form:Join</td>
-	<td>_isElementPresent</td>
+  <td>gotoIf</td>
+  <td>! ${_isElementPresent}</td>
+  <td>joined_ja</td>
 </tr>
 <tr>
-	<td>gotoIf</td>
-	<td>! ${_isElementPresent}</td>
-	<td>join_zh_Hans</td>
+  <td>click</td>
+  <td>id=Language_team_member_toggle_form:Join</td>
+  <td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>id=Language_team_member_toggle_form:Join</td>
-	<td></td>
+  <td>label</td>
+  <td>joined_ja</td>
+  <td></td>
 </tr>
 <tr>
-	<td>label</td>
-	<td>join_zh_Hans</td>
-	<td></td>
+  <td>rollup</td>
+  <td>join_language</td>
+  <td>lang=zh-Hans</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>id=Languages</td>
-	<td></td>
+  <td>gotoIf</td>
+  <td>! ${_isElementPresent}</td>
+  <td>joined_zh-Hans</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>css=a[href*=&quot;zh-Hans&quot;]</td>
-	<td></td>
+  <td>click</td>
+  <td>id=Language_team_member_toggle_form:Join</td>
+  <td></td>
 </tr>
 <tr>
-	<td>storeElementPresent</td>
-	<td>id=Language_team_member_toggle_form:Join</td>
-	<td>_isElementPresent</td>
+  <td>label</td>
+  <td>joined_zh-Hans</td>
+  <td></td>
 </tr>
 <tr>
-	<td>gotoIf</td>
-	<td>! ${_isElementPresent}</td>
-	<td>End</td>
+  <td>rollup</td>
+  <td>join_language</td>
+  <td>lang=zh-Hant</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>id=Language_team_member_toggle_form:Join</td>
-	<td></td>
+  <td>gotoIf</td>
+  <td>! ${_isElementPresent}</td>
+  <td>joined_zh-Hant</td>
 </tr>
 <tr>
-	<td>label</td>
-	<td>End</td>
-	<td></td>
+  <td>click</td>
+  <td>id=Language_team_member_toggle_form:Join</td>
+  <td></td>
+</tr>
+<tr>
+  <td>label</td>
+  <td>joined_zh-Hant</td>
+  <td></td>
 </tr>
 </tbody></table>
 </body>

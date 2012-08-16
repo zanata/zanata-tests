@@ -30,7 +30,6 @@ LIST(APPEND SELENIUM_SERVER_ARG -singleWindow -port ${SELENIUM_SERVER_PORT} -deb
 # Maintenance targets and macros
 #
 
-SET(ENABLED_LANGUAGES "de;ja;zh-Hans;zh-Hant;cgg")
 ADD_SUBDIRECTORY(initial_setup)
 
 ####################################################################

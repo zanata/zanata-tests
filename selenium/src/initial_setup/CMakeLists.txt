@@ -23,17 +23,13 @@ SELENIUM_APPEND(VISIT_ADMIN_PAGE
 STRING(REPLACE "#{" "\${" VISIT_ADMIN_PAGE
     "${VISIT_ADMIN_PAGE}")
 
+#-------------------------------------------------------------------
+# Server configuration
+#
 SET(FILL_SERVER_CONFIGURATION_FIELDS "")
 MACRO(APPEND_FILL_SERVER_CONFIGURATION field value)
-    SELENIUM_TYPE_ON_FIELD(_snipplet
-	"css=input[id*=\"${field}\"]" "${value}")
-    IF(FILL_SERVER_CONFIGURATION_FIELDS)
-	SET(FILL_SERVER_CONFIGURATION_FIELDS
-	    "${FILL_SERVER_CONFIGURATION_FIELDS}\n${_snipplet}")
-    ELSE(FILL_SERVER_CONFIGURATION_FIELDS)
-	SET(FILL_SERVER_CONFIGURATION_FIELDS
-	    "${_snipplet}")
-    ENDIF(FILL_SERVER_CONFIGURATION_FIELDS)
+    SELENIUM_APPEND(FILL_SERVER_CONFIGURATION_FIELDS
+	"rollup" "click_type" "loc=css=input[id*=\"${field}\"], value=${value}")
 ENDMACRO(APPEND_FILL_SERVER_CONFIGURATION field value)
 
 APPEND_FILL_SERVER_CONFIGURATION("urlField" "#{SERVER_BASE}")
@@ -52,6 +48,9 @@ STRING(REPLACE "#{" "\${" FILL_SERVER_CONFIGURATION_FIELDS
 CONFIGURE_FILE(ServerConfiguration.html.in
     ${CMAKE_CURRENT_SOURCE_DIR}/ServerConfiguration.html @ONLY)
 
+#-------------------------------------------------------------------
+# Manage Languages
+#
 MACRO(APPEND_LANGUAGE_SNIPPET var lang)
     SELENIUM_APPEND(${var}
 	"storeElementPresent"
@@ -66,16 +65,40 @@ MACRO(APPEND_LANGUAGE_SNIPPET var lang)
     SELENIUM_APPEND(${var} "label" "End_${lang}" "")
 ENDMACRO(APPEND_LANGUAGE_SNIPPET var lang)
 
-SET(_LANG_SNIPPETS "")
-FOREACH(_lang ${ENABLED_LANGUAGES})
-    APPEND_LANGUAGE_SNIPPET(_LANG_SNIPPETS "${_lang}")
-ENDFOREACH(_lang ${ENABLED_LANGUAGE})
-#MESSAGE("_LANG_SNIPPETS=${_LANG_SNIPPETS}")
+SET(LANG_SNIPPETS "")
+FOREACH(_lang ${LANGUAGES_ENABLE})
+    APPEND_LANGUAGE_SNIPPET(LANG_SNIPPETS "${_lang}")
+ENDFOREACH(_lang ${LANGUAGES_ENABLE})
 
 STRING(REPLACE "#{" "\${" LANG_SNIPPETS
-    "${_LANG_SNIPPETS}")
+    "${LANG_SNIPPETS}")
 CONFIGURE_FILE(ManageLanguages.html.in
     ${CMAKE_CURRENT_SOURCE_DIR}/ManageLanguages.html @ONLY)
+
+#-------------------------------------------------------------------
+# Language to Join
+#
+
+SET(LANGS_TO_JOIN "")
+FOREACH(_lang ${LANGUAGES_JOIN})
+    SELENIUM_APPEND(LANGS_TO_JOIN
+	"rollup" "join_language" "lang=${_lang}")
+    SELENIUM_APPEND(LANGS_TO_JOIN
+	"gotoIf" "! #{_isElementPresent}" "joined_${_lang}")
+    SELENIUM_APPEND(LANGS_TO_JOIN
+	"click" "id=Language_team_member_toggle_form:Join" "")
+    SELENIUM_APPEND(LANGS_TO_JOIN
+	"label" "joined_${_lang}" "")
+ENDFOREACH(_lang ${LANGUAGES_JOIN})
+
+STRING(REPLACE "#{" "\${" LANGS_TO_JOIN
+    "${LANGS_TO_JOIN}")
+CONFIGURE_FILE(JoinLanguages.html.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/JoinLanguages.html @ONLY)
+
+#-------------------------------------------------------------------
+# Sign in as Admin
+#
 
 SET(SIGN_IN_USER "${ADMIN_USER}")
 SET(SIGN_IN_PASSWD "${ADMIN_PASSWD}")

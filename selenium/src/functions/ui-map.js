@@ -576,18 +576,6 @@ manager.addRollupRule({
 	    command: 'storeElementPresent'
 	    , target: 'id=Language_team_member_toggle_form:Join'
 	}
-	,{
-	    command: 'gotoIf'
-	    , target: '.+'
-	}
-	,{
-	    command: 'click'
-	    , target: '.+'
-	}
-	,{
-	    command: 'label'
-	    , target: '.+'
-	}
     ]
     , getExpandedCommands: function(args) {
 	var commands = [];
@@ -603,19 +591,6 @@ manager.addRollupRule({
 	    command: 'storeElementPresent'
 	    , target: 'id=Language_team_member_toggle_form:Join'
 	    , value: '_isElementPresent'
-	});
-        commands.push({
-	    command: 'gotoIf'
-	    , target: '! ${_isElementPresent}'
-	    , value: 'joined_' + args.lang
-	});
-        commands.push({
-	    command: 'click'
-	    , target: 'id=Language_team_member_toggle_form:Join'
-	});
-        commands.push({
-	    command: 'label'
-	    , target: 'joined_' + args.lang
 	});
 	return commands;
     }

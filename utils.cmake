@@ -37,11 +37,6 @@ IF(NOT _UTILS_CMAKE_)
 	ENDIF("${${var}}" STREQUAL "")
     ENDMACRO(SELENIUM_APPEND var cmd target value)
 
-    MACRO(SELENIUM_TYPE_ON_FIELD var fieldLocator value)
-	SELENIUM_APPEND(${var} "click" "${fieldLocator}" "")
-	SELENIUM_APPEND(${var} "type" "${fieldLocator}" "${value}")
-    ENDMACRO(SELENIUM_TYPE_ON_FIELD var field value)
-
     # Always build when making the target, also specify the output files
     # ADD_CUSTOM_TARGET_COMMAND(target OUTPUT [file1 [file2 ..]]] COMMAND ...)
     MACRO(ADD_CUSTOM_TARGET_COMMAND target OUTPUT)
