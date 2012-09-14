@@ -7,12 +7,12 @@
 #
 SET(_VISIT_ADMIN_PAGE "")
 SELENIUM_APPEND(VISIT_ADMIN_PAGE
-    "storeElementPresent" "link=System" "menuSystemExist")
+    "storeElementPresent" "link=More" "menuSystemExist")
 SELENIUM_APPEND(VISIT_ADMIN_PAGE
     "gotoIf" "! #{menuSystemExist}" "inAdminPage")
 # Post 1.7
 SELENIUM_APPEND(VISIT_ADMIN_PAGE
-    "mouseOver" "link=System" "")
+    "mouseOver" "link=More" "")
 
 SELENIUM_APPEND(VISIT_ADMIN_PAGE
     "clickAndWait" "id=Administration" "")
