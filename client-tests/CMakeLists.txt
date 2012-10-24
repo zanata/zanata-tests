@@ -409,7 +409,7 @@ MACRO(ADD_PROJECT proj client)
 
 		## Target specific options
 		IF("${_subTarget}" STREQUAL "push")
-		    LIST(APPEND _zanatac_arg_opts "--push-trans"
+		    LIST(APPEND _zanatac_arg_opts "--push-type" "both"
 			"--no-copytrans")
 		ELSEIF("${_subTarget}" STREQUAL "pull")
 		    LIST(APPEND _pre_cmds COMMAND rm "-fr" "${_proj_ver_pull_dest_dir}")
