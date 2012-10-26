@@ -24,7 +24,8 @@ IF(NOT ZANATA_PYTHON_CLIENT_CMD)
     REQUIRE_CMD(ZANATA_PTYHON_CLIENT_CMD "zanata")
 ENDIF(NOT ZANATA_PYTHON_CLIENT_CMD)
 
-SET(ZANATAC_CMD "${SCRIPT_DIR}/zanatac" "--yes" "--show")
+SET(ZANATAC_CMD "${SCRIPT_DIR}/zanatac" "--yes" "--show" "--copytrans" "false"
+    "--merge" "import")
 SET(ZANATA_MVN_CMD ${ZANATAC_CMD})
 SET(ZANATA_PY_CMD  ${ZANATAC_CMD} --client py)
 
