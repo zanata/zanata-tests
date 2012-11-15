@@ -24,10 +24,9 @@ IF(NOT ZANATA_PYTHON_CLIENT_CMD)
     REQUIRE_CMD(ZANATA_PTYHON_CLIENT_CMD "zanata")
 ENDIF(NOT ZANATA_PYTHON_CLIENT_CMD)
 
-SET(ZANATAC_CMD "${SCRIPT_DIR}/zanatac" "--yes" "--show" "--copytrans" "false"
+SET(ZANATAC_CMD_OPTS_DEFAULT "--yes" "--show" "--copytrans" "false"
     "--merge" "import")
-SET(ZANATA_MVN_CMD ${ZANATAC_CMD})
-SET(ZANATA_PY_CMD  ${ZANATAC_CMD} --client py)
+SET(ZANATAC_CMD "${SCRIPT_DIR}/zanatac" )
 
 ADD_CUSTOM_COMMAND(OUTPUT ${SAMPLE_PROJ_DIR_ABSOLUTE}
     COMMAND ${CMAKE_COMMAND} -E make_directory ${SAMPLE_PROJ_DIR_ABSOLUTE}
@@ -119,24 +118,26 @@ SET(PROJECT_TYPE_DEFAULT "podir")
 
 MACRO(PROJECT_COMMON_SETUP proj)
     FOREACH(_prop ${PROJECT_PROPERTIES})
-	IF(NOT DEFINED ${proj}_${_prop})
+	IF("${${proj}_${_prop}}" STREQUAL "")
 	    SET(${proj}_${_prop} ${${_prop}_DEFAULT})
-	ENDIF(NOT DEFINED ${proj}_${_prop})
-	# MESSAGE("${proj}_${_prop}=${${proj}_${_prop}}")
+	ENDIF("${${proj}_${_prop}}" STREQUAL "")
+	#MESSAGE("#${proj}_${_prop}=${${proj}_${_prop}}")
     ENDFOREACH(_prop ${PROJECT_PROPERTIES})
     # Project wide zanata.xml (means: no ver info yet)
     SET_ABSOLUTE_PATHS(${proj})
 
-    ## Create project targets
-    ADD_CUSTOM_TARGET(${PREPARE_TARGET}_${proj})
-    ADD_DEPENDENCIES(${PREPARE_TARGET} ${PREPARE_TARGET}_${proj})
+    IF(NOT TARGET prepare_${proj})
+	## Create project targets
+	ADD_CUSTOM_TARGET(${PREPARE_TARGET}_${proj})
+	ADD_DEPENDENCIES(${PREPARE_TARGET} ${PREPARE_TARGET}_${proj})
 
-    ## Build necessary directory and files for push
-    ADD_CUSTOM_COMMAND(OUTPUT ${_proj_dir_stamp}
-	COMMAND ${CMAKE_COMMAND} -E make_directory ${_proj_dir}
-	COMMAND ${CMAKE_COMMAND} -E touch ${_proj_dir_stamp}
-	DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}
-	)
+	## Build necessary directory and files for push
+	ADD_CUSTOM_COMMAND(OUTPUT ${_proj_dir_stamp}
+	    COMMAND ${CMAKE_COMMAND} -E make_directory ${_proj_dir}
+	    COMMAND ${CMAKE_COMMAND} -E touch ${_proj_dir_stamp}
+	    DEPENDS ${SAMPLE_PROJ_DIR_ABSOLUTE}
+	    )
+    ENDIF()
 ENDMACRO(PROJECT_COMMON_SETUP proj)
 
 MACRO(GET_ACTUAL_SRC_DIR var proj)
@@ -152,6 +153,7 @@ ENDMACRO()
 
 MACRO(MAKE_OPTS var proj ver)
     GET_ACTUAL_SRC_DIR(_src_dir ${proj})
+    #MESSAGE("#proj=${proj}  projType=${${proj}_PROJECT_TYPE} _src_dir=${_src_dir}")
     IF(NOT "${_src_dir}" STREQUAL "")
 	LIST(APPEND ${var} "--srcDir" "${_src_dir}")
     ENDIF()
@@ -224,7 +226,6 @@ MACRO(MAKE_POM_XML proj ver proj_ver_dir)
     FOREACH(_pomXmlProf ${${proj}_POM_XML_LIST})
 	SET(_pom_xml "${proj_base_ver_dir}/${${_pomXmlProf}}")
 	SET(_pom_xml_stamp "${_pom_xml}.stamp")
-	#    MESSAGE("_pomXml=${_pomXml}")
 
 	MAKE_POM_XML_OPTS(_pom_xml_make_opts ${proj} ${_pomXmlProf})
 
@@ -263,7 +264,6 @@ ENDMACRO(MAKE_POM_XML proj ver base_dir)
 MACRO(PREPARE_PROJECT proj ver)
     SET_ABSOLUTE_PATHS(${proj} ${ver})
 
-    # MESSAGE("proj=${proj} ver=${ver} _proj_ver_pom_xml_stamp=${_proj_ver_pom_xml_stamp} _proj_ver_zanata_xml=${_proj_ver_zanata_xml}")
     SET(_projTargetName ${PREPARE_TARGET}_${proj})
     ADD_CUSTOM_TARGET(${_projTargetName}_${ver}
 	DEPENDS ${_proj_ver_pom_xml_stamp} ${_proj_ver_zanata_xml}
@@ -352,9 +352,8 @@ MACRO(ADD_PROJECT proj client)
     ## 1. Create project common targets
     ## 2. Create a project directory
     ## 3. A zanata.xml for dependency to hook on
-    IF(NOT TARGET prepare_${proj})
-	PROJECT_COMMON_SETUP(${proj})
-    ENDIF()
+    PROJECT_COMMON_SETUP(${proj})
+    #MESSAGE("#proj=${proj}  projType=${${proj}_PROJECT_TYPE}")
 
     STRING_JOIN(_clientTargetName "_" ${CLIENT_TARGET} ${client})
     STRING_JOIN(_projTargetName "_" ${CLIENT_TARGET} ${client} ${proj})
@@ -393,7 +392,8 @@ MACRO(ADD_PROJECT proj client)
 		REST_VERIFY(${proj} ${ver} ${client})
 		ADD_DEPENDENCIES(${_projVerTargetName} ${_projVerTargetName_subTarget})
 	    ELSE()
-		SET(ZANATAC_CMD_OPTS "--client" "${client}")
+		SET(ZANATAC_CMD_OPTS "--client" "${client}"
+		    ${ZANATAC_CMD_OPTS_DEFAULT})
 		SET(_add_custom_target_opts "")
 		SET(_pre_cmds "")
 
