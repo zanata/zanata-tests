@@ -106,12 +106,25 @@ fi
 echo "_postFix1=${_postFix1} potDir=$potDir dir1=$dir1"
 echo "_postFix2=${_postFix2} potDir=$potDir dir2=$dir2"
 
-if [ ${#_postFix1[*]} -ne ${#_postFix2[*]} ]; then
-    echo "Error: [compare_translation_dir.sh] $dir1 contains ${#_postFix1[*]} valid locale dirs (${_postFix1[*]}), but $dir2 contains ${#_postFix2[*]}: (${_postFix2[*]})"  > /dev/stderr
-    exit 1
-fi
-for((_i=0; $_i < ${#_postFix1[*]} ; _i++));do
-    if ! compare_paths $potDir $dir1/${_postFix1[$_i]} $dir2/${_postFix2[$_i]}; then
+# path in postFix1 should be also in postFix2
+
+hasFile=0
+for srcPo in ${_postFix1[*]};do
+    hasFile=0
+    for destPo in ${_postFix2[*]};do
+	echo "srcPo=${srcPo} destPo=${destPo}"
+	if [ "${srcPo}" = "${destPo}" ]; then
+	    hasFile=1
+	    ## Dest po exists, seart comparing
+	    if ! compare_paths "$potDir" "$dir1/${srcPo}" "$dir2/${destPo}"; then
+		exit 1
+	    fi
+	    break;
+	fi
+    done
+    if [ $hasFile -eq 0 ];then
+	echo "Error: [compare_translation_dir.sh] ${dir1} contains ${srcPo} "
+	echo " but ${dir2} does not have corresponding ${destPo}"
 	exit 1
     fi
 done

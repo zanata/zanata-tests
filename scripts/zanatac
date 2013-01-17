@@ -309,6 +309,7 @@ unless($argumentMavenGoalH{$argument}){
 
 ## Make the command and it's argument
 my @cmdL;
+#print "optH{'client'}=". $optH{'client'} . "\n";
 
 if ($optH{'client'} eq 'mvn'){
     push @cmdL, $mvn, '-e';
@@ -345,7 +346,6 @@ if ($optH{'yes'}){
 if ($optH{'basedir'}){
     unshift @cmdL, 'pushd', $optH{'basedir'}, ';';
 }
-
 
 ## Convert argumentOptions to client options
 while(my ($opt,$value)=each %argumentOptH){
