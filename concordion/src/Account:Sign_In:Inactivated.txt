@@ -1,0 +1,72 @@
+= Account:Sign In:Inactivated
+:email: dchen@redhat.com
+:revdate:
+:revnumber:
+
+== attributes
+:priority: P2
+:status: CONFIRMED
+:automated: 
+:testplan_reference: Zanata-full
+:categoryname: Functional
+:component: Component-UI
+:defaulttester: 
+:tag: 2.2,NotLogin
+:impact: High
+:probability: Medium
+:risk: 6
+
+== notes
+Propose: User who has not clicked the registration activation link should be brought to inactivate account page. Clicking other link will be treated as a not-login.
+
+Scope: The privilege of inactive user. The Resend activation like or update email should be addressed in other test cases.
+
+Features to Test:
+1. Inactive page
+2. Other links. Should be treated as not-login.
+
+Features NOT to Test:
+1. Resend Activation email
+2. Update email address
+
+== setup
+
+=== Requirement:
+
+ * An inactivated user (Registered but not yet activated)
+
+== action
+
+1. Sign in
++
+$$$$
+Page "Inactivated User" should be loaded. + 
+It should has following 2 sections: "Resent activation email" and "Update email address".
+$$$$
+
+2. Click at following tabs 
++
+[concordion,execute,"#result=ReadOnlyLink(#link)"]
+[options="header"]
+$============
+c!Link c!Result
+! Projects
+! Languages
+! Groups
+! More
+$============
++
+
+   exp: Those pages should not offer any actions that will change the content of Zanata project.
+
+
+== expectedresults
+
+Proceed as described in Action.
+
+
+
+== breakdown
+
+
+// vim: set syntax=asciidoc:

@@ -27,7 +27,11 @@ sub new{
 
 sub set_child{
     my ($self,$tag,$text)=@_;
-    $self->{children}->{$tag}=$text;
+    if (defined $self->{children}->{$tag}){
+	$self->{children}->{$tag}.= ",$text";
+    }else{
+	$self->{children}->{$tag}=$text;
+    }
 }
 
 sub print{

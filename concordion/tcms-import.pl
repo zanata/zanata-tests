@@ -85,47 +85,52 @@ unless (-e $outputDir){
 
 foreach my $t (@testCases){
     my $summary=$t->{children}->{summary};
-    $summary=~ s/[\(.*\)]/\1:/g;
+    $summary=~ s/^[[](.*)[]]/\1:/g;
     $summary=~ s/: /:/g;
     my $testCaseFile="$summary.txt";
     $testCaseFile=~ s/\s/_/g;
     $testCaseFile=~ s|/|-|g;
 
-    if (-e $testCaseFile){
+    if (-e "$outputDir/$testCaseFile"){
 	print {*STDERR} "Test case $testCaseFile is already in $outputDir! Skipped.\n";
-	next
+	next;
     }
 
     open (my $fh,">","$outputDir/$testCaseFile" )
 	or die "Cannot open $outputDir/$testCaseFile. $!";
     binmode $fh, ":encoding(UTF-8)";
-    print $fh ":email: $t->{att}->{author}\n";
+
+    print $fh "= $summary\n";
+    print $fh ":email: $t->{atts}->{author}\n";
     print $fh ":revdate:\n";
+    print $fh ":revnumber:\n";
     print $fh "\n";
 
     ## Print attributes
-    print $fh "== attributes:\n";
+    print $fh "== attributes\n";
     while(my ($k,$v)=each(%{$t->{atts}})){
-	next if $k = "author";
+	next if $k eq "author";
 	print $fh ":$k: $v\n";
     }
 
-    foreach my $p (qw(testplan_reference categoryname component defaulttester)){
+    foreach my $p (qw(testplan_reference categoryname component defaulttester tag)){
 	print $fh ":$p: " . $t->{children}->{$p} . "\n";
     }
 
     ## Risk is also an attribute
+    print $fh ":impact: \n";
+    print $fh ":probability: \n";
     print $fh ":risk: \n";
     print $fh "\n";
 
     ## Print sections
-    foreach my $s (qw(note setup expectedresults breakdown)){
+    foreach my $s (qw(notes setup action expectedresults breakdown)){
 	print $fh "== $s\n";
 	print $fh $t->{children}->{$s} . "\n";
 	print $fh "\n";
     }
+    print $fh "// vim: set syntax=asciidoc:\n";
     close $fh;
     print {*STDERR} "Test case $testCaseFile generated.\n";
-    next
 }
 #$tcms->print;

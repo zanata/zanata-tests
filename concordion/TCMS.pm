@@ -38,7 +38,7 @@ sub to_asciidoc_parsed{
     foreach my $child (@children){
 	if ($child->is_elt){
 	    ## Skip if no text inside
-	    unless ($child->trimmed_text){
+	    unless ($child->text){
 		if ($child->tag eq "br"){
 		    $text .= "\n";
 		}else{
@@ -62,9 +62,9 @@ sub to_asciidoc_parsed{
 		    $text .= "\n * " . to_asciidoc_parsed($child);
 		}
 	    }elsif ($child->tag eq "ol"){
-		$text .= "\n";
+		$text .= "\n" . to_asciidoc_parsed($child) . "\n";;
 	    }elsif ($child->tag eq "ul"){
-		$text .= "\n";
+		$text .= "\n" . to_asciidoc_parsed($child) . "\n";;
 	    }elsif ($child->tag eq "h2"){
 		$text .= "\n=== " . to_asciidoc_parsed($child) . "\n";
 	    }elsif ($child->tag eq "h3"){
@@ -100,7 +100,7 @@ sub to_asciidoc_parsed{
 		$text .= "<" . $child->tag . ">" . to_asciidoc_parsed($child) ;
 	    }
 	}else{
-	    $text .= $child->trimmed_text;
+	    $text .= $child->text;
 	}
     }
     return $text;
