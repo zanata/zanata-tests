@@ -46,18 +46,18 @@ $$$$
 
 2. Click at following tabs 
 +
-[concordion,execute,"#result=ReadOnlyLink(#link)"]
 [options="header"]
+[concordion, set="#link", assertEquals="#result.readonly"]
+[concordiontable, execute="#result=ReadOnlyLink(#link)"]
 $============
 c!Link c!Result
-! Projects
-! Languages
-! Groups
-! More
+! Projects !
+! Languages !
+! Groups !
+! More !
 $============
 +
-
-   exp: Those pages should not offer any actions that will change the content of Zanata project.
+exp: Those pages should not offer any actions that will change the content of Zanata project.
 
 
 == expectedresults
