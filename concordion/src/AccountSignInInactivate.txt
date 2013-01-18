@@ -1,7 +1,7 @@
 = Account:Sign In:Inactivated
 :email: dchen@redhat.com
-:revdate:
-:revnumber:
+:revdate: 2013/01/18
+:revnumber: 2.2
 
 == attributes
 :priority: P2
@@ -11,7 +11,7 @@
 :categoryname: Functional
 :component: Component-UI
 :defaulttester: 
-:tag: 2.2,NotLogin
+:tag: NotLogin
 :impact: High
 :probability: Medium
 :risk: 6
@@ -47,8 +47,7 @@ $$$$
 2. Click at following tabs 
 +
 [options="header"]
-[concordion, set="#link", assertEquals="#result.readonly"]
-[concordiontable, execute="#result=ReadOnlyLink(#link)"]
+[concordion, execute="#result=ReadOnlyLink(#link)", set="#link", assertEquals="#result.readonly"]
 $============
 c!Link c!Result
 ! Projects !
