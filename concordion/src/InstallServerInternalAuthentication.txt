@@ -1,0 +1,47 @@
+= Install:Zanatar:Internal Authentication
+:email: dchen@redhat.com
+:revdate: 2013/01/21
+:revnumber: 2.2
+
+== attributes
+:priority: P3
+:status: CONFIRMED
+:automated: Manual
+:testplan_reference: Zanata-full
+:categoryname: Setup
+:component: 
+:defaulttester: 
+:tag: 2.2
+:role: consoleAccess
+:impact: High
+:probability: Low
+:risk: 3
+:taxonomy: 10
+
+== notes
+Propose: System adminstrator should be able to follow the installation guide to install Zanata that use internal authentication.
+
+Feature to Test:
+* The correctness of installation instruction.
+
+== setup
+=== Requirement
+ * Console access
+
+=== Resources
+ * Installaion Guide: https://github.com/zanata/zanata/wiki/Installation-Guide
+ * JAAS-Authentication Guide: https://github.com/zanata/zanata/wiki/JAAS-Authentication
+
+
+== action
+ 1. Follow the Installation Guide install the Zanata server
+ 2. Follow the JAAS-Authentication, "Internal authentication" section to implement internal authentication.
+
+
+== expectedresults
+Verify that Zanata installation complete without error and can access to Zanata home page.
+
+== breakdown
+
+
+// vim: set syntax=asciidoc:

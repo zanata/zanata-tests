@@ -24,12 +24,12 @@ Propose: User who has not clicked the registration activation link should be bro
 Scope: The privilege of inactive user. The Resend activation like or update email should be addressed in other test cases.
 
 Features to Test:
-1. Inactive page
-2. Other links. Should be treated as not-login.
+* Inactive page.
+* Other links. Should be treated as not-login.
 
 Features NOT to Test:
-1. Resend Activation email
-2. Update email address
+* Resend Activation email.
+* Update email address.
 
 == setup
 

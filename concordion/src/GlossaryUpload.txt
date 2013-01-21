@@ -22,12 +22,12 @@
 Propose: Glossarist should be able to upload the glossary
 
 Feature to Be Tested:
-1. Glossary list
-2. Glossary upload with csv
-3. Glossary upload with po
+* Glossary list.
+* Glossary upload with csv.
+* Glossary upload with po.
 
 Feature NOT to Be Tested:
-1. Glossary delete.
+* Glossary delete.
 
 == setup
 
