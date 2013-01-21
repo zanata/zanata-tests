@@ -53,7 +53,9 @@ use Pod::Usage;
 use XML::XPath;
 use XML::Twig::XPath;
 use Cwd;
-use lib ".";
+
+use FindBin qw($Bin);
+use lib "$Bin";
 use TCMS;
 use TestCase;
 use utf8;
@@ -118,9 +120,11 @@ foreach my $t (@testCases){
     }
 
     ## Risk is also an attribute
+    print $fh ":role: \n";
     print $fh ":impact: \n";
     print $fh ":probability: \n";
     print $fh ":risk: \n";
+    print $fh ":taxonomy: \n";
     print $fh "\n";
 
     ## Print sections

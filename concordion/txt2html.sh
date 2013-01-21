@@ -18,8 +18,9 @@ DESCRIPTION
 
 EXIT STATUS
     0: if everything is normal.
-    -1: Source file cannot be read.
-    -2: Target file exists.
+    -1: Arguments are not given.
+    -2: Source file cannot be read.
+    -3: Target file exists.
     1: Other error.
 END
 }
@@ -27,6 +28,16 @@ END
 src=$1
 name=`basename $src .txt`
 target=$2
+
+if [ -z $src ];then
+    print_usage
+    exit -1
+fi
+
+if [ -z $target ];then
+    print_usage
+    exit -1
+fi
 
 if [ ! -r $src ];then
     echo "Cannot read $src" > /dev/stderr

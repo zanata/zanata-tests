@@ -21,6 +21,9 @@ selenium/src/Testing/
 SignIn*.html
 SignOut.html
 
+concordion/src/TODO/
+concordion/src/html/
+
 /samples/
 /results/
 /pulled/

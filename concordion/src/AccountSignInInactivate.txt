@@ -11,10 +11,12 @@
 :categoryname: Functional
 :component: Component-UI
 :defaulttester: 
-:tag: NotLogin
+:tag: 
+:role: PreActivate
 :impact: High
 :probability: Medium
 :risk: 6
+:taxonomy: 1820
 
 == notes
 Propose: User who has not clicked the registration activation link should be brought to inactivate account page. Clicking other link will be treated as a not-login.
