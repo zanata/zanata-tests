@@ -1,25 +1,26 @@
-= Install:Zanata Server:Kerberos Authentication
+= Install:Server:OpenID
 :email: dchen@redhat.com
-:revdate: 2013/01/21
-:revnumber: 2.2
+:revdate:
+:revnumber:
 
 == attributes
 :priority: P3
 :status: CONFIRMED
 :automated: Manual
 :testplan_reference: Zanata-full
-:categoryname: Functional
-:component: Component-UI
+:categoryname: Setup
+:component: 
 :defaulttester: 
 :tag: 
 :role: consoleAccess
 :impact: High
 :probability: Low
 :risk: 3
-:taxonomy: 30
+:taxonomy: 40
 
 == notes
-Propose: System administrator should be able to follow the installation guide to install Zanata that use Kerberos authentication.
+Propose: System administrator should be able to follow the installation guide to install Zanata that use internal authentication.
+
 
 Feature to Test:
 * The correctness of installation instruction.
@@ -33,8 +34,8 @@ Feature to Test:
 * JAAS-Authentication Guide: https://github.com/zanata/zanata/wiki/JAAS-Authentication
 
 == action
- 1. Follow the Installation Guide install the Zanata server
- 2. Follow the JAAS-Authentication, "Kerberos/SPNEGO" section to implement Kerberos authentication.
+1. Follow the Installation Guide install the Zanata server
+2. Follow the JAAS-Authentication, "Kerberos/SPNEGO" section to implement Kerberos authentication.
 
 == expectedresults
 Verify that Zanata installation complete without error and can access to Zanata home page.
