@@ -1,0 +1,103 @@
+= Admin:Server Configuration
+:email: dchen@redhat.com
+:revdate: 2013/01/23
+:revnumber: 2.2
+
+== attributes
+:priority: P3
+:status: CONFIRMED
+:automated: Auto
+:testplan_reference: Zanata-full
+:categoryname: Functional
+:component: Component-UI
+:defaulttester: 
+:tag: 
+:role: Admin
+:impact: High
+:probability: Low
+:risk: 3
+:taxonomy: 910
+
+== notes
+Propose: Admin should be able to set the server configuration using Admin
+Server configuration page.
+
+Feature to Be Tested:
+* Tool tips
+* Field validators
+* Input elements can be operated.
+* *Cancel* button
+* *Save* button
+
+Feature Not to Be Tested:
+* Actual use of the fields.
+
+== setup
+=== Requirement
+ * An admin role account.
+ * 2 Email address.
+
+
+== action
+ 1. Sign in
+ 2. Navigate to *More* -> *Administration* -> *Server Configuration*
+exp: Page "Server Configuration" should be loaded.
+
+=== Tool tips
+ 1. Click on each tool tip icon.
+exp: Corresponding tool tip should appear.
+
+=== Field Validators and Cancel Button
+ 1. Fill in *Server URL* with invalid URL.
+exp: Error message: *must be a valid URL (without final slash)* should appear.
+
+ 2. Fill in *Server URL*  with valid URL, but with final slash.
+exp: Error message: *must be a valid URL (without final slash)* should appear.
+
+ 3. Fill in *Register URL* with invalid URL.
+exp: Error message: *must be a valid URL (without final slash)* should appear.
+
+ 4. Fill in *Contact Admin Address* with invalid email.
+exp: Error message: *invalid email or incorrect comma placement* should appear.
+
+ 5. Fill in *From Email Addresss* with invalid email.
+exp: Error message: *must be a well-formed email address* should appear.
+
+ 6. Fill in *From Email Addresss* with 2 email addresses.
+exp: Error message: *must be a well-formed email address* should appear.
+
+ 7. Fill in *Contact Admin Address* with invalid email.
+exp: Error message: *invalid email or incorrect comma placement* should appear.
+
+ 8. Fill in *Log Destination email addresses* with invalid email.
+exp: Error message: *invalid email or incorrect comma placement* should appear.
+
+ 9. Click Button *Cancel*
+exp: Page *Administration* should be loaded.
+
+10. Navigate to *Server Configuration*
+exp: The texts typed in this section should be discarded.
+
+=== Operate on Elements
+ 1. Fill in all the correct infomation to each of the text field.
+exp: Text fields should be able to input.
+
+ 2. Toggle *Enable Log emails* 3 times
+exp: *Enable Log emails* should be togglable.
+
+ 3. Click Pull down *Email Log emails*
+exp: It should contains *Warning* and *Error*.
+
+ 4. Click Button *Save*
+exp: Page  *Administration* should be loaded.
+
+ 5. Navigate to *Server Configuration*
+exp: The change performed in this section should be kept.
+
+== expectedresults
+Proceed as described in Actions.
+
+== breakdown
+
+
+// vim: set syntax=asciidoc:
