@@ -5,7 +5,7 @@ function print_usage(){
     $0 - Convert asciidoc to concordion html
 
 SYNOPSIS
-    $0 <TxtFile> <htmlDir|htmlFile>
+    $0 [-f] <TxtFile> <htmlDir|htmlFile>
 
 DESCRIPTION
     This program convert an asciidoc text file to concodion
@@ -16,6 +16,9 @@ DESCRIPTION
     If target file is already exist, this program will not touch it
     and exit with -2.
 
+OPTIONS
+    -f : Force override target.
+
 EXIT STATUS
     0: if everything is normal.
     -1: Arguments are not given.
@@ -24,6 +27,13 @@ EXIT STATUS
     1: Other error.
 END
 }
+
+forceOverwrite=
+
+if [ "$1" = "-f" ];then
+    forceOverwrite=1
+    shift
+fi
 
 src=$1
 name=`basename $src .txt`
@@ -39,9 +49,11 @@ if [ -z $target ];then
     exit -1
 fi
 
-if [ ! -r $src ];then
-    echo "Cannot read $src" > /dev/stderr
-    exit -1
+if [ -z $forceOverwrite ];then
+    if [ ! -r $src ];then
+	echo "Cannot read $src" > /dev/stderr
+        exit -1
+    fi
 fi
 
 if [ -d $target ];then

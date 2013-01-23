@@ -12,7 +12,7 @@
 :component: 
 :defaulttester: 
 :tag: 2.2
-:role: consoleAccess
+:role: ConsoleAccess
 :impact: High
 :probability: Low
 :risk: 3
