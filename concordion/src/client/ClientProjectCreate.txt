@@ -1,6 +1,6 @@
-= Glossary:Upload
+= Client:Project:Create
 :email: dchen@redhat.com
-:revdate: 2013/01/21
+:revdate: 2013/01/29
 :revnumber: 2.2
 
 == attributes
@@ -9,37 +9,40 @@
 :automated: 
 :testplan_reference: Zanata-full
 :categoryname: Functional
-:component: Component-UI
+:component: 
 :defaulttester: 
-:role: glossarist
+:role: user
 :tag: 
 :impact: Medium
 :probability: Medium
 :risk: 4
-:taxonomy: 5300
+:taxonomy: 10100
 
 == notes
-Propose: Glossarist should be able to upload the glossary
+Propose: Any user should be able to create any project and user with 
+@client@.
 
 === Feature to Be Tested
- * Glossary list.
- * Glossary upload with csv.
- * Glossary upload with po.
+ * Create project.
 
 === Feature NOT to Be Tested
-* Glossary delete.
 
 == setup
 
 === Requires
- * A glossarist role account.
- * A po formatted glossary file for Lang1 (e.g c:set="#Lang1"[zh_TW] )
- * A CSV formatted glossary file that contains Lang2 and Lang3 (eg
-  c:set="#Lang2"[es_ES],
-  c:set="#Lang3"[zh_CN])
+* A user role account.
+* An API key is generated for the user.
+* $HOME/.config/zanana.ini is NOT setup.
+* Project Id such as @PROJ1@
+* Project name such as @PROJ1NAME@
+* Project description such as @PROJ1DESC@
 
 == action
-1. Sign In
+
+In command line:
+
+=== Authentation 
+1. Create project without any 
 2. Click "More" -> "Glossary"
 exp: Page "Glossary" should be loaded.
 
@@ -67,3 +70,4 @@ Proceed as described in Action.
 
 
 // vim: set syntax=asciidoc:
+

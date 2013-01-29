@@ -49,20 +49,20 @@ if [ -z $target ];then
     exit -1
 fi
 
-if [ -z $forceOverwrite ];then
-    if [ ! -r $src ];then
-	echo "Cannot read $src" > /dev/stderr
-        exit -1
-    fi
+if [ ! -r $src ];then
+    echo "Cannot read $src" > /dev/stderr
+    exit -1
 fi
 
 if [ -d $target ];then
     target="$target/$name.html"
 fi
 
-if [ -e $target ];then
-    echo "Target file $target already exists" > /dev/stderr
-    exit -2
+if [ -z $forceOverwrite ];then
+    if [ -e $target ];then
+	echo "Target file $target already exists" > /dev/stderr
+	exit -2
+    fi
 fi
 
 scriptDir=`dirname $0`
