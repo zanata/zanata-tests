@@ -116,8 +116,8 @@ my %argumentMavenGoalH=(
     help =>'help'
     , pull => 'pull'
     , push => 'push'
-    , 'project-put' =>'putproject'
-    , 'version-put' =>'putversion'
+    , 'project-put' =>'put-project'
+    , 'version-put' =>'put-version'
 );
 
 my %argumentPythonGoalH=(
