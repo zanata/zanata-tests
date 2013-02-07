@@ -1,6 +1,6 @@
 = Client:Push:Translater
 :email: dchen@redhat.com
-:revdate: 2013/02/01
+:revdate: 2013/02/07
 :revnumber: 2.2
 
 == attributes
@@ -26,6 +26,7 @@ to the language group he/she joined with
 === Feature to Be Tested
 * Authentication check.
 * Assume zanata.xml is corrected and completed.
+* pushType trans
 * locales 
 
 === Feature NOT to Be Tested
@@ -68,7 +69,7 @@ to the language group he/she joined with
 
 In command line, do the following:
 
-=== Translator Does Not Specify His/Her Language Group
+=== Translator Does Not Specify Her Language Group
 1. Push trans without specify the locales
 `@CLIENT_CMD@ @CMD_PUSH@ @OPTION_PUSH_TRANS@`
 +
