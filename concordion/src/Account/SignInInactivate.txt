@@ -33,7 +33,7 @@ Features NOT to Test:
 
 == setup
 
-=== Requirement:
+=== Requires
 
  * An inactivated user (Registered but not yet activated)
 

@@ -23,6 +23,7 @@ Propose: Admin should be able to set the server configuration using Admin
 Server configuration page.
 
 Feature to Be Tested:
+
 * Tool tips
 * Field validators
 * Input elements can be operated.
@@ -30,10 +31,11 @@ Feature to Be Tested:
 * *Save* button
 
 Feature Not to Be Tested:
+
 * Actual use of the fields.
 
 == setup
-=== Requirement
+=== Requires
  * An admin role account.
  * 2 Email address.
 

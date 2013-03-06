@@ -34,7 +34,7 @@ Features NOT to Be Tested:
 * Fields of Admin->Server Configuration are filled.
 
 == setup
-=== Requirement
+=== Requires
  * Console access.
  * Fields of Admin->Server Configuration are empty.
 
