@@ -11,7 +11,7 @@
 :categoryname: Functional
 :component: 
 :defaulttester: 
-:role: anonymous
+:role: user
 :tag: 
 :impact: High
 :probability: Medium
@@ -19,12 +19,13 @@
 :taxonomy: 10200
 
 == notes
-Propose: Any one should be able to pull
+Propose: Only user should be able to pull
 the source files and translation files with
 @client@.
 
 === Feature to Be Tested
 * Assume zanata.xml is corrected and completed.
+* Authentication check.
 * pullType default (trans)
 * pullType both
 * pullType trans
@@ -32,7 +33,6 @@ the source files and translation files with
 * locales 
 
 === Feature NOT to Be Tested
-* Authentication check.
 * Handle the incompleted zanata.xml
 * File (New/Obsolete)
 * Textflow (New/Obsolete)
@@ -47,7 +47,7 @@ the source files and translation files with
 == setup
 
 === Requires
-* $HOME/.config/zanana.ini is moved (In order to be an anonymous)
+* $HOME/.config/zanana.ini is setup for a user.
 * A document project with following properties:
 ** ID: `@PROJ1@`
 ** Version: `@VER1@`
@@ -60,11 +60,20 @@ the source files and translation files with
 
 In command line, do the following:
 
+=== Non Project Maintainer Should Be Blocked
+1. `mv $HOME/.config/zanana.ini $HOME/.config/zanana.ini.bak`
+
+2. Non User push with
+`@CLIENT_CMD@ @CMD_PUSH@ @OPTION_URL@`
+exp: Should FAIL with error message which states that you need username and
+apikey to perform pull
+
+3. `mv $HOME/.config/zanana.ini.bak $HOME/.config/zanana.ini`
+
 === pullType source
 1. Pull source and locale is @LANG1@
 `@CLIENT_CMD@ @CMD_PULL@ @OPTION_URL@ @OPTION_PULL_TYPE_SOURCE@  @OPTION_LOCALE_LANG1@`
-exp: Should FAIL with error message that state pullType source conflict with
-locale.
+exp: Should FAIL with error message that state pullType source conflict with locale.
 
 2. Pull source
 `@CLIENT_CMD@ @CMD_PULL@ @OPTION_URL@ @OPTION_PULL_TYPE_SOURCE@`
@@ -77,13 +86,13 @@ exp: Translation of all locales should be pulled without error.
 
 2. Pull default and locale `@LANG1@`
 `@CLIENT_CMD@ @CMD_PULL@ @OPTION_URL@ @OPTION_LOCALE_LANG1@`
-exp: Translation of locale `@LANG1@` should be pulled without error.
+exp: Translation of locale @LANG1@ should be pulled without error.
 
 === pullType trans
 
 1. Pull trans and locale `@LANG1@`
 `@CLIENT_CMD@ @CMD_PULL@ @OPTION_URL@ @OPTION_LOCALE_LANG1@`
-exp: Translation of locale `@LANG1@` should be pulled without error.
+exp: Translation of locale @LANG1@ should be pulled without error.
 
 === pullType both
 1. Pull both
@@ -92,8 +101,7 @@ exp: Source and translation of all locales should be pulled without error.
 
 2. Pull default and locale `@LANG1@`
 `@CLIENT_CMD@ @CMD_PULL@ @OPTION_URL@ @OPTION_PULL_TYPE_BOTH@ @OPTION_LOCALE_LANG1@`
-exp: Source and translation of locale `@LANG1@` should be pulled without error.
-
+exp: Source and translation of locale @LANG1@ should be pulled without error.
 
 == expectedresults
 Proceed as described in Action.
