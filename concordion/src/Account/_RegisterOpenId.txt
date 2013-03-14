@@ -1,0 +1,88 @@
+= Register:OpenId:{open_id_service}
+:email: dchen@redhat.com
+:revdate: 2013/03/14
+:revnumber: 2.3
+
+== attributes
+:priority: P2
+:status: CONFIRMED
+:automated: MANUAL
+:testplan_reference: Zanata-full
+:categoryname: Functional
+:component: Component-UI
+:defaulttester: 
+:tag: 
+:role: anonymouos
+:impact: High
+:probability: Medium
+:risk: 6
+
+== notes
+Propose: New user is able to register with {open_id_service} account.
+
+Features to Test:
+
+* Not yet sign in to {open_id_service}.
+* Sign in to {open_id_service}.
+* Allow or Disallow to use Open Id.
+* Activation Email.
+
+Features NOT to Test:
+
+* User/Password Validator.
+* Password Validator.
+* Resend Activation email.
+* Update email address.
+
+== setup
+
+=== Requires
+* {open_id_service} account that have not been sign in yet.
+* An email associate with the {open_id_service}.
+
+== action
+=== Not yet sign in to {open_id_service}
+1. Ensure that your browser for testing is not signed in with other
+   {open_id_service} services.
+2. Click *Sign In*
+3. Click {open_id_service} Icon
+exp: You should see a {open_id_service} Sign in page.
+4. Use the wrong user name and password to sign in
+exp: Invalid user name and password should be handled by {open_id_service} Sign In page
+5. Sign In with correct user name.
+
+== Allow or Disallow to use Open Id
+1. Disallow the usage of the Open Id if you have the choice.
+exp: The Sign in process should stop and states that you disallow the use of the Open Id.
+2. Re-sign in, bot allow to use Open Id this time.
+exp: Page *Edit Profiles* should be loaded.
+
+
+=== Click "Cancel"
+1. On Page "Edit Profiles" page, click "Cancel".
+exp: Zanata Home page should be  loaded, but you are not signed in.
+
+=== Sign in to {open_id_service}
+1. Visit {open_id_service} Home page and Sign In
+2. Visit Zanata Home page 
+3. Click *Sign In*
+4. Click {open_id_service} Icon
+5. Allow the use of Open Id if you have the choice.
+exp: Page *Edit Profiles* should be loaded.
+
+=== Normal Sign In
+1. Filling your *Name*, *Username* and *Email*.
+2. Click *Save*.
+exp: Zanata Server Home Page should be loaded, with info message: "You will soon receive an email with a link to activate your account".
+3. Check your email
+exp: A registration email should be delivered.
+4. Click the activation link in email.
+5. Sign In again with the your account,
+exp: Sign In should succeed.
+
+== expectedresults
+Progress as described as in Action
+
+== breakdown
+
+// vim: set syntax=asciidoc:

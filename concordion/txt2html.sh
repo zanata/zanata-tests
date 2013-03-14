@@ -29,11 +29,19 @@ END
 }
 
 forceOverwrite=
+ASCIIDOC_OPT=
 
-if [ "$1" = "-f" ];then
-    forceOverwrite=1
-    shift
-fi
+while getopts fv opt;do
+    case $opt in
+	f)
+	    forceOverwrite=1
+	    ;;
+	v)
+	ASCIIDOC_OPT="$ASCIIDOC_OPT -v"
+	    ;;
+    esac
+done
+shift $((OPTIND-1))
 
 src=$1
 name=`basename $src .txt`
@@ -68,5 +76,5 @@ fi
 scriptDir=`dirname $0`
 cfgFile=$scriptDir/xhtml11.conf
 
-asciidoc -f $cfgFile -o $target $src
+asciidoc $ASCIIDOC_OPT -f $cfgFile -o $target $src
 exit $?

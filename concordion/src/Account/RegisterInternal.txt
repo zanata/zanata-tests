@@ -1,7 +1,5 @@
 = Account:Register:Internal
 :email: dchen@redhat.com
-:revdate: 2013/03/06
-:revnumber: 2.3
 
 == attributes
 :priority: P3
