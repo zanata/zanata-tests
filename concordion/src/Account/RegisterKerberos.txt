@@ -19,7 +19,7 @@
 :taxonomy: 1300
 
 == notes
-Propose: New user is able to register with Kerberos account by just sign in.
+Propose: New user should be able to register with Kerberos account by just sign in.
 
 Features to Test:
 
