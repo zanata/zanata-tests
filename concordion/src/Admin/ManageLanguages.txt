@@ -4,7 +4,7 @@
 :revnumber: 2.3
 
 == attributes
-:priority: P1
+:priority: P2
 :status: CONFIRMED
 :automated: 
 :testplan_reference: Zanata-full
@@ -33,17 +33,16 @@ Features Not to test:
 * Actual Team Member management, as it is covered by tests for language
   coordinator.
 
-
 == setup
 === Requires
-* And admin role account
+* An admin role account
 * It is assumed that no languages are created on the test instance when this test begins.
 * Several other Zanata accounts as candidate of team member.
 
 == action
 1. Sign in with as an admin.
 2. Click *More* -> *Administration* -> *Manage Languages*
-exp: Table *Language Manager* table should appear.
+exp: Page *Manager Language* should appear.
 
 === Add a new Language
 1. Click on "Add New Language"
@@ -130,7 +129,7 @@ exp: The action should succeed.
 exp: The action should fail.
 
 == expectedresults
-Proceed as described in Action
+Proceed as described in Actions.
 
 == breakdown
 
