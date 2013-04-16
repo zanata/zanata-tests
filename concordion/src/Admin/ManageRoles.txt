@@ -33,7 +33,7 @@ Features Not to test:
 * An admin role account
 
 == action
-1. Sign in with as an admin.
+1. Sign in as an admin.
 2. Click *More* -> *Administration* -> *Manage Roles*
 exp: Page *Manager Roles*  should be loaded.
 
@@ -92,8 +92,6 @@ $$$$
 
 == expectedresults
 Proceed as described in Actions.
-
-
 
 == breakdown
 Remove `

@@ -1,0 +1,103 @@
+= Admin:Manage:Search
+:email: dchen@redhat.com
+:revdate: 2013/04/16
+:revnumber: 2.3
+
+== attributes
+:priority: P2
+:status: CONFIRMED
+:automated: 
+:testplan_reference: Zanata-full
+:categoryname: Functional
+:component: Component-UI
+:defaulttester: 
+:tag: 
+:role: admin
+:impact: High
+:probability: Medium
+:risk: 6
+:taxonomy: 8300
+
+== notes
+Propose: Admin should be able to manage search.
+
+Feature to Test:
+
+* Selection Buttons
+* Row Selection Checkboxes
+* Column Selection Checkboxes
+* Perform Selection Actions
+* Current Progress
+
+Feature Not to Test:
+
+
+== setup
+=== Requires
+* An admin role account
+
+== action
+ 1. Sign in as an admin
+ 2. Click *More* -> *Administration* -> *Manage Search*
+ exp: Page *Manager Search* should appear.
+
+=== Selection Buttons
+ 1. Click Button *Select All*
+ exp: All checkboxes should be checked.
+
+ 2. Click Button *Clear Selection*
+ exp: All checkboxes should be unchecked.
+
+=== Row/Colum Selection Checkboxes
+ 1. Check checkbox *all actions* at row 1.
+exp: All checkboxes at row 1 should be checked.
+ 2. Uncheck checkbox *all actions* at row 1.
+exp: All checkboxes at row 1 should be unchecked.
+ 3. Check checkbox *all actions* at row 1.
+ 4. Uncheck checkbox *Purge index* at row 1.
+exp: Checkbox *Purge index* and *all actions* at row 1 should be unchecked.
+ 5. Check checkbox *Purge index* at row 1.
+exp: Checkbox *Purge index* and *all actions* at row 1 should be checked.
+ 6. Check checkbox *all tables* at column *Reindex*.
+exp: All checkboxes at column *Reindex* should be checked.
+ 7. Uncheck checkbox *all tables* at column *Reindex*.
+exp: All checkboxes at column *Reindex* should be unchecked.
+ 8. Check checkbox *all tables* at column *Reindex*.
+ 9. Uncheck checkbox for *HAccount* at column *Reindex*.
+exp: Checkbox for *HAccount* and *all tables* at column *Reindex* should be unchecked.
+10. Check checkbox for *HAccount* at column *Reindex*.
+exp: Checkbox for *HAccount* and *all tables* at column *Reindex* should be checked.
+
+=== Perform Selection Actions and Current Progress 
+1. Click Button *Clear Selection*
+2. Check checkbox on row *HTextFlowTarget* and column *Reindex*.
+3. Click Button *Perform Selection Actions*
+  $$$$
+    * Current Progress should start showing the progress, the 
+    * Button *Perform Selection Action* should be disabled.
+  $$$$
+|
+4. Wait until the actions finished.
+$$$$
+* Current Progress should indicate that actions are completed.
+* Button *Perform Selection Action* should be enabled.
+$$$$
+|
+5. Click Button *Select All*
+6. Click Button *Perform Selection Actions*
+exp: Current Progress should start showing the progress.
+7. Sign out, then Sign in.
+8. Visit manage search page.
+$$$$
+* Current progress should show the completeness of the actions.
+* Button *Perform Selection Action* should either be enabled or disabled,
+  depends on whether the actions are completed or not.
+$$$$
+
+== expectedresults
+Proceed as described in Actions.
+
+== breakdown
+
+
+// vim: set syntax=asciidoc:

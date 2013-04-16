@@ -40,7 +40,7 @@ Features Not to test:
 * Several other Zanata accounts as candidate of team member.
 
 == action
-1. Sign in with as an admin.
+1. Sign in as an admin.
 2. Click *More* -> *Administration* -> *Manage Languages*
 exp: Page *Manager Language* should appear.
 
