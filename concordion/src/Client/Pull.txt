@@ -65,7 +65,7 @@ In command line, do the following:
 
 2. Non User push with
 `@CLIENT_CMD@ @CMD_PUSH@ @OPTION_URL@`
-exp: Should FAIL with error message which states that you need username and
+  ? Should FAIL with error message which states that you need username and
 apikey to perform pull
 
 3. `mv $HOME/.config/zanana.ini.bak $HOME/.config/zanana.ini`
@@ -73,35 +73,35 @@ apikey to perform pull
 === pullType source
 1. Pull source and locale is @LANG1@
 `@CLIENT_CMD@ @CMD_PULL@ @OPTION_URL@ @OPTION_PULL_TYPE_SOURCE@  @OPTION_LOCALE_LANG1@`
-exp: Should FAIL with error message that state pullType source conflict with locale.
+  ? Should FAIL with error message that state pullType source conflict with locale.
 
 2. Pull source
 `@CLIENT_CMD@ @CMD_PULL@ @OPTION_URL@ @OPTION_PULL_TYPE_SOURCE@`
-exp: ONLY source should be pulled without error.
+  ? ONLY source should be pulled without error.
 
 === pullType default
 1. Pull default
 `@CLIENT_CMD@ @CMD_PULL@ @OPTION_URL@`
-exp: Translation of all locales should be pulled without error.
+  ? Translation of all locales should be pulled without error.
 
 2. Pull default and locale `@LANG1@`
 `@CLIENT_CMD@ @CMD_PULL@ @OPTION_URL@ @OPTION_LOCALE_LANG1@`
-exp: Translation of locale @LANG1@ should be pulled without error.
+  ? Translation of locale @LANG1@ should be pulled without error.
 
 === pullType trans
 
 1. Pull trans and locale `@LANG1@`
 `@CLIENT_CMD@ @CMD_PULL@ @OPTION_URL@ @OPTION_LOCALE_LANG1@`
-exp: Translation of locale @LANG1@ should be pulled without error.
+  ? Translation of locale @LANG1@ should be pulled without error.
 
 === pullType both
 1. Pull both
 `@CLIENT_CMD@ @CMD_PULL@ @OPTION_URL@ @OPTION_PULL_TYPE_BOTH@`
-exp: Source and translation of all locales should be pulled without error.
+  ? Source and translation of all locales should be pulled without error.
 
 2. Pull default and locale `@LANG1@`
 `@CLIENT_CMD@ @CMD_PULL@ @OPTION_URL@ @OPTION_PULL_TYPE_BOTH@ @OPTION_LOCALE_LANG1@`
-exp: Source and translation of locale @LANG1@ should be pulled without error.
+  ? Source and translation of locale @LANG1@ should be pulled without error.
 
 == expectedresults
 Proceed as described in Action.

@@ -45,26 +45,26 @@ In command line, do the following:
 
 1. Create the project without name and description:
 `@CLIENT_CMD@ @CMD_PROJECT_CREATE@`
-exp: Should FAIL with error message which states that URL, project id, name, and description are needed.
+  ? Should FAIL with error message which states that URL, project id, name, and description are needed.
 2. Create the project with project name and description:
 `@CLIENT_CMD@ @CMD_PROJECT_CREATE@ @OPTION_PROJ1@ @OPTION_NAME@ @OPTION_DESC@`
-exp: Should FAIL with error message which states that URL, username and apikey are needed.
+  ? Should FAIL with error message which states that URL, username and apikey are needed.
 $$$$
 +
 3. Create project with only URL, username and wrong APIKEY:
 `@CLIENT_CMD@ @CMD_PROJECT_CREATE@ @OPTION_PROJ1@ @OPTION_NAME@ @OPTION_DESC@ @OPTION_URL@
   @OPTION_USERNAME@ @OPTION_APIKEY_WRONG@`
-exp: Should FAIL with error message show that either url, username or API key is wrong.
+  ? Should FAIL with error message show that either url, username or API key is wrong.
 4. Create project with only URL and username and correct APIKEY:
 `@CLIENT_CMD@ @CMD_PROJECT_CREATE@ @OPTION_PROJ1@ @OPTION_NAME@ @OPTION_DESC@ @OPTION_URL@
 @OPTION_USERNAME@` `@OPTION_APIKEY@`
-exp: Should succeed.
+  ? Should succeed.
 5. Back to Web page *My Profile*.
 6. Copy the *Configuration [zanata.ini]* and paste to
    `$HOME/.config/zanana.ini`
 7. Create the project again without specifying username and API
 `@CLIENT_CMD@ @CMD_PROJECT_CREATE@ @OPTION_PROJ1@ @OPTION_NAME@ @OPTION_DESC@ @OPTION_URL@`
-exp: Should succeed.
+  ? Should succeed.
 
 
 == expectedresults

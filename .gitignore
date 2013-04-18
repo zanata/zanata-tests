@@ -1,14 +1,10 @@
 CMakeCache.txt
-/CMakeFiles/
-/client-tests/CMakeFiles/
-/client-tests/mvn/CMakeFiles/
-/client-tests/py/CMakeFiles/
-/selenium/src/CMakeFiles/
+CMakeFiles/
 CTestTestfile.cmake
 cmake_install.cmake
 Makefile
-/.cache/
-/Testing/
+.cache/
+Testing/
 
 cookie.file
 HomePage.html
@@ -16,7 +12,6 @@ selenium/user-extensions.js
 selenium/src/initial_setup/ManageLanguages.html
 selenium/src/initial_setup/ServerConfiguration.html
 selenium/src/initial_setup/SignInAdmin.html
-selenium/src/Testing/
 [1-9]*.html
 SignIn*.html
 SignOut.html
@@ -24,9 +19,9 @@ SignOut.html
 concordion/src/TODO/
 concordion/src/html/
 
-/samples/
-/results/
-/pulled/
+samples/
+results/
+pulled/
 
 *.bak
 *.orig
@@ -39,3 +34,4 @@ zanata.ini
 apikey.*
 *.tar
 *.gz
+

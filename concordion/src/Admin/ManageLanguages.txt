@@ -42,91 +42,88 @@ Features Not to test:
 == action
 1. Sign in as an admin.
 2. Click *More* -> *Administration* -> *Manage Languages*
-exp: Page *Manager Language* should appear.
+ ? Page *Manager Language* should appear.
 
 === Add a new Language
-1. Click on "Add New Language"
+1. Click on "Add New Language".
 2. Select Zulu (code: `zu`) language from the pull down list.
-$$$$
-* The *Name*, *Language Code*, and *Native Name* fields should be populated with appropriate values.
-* The variant field is empty.
-* There is a warning message on the Language field indicating that there is no plural information available and that it will be assumed that the language does not accept plurals.
-$$$$
-|
-3. On the language input field type `es-ES`
-exp: A drop-down list should show the languages that matched.
-4. Press Enter.
-exp: The *Name*, *Language Code*, and *Native Name* fields should be populated with appropriate values.
-5. Press Save.
-exp: The Language Manager table is shown, now having an entry for `es-ES`.
-This language should have the *Enabled by Default* and *Active* checkboxes checked.
+  ? The *Name*, *Language Code*, and *Native Name* fields should be populated with appropriate values.
+  ? The variant field is empty.
+  ? There is a warning message on the Language field indicating that there is no plural information available and that it will be assumed that the language does not accept plurals.
 
+3. On the language input field type `es-ES`.
+ ? A drop-down list should show the languages that matched.
+4. Press Enter.
+ ? The *Name*, *Language Code*, and *Native Name* fields should be populated with appropriate values.
+5. Press *Save*.
+? The Language Manager table is shown, now having an entry for `es-ES`.
+? This language should have the *Enabled by Default* and *Active* checkboxes checked.
 
 === Enabled by Default
 1. Uncheck the *Enabled by Default* checkbox for `es-ES`.
-exp: A dialog should ask for confirmation. 
+ ? A dialog should ask for confirmation. 
 
 2. Click *Cancel*.
-exp: The *Enabled by Default* checkbox should keep checked.
+ ? The *Enabled by Default* checkbox should keep checked.
 
 3. Uncheck the *Enabled by Default* checkbox for `es-ES` again.
-exp: A dialog should ask for confirmation. 
+ ? A dialog should ask for confirmation. 
 
 4. Click *OK*.
-exp: The *Enabled by Default* checkbox should be unchecked.
+ ? The *Enabled by Default* checkbox should be unchecked.
 
 5. Check the *Enabled by Default* checkbox for `es-ES`.
-exp: A dialog should ask for confirmation.
+ ? A dialog should ask for confirmation.
 
 6. Click *Cancel*.
-exp: The *Enabled by Default* checkbox should keep unchecked.
+ ? The *Enabled by Default* checkbox should keep unchecked.
 
 7. Check the *Enabled by Default* checkbox for `es-ES`.
-exp: A dialog should ask for confirmation.
+ ? A dialog should ask for confirmation.
 
 8. Click *OK*.
-exp: The *Enabled by Default* checkbox should be checked.
+ ? The *Enabled by Default* checkbox should be checked.
 
 === Active
 1. Uncheck the *Active* checkbox for `es-ES`.
-exp: A dialog should ask for confirmation. 
+ ? A dialog should ask for confirmation. 
 
 2. Click *Cancel*.
-exp: The *Active* checkbox should keep checked.
+ ? The *Active* checkbox should keep checked.
 
 3. Uncheck the *Active* checkbox for `es-ES` again.
-exp: A dialog should ask for confirmation. 
+ ? A dialog should ask for confirmation. 
 
 4. Click *OK*.
-exp: The *Active* checkbox should be unchecked.
+ ? The *Active* checkbox should be unchecked.
 
 5. Check the *Active* checkbox for `es-ES`.
-exp: A dialog should ask for confirmation.
+ ? A dialog should ask for confirmation.
 
 6. Click *Cancel*.
-exp: The *Active* checkbox should keep unchecked.
+ ? The *Active* checkbox should keep unchecked.
 
 7. Check the *Active* checkbox for `es-ES`.
-exp: A dialog should ask for confirmation.
+ ? A dialog should ask for confirmation.
 
 8. Click *OK*.
-exp: The *Active* checkbox should be checked.
+ ? The *Active* checkbox should be checked.
 
 === Team Members
 1. Click on the button *Team Members* on the 'es-ES' language row.
-* The Language Team member page for es-ES should be shown.
+ ? The Language Team member page for es-ES should be shown.
 
 2. Refer tests for language coordinator for detail instructions.
    Following steps briefly tell you what to do.
 
 3. Try to add a non-exist user.
-exp: The action should fail.
+ ? The action should fail.
 
 4. Try to add a user.
-exp: The action should succeed.
+ ? The action should succeed.
 
 5. Try to add that user again.
-exp: The action should fail.
+ ? The action should fail.
 
 == expectedresults
 Proceed as described in Actions.

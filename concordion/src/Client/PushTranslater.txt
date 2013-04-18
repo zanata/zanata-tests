@@ -82,13 +82,13 @@ $$$$
 1. Push trans with locale @LANG2@ (which she did not join).
 did not joined).
 `@CLIENT_CMD@ @CMD_PUSH@ @OPTION_PUSH_TRANS@ @OPTION_PUSH_LOCALES_LANG2@`
-exp: Should show error message states that she is not the member of @LANG2@.
+  ? Should show error message states that she is not the member of @LANG2@.
 
 === Translator Specify Locales She Joined
 1. Push trans with locale @LANG1@ (which she did not join).
 did not joined).
 `@CLIENT_CMD@ @CMD_PUSH@ @OPTION_PUSH_TRANS@ @OPTION_PUSH_LOCALES_LANG1@`
-exp: Push successfully.
+  ? Push successfully.
 
 == expectedresults
 Proceed as described in Action.

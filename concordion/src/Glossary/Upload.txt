@@ -41,24 +41,22 @@ Propose: Glossarist should be able to upload the glossary
 == action
 1. Sign In
 2. Click "More" -> "Glossary"
-exp: Page "Glossary" should be loaded.
+  ? Page "Glossary" should be loaded.
 
 === Upload PO Glossary file
 1. Click "Upload".
 2. Upload the po file using the file dialog.
-exp: Upload should be succeed.
+  ? Upload should be succeed.
 3. Look at the Glossary List. 
-exp: Glossary should have Langauage c:assertEquals="hasGlossary(#Lang1)"[zh_TW].
+  ? Glossary should have Langauage c:assertEquals="hasGlossary(#Lang1)"[zh_TW].
 
 === Upload CSV Glossary file
 1. Click "Upload".
 2. Upload the csv file using the file dialog.
-exp: Upload should be succeed.
+  ? Upload should be succeed.
 3. Look at the Glossary List. 
-$$$$
-Glossary should have Langauage c:assertEquals="hasGlossary(#Lang2)"[es_ES].
-and c:assertEquals="hasGlossary(#Lang3)"[zh_CN].
-$$$$
+  ? Glossary should have languages c:assertEquals="hasGlossary(#Lang2)"[es_ES] 
+    and c:assertEquals="hasGlossary(#Lang3)"[zh_CN].
 
 == expectedresults
 Proceed as described in Action.

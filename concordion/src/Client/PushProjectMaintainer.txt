@@ -72,18 +72,18 @@ In command line, do the following:
 === Non Project Maintainer Should Be Blocked
 1. Non Project maintainer push with
 `@CLIENT_CMD@ @CMD_PUSH@ @OPTION_URL@ @OPTION_USERNAME_NON_PROJMANT@ @OPTION_APIKEY_NON_PROJMANT@`
-exp: Should FAIL with error message which states that user is not a project maintainer.
+  ? Should FAIL with error message which states that user is not a project maintainer.
 
 === Project Maintainer
 1. Push without any argument
 `@CLIENT_CMD@ @CMD_PUSH@`
-exp: Only source should be pushed. Sign In to Zanata Web to check.
+  ? Only source should be pushed. Sign In to Zanata Web to check.
 2. Push with push type source 
 `@CLIENT_CMD@ @CMD_PUSH@ @OPTION_PUSHTYPE_SOURCE`
-exp: Only source should be pushed. Sign In to Zanata Web to check.
+  ? Only source should be pushed. Sign In to Zanata Web to check.
 3. Push with push type both 
 `@CLIENT_CMD@ @CMD_PUSH@ @OPTION_PUSHTYPE_SOURCE`
-exp: Both Source and translation are pushed. Sign In to Zanata Web to check.
+  ? Both Source and translation are pushed. Sign In to Zanata Web to check.
 
 == expectedresults
 Proceed as described in Action.

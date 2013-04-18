@@ -46,21 +46,21 @@ Features NOT to Test:
    {open_id_service} services.
 2. Click *Sign In*
 3. Click {open_id_service} Icon
-exp: You should see a {open_id_service} Sign in page.
-4. Use the wrong user name and password to sign in
-exp: Invalid user name and password should be handled by {open_id_service} Sign In page
+  ? You should see a {open_id_service} Sign in page.
+4. Use the wrong user name and password to sign in.
+  ? Invalid user name and password should be handled by {open_id_service} Sign In page
 5. Sign In with correct user name.
 
 == Allow or Disallow to use Open Id
 1. Disallow the usage of the Open Id if you have the choice.
-exp: The Sign in process should stop and states that you disallow the use of the Open Id.
+  ? The Sign in process should stop and states that you disallow the use of the Open Id.
 2. Re-sign in, bot allow to use Open Id this time.
-exp: Page *Edit Profiles* should be loaded.
+  ? Page *Edit Profiles* should be loaded.
 
 
 === Click "Cancel"
 1. On Page "Edit Profiles" page, click "Cancel".
-exp: Zanata Home page should be  loaded, but you are not signed in.
+  ? Zanata Home page should be  loaded, but you are not signed in.
 
 === Sign in to {open_id_service}
 1. Visit {open_id_service} Home page and Sign In
@@ -68,17 +68,17 @@ exp: Zanata Home page should be  loaded, but you are not signed in.
 3. Click *Sign In*
 4. Click {open_id_service} Icon
 5. Allow the use of Open Id if you have the choice.
-exp: Page *Edit Profiles* should be loaded.
+  ? Page *Edit Profiles* should be loaded.
 
 === Normal Sign In
 1. Filling your *Name*, *Username* and *Email*.
 2. Click *Save*.
-exp: Zanata Server Home Page should be loaded, with info message: "You will soon receive an email with a link to activate your account".
+  ? Zanata Server Home Page should be loaded, with info message: "You will soon receive an email with a link to activate your account".
 3. Check your email
-exp: A registration email should be delivered.
+  ? A registration email should be delivered.
 4. Click the activation link in email.
 5. Sign In again with the your account,
-exp: Sign In should succeed.
+  ? Sign In should succeed.
 
 == expectedresults
 Progress as described as in Action

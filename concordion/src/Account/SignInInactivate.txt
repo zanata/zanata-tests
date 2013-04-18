@@ -19,32 +19,31 @@
 :taxonomy: 1820
 
 == notes
-Propose: User who has not clicked the registration activation link should be brought to inactivate account page. Clicking other link will be treated as a not-login.
+Propose: User who has not clicked the registration activation link should be brought to inactivate account page. 
+Clicking other link will be treated as a not-login.
 
 Scope: The privilege of inactive user. The Resend activation like or update email should be addressed in other test cases.
 
 Features to Test:
+
 * Inactive page.
 * Other links. Should be treated as not-login.
 
 Features NOT to Test:
+
 * Resend Activation email.
 * Update email address.
 
 == setup
 
 === Requires
-
  * An inactivated user (Registered but not yet activated)
 
 == action
 
 1. Sign in
-+
-$$$$
-Page "Inactivated User" should be loaded. + 
-It should has following 2 sections: "Resent activation email" and "Update email address".
-$$$$
+  ? Page "Inactivated User" should be loaded.
+  ? It should has following 2 sections: "Resent activation email" and "Update email address".
 
 2. Click at following tabs 
 +
@@ -58,11 +57,10 @@ c!Link c!Result
 ! More !
 $============
 +
-exp: Those pages should not offer any actions that will change the content of Zanata project.
+ ? Those pages should not offer any actions that will change the content of Zanata project.
 
 
 == expectedresults
-
 Proceed as described in Action.
 
 
