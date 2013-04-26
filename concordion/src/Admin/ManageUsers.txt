@@ -1,0 +1,108 @@
+= Admin:Manage:Users
+:email: dchen@redhat.com
+:revdate: 2013/04/26
+:revnumber: 3.0
+
+== attributes
+:priority: P2
+:status: CONFIRMED
+:automated: 
+:testplan_reference: Zanata-full
+:categoryname: Functional
+:component: Component-UI
+:defaulttester: 
+:tag: 
+:role: admin
+:impact: High
+:probability: Medium
+:risk: 6
+:taxonomy: 8100
+
+== notes
+Propose: Admin should be able to manage users.
+
+Feature to Test:
+
+* User Search
+* Edit User
+  * Member Of
+  * Enable
+  * Password Reset
+* Delete User
+
+Feature Not to Test:
+
+== setup
+=== Requires
+* An admin role account
+* A registered user who has translated messages in this zanata. (e.g. `ACTIVE_USER`)
+* A registered user who has NOT translated messages in this zanata. (e.g. `LAZY_USER`)
+* A user who has NOT finished the registration. (e.g. `UNREGISTERED_USER`)
+* A few roles other than admin, (e.g. `ROLE1` )
+
+
+== action
+1. Sign in as an admin
+2. Click *More* -> *Administration* -> *Manage Users*
+ ? Page *Manager Users* should appear.
+ ? Table of user list should appear.
+
+=== User Search
+1. Type `NON_EXIST` in search field and press *Enter*.
+   ? User list should be empty.
+
+2. Clean the search field and press *Enter*.
+   ? User list should show all user again.
+
+3. Type username of any valid user in search field, and press *Enter*.
+   ? User list should show that user, as well as other username that contain the substring.
+
+4. Clean the search field and press *Enter*.
+
+=== Edit User
+1. Click button *Edit* on the row of `ACTIVE_USER`.
+2. Type the new password in both password field and confirm password.
+3. Uncheck *Account Enabled*
+4. Click *Cancel*
+  ? User table should not be changed.
+  ? ACTIVE_USER can still use old password to sign in.
+5. Click button *Edit* on the row of `LAZY_USER`.
+6. Type the new password in both password field and confirm password.
+7. Check checkbox `ROLE1` and/or other roles.
+8. Uncheck *Account Enabled*
+9. Click *Update*
+  ? User `LAZY_USER` should be the member of the roles you just checked.
+  ? User `LAZY_USER` is now disabled.
+10. Sign out, then sign in as `LAZY_USER` using the new password
+  ? Page "Inactivated User" should be loaded.
+11. Sign out and Sign in as admin
+12. Click *More* -> *Administration* -> *Manage Users*.
+13. Click button *Edit* on the row of `LAZY_USER`.
+14. Check *Account Enabled*
+15. Click *Update*
+   ? User `LAZY_USER` should be enabled, and can sign in normally.
+
+=== Delete User
+1. Click button *Delete* on the row of `ACTIVE_USER`.
+   ? Confirmation dialog "Are you sure? ....  This action cannot be undone" should appear.
+2. Click *Cancel*.
+   ? User table should not be changed.
+3. Click button *Delete* on the row of `ACTIVE_USER`.
+4. Click *Ok*.
+   ? Error message: "This user cannot be removed from the system. You can
+   deactivate the user instead".
+   ? Error message: "Transaction failed".
+   ? User table should NOT be changed.
+5. Click button *Delete* on the row of `LAZY_USER`.
+6. Click *Ok*.
+   ? User `LAZY_USER` should be removed from user table.
+7. Click button *Delete* on the row of `UNREGISTERED_USER`.
+8. Click *Ok*.
+   ? User `UNREGISTERED_USER` should be removed from user table.
+
+== expectedresults
+Proceed as described in Actions.
+
+== breakdown
+
+// vim: set syntax=asciidoc:
