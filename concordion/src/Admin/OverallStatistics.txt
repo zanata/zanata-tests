@@ -22,12 +22,12 @@
 Propose: An admin should be able to see overall statistics.
 This page might change in future.
 
-Features to test: 
+Features to Test: 
 
 * Whether sections are displayed.
 * Team Members
 
-Features Not to test:
+Features Not to Test:
 
 * The accuracy of numbers.
 
@@ -36,7 +36,7 @@ Features Not to test:
 * An admin role account
 
 == action
- 1. Log in with an admin level account.
+ 1. Sign in as an admin.
  2. Click *More* -> *Administration* -> *Overall Statistics*
 ? Page *Overall Statistics* should be loaded.
 ? Section such as *Total translators*, *Total Projects* should appear with non

@@ -1,0 +1,108 @@
+= Admin:Server Monitoring
+:email: dchen@redhat.com
+:revdate: 2013/05/02
+:revnumber: 3.0
+
+== attributes
+:priority: P5
+:status: CONFIRMED
+:automated: 
+:testplan_reference: Zanata-full
+:categoryname: Functional
+:component: Component-UI
+:defaulttester: 
+:tag: 
+:role: admin
+:impact: Low
+:probability: Low
+:risk: 1
+:taxonomy: 8910
+
+== notes
+Propose: Admin should be able to monitor Zanata server statistics.
+
+RFE: Ability to monitor Zanata server statistics
+https://bugzilla.redhat.com/show_bug.cgi?id=813161
+
+Features to Test: 
+
+* Statistics of JavaMelody
+** Choice of period
+* Other Statistics
+* System information
+
+Features Not to Test:
+
+* The accuracy of numbers.
+
+
+== setup
+=== Requires
+* An admin role account
+* More than one projects have been created on the server.
+
+== action
+ 1. Sign In as an admin.
+ 2. Click *More* -> *Administration* -> *Server Monitoring*
+ ? Page that contains JavaMelody charts and other statistics should be loaded.
+
+=== Statistics of Java Melody
+ 1. Click *Update*.
+ ? Page should be updated.
+ 2. Click *Online help*
+ ?  Page *Online help of the JavaMelody monitoring* should be loaded in new tab.
+ 3. Close online help page.
+ 4. Click on *Day*, *Week*, *Month*, *Year*, *All*.
+ ? On each click, charts and the X axes should change respectively.
+ 5. Click on *Customize*
+ ? Fields of from and to dates should appear.
+ 6. Fill in any invalid date format, like 33/33/2000
+ ? Error message that states date format is invalid should appear.
+ 7. Fill in correct date format in both fields, but from-date is later than to-date.
+ ? Error message that states "From date should be earlier than to-date should appear.
+ 8. Fill in correct date format in both fields, and click *OK*
+ ? Charts and the X axes should change respectively.
+You should see all "statistics" on right of remaining page will change to week/month/year cooresponing to the selected choice from step 2, replacing default  ''Day".
+ 9. Click *Other charts*
+ ?  Other charts should appear.
+10. Click every charts
+ ? The chart you click should be magnified.
+11. Click *Other charts* agains
+ ?  Other charts should disappear.
+
+=== Other Statistics
+ 1. Click every links in this section.
+ ? No dead link should appear.
+
+=== System information
+ 1. Click on *Execute the garbage collector* (may hang for a few seconds)
+ ? After a few seconds, a pop up window that states "Garbage collector executed" should appear.
+ ? Memory should be freed.
+ 2. Click on *Generate a heap dump*
+ ? A pop up window that states "Heap dump generated in <path>" should appear.
+ 3. Click on *View memory histogram*
+ ? A new memory histogram page should be loaded.
+ 4. Click on *Invalidate http sessions*
+ ? All current users, including adminm should be signed out and redirected to sign in page.
+ 5. Click on *View http sessions*
+ ? A page that list all current session should be loaded.
+ 6. Click on *View deployment descriptor*
+ ? Deplyment descriptor in xml should be loaded.
+ 7. Click on *MBeans*
+ ? Page of MBeans details should be loaded.
+ 8. Click on *JNDI tree*
+ ? Page of JNDI details should be loaded.
+ 9. Click on *Opened jdbc connections*
+ ? Page of all current JDBC connections should be loaded.
+10. Click on *Database* (this would hang for a few seconds)
+ ?  Page of database process should be loaded.
+ ?  Process, Databases, Variables, Global status, and Innodb status can be
+ selected from a pull-down box.
+
+
+== expectedresults
+Proceed as described in Actions.
+
+== breakdown
+
+// vim: set syntax=asciidoc:
