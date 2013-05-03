@@ -1,0 +1,209 @@
+= Project:Create Project
+:email: dchen@redhat.com
+:revdate: 2013/05/03
+:revnumber: 3.0
+
+== attributes
+:priority: P2
+:status: CONFIRMED
+:automated: 
+:testplan_reference: Zanata-full
+:categoryname: Functional
+:component: Component-UI
+:defaulttester: 
+:tag:
+:role: user
+:impact: Medium
+:probability: High
+:risk: 6
+:taxonomy: 2010
+
+== notes
+Propose: A user should be able to create a project.
+
+RFE: "Create Project" for non-administrator users
+https://bugzilla.redhat.com/show_bug.cgi?id=727789
+
+Features to Test: 
+
+* Action *Create Project*
+* Page *Create a New Project*
+** Field *Project ID*
+** Field *Name*
+** Field *Description*
+** Pull-down *Project Type*
+** Field *View source files*
+** Field *Source Download/Checkout*
+** Field *Homepage Content*
+** Pull-down *Status*
+** Checkbox *add a customized list of locales*
+** Checkbox *restrict access*
+** Checkbox *customized list of validation*
+** Button *Cancel*
+** Button *Save*
+
+Features Not to Test:
+
+* 
+
+
+== setup
+=== Requires
+* A registered user.
+
+== action
+1. Sign in as a 
+
+=== Create an active project
+
+
+ 1. 
+Click Projects
+
+
+ 2. 
+Click "Create Project"
+
+
+ 3. 
+Fill in Project Id as "SomeProject 1" (if not available, use other id)
+
+
+ 4. 
+Fill in Project Name as "Some Project 1"
+
+
+ 5. 
+Fill in Project Description as "Some Project Description"
+
+
+ 6. 
+Fill in Project Content as "Some Project content"
+
+
+ 7. 
+Set Status as "Active"
+
+
+ 8. 
+Check  the box "Would you like add a customized list of locales?"
+
+
+ 9. 
+Move some locales from 'Enabled Locales' to "Disabled locales"
+
+
+ 10. Move soome locales from "Disabled locales" to 'Enabled Locales'
+ 11. 
+Click "Save"
+
+
+ 12. 
+Click "Manage Maintainers"
++ 
+The user himself/herself should be the project maintainer.
+
+
+
+=== Create a readonly project
+
+
+ 1. 
+Click Projects
+
+
+ 2. 
+Click "Create Project"
+
+
+ 3. 
+Fill in Project Id as "SomeProject1r" (if not available, use other id)
+
+
+ 4. 
+Fill in Project Name as "Some Project 1 Readonly"
+
+
+ 5. 
+Fill in Project Description as "Some Project Description"
+
+
+ 6. 
+Fill in Project Content as "Some Project content"
+
+
+ 7. 
+Set Status as "READONLY"
+
+
+ 8. Click "Save"
+ 9. Click "Manage Maintainers"
++ 
+The user himself/herself should be the project maintainer.
+
+=== Create a obsolete project (Admin)
+
+
+ 1. 
+Click Projects
+
+
+ 2. 
+Click "Create Project"
+
+
+ 3. 
+Fill in Project Id as "SomeProject1o" (if not available, use other id)
+
+
+ 4. 
+Fill in Project Name as "Some Project 1 obsolete"
+
+
+ 5. 
+Fill in Project Description as "Some Project Description"
+
+
+ 6. 
+Fill in Project Content as "Some Project content"
+
+
+ 7. 
+Set Status as "OBSOLETE"
+
+
+ 8. Click "Save"
+
+
+== expectedresults
+
+
+ * 
+
+Project "Some Project 1" was successfully created as an active project in project list.
++ 
+
+
+
+ * 
+
+Project "Some Project 1 Readonly" was successfully created as a readonly project 
+in project list.
++ 
+
+ * 
+
+
+
+Project "Some Project 1 Obsolete" was successfully created as an obsolete project 
+in project list.
++ 
+
+
+
+
+
+== breakdown
+
+
+// vim: set syntax=asciidoc:
