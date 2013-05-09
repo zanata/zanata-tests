@@ -44,7 +44,7 @@ Features to Test:
 
 Features Not to Test:
 
-* 
+* Consequence of changing the customized list.
 
 
 == setup
@@ -52,7 +52,11 @@ Features Not to Test:
 * A registered user.
 
 == action
-1. Sign in as a 
+1. Sign out if already sign in.
+
+=== Action *Create Project*
+1. Click tab *Projects*.
+? You should not 
 
 === Create an active project
 
