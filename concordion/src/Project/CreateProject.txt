@@ -44,168 +44,86 @@ Features to Test:
 
 Features Not to Test:
 
-* Consequence of changing the customized list.
+* Consequence after changing the project type.
+* Consequence after changing the customized list.
 
 
 == setup
 === Requires
-* A registered user.
+* A non-admin role account, e.g. `USER1`.
+* An admin role account, e.g. `ADMIN`.
 
 == action
 1. Sign out if already sign in.
 
 === Action *Create Project*
 1. Click tab *Projects*.
-? You should not 
+? Page *Projects* should be loaded.
+? Action *Create Project* should NOT appear.
+2. Sign in as `USER1`
+3. Click tab *Projects*.
+? Action *Create Project* should appear.
+
+=== Button *Cancel*.
+1. Click action *Create Project*
+? Page *Create a New Project* should appear.
+2. Fill in field *Project ID* with some thing like `Temp1`.
+3. Hover mouse on each info icon.
+? Corresponding tooltip should be shown for each info icon.
+4. Click button *Cancel*
+? Page *Project list* should be loaded.
+? `Temp1` should not be added in project list.
 
 === Create an active project
-
-
- 1. 
-Click Projects
-
-
- 2. 
-Click "Create Project"
-
-
- 3. 
-Fill in Project Id as "SomeProject 1" (if not available, use other id)
-
-
- 4. 
-Fill in Project Name as "Some Project 1"
-
-
- 5. 
-Fill in Project Description as "Some Project Description"
-
-
- 6. 
-Fill in Project Content as "Some Project content"
-
-
- 7. 
-Set Status as "Active"
-
-
- 8. 
-Check  the box "Would you like add a customized list of locales?"
-
-
- 9. 
-Move some locales from 'Enabled Locales' to "Disabled locales"
-
-
- 10. Move soome locales from "Disabled locales" to 'Enabled Locales'
- 11. 
-Click "Save"
-
-
- 12. 
-Click "Manage Maintainers"
-+ 
-The user himself/herself should be the project maintainer.
-
-
+1. Click *Create Project*.
+2. Fill in Project Id as `SomeProject1` (if not available, use other id)
+3. Fill in Project Name as `Some Project 1`.
+4. Fill in Project Description as `Project 1 Description`.
+5. Fill in Project Content as `Project 1 Content`.
+6. Set Status as *Active*.
+7. Check checkbox *Would you like add a customized list of locales?*.
+8. Move some locales from *Enabled Locales* to *Disabled locales*.
+? The locales you select should be listed in *Disable locales*.
+9. Move some locales from *Disabled locales* to *Enabled Locales*.
+?  The locales you select should be listed in *Enabled locales*.
+10. Toggle checkbox *Would you like to restrict access to this project to certain User roles?* 
+? A list of available roles should appear/disappear respectively.
+11. Toggle checkbox *Would you like to use a customized list of validations?*.
+? A list of validation options should appear/disappear respectively.
+12. Click *Save*.
+? `SomeProject1` should be in project list.
+13. Click *Manage Maintainers*.
+? The user should become a maintainer of this project.
 
 === Create a readonly project
+1. Click *Create Project*.
+2. Fill in Project Id as `SomeProject1Readonly` (if not available, use other id)
+3. Fill in Project Name as `Some Project 1 Readonly`.
+4. Fill in Project Description as `Project 1 Readonly Description`.
+5. Fill in Project Content as `Project 1 Readonly Content`.
+6. Set Status as *Readonly*.
+7. Click *Save*.
+? `SomeProject1ReadOnly` should be marked as readonly in project list.
 
+=== Create a obsolete project (non-admin)
+1. Click *Create Project*.
+2. Click pulldown *Status*.
+?  Option *Obsolete* should NOT appear.
+3. Sign out.
 
- 1. 
-Click Projects
-
-
- 2. 
-Click "Create Project"
-
-
- 3. 
-Fill in Project Id as "SomeProject1r" (if not available, use other id)
-
-
- 4. 
-Fill in Project Name as "Some Project 1 Readonly"
-
-
- 5. 
-Fill in Project Description as "Some Project Description"
-
-
- 6. 
-Fill in Project Content as "Some Project content"
-
-
- 7. 
-Set Status as "READONLY"
-
-
- 8. Click "Save"
- 9. Click "Manage Maintainers"
-+ 
-The user himself/herself should be the project maintainer.
-
-=== Create a obsolete project (Admin)
-
-
- 1. 
-Click Projects
-
-
- 2. 
-Click "Create Project"
-
-
- 3. 
-Fill in Project Id as "SomeProject1o" (if not available, use other id)
-
-
- 4. 
-Fill in Project Name as "Some Project 1 obsolete"
-
-
- 5. 
-Fill in Project Description as "Some Project Description"
-
-
- 6. 
-Fill in Project Content as "Some Project content"
-
-
- 7. 
-Set Status as "OBSOLETE"
-
-
- 8. Click "Save"
-
+=== Create a obsolete project (admin)
+1. Sign in as admin.
+2. Click *Create Project*.
+3. Fill in Project Id as `SomeProject1Obsolete` (if not available, use other id)
+4. Fill in Project Name as `Some Project 1 Obsolete`.
+5. Fill in Project Description as `Project 1 Obsolete Description`.
+6. Fill in Project Content as `Project 1 Obsolete Content`.
+7. Set Status as *Obsolete*.
+8. Click *Save*.
+? `SomeProject1Obsolete` should not appear in project list unless *obsolete* is checked.
 
 == expectedresults
-
-
- * 
-
-Project "Some Project 1" was successfully created as an active project in project list.
-+ 
-
-
-
- * 
-
-Project "Some Project 1 Readonly" was successfully created as a readonly project 
-in project list.
-+ 
-
- * 
-
-
-
-Project "Some Project 1 Obsolete" was successfully created as an obsolete project 
-in project list.
-+ 
-
-
-
-
+Proceed as described in Actions.
 
 == breakdown
 
