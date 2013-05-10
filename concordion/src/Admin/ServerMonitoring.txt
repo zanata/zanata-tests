@@ -97,7 +97,7 @@ You should see all "statistics" on right of remaining page will change to week/m
 10. Click on *Database* (this would hang for a few seconds)
  ?  Page of database process should be loaded.
  ?  Process, Databases, Variables, Global status, and Innodb status can be
- selected from a pull-down box.
+ selected from a drop down box.
 
 
 == expectedresults

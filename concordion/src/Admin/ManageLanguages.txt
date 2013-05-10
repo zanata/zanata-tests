@@ -46,7 +46,7 @@ Features Not to test:
 
 === Add a new Language
 1. Click on "Add New Language".
-2. Select Zulu (code: `zu`) language from the pull down list.
+2. Select Zulu (code: `zu`) language from the drop down list.
   ? The *Name*, *Language Code*, and *Native Name* fields should be populated with appropriate values.
   ? The variant field is empty.
   ? There is a warning message on the Language field indicating that there is no plural information available and that it will be assumed that the language does not accept plurals.

@@ -12,7 +12,7 @@
 :component: Component-UI
 :defaulttester: 
 :tag:
-:role: user
+:role: user, admin
 :impact: Medium
 :probability: High
 :risk: 6
@@ -31,12 +31,12 @@ Features to Test:
 ** Field *Project ID*
 ** Field *Name*
 ** Field *Description*
-** Pull-down *Project Type*
+** Drop down *Project Type*
 ** Field *View source files*
 ** Field *Source Download/Checkout*
 ** Field *Homepage Content*
-** Pull-down *Status*
-** Checkbox *add a customized list of locales*
+** Drop down *Status*
+** Checkbox *customized list of locales*
 ** Checkbox *restrict access*
 ** Checkbox *customized list of validation*
 ** Button *Cancel*
@@ -45,8 +45,9 @@ Features to Test:
 Features Not to Test:
 
 * Consequence after changing the project type.
-* Consequence after changing the customized list.
-
+* Consequence after changing the customized list of locales.
+* Consequence after changing the restrict access.
+* Consequence after changing the list of validation.
 
 == setup
 === Requires
@@ -64,7 +65,7 @@ Features Not to Test:
 3. Click tab *Projects*.
 ? Action *Create Project* should appear.
 
-=== Button *Cancel*.
+=== Button *Cancel*
 1. Click action *Create Project*
 ? Page *Create a New Project* should appear.
 2. Fill in field *Project ID* with some thing like `Temp1`.
@@ -84,7 +85,7 @@ Features Not to Test:
 7. Check checkbox *Would you like add a customized list of locales?*.
 8. Move some locales from *Enabled Locales* to *Disabled locales*.
 ? The locales you select should be listed in *Disable locales*.
-9. Move some locales from *Disabled locales* to *Enabled Locales*.
+9. Move some locales from *Disabled locales* to *Enabled Locales*.
 ?  The locales you select should be listed in *Enabled locales*.
 10. Toggle checkbox *Would you like to restrict access to this project to certain User roles?* 
 ? A list of available roles should appear/disappear respectively.
@@ -107,7 +108,7 @@ Features Not to Test:
 
 === Create a obsolete project (non-admin)
 1. Click *Create Project*.
-2. Click pulldown *Status*.
+2. Click drop down *Status*.
 ?  Option *Obsolete* should NOT appear.
 3. Sign out.
 

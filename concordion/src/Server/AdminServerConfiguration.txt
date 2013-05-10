@@ -87,7 +87,7 @@ Feature Not to Be Tested:
  2. Toggle *Enable Log emails* 3 times
   ? *Enable Log emails* should be togglable.
 
- 3. Click Pull down *Email Log emails*
+ 3. Click Drop down *Email Log emails*
   ? It should contains *Warning* and *Error*.
 
  4. Click Button *Save*
