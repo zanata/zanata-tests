@@ -12,7 +12,7 @@
 :component: Component-UI
 :defaulttester: 
 :tag:
-:role: user, admin
+:role: user
 :impact: Medium
 :probability: High
 :risk: 6
@@ -92,7 +92,7 @@ Features Not to Test:
 11. Toggle checkbox *Would you like to use a customized list of validations?*.
 ? A list of validation options should appear/disappear respectively.
 12. Click *Save*.
-? `SomeProject1` should be in project list.
+? `SomeProject1` should be an active project and displayed as such.
 13. Click *Manage Maintainers*.
 ? The user should become a maintainer of this project.
 
@@ -104,7 +104,7 @@ Features Not to Test:
 5. Fill in Project Content as `Project 1 Readonly Content`.
 6. Set Status as *Readonly*.
 7. Click *Save*.
-? `SomeProject1ReadOnly` should be marked as readonly in project list.
+? `SomeProject1ReadOnly` should be a readonly project and displayed as such.
 
 === Create a obsolete project (non-admin)
 1. Click *Create Project*.
@@ -121,7 +121,8 @@ Features Not to Test:
 6. Fill in Project Content as `Project 1 Obsolete Content`.
 7. Set Status as *Obsolete*.
 8. Click *Save*.
-? `SomeProject1Obsolete` should not appear in project list unless *obsolete* is checked.
+? `SomeProject1ReadOnly` should be an obsolete project, thus disappear from
+the project list unless *obsolete* is checked.
 
 == expectedresults
 Proceed as described in Actions.

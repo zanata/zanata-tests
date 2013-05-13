@@ -72,7 +72,7 @@ active versions.
 
 === Button Cancel
 1. Click Action *Edit Version*
-? Version ID is display in field *Version ID*, and should be readonly.
+? Field *Version ID* should show the correct version ID, but immutable.
 2. Toggle several of checkboxs.
 3. Click Button *Cancel*.
 4. Click Action *Edit Version*
