@@ -1,6 +1,6 @@
 = Project:Edit Project
 :email: dchen@redhat.com
-:revdate: 2013/05/18
+:revdate: 2013/05/13
 :revnumber: 3.0
 
 == attributes
@@ -54,7 +54,7 @@ Features Not to Test:
 * A non-project maintainer role account, e.g. `USER1`.
 * A project maintainer role account, e.g. `PROJMANT`
 * A non-admin user who is not the maintainer of either projects, e.g. `USER1`
-* A non-admin user who is the maintainer of all projects. e.g. `PROJMANT`
+* A non-admin user who is the maintainer of all these projects. e.g. `PROJMANT`
 * An admin role user. e.g. `ADMIN`.
 
 == action

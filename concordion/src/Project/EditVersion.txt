@@ -41,11 +41,12 @@ Features Not to Test:
 * Consequence after changing the list of validation.
 
 == setup
+=== Requires
 * An active project, e.g. `PROJA`, with at least one active version, e.g. `VERA`.
 * A readonly project, e.g. `PROJR`, with at least one  readonly version, e.g.`VERR`.
 * An obsolete project, e.g. `PROJO`, with at least one obsolete version, e.g.`VERO`.
 * A non-admin user who is not the maintainer of either projects, e.g. `USER1`
-* A non-admin user who is the maintainer of all projects. e.g. `PROJMANT`
+* A non-admin user who is the maintainer of all these projects. e.g. `PROJMANT`
 * An admin role user. e.g. `ADMIN`.
 
 == action
