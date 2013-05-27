@@ -45,7 +45,7 @@ Features Not to Test:
 * An active project, e.g. `PROJA`, with at least one active version, e.g. `VERA`.
 * A readonly project, e.g. `PROJR`, with at least one  readonly version, e.g.`VERR`.
 * A non-admin user who is not the maintainer of either projects, e.g. `USER1`
-* A non-admin user who is the maintainer of all these projects. e.g. `PROJMANT`
+* A non-admin user who is the maintainer of all these projects. e.g. `PMAINT`
 
 == action
 
@@ -57,7 +57,7 @@ Features Not to Test:
 3. Sign out.
 
 === Homepage content is NOT updated after cancel
-1. Sign in as `PROJMANT`.
+1. Sign in as `PMAINT`.
 2. Click *Projects* -> `PROJA`
 ? Page for project `PROJA` should be loaded.
 ? Action *Edit Page Code* should NOT appeared.
@@ -69,7 +69,7 @@ Features Not to Test:
 ? Homepage content should remain unchanged.
 
 === Homepage content is updated after cancel (Active Project)
-1. Sign in as `PROJMANT`.
+1. Sign in as `PMAINT`.
 2. Click *Projects* -> `PROJA`
 ? Page for project `PROJA` should be loaded.
 ? Action *Edit Page Code* should NOT appeared.
@@ -83,7 +83,7 @@ Features Not to Test:
 ? NO dialog is poping up.
 
 === Homepage content is updated after cancel (Readonly Project)
-1. Sign in as `PROJMANT`.
+1. Sign in as `PMAINT`.
 2. Click *Projects* -> `PROJR`
 ? Page for project `PROJR` should be loaded.
 ? Action *Edit Page Code* should NOT appeared.

@@ -55,7 +55,7 @@ the source files and translation files with
 == setup
 
 === Requires
-* A project maintainer `@PROJMANT@` and a non-project maintainer `@NON_PROJMANT@`.
+* A project maintainer `@PMAINT@` and a non-project maintainer `@NON_PMAINT@`.
 * API keys are generated for both users.
 * $HOME/.config/zanana.ini is setup for the project maintainer.
 * A document project with following properties:
@@ -71,7 +71,7 @@ In command line, do the following:
 
 === Non Project Maintainer Should Be Blocked
 1. Non Project maintainer push with
-`@CLIENT_CMD@ @CMD_PUSH@ @OPTION_URL@ @OPTION_USERNAME_NON_PROJMANT@ @OPTION_APIKEY_NON_PROJMANT@`
+`@CLIENT_CMD@ @CMD_PUSH@ @OPTION_URL@ @OPTION_USERNAME_NON_PMAINT@ @OPTION_APIKEY_NON_PMAINT@`
   ? Should FAIL with error message which states that user is not a project maintainer.
 
 === Project Maintainer

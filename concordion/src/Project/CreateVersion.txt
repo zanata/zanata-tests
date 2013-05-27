@@ -49,7 +49,7 @@ Features Not to Test:
 * A readonly project, e.g. `PROJR`
 * An obsolete project, e.g. `PROJO`
 * A non-admin user who is not the maintainer of either projects, e.g. `USER1`
-* A non-admin user who is the maintainer of all projects. e.g. `PROJMANT`
+* A non-admin user who is the maintainer of all projects. e.g. `PMAINT`
 * An admin role user. e.g. `ADMIN`.
 
 == action
@@ -63,7 +63,7 @@ Features Not to Test:
 3. Sign out.
 
 === Create Version is available to project maintianer
-1. Sign in as `PROJMANT`.
+1. Sign in as `PMAINT`.
 2. Click *Projects* -> `PROJA`
 ? Page for project `PROJA` should be loaded.
 ? Action *Create Version* should appeared.
