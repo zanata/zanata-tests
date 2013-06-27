@@ -75,7 +75,7 @@ Features Not to Test:
 ? Action *Edit Page Code* should NOT appeared.
 3. Click action *Edit Page Code*.
 ? Page *Edit Page Code* should be loaded.
-4. In *Homepage Content*, type `<script>alert(doucment.cookie)</script>`. 
+4. In *Homepage Content*, type `<script>alert(doucment.cookie)</script>`.
    Note this should be type manually, do NOT copy-paste.
 5. Click *Update*.
 ? Page for project `PROJA` should be loaded.
