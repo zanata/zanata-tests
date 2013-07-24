@@ -129,7 +129,7 @@ sub clone_project{
 	    system(qq{git clone $url $ver});
 	    unless ($ver eq "master"){
 		chdir($ver);
-		system(qq{git checkout origin/$ver --track -b $ver});
+		system(qq{git checkout --track -b $ver});
 		chdir('..');
 	    }
 	}elsif($scm eq "svn"){
