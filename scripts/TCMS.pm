@@ -16,17 +16,53 @@ use TestCase;
 
 sub new{
     my $file=shift;
+    my $self={};
+    my $self->{testCase}=[];
+    my $content=read_file($file);
+
     my $twig=XML::Twig->new(
 	pretty_print=>'indented'
     );
-    my $self={};
-    my $content=read_file($file);
-
     $twig->parse($content);
-    $self->{twig}=$twig;
     $twig->purge;
+
     bless $self;
     return $self;
+}
+
+sub load_file{
+    my ($self, $file, $inputFilter, $outputer)=@_;
+    my $content=read_file($file);
+
+    my $twig=XML::Twig->new(
+	pretty_print=>'indented'
+    );
+    $twig->parse($content);
+    $twig->purge;
+    
+    foreach my $elt ($twig->getElementsByTagName('testcase')){
+	while(my ($k, $v)=each(%{$self->{atts}})){
+	    print "\t$k=$v\n";
+	}
+
+	for my $e ($elt->atts){
+
+	}
+
+	my $testCase=TestCase::new($elt->atts);
+	for my $e ($elt->children()){
+	    next unless $elt->is_elt;
+	    my $text=$e->trimmed_text();
+	    #print "text=$text\n";
+	    if ( $format eq 'asciidoc'){
+		$text=to_asciidoc($e);
+	    }
+	    $testCase->set_child($e->tag, $text);
+	}
+	push @{$self->{testCase}}, $testCase ;
+    }
+
+
 }
 
 sub to_asciidoc_parsed{
