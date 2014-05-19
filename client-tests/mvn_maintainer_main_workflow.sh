@@ -11,13 +11,13 @@ else
 fi
 
 if [ -n "${ZANATA_URL}" ];then
-    AUTH_OPTS+=-Dzanata.url=${ZANATA_URL}
+    AUTH_OPTS=-Dzanata.url=${ZANATA_URL}
 fi
 if [ -n "${ZANATA_USERNAME}" ];then
-    AUTH_OPTS+= -Dzanata.username=${ZANATA_USERNAME}
+    AUTH_OPTS="${AUTH_OPTS} -Dzanata.username=${ZANATA_USERNAME}"
 fi
 if [ -n "${ZANATA_KEY}" ];then
-    AUTH_OPTS+= -Dzanata.key=${ZANATA_KEY}
+    AUTH_OPTS+="${AUTH_OPTS} -Dzanata.key=${ZANATA_KEY}"
 fi
 
 mvn -B -e zanata:put-version ${AUTH_OPTS} -Dzanata.versionProject=${PRJ} -Dzanata.versionSlug=${VER} 
