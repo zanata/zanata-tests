@@ -1,6 +1,7 @@
+# Medium project with translation and plurals
 SLUG=tar
 NAME="GNU Tar"
-DESC="GNU Tar provides the ability to create tar archives, as well as various other kinds of manipulation. For example, you can use Tar on previously created archives to extract files, to store additional files, or to update or list files which were already stored. "
+DESC="GNU Tar provides the ability to create tar archives"
 VERS=1.26 1.27 1.27.1
 URL=http://ftp.gnu.org/gnu/tar/
 PRJ_TYPE=podir

@@ -1,3 +1,5 @@
+# Small podir project with translations
+
 SLUG=about-fedora
 NAME="About Fedora"
 DESC="Fedora document About Fedora"

@@ -1,3 +1,5 @@
+# Small File project with translations
+
 SLUG=freemind-doc
 NAME="freemind Documentation"
 DESC="Documentation of freemind"
