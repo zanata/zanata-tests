@@ -5,6 +5,7 @@ cmake_install.cmake
 Makefile
 .cache/
 Testing/
+doc-prjs/*/*
 
 cookie.file
 HomePage.html
@@ -24,6 +25,7 @@ results/
 pulled/
 
 *.bak
+*.bz2
 *.orig
 *.old
 *.log
