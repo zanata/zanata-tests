@@ -1,21 +1,22 @@
-# Medium project with translation and plurals
-SLUG=tar
-NAME="GNU Tar"
-DESC="GNU Tar provides the ability to create tar archives"
-VERS=1.26 1.27 1.27.1
+# Medium gettext project with translation and plurals
+
+PRJ_TYPE:=gettext
+SLUG:=tar
+NAME:="GNU Tar"
+DESC:="GNU Tar provides the ability to create tar archives"
+VERS:=1.26 1.27 1.27.1
 TARBALLS:=$(foreach v, $(VERS), tar-$(v).tar.bz2)
-URL=http://ftp.gnu.org/gnu/tar/
-PRJ_TYPE=podir
+VER_DIRS:=$(addsuffix /,$(VERS))
+VER_TASKS:=$(addsuffix po/,$(VER_DIRS))
+URL:=http://ftp.gnu.org/gnu/tar/
 
-download_all: $(addsuffix /,$(VERS))
+include ../common.mk
 
-%/: tar-%.tar.bz2
+$(VER_TASKS) : %/po/: tar-%.tar.bz2
 	tar xjvf $<
 	mv tar-$* $*
 
 $(TARBALLS):
 	wget $(URL)$@
 
-clean:
-	rm -fr $(VERS)
 
