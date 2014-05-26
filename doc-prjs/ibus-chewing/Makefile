@@ -7,7 +7,7 @@ DESC:="ibus-chewing is a Traditional Chinese input method"
 VERS:=master
 VER_DIRS:=$(addsuffix /,$(VERS))
 VER_TASKS:=$(addsuffix po/$(SLUG).pot,$(VER_DIRS))
-URL:=git://github.com/definite/ibus-chewing.git
+URL:=git://github.com/definite/$(SLUG).git
 
 include ../common.mk
 
@@ -18,6 +18,6 @@ $(VER_DIRS): %/: $(SLUG)
 	git clone -b $* $(SLUG) $*
 
 $(VER_TASKS) : %/po/$(SLUG).pot: $(VER_DIRS)
-	cd $*/po; xgettext --no-location --language=C --keyword=_ --keyword=N_ --keyword=C_:1c,2 --keyword=NC_:1c,2 -s --package-name=ibus-chewing --package-version=master -o ibus-chewing.pot ../src/*.c ../src/*.gob
+	cd $*/po; xgettext --no-location --language=C --keyword=_ --keyword=N_ --keyword=C_:1c,2 --keyword=NC_:1c,2 -s --package-name=ibus-chewing --package-version=master -o $(SLUG).pot ../src/*.c ../src/*.gob
 
 
