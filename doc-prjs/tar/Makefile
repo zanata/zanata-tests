@@ -7,12 +7,12 @@ DESC:="GNU Tar provides the ability to create tar archives"
 VERS:=1.26 1.27 1.27.1
 TARBALLS:=$(foreach v, $(VERS), tar-$(v).tar.bz2)
 VER_DIRS:=$(addsuffix /,$(VERS))
-VER_TASKS:=$(addsuffix po/,$(VER_DIRS))
+VER_TASKS:=$(addsuffix po/$(SLUG).pot,$(VER_DIRS))
 URL:=http://ftp.gnu.org/gnu/tar/
 
 include ../common.mk
 
-$(VER_TASKS) : %/po/: tar-%.tar.bz2
+$(VER_TASKS) : %/po/$(SLUG).pot: tar-%.tar.bz2
 	tar xjvf $<
 	mv tar-$* $*
 
