@@ -11,10 +11,10 @@ endif
 
 ifeq ($(REPO_TYPE),tar)
 ifeq ($(TARBALL_SUFFIX),tar.gz)
-    TAR_OPTS:=zxvf
+    TAR_OPTS:=zxvfm
 endif
 ifeq ($(TARBALL_SUFFIX),tar.bz2)
-    TAR_OPTS:=jxvf
+    TAR_OPTS:=jxvfm
 endif
 endif
 
@@ -40,7 +40,6 @@ ifeq ($(REPO_TYPE),tar)
 $(VER_DIRS): %/ : $(TARBALLS)
 	tar $(TAR_OPTS) $<
 	mv $(PRJ_SLUG)-$* $*
-	touch $*
 
 endif
 
