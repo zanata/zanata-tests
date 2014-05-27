@@ -14,4 +14,3 @@ include ../common.mk
 $(VER_TASKS) : %/po/$(SLUG).pot: $(VER_DIRS)
 	cd $*/po; xgettext --no-location --language=C --keyword=_ --keyword=N_ --keyword=C_:1c,2 --keyword=NC_:1c,2 -s --package-name=ibus-chewing --package-version=master -o $(SLUG).pot ../src/*.c ../src/*.gob
 
-

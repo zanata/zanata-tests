@@ -19,5 +19,3 @@ $(VER_DIRS): %/: $(SLUG)
 
 $(VER_TASKS): $(VER_DIRS)
 
-
-

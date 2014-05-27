@@ -5,20 +5,14 @@ SLUG:=tar
 NAME:="GNU Tar"
 DESC:="GNU Tar provides the ability to create tar archives"
 VERS:=1.26 1.27 1.27.1
-TARBALLS:=$(foreach v, $(VERS), $(SLUG)-$(v).tar.bz2)
-VER_DIRS:=$(addsuffix /,$(VERS))
-VER_TASKS:=$(addsuffix po/$(SLUG).pot,$(VER_DIRS))
+REPO_TYPE:=tar
+TARBALL_SUFFIX:=tar.bz2
+TARBALLS:=$(foreach v, $(VERS), $(SLUG)-$(v).$(TARBALL_SUFFIX))
 URL:=http://ftp.gnu.org/gnu/$(SLUG)/
 
 include ../common.mk
 
-$(VER_TASKS) : %/po/$(SLUG).pot: %/
-
-$(VER_DIRS): %/ : $(SLUG)-%.tar.bz2
-	tar xjvf $<
-	mv $(SLUG)-$* $*
-
-$(TARBALLS):
+$(TARBALLS): $(SLUG)-%.$(TARBALL_SUFFIX) :
 	wget $(URL)$@
 
 

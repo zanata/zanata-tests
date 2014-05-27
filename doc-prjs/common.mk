@@ -5,6 +5,17 @@ VER_DIRS?=$(addsuffix /,$(VERS))
 
 ifeq ($(PRJ_TYPE),podir)
 VER_TASKS?=$(addsuffix /pot/,$(VERS))
+else
+VER_TASKS?=$(VER_DIRS)
+endif
+
+ifeq ($(REPO_TYPE),tar)
+ifeq ($(TARBALL_SUFFIX),tar.gz)
+    TAR_OPTS:=zxvf
+endif
+ifeq ($(TARBALL_SUFFIX),tar.bz2)
+    TAR_OPTS:=jxvf
+endif
 endif
 
 #######################################
@@ -22,6 +33,15 @@ $(VER_DIRS): %/: $(SLUG)
 	git clone -b $* $(SLUG) $*
 
 endif
+
+ifeq ($(REPO_TYPE),tar)
+$(VER_DIRS): %/ : $(SLUG)-%.$(TARBALL_SUFFIX)
+	tar $(TAR_OPTS) $<
+	mv $(SLUG)-$* $*
+	touch $*
+
+endif
+
 
 ifeq ($(PRJ_TYPE),podir)
 $(VER_TASKS): %/pot/: %/

@@ -5,17 +5,11 @@ SLUG:=gcc
 NAME:="GNU Complier Collection"
 DESC:="The GNU Compiler Collection includes front ends for C, C++, Objective-C, Fortran, Java, Ada, and Go, as well as libraries for these languages (libstdc++, libgcj,...). "
 VERS:=4.9.0 4.8.3
-TARBALLS:=$(foreach v, $(VERS), $(SLUG)-$(v).tar.gz)
-VER_DIRS:=$(addsuffix /,$(VERS))
-VER_TASKS:=$(addsuffix gcc/,$(VER_DIRS))
+TARBALL_SUFFIX:=tar.gz
+TARBALLS:=$(foreach v, $(VERS), $(SLUG)-$(v).$(TARBALL_SUFFIX))
+REPO_TYPE:=tar
 URL:=ftp://mirror.aarnet.edu.au/pub/gnu/$(SLUG)/
 include ../common.mk
-
-$(VER_TASKS) : $(VER_DIRS)
-
-$(VER_DIRS): %/ : $(SLUG)-%.tar.gz
-	tar xzvf $<
-	mv $(SLUG)-$* $*
 
 $(TARBALLS): $(SLUG)-%.tar.gz:
 	wget $(URL)$(SLUG)-$*/$@
