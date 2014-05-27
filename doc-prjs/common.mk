@@ -18,6 +18,8 @@ ifeq ($(TARBALL_SUFFIX),tar.bz2)
 endif
 endif
 
+PRJ_SLUG?=$(SLUG)
+
 #######################################
 # Rules
 download_all: $(VER_TASKS)
@@ -26,18 +28,18 @@ clean:
 	rm -fr $(VER_DIRS)
 
 ifeq ($(REPO_TYPE),git)
-$(SLUG):
-	git clone --bare $(URL) $(SLUG)
+$(PRJ_SLUG):
+	git clone --bare $(URL) $(PRJ_SLUG)
 
-$(VER_DIRS): %/: $(SLUG)
-	git clone -b $* $(SLUG) $*
+$(VER_DIRS): %/: $(PRJ_SLUG)
+	git clone -b $* $(PRJ_SLUG) $*
 
 endif
 
 ifeq ($(REPO_TYPE),tar)
-$(VER_DIRS): %/ : $(SLUG)-%.$(TARBALL_SUFFIX)
+$(VER_DIRS): %/ : $(TARBALLS)
 	tar $(TAR_OPTS) $<
-	mv $(SLUG)-$* $*
+	mv $(PRJ_SLUG)-$* $*
 	touch $*
 
 endif
