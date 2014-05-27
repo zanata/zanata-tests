@@ -12,7 +12,9 @@ URL:=http://ftp.gnu.org/gnu/$(SLUG)/
 
 include ../common.mk
 
-$(VER_TASKS) : %/po/$(SLUG).pot: $(SLUG)-%.tar.bz2
+$(VER_TASKS) : %/po/$(SLUG).pot: %/
+
+$(VER_DIRS): %/ : $(SLUG)-%.tar.bz2
 	tar xjvf $<
 	mv $(SLUG)-$* $*
 
