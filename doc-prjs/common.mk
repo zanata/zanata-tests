@@ -1,9 +1,29 @@
+#######################################
+# Definition
+
+VER_DIRS?=$(addsuffix /,$(VERS))
+
+ifeq ($(PRJ_TYPE),podir)
+VER_TASKS?=$(addsuffix /pot/,$(VERS))
+endif
+
+#######################################
+# Rules
 download_all: $(VER_TASKS)
 
 clean:
 	rm -fr $(VER_DIRS)
 
-ifeq ($(PRJ_TYPE), podir)
+ifeq ($(REPO_TYPE),git)
+$(SLUG):
+	git clone --bare $(URL) $(SLUG)
+
+$(VER_DIRS): %/: $(SLUG)
+	git clone -b $* $(SLUG) $*
+
+endif
+
+ifeq ($(PRJ_TYPE),podir)
 $(VER_TASKS): %/pot/: %/
 
 endif
