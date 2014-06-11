@@ -37,7 +37,7 @@ $(VER_DIRS): %/: $(PRJ_SLUG)
 endif
 
 ifeq ($(REPO_TYPE),tar)
-$(VER_DIRS): %/ : $(TARBALLS)
+$(VER_DIRS): %/ : $(PRJ_SLUG)-%.$(TARBALL_SUFFIX)
 	tar $(TAR_OPTS) $<
 	mv $(PRJ_SLUG)-$* $*
 
@@ -48,6 +48,16 @@ ifeq ($(PRJ_TYPE),podir)
 $(VER_TASKS): %/pot/: %/
 
 endif
+
+maintainer_main_workflow: $(addsuffix maintainer_main_workflow_,$(VERS))
+
+$(addsuffix maintainer_main_workflow_,$(VERS)):maintainer_main_workflow_%:
+	pushd $*
+	../../client-tests/maintainer_main_workflow.sh -c "B;e" $(SLUG)
+	popd
+
+	
+
 
 # publican no longer required, as the revnumber in older projects 
 # are no longer valid.
