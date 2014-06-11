@@ -11,7 +11,7 @@ REPO_TYPE:=tar
 URL:=ftp://mirror.aarnet.edu.au/pub/gnu/$(SLUG)/
 include ../common.mk
 
-$(TARBALLS): $(SLUG)-%.tar.gz:
+$(TARBALLS): $(SLUG)-%.${TARBALL_SUFFIX}:
 	wget $(URL)$(SLUG)-$*/$@
 
 
