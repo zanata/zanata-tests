@@ -1,0 +1,28 @@
+,Trans,Trans,Review,Review,Coord,Coord,Gloss,Gloss,Maint,Maint,Group,,Need,Ref,Note
+Name,pt-PT,pt-BR,pt-PT,pt-BR,pt-PT,pt-BR,G.ist,G.adm,File,gcc,Fed,Admin,Cli,Other lang,
+Alice,x,,,,,,,,,,,,,x,
+Betty,,x,,,,,,,,,,,x,x,
+Cindy,x,x,,,,,,,,,,,,,
+Daisy,,,x,,,,,,,,,,x,,Reviewer only
+Emily,,,,x,,,,,,,,,,x,Reviewer only
+Fiona,,,x,x,,,,,,,,,x,x,Reviewer only
+Grace,x,,x,,,,,,,,,,,,
+Helen,,x,,x,,,,,,,,,x,,
+Irene,x,x,x,x,,,,,,,,,,x,
+Jenny,x,,,,x,,,,,,,,x,x,
+Kelly,,x,,,,x,,,,,,,,,
+Linda,x,x,,,x,x,,,,,,,x,,
+Maria,x,,,,,,x,,,,,,,x,
+Nancy,,x,,,,,x,x,,,,,x,x,
+Olive,x,x,,,,,,,x,,,,,,Maintainer that doesn't translate
+Peggy,,,,,,,,,,x,,,x,,Maintainer that doesn't translate
+Randy,x,,,,,,,,x,x,,,,x,Maintainer also translate
+Sarah,,x,,,,,,,x,,,,x,x,Maintainer also translate
+Tanya,x,x,,,,,,,,x,,,,,Maintainer also translate
+Unity,,,,,,,,,x,,x,,x,x,Group maintainer to the prj not in group
+Vicky,,,,,,,,,,x,x,,,x,Group maintainer to the prj in group
+Wanda,,,,,,,,,,,x,,,,Group maintainer to the prj in group
+Xandi,,,,,,,,,,,,,,,Anonymous
+Yulia,,,,,,,,,,,,x,x,,Admin who wants cli
+Zayna,,,,,,,,,,,,x,,,Why I need others if I am admin?
+Queen,x,x,x,x,x,x,x,x,x,x,x,x,x,x,Wants everything
