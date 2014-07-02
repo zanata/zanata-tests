@@ -1,51 +1,41 @@
 #!/usr/bin/env perl
 
+use strict;
 use utf8;
-use Text::CSV;
-my $csv = Text::CSV->new ( { binary => 1  })
-    or die "Cannot use CSV: ".Text::CSV->error_diag ();
+use Test::WWW::Selenium;
+use lib "../perl" ;
+use Zanata::User qw(to_string);
+
+die "Please specify environment ZANATA_URL\n" unless ($ENV{'ZANATA_URL'});
+my $zanataUrl=$ENV{'ZANATA_URL'};
 my $csvFile="UserModeling.csv";
 
-my @headers=();
+my %defaultSeleniumAttrH = (
+    host 		=> "localhost"
+    , port              => 4444
+    , browser           => "*firefox"
+    , browser_url       => undef
+    , default_names     => 1,
+    , error_callback    => undef
+);
 
+sub selenium_init{
+    my $attrHRef  = @_ > 0 ? shift : {};
+    my %seleniumAttrH = %defaultSeleniumAttrH;
 
-sub parse_header_row{
-    my ($rowARef)=@_;
-    my $arrSize=scalar @$rowARef;
-    for(my $i=0; $i< $arrSize; $i++){
-	if( $rowARef->[$i]){
-	    if ($headers[$i]){
-		$headers[$i].=" ". $rowARef->[$i];
-	    }else{
-		$headers[$i]=$rowARef->[$i];
-	    }
-	}
+    for my $prop (keys %$attrHRef) { #
+	$seleniumAttrH{$prop} = $attrHRef->{$prop};
     }
+    return Test::WWW::Selenium->new( %seleniumAttrH);
 }
 
-sub parse_user_row{
-    my ($rowARef)=@_;
-    my $arrSize=scalar @$rowARef;
-    my %user;
-    for(my $i=0; $i< $arrSize; $i++){
-	if( $rowARef->[$i]){
-	    $user{$headers[$i]}=$rowARef->[$i];
-	    print "$user:". $headers[$i]. "=". $rowARef->[$i] ."\n";
-	}
-    } 
-}
+my $sel=selenium_init({browser_url=> "$zanataUrl"});
 
-open my $fh, "<:encoding(utf8)", $csvFile or die "$csvFil: $!";
-
-my $index=0;
-while ( my $row = $csv->getline( $fh ) ) {
-    if ($index >=2){
-	parse_user_row($row);
-    }else{
-	parse_header_row($row);
-    }
-    $index++;
+my $userHRef=Zanata::User->new_from_csv($csvFile);
+for my $username (sort (keys %$userHRef)){
+    my $userRef=$userHRef->{$username};
+    print $userRef->to_string(). "\n";
+    $userRef->create_user($sel, $zanataUrl);
+    exit 1;
 }
-$csv->eof or $csv->error_diag();
-close $fh;
 

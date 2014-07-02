@@ -84,7 +84,7 @@ fi
 
 time ${ZANATA_CMD} ${CMD_OPTS} ${PUT_PRJ_CMD} ${GLOBAL_OPTS} ${PRJ_OPTS}
 time ${ZANATA_CMD} ${CMD_OPTS} ${PUT_VER_CMD} ${GLOBAL_OPTS} ${VER_OPTS}
-wget -O zanata.xml "${ZANATA_URL}iteration/view/${PRJ}/${VER}?cid=77&actionMethod=iteration%2Fview.xhtml%3AconfigurationAction.downloadGeneralConfig%28%29" 
+wget --no-check-certificate -O zanata.xml "${ZANATA_URL}iteration/view/${PRJ}/${VER}?cid=77&actionMethod=iteration%2Fview.xhtml%3AconfigurationAction.downloadGeneralConfig%28%29" 
 time ${ZANATA_CMD} ${CMD_OPTS} ${PUSH_CMD} ${GLOBAL_OPTS} ${PUSH_OPTS}
 time ${ZANATA_CMD} ${CMD_OPTS} ${PULL_CMD} ${GLOBAL_OPTS} ${PULL_OPTS}
 
