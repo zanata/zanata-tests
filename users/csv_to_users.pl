@@ -34,8 +34,8 @@ my $sel=selenium_init({browser_url=> "$zanataUrl"});
 my $userHRef=Zanata::User->new_from_csv($csvFile);
 for my $username (sort (keys %$userHRef)){
     my $userRef=$userHRef->{$username};
+    $userRef->{'url'}=$zanataUrl;
     print $userRef->to_string(). "\n";
-    $userRef->create_user($sel, $zanataUrl);
-    exit 1;
+    $userRef->create_user($sel);
 }
 

@@ -141,9 +141,8 @@ sub new_from_csv{
 ## Internal auth
 ## This does not enable user.
 sub create_user{
-    my ($self, $sel, $url, $pauseSeconds)=@_;
-    $self->{'url'}=$url if ($url);
-    $sel->open_ok($url. "account/register");
+    my ($self, $sel, $pauseSeconds)=@_;
+    $sel->open_ok($self->{'url'} . "account/register");
     ## Full name 
     $sel->type_ok("loginForm:name", $self->{'name'});
     ## Username
