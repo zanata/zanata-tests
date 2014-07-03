@@ -5,11 +5,13 @@ use strict;
 use utf8;
 use Text::CSV;
 use Test::WWW::Selenium;
+my $defaultSeleniumTimeout=5000;
 
-#BEGIN{
-#    our @ISA=qw(Exporter);
-#    our @EXPORT_OK=qw(to_string);
-#}
+BEGIN{
+    our @ISA=qw(Exporter);
+    our @EXPORT_OK=qw(sign_in_static);
+    require Exporter;
+}
 
 my %defaultAttrH = (
     username	        => undef
@@ -154,7 +156,73 @@ sub create_user{
     ## Sign Up
     $sel->click_ok("css=input[value=\"Sign Up\"]");
     
-    $sel->pause(1000 * $pauseSeconds) if $pauseSecond;
+    $sel->pause(1000 * $pauseSeconds) if $pauseSeconds;
+}
+
+## Static method: sign_in
+sub sign_in_static{
+    my ($sel,$serverUrl,$username, $password,$pauseSeconds)=@_;
+    die "No username" unless $username;
+    die "No password for $username" unless $password;
+    $sel->open_ok("account/sign_in" );
+    $sel->type_ok("loginForm:username", $username);
+    $sel->type_ok("loginForm:password", $password);
+    $sel->click_ok("loginForm:loginButton");
+    $sel->wait_for_page_to_load($defaultSeleniumTimeout);
+    $sel->pause(1000 * $pauseSeconds) if $pauseSeconds;
+}
+
+sub sign_in{
+    my ($self, $sel, $pauseSeconds)=@_;
+    return sign_in_static($sel,$self->{'url'}, $self->{'username'}, 
+	$self->{'password'}, $pauseSeconds);
+}
+
+
+## Assume Admin are already sign-in
+sub set_user{
+    my ($self, $sel, $pauseSeconds)=@_;
+
+    ## Admin to Admin menu
+    $sel->click_ok("user--avatar");
+
+    my $adminMenuElm="administration";
+    $sel->wait_for_element_present($adminMenuElm,$defaultSeleniumTimeout);
+    $sel->click_ok($adminMenuElm);
+
+    my $adminManageUserIcon="Admin_Manage_users_home";
+    $sel->wait_for_element_present($adminManageUserIcon,$defaultSeleniumTimeout);
+    $sel->click_ok($adminManageUserIcon);
+
+    my $adminManageUserSearchField="usermanagerForm:userList:username_filter_input";
+    $sel->wait_for_element_present($adminManageUserSearchField,$defaultSeleniumTimeout);
+    $sel->type_ok($adminManageUserSearchField, $self->{'username'});
+
+    ## Edit button for user
+    my $usernameField="//td[normalize-space(text())='" .  $self->{'username'}.  "']";
+    my $editUserBtn=$usernameField . "../td/button[normalize-space(text())='Edit']";
+    $sel->wait_for_element_present($editUserBtn);
+    $sel->click_ok($editUserBtn);
+    $sel->wait_for_page_to_load($defaultSeleniumTimeout);
+
+    ## User detail page
+    $sel->is_element_present("//div[label='Username']//label[text()='"
+	. $self->{'username'}. "']");
+
+    ## Roles
+    foreach my $role (keys %{$self->{'roles'}} ){
+	$sel->check("css=input[value='$role']");
+    }
+
+    ## Enable 
+    $sel->check("userdetailForm:enabledField:enabled");
+
+    ## Save
+    $sel->submit("userdetailForm");
+    $sel->click_ok("userdetailForm:userdetailSave");
+    $sel->wait_for_page_to_load($defaultSeleniumTimeout);
+
+    $sel->pause(1000 * $pauseSeconds) if $pauseSeconds;
 }
 
 ########################################
