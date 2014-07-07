@@ -178,9 +178,8 @@ sub sign_in{
 	$self->{'password'}, $pauseSeconds);
 }
 
-
 ## Assume Admin are already sign-in
-sub set_user{
+sub enable_user{
     my ($self, $sel, $pauseSeconds)=@_;
 
 	## Admin to Manage user
