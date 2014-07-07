@@ -35,13 +35,13 @@ sub selenium_init{
     return Test::WWW::Selenium->new( %seleniumAttrH);
 }
 
-my $sel=selenium_init({browser_url=> "$zanataUrl"});
+#my $sel=selenium_init({browser_url=> "$zanataUrl"});
 
 my $userHRef=Zanata::User->new_from_csv($csvFile);
 for my $username (sort (keys %$userHRef)){
     my $userRef=$userHRef->{$username};
     $userRef->{'url'}=$zanataUrl;
-    print $userRef->to_string(). "\n";
+    print $userRef->to_yaml(). "\n";
 #    $userRef->create_user($sel);
 }
 
@@ -49,12 +49,12 @@ assert_environment_variable("ZANATA_ADMIN_USERNAME");
 assert_environment_variable("ZANATA_ADMIN_PASSWORD");
 
 ### Admin sign in
-sign_in_static($sel, $zanataUrl, $ENV{ZANATA_ADMIN_USERNAME}, 
-    $ENV{ZANATA_ADMIN_PASSWORD}, 3
-);
+#sign_in_static($sel, $zanataUrl, $ENV{ZANATA_ADMIN_USERNAME}, 
+#    $ENV{ZANATA_ADMIN_PASSWORD}, 3
+#);
 
-for my $username (sort (keys %$userHRef)){
-    my $userRef=$userHRef->{$username};
-    $userRef->enabled_by_admin($sel,5);
-}
+#for my $username (sort (keys %$userHRef)){
+#    my $userRef=$userHRef->{$username};
+#    $userRef->enabled_by_admin($sel,5);
+#}
 
