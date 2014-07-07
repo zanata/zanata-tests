@@ -443,7 +443,7 @@ Return a string that show the user instance as YAML.
 
 sub to_yaml{
     my ($self)=@_;
-    ## Required field
+    ## Required fields
     my $str="";
     foreach my $attr (qw( username name email)){
 	$str=sprintf "%s%-16s%s\n", $str, ($attr . ":") , $self->{$attr};
