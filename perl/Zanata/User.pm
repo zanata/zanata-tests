@@ -179,7 +179,7 @@ sub sign_in{
 }
 
 ## Assume Admin are already sign-in
-sub enable_user{
+sub enabled_by_admin{
     my ($self, $sel, $pauseSeconds)=@_;
 
 	## Admin to Manage user

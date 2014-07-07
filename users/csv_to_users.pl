@@ -55,6 +55,6 @@ sign_in_static($sel, $zanataUrl, $ENV{ZANATA_ADMIN_USERNAME},
 
 for my $username (sort (keys %$userHRef)){
     my $userRef=$userHRef->{$username};
-    $userRef->enable_user($sel,5);
+    $userRef->enabled_by_admin($sel,5);
 }
 
