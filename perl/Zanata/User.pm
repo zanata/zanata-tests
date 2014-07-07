@@ -5,7 +5,7 @@ use strict;
 use utf8;
 use Text::CSV;
 use Test::WWW::Selenium;
-my $defaultSeleniumTimeout=5000;
+my $defaultSeleniumTimeout=10000;
 
 BEGIN{
     our @ISA=qw(Exporter);
@@ -15,7 +15,7 @@ BEGIN{
 
 my %defaultAttrH = (
     username	        => undef
-    , name		=> undef
+    , name		        => undef
     , email             => {}
     , url               => undef
     , roles             => {}
@@ -39,11 +39,12 @@ sub new{
     my $proto = shift;
     my $attr  = @_ > 0 ? shift : {};
     my $class = ref($proto) || $proto || "Zanata::User";
-    my $self  = { %defaultAttrH };
+    my $self  = {};
 
     for my $prop (keys %$attr) { # if invalid attr, return undef
-	die "Zanata::User->new: Unknown attribute $prop\n" unless exists $defaultAttrH{$prop};
-	$self->{$prop} = $attr->{$prop};
+		die "Zanata::User->new: Unknown attribute $prop\n" 
+		unless exists $defaultAttrH{$prop};
+		$self->{$prop} = $attr->{$prop};
     }
     bless $self, $class;
     return $self;
@@ -74,39 +75,38 @@ sub parse_user_row{
     my $arrSize=scalar @$rowRef;
     my $userRef=new();
     for(my $i=0; $i< $arrSize; $i++){
-	if( $rowRef->[$i]){
-	    if ($headerA[$i] eq 'Name'){
-		$userRef->{'username'}    = lc $rowRef->[$i];
-		$userRef->{'name'}  = $rowRef->[$i] . ' Tester';
-		$userRef->{'email'} = $rowRef->[$i] . '456@example.com';
-		$userRef->{'password'} = $rowRef->[$i] . '456';
-	    }elsif ($headerA[$i] =~ m/^Trans /){
-		$userRef->{'translators'}->{substr($headerA[$i], length("Trans "))}=1;
-	    }elsif ($headerA[$i] =~ m/^Review /){
-		$userRef->{'reviewers'}->{substr($headerA[$i], length("Review "))}=1;
-	    }elsif ($headerA[$i] =~ m/^Coord /){
-		$userRef->{'coordinators'}->{substr($headerA[$i], length("Coord "))}=1;
-	    }elsif ($headerA[$i] =~ m/^Gloss /){
-		if ($headerA[$i] =~ m/Adm$/){
-		    $userRef->{'roles'}->{'glossary-admin'}=1;
+		next unless $rowRef->[$i];
+		if ($headerA[$i] eq 'Name'){
+			$userRef->{'username'} = lc $rowRef->[$i];
+			$userRef->{'name'}  = $rowRef->[$i] . ' Tester';
+			$userRef->{'email'} = $rowRef->[$i] . '456@example.com';
+			$userRef->{'password'} = $rowRef->[$i] . '456';
+		}elsif ($headerA[$i] =~ m/^Trans /){
+			$userRef->{'translators'}->{substr($headerA[$i], length("Trans "))}=1;
+		}elsif ($headerA[$i] =~ m/^Review /){
+			$userRef->{'reviewers'}->{substr($headerA[$i], length("Review "))}=1;
+		}elsif ($headerA[$i] =~ m/^Coord /){
+			$userRef->{'coordinators'}->{substr($headerA[$i], length("Coord "))}=1;
+		}elsif ($headerA[$i] =~ m/^Gloss /){
+			if ($headerA[$i] =~ m/adm$/){
+				$userRef->{'roles'}->{'glossary-admin'}=1;
+			}else{
+				$userRef->{'roles'}->{'glossarist'}=1;
+			}
+		}elsif ($headerA[$i] =~ m/^Group /){
+			$userRef->{'groups'}->{substr($headerA[$i], length("Group "))}=1;
+		}elsif ($headerA[$i] =~ m/^Maint /){
+			$userRef->{'projects'}->{substr($headerA[$i], length("Maint "))}=1;
+		}elsif ($headerA[$i] =~ m/^Role /){
+			$userRef->{'roles'}->{lc substr($headerA[$i], length("Role "))}=1;
+		}elsif ($headerA[$i] =~ m/^Need /){
+			$userRef->{'needs'}->{substr($headerA[$i], length("Need "))}=1;
+		}elsif ($headerA[$i] eq 'Note'){
+			$userRef->{'Note'}=$rowRef->[$i];
 		}else{
-		    $userRef->{'roles'}->{'glossarist'}=1;
+			die "Zanata::User->parse_user_row: Unknown header $headerA[$i]";
 		}
-	    }elsif ($headerA[$i] =~ m/^Group /){
-		$userRef->{'groups'}->{substr($headerA[$i], length("Group "))}=1;
-	    }elsif ($headerA[$i] =~ m/^Maint /){
-		$userRef->{'projects'}->{substr($headerA[$i], length("Maint "))}=1;
-	    }elsif ($headerA[$i] =~ m/^Role /){
-		$userRef->{'roles'}->{lc substr($headerA[$i], length("Role "))}=1;
-	    }elsif ($headerA[$i] =~ m/^Need /){
-		$userRef->{'needs'}->{substr($headerA[$i], length("Need "))}=1;
-	    }elsif ($headerA[$i] eq 'Note'){
-		$userRef->{'Note'}=$rowRef->[$i];
-	    }else{
-		die "Zanata::User->parse_user_row: Unknown header $headerA[$i]";
-	    }
 	}
-    } 
     return $userRef;
 }
 
@@ -183,25 +183,18 @@ sub sign_in{
 sub set_user{
     my ($self, $sel, $pauseSeconds)=@_;
 
-    ## Admin to Admin menu
-    $sel->click_ok("user--avatar");
-
-    my $adminMenuElm="administration";
-    $sel->wait_for_element_present($adminMenuElm,$defaultSeleniumTimeout);
-    $sel->click_ok($adminMenuElm);
-
-    my $adminManageUserIcon="Admin_Manage_users_home";
-    $sel->wait_for_element_present($adminManageUserIcon,$defaultSeleniumTimeout);
-    $sel->click_ok($adminManageUserIcon);
+	## Admin to Manage user
+	$sel->open_ok('admin/usermanager');
 
     my $adminManageUserSearchField="usermanagerForm:userList:username_filter_input";
-    $sel->wait_for_element_present($adminManageUserSearchField,$defaultSeleniumTimeout);
-    $sel->type_ok($adminManageUserSearchField, $self->{'username'});
+	$sel->wait_for_element_present($adminManageUserSearchField,$defaultSeleniumTimeout);
+	$sel->type_ok($adminManageUserSearchField, $self->{'username'});
+	$sel->type_keys($adminManageUserSearchField, '\\13');
 
     ## Edit button for user
-    my $usernameField="//td[normalize-space(text())='" .  $self->{'username'}.  "']";
-    my $editUserBtn=$usernameField . "../td/button[normalize-space(text())='Edit']";
-    $sel->wait_for_element_present($editUserBtn);
+	my $editUserBtn="//tr[normalize-space(td)='" 
+	    . $self->{'username'} . "']//button[normalize-space()='Edit']";
+	$sel->wait_for_element_present($editUserBtn,$defaultSeleniumTimeout);
     $sel->click_ok($editUserBtn);
     $sel->wait_for_page_to_load($defaultSeleniumTimeout);
 
@@ -211,15 +204,21 @@ sub set_user{
 
     ## Roles
     foreach my $role (keys %{$self->{'roles'}} ){
-	$sel->check("css=input[value='$role']");
+		my $roleCheckbox="css=input[value='$role']";
+		$sel->wait_for_element_present($roleCheckbox,$defaultSeleniumTimeout);
+		$sel->check($roleCheckbox);
+		$sel->is_checked($roleCheckbox);
     }
 
     ## Enable 
-    $sel->check("userdetailForm:enabledField:enabled");
+	my $enableCheckbox="userdetailForm:enabledField:enabled";
+	$sel->wait_for_element_present($enableCheckbox,$defaultSeleniumTimeout);
+	$sel->check($enableCheckbox);
 
     ## Save
-    $sel->submit("userdetailForm");
-    $sel->click_ok("userdetailForm:userdetailSave");
+	my $saveBtn="userdetailForm:userdetailSave";
+	$sel->wait_for_element_present($saveBtn,$defaultSeleniumTimeout);
+	$sel->click_ok($saveBtn);
     $sel->wait_for_page_to_load($defaultSeleniumTimeout);
 
     $sel->pause(1000 * $pauseSeconds) if $pauseSeconds;
@@ -233,23 +232,24 @@ sub to_string{
     my ($self)=@_;
     my $str=$self->{'username'}.": \"" . $self->{'name'} . "\" <" . $self->{'email'}. ">\n";
     foreach my $attr (sort(keys %defaultAttrH)){
-	next unless $self->{$attr};
-	next if $attr eq 'username';
-	next if $attr eq 'name';
-	next if $attr eq 'email';
-	if (($attr eq 'roles') or ($attr eq 'translators') or ($attr eq 'reviewers')
-		or ($attr eq 'coordinators') or ($attr eq 'projects') or ($attr eq 'groups')
-		or ($attr eq 'needs'))
-	{
-	    $str .= "  " . $attr . "=";
-	    for my $r (keys %{$self->{$attr}}){
-		$str .= " $r";
-	    }
-	}else{
-	    $str .= "  " . $attr . "= " . $self->{$attr};
+		next unless $self->{$attr};
+		next if $attr eq 'username';
+		next if $attr eq 'name';
+		next if $attr eq 'email';
+		if (($attr eq 'roles') or ($attr eq 'translators') 
+				or ($attr eq 'reviewers') or ($attr eq 'coordinators')
+			   	or ($attr eq 'projects') or ($attr eq 'groups')
+				or ($attr eq 'needs'))
+		{
+			$str .= "  " . $attr . "=";
+			for my $r (keys %{$self->{$attr}}){
+				$str .= " $r";
+			}
+		}else{
+			$str .= "  " . $attr . "= " . $self->{$attr};
+		}
+		$str.="\n";
 	}
-	$str.="\n";
-    }
     return $str;
 }
 

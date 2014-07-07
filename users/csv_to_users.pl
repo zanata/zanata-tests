@@ -38,15 +38,12 @@ sub selenium_init{
 my $sel=selenium_init({browser_url=> "$zanataUrl"});
 
 my $userHRef=Zanata::User->new_from_csv($csvFile);
-#for my $username (sort (keys %$userHRef)){
-#    my $userRef=$userHRef->{$username};
-#    $userRef->{'url'}=$zanataUrl;
-#    print $userRef->to_string(). "\n";
+for my $username (sort (keys %$userHRef)){
+    my $userRef=$userHRef->{$username};
+    $userRef->{'url'}=$zanataUrl;
+    print $userRef->to_string(). "\n";
 #    $userRef->create_user($sel);
-#}
-my $userRef=$userHRef->{"alice"};
-$userRef->{'url'}=$zanataUrl;
-#$userRef->create_user($sel,5);
+}
 
 assert_environment_variable("ZANATA_ADMIN_USERNAME");
 assert_environment_variable("ZANATA_ADMIN_PASSWORD");
@@ -56,6 +53,8 @@ sign_in_static($sel, $zanataUrl, $ENV{ZANATA_ADMIN_USERNAME},
     $ENV{ZANATA_ADMIN_PASSWORD}, 3
 );
 
-$userRef->set_user($sel,5);
-
+for my $username (sort (keys %$userHRef)){
+	my $userRef=$userHRef->{$username};
+	$userRef->set_user($sel,5);
+}
 
