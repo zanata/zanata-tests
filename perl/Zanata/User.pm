@@ -90,7 +90,11 @@ use constant COORDINATOR => 1<<2;
 
 BEGIN{
     our @ISA=qw(Exporter);
-    our @EXPORT_OK=qw(sign_in_static);
+    our @EXPORT_OK=qw(
+    sign_in_static
+    coordinator_set_lang_membership
+    maintainer_set_prj_maintainership
+    );
     require Exporter;
 }
 
@@ -347,7 +351,6 @@ sub enabled_by_admin{
 
     my $adminManageUserSearchField="usermanagerForm:userList:username_filter_input";
     enter_field($sel,$adminManageUserSearchField, $self->{'username'});
-    $sel->type_keys($adminManageUserSearchField, '\\13');
 
     ## Edit button for user
     my $editUserBtn="//tr[normalize-space(td)='" 
@@ -385,7 +388,7 @@ This method set the language team membership according to the lang_teams permiss
 of this user. 
 
 This action should also be performed by non-admin coordinators, if they are coordinators
-of all language the user has.
+of all languages the user has.
 
 Parameters:
 
@@ -404,17 +407,22 @@ Selenium server handle.
 
 sub set_lang_membership_by_coordinator{
     my ($self, $sel, $pause_seconds)=@_;
+    return unless $self->{'lang_teams'};
     foreach my $lang (keys $self->{'lang_teams'}){
 	coordinator_set_lang_membership($sel, $lang, $self
 	    , $self->{'lang_teams'}->{$lang}, $pause_seconds);
     }
 }
 
-=item C<set_project_mainter_by_maintainer(sel, project, set, pause_seconds)>
+=item C<set_prj_maintainership_by_maintainer(sel, pause_seconds)>
 
-Set/Unset this user as project maintainer by a project maintainer.
+This method set the project maintainership according to the projects of this user. 
 
-This method assumes you are logged-in as a project maintainer.
+This action should also be performed by non-admin maintainers, if they are maintainers
+of all projects the user has.
+
+Note that this method will not remove the maintainership 
+for projects not in property C<projects>.
 
 Parameters:
 
@@ -424,12 +432,6 @@ Parameters:
 
 Selenium server handle.
 
-=item project
-
-Project to operate.
-
-=item set
-
 =item pause_seconds
 
 (Optional) Seconds to pause after operation finished.
@@ -437,14 +439,12 @@ Project to operate.
 =back
 =cut
 
-sub set_project_mainter_by_maintainer{
-    my ($self, $sel, $lang, $pause_seconds)=@_;
-    $sel->open_ok("language/view/$lang");
-    $sel->click_ok("link=Add Team Member");
-    my $userSearchField="searchForm:searchField";
-    enter_field($sel,$userSearchField, $self->{'username'});
-    $sel->click_ok("//input[\@value='Search']");
-
+sub set_prj_maintainership_by_maintainer{
+    my ($self, $sel, $pause_seconds)=@_;
+    return unless $self->{'projects'};
+    foreach my $prj (keys $self->{'projects'}){
+	maintainer_set_prj_maintainership($sel, $prj, $self, 1, $pause_seconds);
+    }
 }
 
 =item C<to_yaml()>
@@ -569,6 +569,7 @@ sub sign_in_static{
 =item C<coordinator_set_lang_membership(sel, lang, user, permissions, pause_seconds)>
 
 Language team coordinator (or admin) set the membership for a user.
+
 C<permissions> will be assigned to the user.
 
 Parameters:
@@ -587,7 +588,7 @@ Language to operate.
 
 User to operate.
 
-=item permission.
+=item permissions
 
 Language permissions.
 
@@ -630,15 +631,91 @@ sub coordinator_set_lang_membership{
     $sel->pause(1000 * $pause_seconds) if $pause_seconds;
 }
 
+=item C<maintainer_set_prj_maintainership(sel, project, user, add, pause_seconds)>
+
+Project maintainer add/remove the a to maintainership of a project.
+
+This method assumes you are logged-in as a maintainer of the project.
+
+Parameters:
+
+=over 4
+
+=item sel
+
+Selenium server handle.
+
+=item project
+
+Project to operate.
+
+=item user
+
+User to operate.
+
+=item add
+
+Set C<add>=1 to add the user as maintainer;
+set C<add>=0 to remove the user from maintainer.
+
+=item pause_seconds
+
+(Optional) Seconds to pause after operation finished.
+
+=back
+=cut
+
+sub maintainer_set_prj_maintainership{
+    my ($sel, $project, $userRef, $add, $pause_seconds)=@_;
+    $sel->open_ok("project/view/$project/settings/permissions");
+    my $userMaintRow="//li//span[.='\@" . $userRef->{'username'} . "']";
+    my $removeMaintElm=$userMaintRow . "/following-sibling::a";
+    my $alreadyMaint=$sel->is_element_present($userMaintRow);
+    my $addMaintField="//input[\@id='maintainerAutocomplete-autocomplete__input']";
+    my $userSearchResult="//span[.='\@" . $userRef->{'username'} . "']";
+    if ($alreadyMaint){
+	if ($add){
+	    ## maintainership already exists
+	    warn "maintainer_set_maintainership: " . $userRef->{'username'} 
+	        . " is already a maintainer for $project !";
+	}else{
+	    ## Remove existing maintainership
+	    $sel->mouse_over($userMaintRow);
+	    $sel->click_ok($removeMaintElm);
+	}
+    }else{
+	if ($add){
+	    ## Add maintainership
+	    enter_field($sel, $addMaintField, $userRef->{'username'});
+	    $sel->wait_for_element_present($userSearchResult);
+	    $sel->key_down($addMaintField, '\\13');
+	    $sel->key_press($addMaintField, '\\13');
+	    $sel->key_up($addMaintField, '\\13');
+	    #$sel->type_keys($addMaintField, '\\13');
+	}else{
+	    ## maintainership already not exist
+	    warn "maintainer_set_maintainership: " . $userRef->{'username'} 
+	    . " is already not a maintainer for $project !";
+	}
+    }
+    $sel->pause(1000 * $pause_seconds) if $pause_seconds;
+}
+
+
 ########################################
 # Utility method
 #
 
-sub enter_field{
+sub type_field{
     my ($sel, $locator, $str)=@_;
     $sel->wait_for_element_present($locator,$defaultSeleniumTimeout);
     $sel->type_ok($locator, $str);
-#    $sel->type_keys($locator, '\\13');
+}
+
+sub enter_field{
+    my ($sel, $locator, $str)=@_;
+    type_field($sel, $locator, $str);
+    $sel->type_keys($locator, '\\13');
 }
 
 sub check_checkbox{
