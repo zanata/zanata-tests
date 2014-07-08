@@ -54,11 +54,7 @@ User in Zanata have following properties:
 
 =item roles
 
-=item translators
-
-=item reviewers
-
-=item coordinators
+=item lang_teams
 
 =item projects
 
@@ -104,9 +100,7 @@ my %defaultAttrH = (
     , email             => {}
     , url               => undef
     , roles             => {}
-    , translators       => {}
-    , reviewers         => {}
-    , coordinators      => {}
+    , lang_teams        => {}
     , projects          => {}
     , groups            => undef
     , needs             => {}
@@ -145,9 +139,9 @@ sub new{
     my $self  = {};
 
     for my $prop (keys %$attr) { # if invalid attr, return undef
-		die "Zanata::User->new: Unknown attribute $prop\n" 
-		unless exists $defaultAttrH{$prop};
-		$self->{$prop} = $attr->{$prop};
+	die "Zanata::User->new: Unknown attribute $prop\n" 
+	unless exists $defaultAttrH{$prop};
+	$self->{$prop} = $attr->{$prop};
     }
     bless $self, $class;
     return $self;
@@ -185,11 +179,17 @@ sub parse_user_row{
 	    $userRef->{'email'} = $rowRef->[$i] . '456@example.com';
 	    $userRef->{'password'} = $rowRef->[$i] . '456';
 	}elsif ($headerA[$i] =~ m/^Trans /){
-	    $userRef->{'translators'}->{substr($headerA[$i], length("Trans "))}=1;
+	    my $lang=substr($headerA[$i], length("Trans "));
+	    $userRef->{'lang_teams'}->{$lang} |= TRANSLATOR;
+	    print "## lang=$lang perm=" . $userRef->{'lang_teams'}->{$lang} . "\n";
 	}elsif ($headerA[$i] =~ m/^Review /){
-	    $userRef->{'reviewers'}->{substr($headerA[$i], length("Review "))}=1;
+	    my $lang=substr($headerA[$i], length("Review "));
+	    $userRef->{'lang_teams'}->{$lang} |= REVIEWER;
+	    print "## lang=$lang perm=" . $userRef->{'lang_teams'}->{$lang} . "\n";
 	}elsif ($headerA[$i] =~ m/^Coord /){
-	    $userRef->{'coordinators'}->{substr($headerA[$i], length("Coord "))}=1;
+	    my $lang=substr($headerA[$i], length("Coord "));
+	    $userRef->{'lang_teams'}->{$lang} |= COORDINATOR;
+	    print "## lang=$lang perm=" . $userRef->{'lang_teams'}->{$lang} . "\n";
 	}elsif ($headerA[$i] =~ m/^Gloss /){
 	    if ($headerA[$i] =~ m/adm$/){
 		$userRef->{'roles'}->{'glossary-admin'}=1;
@@ -205,7 +205,7 @@ sub parse_user_row{
 	}elsif ($headerA[$i] =~ m/^Need /){
 	    $userRef->{'needs'}->{substr($headerA[$i], length("Need "))}=1;
 	}elsif ($headerA[$i] eq 'Note'){
-	    $userRef->{'Note'}=$rowRef->[$i];
+	    $userRef->{'note'}=$rowRef->[$i];
 	}else{
 	    die "Zanata::User->parse_user_row: Unknown header $headerA[$i]";
 	}
@@ -347,10 +347,11 @@ sub enabled_by_admin{
 
     my $adminManageUserSearchField="usermanagerForm:userList:username_filter_input";
     enter_field($sel,$adminManageUserSearchField, $self->{'username'});
+    $sel->type_keys($adminManageUserSearchField, '\\13');
 
     ## Edit button for user
     my $editUserBtn="//tr[normalize-space(td)='" 
-        . $self->{'username'} . "']//button[normalize-space()='Edit']";
+       . $self->{'username'} . "']//button[normalize-space()='Edit']";
     $sel->wait_for_element_present($editUserBtn,$defaultSeleniumTimeout);
     $sel->click_ok($editUserBtn);
     $sel->wait_for_page_to_load($defaultSeleniumTimeout);
@@ -378,9 +379,12 @@ sub enabled_by_admin{
     $sel->pause(1000 * $pause_seconds) if $pause_seconds;
 }
 
-=item C<add_lang_membership_by_coordinator(sel, lang, permissions, pause_seconds)>
+=item C<set_lang_membership_by_coordinator(sel, lang, pause_seconds)>
 
-Add the language team membership by a language coordinator.
+Set the language team membership by a language coordinator.
+
+This method set the language team membership according to the lang_teams permissions
+of this user.
 
 This method assumes you are logged-in as a language coordinator.
 
@@ -397,12 +401,6 @@ Selenium server handle.
 
 Language to operate.
 
-=item permissions
-
-A number that represents permission, (e.g. TRANSLATOR | REVIEWER)
-
-See section L</"Language Permissions">.
-
 =item pause_seconds
 
 (Optional) Seconds to pause after operation finished.
@@ -410,27 +408,32 @@ See section L</"Language Permissions">.
 =back
 =cut
 
-sub add_lang_membership_by_coordinator{
-    my ($self, $lang, $permissions, $sel, $pause_seconds)=@_;
+sub set_lang_membership_by_coordinator{
+    my ($self, $sel, $lang, $pause_seconds)=@_;
     $sel->open_ok("language/view/$lang");
     $sel->click_ok("link=Add Team Member");
     my $userSearchField="searchForm:searchField";
     enter_field($sel,$userSearchField, $self->{'username'});
+    $sel->click_ok("//input[\@value='Search']");
 
     my $userRow="//td[normalize-space()='" . $self->{'username'} . "']/..";
     $sel->wait_for_element_present($userRow,$defaultSeleniumTimeout);
 
     my $translatorCheckbox=$userRow ."/td[3]/input";
-    check_checkbox($sel, $translatorCheckbox, 1);
+    check_checkbox($sel, $translatorCheckbox
+	, $self->{'lang_teams'}->{$lang} & TRANSLATOR);
 
     my $reviewerCheckbox=$userRow ."/td[4]/input";
-    check_checkbox($sel, $reviewerCheckbox, 1);
+    check_checkbox($sel, $reviewerCheckbox
+	, $self->{'lang_teams'}->{$lang} & REVIEWER);
 
     my $coordinatorerCheckbox=$userRow ."/td[5]/input";
-    check_checkbox($sel, $coordinatorerCheckbox, 1);
+    check_checkbox($sel, $coordinatorerCheckbox
+	, $self->{'lang_teams'}->{$lang} & COORDINATOR);
 
-    $sel->click_ok("link=Add Selected");
-    $sel->wait_for_page_to_load($defaultSeleniumTimeout);
+    $sel->click_ok("resultForm:addSelectedBtn");
+    $sel->click_ok("searchForm:closeBtn");
+    #$sel->wait_for_page_to_load($defaultSeleniumTimeout);
 
     $sel->pause(1000 * $pause_seconds) if $pause_seconds;
 }
@@ -454,10 +457,8 @@ sub to_yaml{
 	next if $attr eq 'username';
 	next if $attr eq 'name';
 	next if $attr eq 'email';
-	if (($attr eq 'roles') or ($attr eq 'translators') 
-	    or ($attr eq 'reviewers') or ($attr eq 'coordinators')
-	    or ($attr eq 'projects') or ($attr eq 'groups')
-	    or ($attr eq 'needs'))
+	if (($attr eq 'roles') or ($attr eq 'projects') 
+	    or ($attr eq 'groups') or ($attr eq 'needs'))
 	{
 	    $str=sprintf "%s%-16s[", $str, ($attr . ":");
 	    my $first=1;
@@ -470,6 +471,27 @@ sub to_yaml{
 		$str=sprintf "%s%s", $str, $r;
 	    }
 	    $str.="]\n";
+	}elsif ($attr eq 'lang_teams'){
+	    $str=sprintf "%s%-16s\n", $str, ($attr . ":");
+	    foreach my $lang (keys $self->{$attr}){
+		$str=sprintf "%s    - %-8s[", $str, ($lang . ":");
+		my $first=1;
+		if ($self->{$attr}->{$lang} & TRANSLATOR){
+		    $str.="TRANSLATOR";
+		    $first=0;
+		}
+		if ($self->{$attr}->{$lang} & REVIEWER){
+		    $str.=", " unless $first;
+		    $str.="REVIEWER";
+		    $first=0;
+		}
+		if ($self->{$attr}->{$lang} & COORDINATOR){
+		    $str.=", " unless $first;
+		    $str.="COORDINATOR";
+		}
+		$str.="]\n"
+	    }
+	    $str.="\n"
 	}else{
 	    $str=sprintf "%s%-16s%s\n", $str, ($attr . ":") , $self->{$attr};
 	}
@@ -545,7 +567,7 @@ sub enter_field{
     my ($sel, $locator, $str)=@_;
     $sel->wait_for_element_present($locator,$defaultSeleniumTimeout);
     $sel->type_ok($locator, $str);
-    $sel->type_keys($locator, '\\13');
+#    $sel->type_keys($locator, '\\13');
 }
 
 sub check_checkbox{
