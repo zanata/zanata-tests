@@ -379,15 +379,13 @@ sub enabled_by_admin{
     $sel->pause(1000 * $pause_seconds) if $pause_seconds;
 }
 
-=item C<set_lang_membership_by_coordinator(sel, lang, pause_seconds)>
-
-Set the language team membership by a language coordinator.
+=item C<set_lang_membership_by_coordinator(sel, pause_seconds)>
 
 This method set the language team membership according to the lang_teams permissions
-of this user.
+of this user. 
 
-This method assumes you are logged-in as a language coordinator.
-
+This action should also be performed by non-admin coordinators, if they are coordinators
+of all language the user has.
 
 Parameters:
 
@@ -397,10 +395,6 @@ Parameters:
 
 Selenium server handle.
 
-=item lang
-
-Language to operate.
-
 =item pause_seconds
 
 (Optional) Seconds to pause after operation finished.
@@ -409,6 +403,41 @@ Language to operate.
 =cut
 
 sub set_lang_membership_by_coordinator{
+    my ($self, $sel, $pause_seconds)=@_;
+    foreach my $lang (keys $self->{'lang_teams'}){
+	coordinator_set_lang_membership($sel, $lang, $self
+	    , $self->{'lang_teams'}->{$lang}, $pause_seconds);
+    }
+}
+
+=item C<set_project_mainter_by_maintainer(sel, project, set, pause_seconds)>
+
+Set/Unset this user as project maintainer by a project maintainer.
+
+This method assumes you are logged-in as a project maintainer.
+
+Parameters:
+
+=over 4
+
+=item sel
+
+Selenium server handle.
+
+=item project
+
+Project to operate.
+
+=item set
+
+=item pause_seconds
+
+(Optional) Seconds to pause after operation finished.
+
+=back
+=cut
+
+sub set_project_mainter_by_maintainer{
     my ($self, $sel, $lang, $pause_seconds)=@_;
     $sel->open_ok("language/view/$lang");
     $sel->click_ok("link=Add Team Member");
@@ -416,26 +445,6 @@ sub set_lang_membership_by_coordinator{
     enter_field($sel,$userSearchField, $self->{'username'});
     $sel->click_ok("//input[\@value='Search']");
 
-    my $userRow="//td[normalize-space()='" . $self->{'username'} . "']/..";
-    $sel->wait_for_element_present($userRow,$defaultSeleniumTimeout);
-
-    my $translatorCheckbox=$userRow ."/td[3]/input";
-    check_checkbox($sel, $translatorCheckbox
-	, $self->{'lang_teams'}->{$lang} & TRANSLATOR);
-
-    my $reviewerCheckbox=$userRow ."/td[4]/input";
-    check_checkbox($sel, $reviewerCheckbox
-	, $self->{'lang_teams'}->{$lang} & REVIEWER);
-
-    my $coordinatorerCheckbox=$userRow ."/td[5]/input";
-    check_checkbox($sel, $coordinatorerCheckbox
-	, $self->{'lang_teams'}->{$lang} & COORDINATOR);
-
-    $sel->click_ok("resultForm:addSelectedBtn");
-    $sel->click_ok("searchForm:closeBtn");
-    #$sel->wait_for_page_to_load($defaultSeleniumTimeout);
-
-    $sel->pause(1000 * $pause_seconds) if $pause_seconds;
 }
 
 =item C<to_yaml()>
@@ -555,9 +564,71 @@ sub sign_in_static{
 }
 
 =back
-
 =cut
 
+=item C<coordinator_set_lang_membership(sel, lang, user, permissions, pause_seconds)>
+
+Language team coordinator (or admin) set the membership for a user.
+C<permissions> will be assigned to the user.
+
+Parameters:
+
+=over 4
+
+=item sel
+
+Selenium server handle.
+
+=item lang
+
+Language to operate.
+
+=item user
+
+User to operate.
+
+=item permission.
+
+Language permissions.
+
+=item pause_seconds
+
+(Optional) Seconds to pause after operation finished.
+
+=back
+=cut
+
+sub coordinator_set_lang_membership{
+    my ($sel, $lang, $userRef, $permissions, $pause_seconds)=@_;
+    $sel->open_ok("language/view/$lang");
+    $sel->click_ok("link=Add Team Member");
+    my $userSearchField="searchForm:searchField";
+    enter_field($sel,$userSearchField, $userRef->{'username'});
+    $sel->click_ok("//input[\@value='Search']");
+
+    my $userRow="//td[normalize-space()='" . $userRef->{'username'} . "']/..";
+    $sel->wait_for_element_present($userRow,$defaultSeleniumTimeout);
+
+    $userRef->{'lang_teams'}->{$lang}=$permissions;
+
+    my $translatorCheckbox=$userRow ."/td[3]/input";
+    check_checkbox($sel, $translatorCheckbox
+	, $userRef->{'lang_teams'}->{$lang} & TRANSLATOR);
+
+    my $reviewerCheckbox=$userRow ."/td[4]/input";
+    check_checkbox($sel, $reviewerCheckbox
+	, $userRef->{'lang_teams'}->{$lang} & REVIEWER);
+
+    my $coordinatorerCheckbox=$userRow ."/td[5]/input";
+    check_checkbox($sel, $coordinatorerCheckbox
+	, $userRef->{'lang_teams'}->{$lang} & COORDINATOR);
+
+    $sel->click_ok("resultForm:addSelectedBtn");
+    $sel->click_ok("searchForm:closeBtn");
+    #$sel->wait_for_page_to_load($defaultSeleniumTimeout);
+
+    $sel->pause(1000 * $pause_seconds) if $pause_seconds;
+}
 
 ########################################
 # Utility method

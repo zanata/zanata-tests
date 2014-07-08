@@ -56,8 +56,6 @@ sign_in_static($sel, $zanataUrl, $ENV{ZANATA_ADMIN_USERNAME},
 for my $username (sort (keys %$userHRef)){
     my $userRef=$userHRef->{$username};
     $userRef->enabled_by_admin($sel,5);
-    foreach my $l ( qw (pt-PT pt-BR)){
-	$userRef->set_lang_membership_by_coordinator($sel,$l, 5);
-    }
+    $userRef->set_lang_membership_by_coordinator($sel,5);
 }
 
