@@ -418,8 +418,8 @@ sub set_lang_membership_by_coordinator{
 
 This method set the project maintainership according to the projects of this user. 
 
-This action should also be performed by non-admin maintainers, if they are maintainers
-of all projects the user has.
+This action should also be performed by non-admin maintainers, if they
+are maintainers of all projects the user has.
 
 Note that this method will not remove the maintainership 
 for projects not in property C<projects>.
@@ -446,6 +446,40 @@ sub set_prj_maintainership_by_maintainer{
 	maintainer_set_prj_maintainership($sel, $prj, $self, 1, $pause_seconds);
     }
 }
+
+=item C<set_group_organizership_by_organizer(sel, pause_seconds)>
+
+This method set the project organizership according to the projects of this user. 
+
+This action should also be performed by non-admin organizers, if they
+are organizers of all projects the user has.
+
+Note that this method will not remove the organizership 
+for projects not in property C<projects>.
+
+Parameters:
+
+=over 4
+
+=item sel
+
+Selenium server handle.
+
+=item pause_seconds
+
+(Optional) Seconds to pause after operation finished.
+
+=back
+=cut
+
+sub set_group_organizership_by_organizer{
+	my ($self, $sel, $pause_seconds)=@_;
+	return unless $self->{'groups'};
+	foreach my $group (keys $self->{'groups'}){
+		organizer_set_group_organizership($sel, $group, $self, 1, $pause_seconds);
+	}
+}
+
 
 =item C<to_yaml()>
 
@@ -633,7 +667,7 @@ sub coordinator_set_lang_membership{
 
 =item C<maintainer_set_prj_maintainership(sel, project, user, add, pause_seconds)>
 
-Project maintainer add/remove the a to maintainership of a project.
+Project maintainer add/remove a user to/from maintainership of a project.
 
 This method assumes you are logged-in as a maintainer of the project.
 
@@ -701,6 +735,75 @@ sub maintainer_set_prj_maintainership{
     $sel->pause(1000 * $pause_seconds) if $pause_seconds;
 }
 
+=item C<organizer_set_group_organizership(sel, group, user, add, pause_seconds)>
+
+Group organizer add/remove a user to/from organizership of a group.
+
+This method assumes you are logged-in as an organizer of the group.
+
+Parameters:
+
+=over 4
+
+=item sel
+
+Selenium server handle.
+
+=item group
+
+Project to operate.
+
+=item user
+
+User to operate.
+
+=item add
+
+Set C<add>=1 to add the user as organizer;
+set C<add>=0 to remove the user from organizer.
+
+=item pause_seconds
+
+(Optional) Seconds to pause after operation finished.
+
+=back
+=cut
+
+sub organizer_set_group_organizership{
+	my ($sel, $group, $userRef, $add, $pause_seconds)=@_;
+	$sel->open_ok("version-group/view/$group/settings/maintainers");
+	my $userOrgRow="//li//span[.='\@" . $userRef->{'username'} . "']";
+	my $removeOrgElm=$userOrgRow . "/following-sibling::a";
+	my $alreadyOrg=$sel->is_element_present($userOrgRow);
+	my $addOrgField="//input[\@id='maintainerAutocomplete-autocomplete__input']";
+	my $userSearchResult="//span[.='\@" . $userRef->{'username'} . "']";
+	if ($alreadyOrg){
+		if ($add){
+			## organizership already exists
+			warn "organizer_set_organizership: " . $userRef->{'username'} 
+			. " is already a organizer for $group !";
+		}else{
+			## Remove existing organizership
+			$sel->mouse_over($userOrgRow);
+			$sel->click_ok($removeOrgElm);
+		}
+	}else{
+		if ($add){
+			## Add organizership
+			enter_field($sel, $addOrgField, $userRef->{'username'});
+			$sel->wait_for_element_present($userSearchResult);
+			$sel->key_down($addOrgField, '\\13');
+			$sel->key_press($addOrgField, '\\13');
+			$sel->key_up($addOrgField, '\\13');
+			#$sel->type_keys($addOrgField, '\\13');
+		}else{
+			## organizership already not exist
+			warn "organizer_set_organizership: " . $userRef->{'username'} 
+			. " is already not a organizer for $group !";
+		}
+	}
+	$sel->pause(1000 * $pause_seconds) if $pause_seconds;
+}
 
 ########################################
 # Utility method

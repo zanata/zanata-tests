@@ -58,5 +58,6 @@ for my $username (sort (keys %$userHRef)){
     $userRef->enabled_by_admin($sel,5);
     $userRef->set_lang_membership_by_coordinator($sel,5);
     $userRef->set_prj_maintainership_by_maintainer($sel,5);
+    $userRef->set_group_organizership_by_organizer($sel,5);
 }
 
