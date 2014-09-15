@@ -21,6 +21,10 @@ endif
 PRJ_SLUG?=$(SLUG)
 
 #######################################
+# Function
+
+
+#######################################
 # Rules
 download_all: $(VER_TASKS)
 
@@ -49,13 +53,13 @@ $(VER_TASKS): %/pot/: %/
 
 endif
 
-maintainer_main_workflow: $(addsuffix maintainer_main_workflow_,$(VERS))
+#maintainer_main_workflow: $(addsuffix maintainer_main_workflow_,$(VERS))
 
-$(addsuffix maintainer_main_workflow_,$(VERS)):maintainer_main_workflow_%:
-	pushd $*
-	../../client-tests/maintainer_main_workflow.sh -c "B;e" $(SLUG)
-	popd
-
+#$(addsuffix maintainer_main_workflow_,$(VERS)):maintainer_main_workflow_%:
+#	pushd $*
+#	../../client-tests/maintainer_main_workflow.sh -c "B;e" $(SLUG)
+#	popd
+#
 	
 
 
