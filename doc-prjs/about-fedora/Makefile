@@ -7,6 +7,8 @@ DESC:="Fedora document About Fedora"
 VERS:=master f13 f11
 REPO_TYPE:=git
 URL:=git://git.fedorahosted.org/git/docs/$(SLUG).git
+SRC_DIR:=pot
+
 
 include ../common.mk
 

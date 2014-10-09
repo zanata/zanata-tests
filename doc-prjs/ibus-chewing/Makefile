@@ -8,6 +8,8 @@ VERS:=master
 VER_TASKS:=$(addsuffix /po/$(SLUG).pot,$(VERS))
 REPO_TYPE:=git
 URL:=git://github.com/definite/$(SLUG).git
+SRC_DIR:=po
+TRANS_DIR:=po
 
 include ../common.mk
 
