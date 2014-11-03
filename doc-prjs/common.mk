@@ -26,8 +26,13 @@ PRJ_SLUG?=$(SLUG)
 
 #######################################
 # Rules
-download_all: $(VER_TASKS)
 
+ifdef SKIP_TARGET
+download_all:
+
+else
+download_all: $(VER_TASKS)
+endif
 clean:
 	rm -fr $(VER_DIRS)
 

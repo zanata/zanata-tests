@@ -27,4 +27,6 @@ $(VER_TASKS): %/pom.xml: $(VER_DIRS)
 
 else
     $(info "maven required version "${MAVEN_REQUIRED_VERSION}" is newer that our ${MAVEN_VERSION}, skip")
+SKIP_TARGET:=1
+include ../common.mk
 endif
