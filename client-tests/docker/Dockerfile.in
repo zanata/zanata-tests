@@ -1,0 +1,11 @@
+FROM @DISTRO@:@RELEASE@
+MAINTAINER "Ding-Yi Chen" <dchen@redhat.com>
+RUN yum -y update; yum -y install sudo wget git; yum clean all
+##Disable Defaults requiretty in sudoers file
+RUN sed -ie 's/Defaults\(.*\)requiretty/ #Defaults\1requiretty/g' /etc/sudoers
+RUN groupadd sudo; echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+RUN adduser -p '' -m alice -G sudo; adduser -p '' -m grace -G sudo;\
+       adduser -p '' -m irene -G sudo; \
+       adduser -p '' -m queen -G sudo; \
+       adduser -p '' -m peggy -G sudo
+
