@@ -1,4 +1,0 @@
-:revdate: 2013/03/06
-:revnumber: 2.3
-:open_id_service: Yahoo
-include::_RegisterOpenId.txt[]

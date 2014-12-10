@@ -1,4 +1,0 @@
-HTTP404	/admin/locales.seam
-HTTP404	/admin/locales.seam?actionMethod=admin%2Flocales.xhtml%3AlocaleList.importJavaLocales&amp;cid=267
-#TEXT_NOT_PRESENT locales
-

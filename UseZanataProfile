@@ -1,2 +1,0 @@
-export ZANATA_PROFILE=$1
-rm -f CMakeCache.txt; cmake .; make clean_test_suites; make

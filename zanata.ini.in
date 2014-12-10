@@ -1,7 +1,0 @@
-[defaults]
-debug = false
-#errors = true
-server = jbossOrg
-
-[servers]
-
