@@ -67,16 +67,18 @@ fi
 if [ -n "$MAVEN_CMD" ];then
     REAL_CMD="${CMD} -B -e ${MAVEN_GOAL_PREFIX}:pull -Dzanata.username=${ZANATA_USERNAME} -Dzanata.key=${ZANATA_KEY}"
 else
-    REAL_CMD="${CMD} -B -e pull --username ${ZANATA_USERNAME} --key ${ZANATA_KEY}"
+    REAL_CMD="${CMD} -B -e pull --url ${ZANATA_URL} --username ${ZANATA_USERNAME} --key ${ZANATA_KEY}"
 fi
 
-## Use GNU tar
-OUTPUT_DIR=/tmp/doc-prjs/ibus-chewing/master/po
+## Use ibus-chewing
+: ${ZANATA_PROJECT_SLUG:=ibus-chewing}
+: ${ZANATA_VERSION_SLUG:=master}
+OUTPUT_DIR=/tmp/doc-prjs/$PRJ/$VER/po
 
 mkdir -p ${OUTPUT_DIR}
 cd $OUTPUT_DIR
 
-wget -O zanata.xml $(get_zanata_xml_url $ZANATA_URL tar 1.26)
+wget -O zanata.xml $(get_zanata_xml_url $ZANATA_URL $PRJ $VER)
 
 ## pull (without arguments)
 command_has_no_error_check "pull" "${REAL_CMD}"

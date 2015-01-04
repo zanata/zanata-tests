@@ -95,6 +95,7 @@ function command_return(){
 function command_has_no_error_check(){
     local promptStr=$1
     local cmd=$2
+    shift 2
 
     if [ -n "$SKIP_TEST" ];then
 	echo "SKIPPED: $promptStr"
@@ -103,7 +104,7 @@ function command_has_no_error_check(){
 	return
     fi
 
-    commandOutput=`$cmd 2>/dev/null`
+    commandOutput=`$cmd "$@" 2>/dev/null`
     ret=$?
     if [ $ret -eq 0 ];then
 	ok_msg "Command return 0"
