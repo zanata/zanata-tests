@@ -1,6 +1,14 @@
 # this is to be sourced
 
 #================================
+# Variables
+#
+export EXIT_CODE_OK=0
+export EXIT_CODE_FAILED=3
+export EXIT_CODE_SKIPPED=4
+export EXIT_CODE_FATAL=125
+
+#================================
 # Guide functions
 #
 
@@ -74,22 +82,22 @@ function ok_msg(){
     : $((total++))
 }
 
-
 function command_return(){
     local expected=$1
     local cmd=$2
     if [ -n "$SKIP_TEST" ];then
-	echo "SKIPPED: Command return $expected"
-	: $((skipped++))
-	: $((total++))
-	return
+	skipped_msg "Command return $expected"
+	return $EXIT_CODE_SKIPPED
     fi
     commandOutput=$($cmd 2>/dev/null)
+    ret=$?
     if [ $? -eq $expected ];then
-	ok_msg "Command return $expected"
+	ok_msg "Command returns $expected"
+	return $EXIT_CODE_OK
     else
-	failed_msg "Command does not return $expected"
+	failed_msg "Command failed to return $expected, returned $ret instead"
     fi
+    return $EXIT_CODE_FAILED
 }
 
 function command_has_no_error_check(){
@@ -97,37 +105,44 @@ function command_has_no_error_check(){
     local cmd=$2
     shift 2
 
-    if [ -n "$SKIP_TEST" ];then
-	echo "SKIPPED: $promptStr"
-	: $((skipped++))
-	: $((total++))
-	return
-    fi
-
     commandOutput=`$cmd "$@" 2>/dev/null`
     ret=$?
-    if [ $ret -eq 0 ];then
+    result=$EXIT_CODE_OK
+
+    ## Command return test 
+    if [ -n "$SKIP_TEST" ];then
+	skipped_msg "Command return 0"
+	result=$EXIT_CODE_SKIPPED
+    elif [ $ret -eq 0 ];then
 	ok_msg "Command return 0"
     else
-	failed_msg "Command does not return 0"
+	failed_msg "Command should return 0 but return $ret instead"
+	result=$EXIT_CODE_FAILED
     fi
 
-    if grep -e '\[ERROR\]'  2>/dev/null <<<"$commandOutput"  ;then
-        failed_msg "$promptStr has [ERROR]"
+    ## Command has error test 
+    if [ -n "$SKIP_TEST" ];then
+	skipped_msg "$promptStr has no [ERROR]"
+    elif [ $ret -eq 126 -o $ret -eq 127 ];then
+	skipped_msg "$promptStr has no [ERROR], because return 0 test failed"
+    elif grep -e '\[ERROR\]'  2>/dev/null <<<"$commandOutput"  ;then
+	failed_msg "$promptStr has [ERROR]"
+	result=$EXIT_CODE_FAILED
     else
-        ok_msg "$promptStr has no [ERROR]"
+	ok_msg "$promptStr has no [ERROR]"
     fi
+    return $result
 }
-
 
 function has_string_check(){
     local str=$1
     local output=$2
     if ! grep -e "$str" 2>/dev/null <<<"$output" ;then
 	failed_msg "$str does not exist"
-    else
-	ok_msg "$str"
+	return $EXIT_CODE_FAILED
     fi
+    ok_msg "$str"
+
 }
 
 
