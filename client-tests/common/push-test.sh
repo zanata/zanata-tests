@@ -18,8 +18,8 @@ DESCRIPTION
 
 EXIT STATUS
    0 if all tests passed
-   1 at least one of test not passed
-   2 invalid or missing arguments
+   ${EXIT_CODE_INVALID_ARGUMENTS} invalid or missing arguments
+   ${EXIT_CODE_FAILED} at least one of test not passed
 
 END
 }
@@ -39,11 +39,6 @@ if [ $ret -ne 0 ];then
     exit $ret
 fi
 
-if [ -z "${CMD}" ]; then
-    print_usage
-    stderr_echo "<command> is not specified"
-    exit ${EXIT_CODE_INVALID_ARGUMENTS}
-fi
 shift
 
 ## Project definition
@@ -71,7 +66,7 @@ RunCmd "pushType=trans" ${CMD} -B -e ${CLASSNAME} ${COMMON_OPTIONS[@]} ${COMPULS
 
 OutputNoError
 
-## Push type trans
+## Push type both
 RunCmd "pushType=both" ${CMD} -B -e ${CLASSNAME} ${COMMON_OPTIONS[@]} ${COMPULSORY_OPTIONS[@]} --push-type=both
 
 OutputNoError

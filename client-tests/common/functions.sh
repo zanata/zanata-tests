@@ -16,7 +16,6 @@ MVN_COMMAND_PREFIX=org.zanata:zanata-maven-plugin
 : ${ZANATA_USERNAME:=peggy}
 : ${ZANATA_KEY:=1a0172997f0a751ca351285b08de4d64}
 
-## classname for JUnit
 JUNIT_XML_INTERNAL=
 
 #================================
@@ -36,6 +35,8 @@ function long_option_convert(){
 	*mvn )
 	    if [ "$name" = "disble-ssl-cert" ];then
 		name="disableSSLCert"
+	    elif [ "$name" = "merge-type" ];then
+		name="merge"
 	    else
 		name=`hyphen_to_camel_case $name`
 	    fi
@@ -81,6 +82,27 @@ function argument_convert(){
 	    fi
 	    ;;
     esac
+}
+
+## real_command  <cmd> - Obtain canonicalized command path
+## Stdout: Canonicalized command path
+function real_command(){
+    local cmd=$1
+    if [ -z "$cmd" ]; then
+	## Redirect to stderr because
+	##   1) It is error message
+	##   2) stdout of this command is only for result.
+	print_usage >/dev/stderr
+	stderr_echo "Command not specified"
+	exit $EXIT_CODE_INVALID_ARGUMENTS
+    fi
+    local str=`which $cmd`
+    if [ -z "$str" ];then
+	print_usage >/dev/stderr
+	stderr_echo "Command $cmd invalid"
+	exit $EXIT_CODE_INVALID_ARGUMENTS
+    fi
+    readlink -f "$str"
 }
 
 #================================
@@ -150,16 +172,6 @@ function str_convert_variable_to_asciidoc_variable(){
     sed -e 's/[$][{]/{/g' <<<$1
 }
 
-# Obtain real command with absolute path
-function real_command(){
-    local str=`which $1`
-    if [ -z "$str" ];then
-	stderr_echo "Cannot locate $1"
-	exit $EXIT_CODE_INVALID_ARGUMENTS
-    fi
-    readlink -f "$str"
-}
-
 #================================
 # Test Reporting
 #
@@ -170,7 +182,7 @@ failed=0
 skipped=0
 
 function stderr_echo (){
-    echo $@ >/dev/stderr
+    echo "$@" >/dev/stderr
 }
 
 function skipped_msg(){
@@ -238,7 +250,9 @@ function get_real_time(){
 
 ## Time 
 function time_command(){
-    /usr/bin/time -p -o ${TIME_FILE} "$@" 1>${CMDOUT_FILE} 2>${CMDOUT_FILE} 
+    NEW_CMDERR_FILE=`mktemp "${ZANATA_OUTPUT_FILE_TEMPLATE}"`
+    NEW_CMDOUT_FILE=`mktemp "${ZANATA_OUTPUT_FILE_TEMPLATE}"`
+    /usr/bin/time -p -o ${TIME_FILE} "$@" 1>${NEW_CMDOUT_FILE} 2>${NEW_CMDOUT_FILE} 
     NEW_EXIT_CODE=$?
     REAL_TIME=`get_real_time ${TIME_FILE}`
 }
@@ -340,9 +354,11 @@ END
 
 function RunCmdExitCode(){
     local expectedExit=$1
+    LAST_EXPECTED_EXIT_CODE=$expectedExit
     local name=$2
-    LAST_NAME=$name
+    LAST_NAME="$name"
     local cmd=$3
+    LAST_CMD="$cmd"
     shift 3
     new_cmd_output_files
     declare -a args
@@ -356,6 +372,8 @@ function RunCmdExitCode(){
 	return $EXIT_CODE_SKIPPED
     fi
     time_command $cmd ${args[@]} 
+    CMDERR_FILE="${NEW_CMDERR_FILE}"
+    CMDOUT_FILE="${NEW_CMDOUT_FILE}"
     LAST_EXIT_CODE=${NEW_EXIT_CODE}
 
     if [ ${LAST_EXIT_CODE} -eq ${expectedExit} ];then
@@ -373,8 +391,40 @@ function RunCmdExitCode(){
 }
 
 function RunCmd(){
-    RunCmdExitCode 0 $name "$@"
+    RunCmdExitCode 0 "$@"
     return $?
+}
+
+function StdoutContain(){
+    local name=$1
+    local str=$2
+    : ${name:=${LAST_NAME}-StdoutContain-$str}
+
+    if [ -n "$SKIP_TEST" ];then
+	skipped_msg "${name}" 0.0
+	return $EXIT_CODE_SKIPPED
+    elif [ ${LAST_EXIT_CODE} -ne ${LAST_EXPECTED_EXIT_CODE} ];then
+	skipped_msg "${name}" 0.0 "LAST_EXIT_CODE=${LAST_EXIT_CODE}" "LAST_EXIT_CODE=${LAST_EXIT_CODE} Command=${LAST_CMD_FULL}"
+	return $EXIT_CODE_SKIPPED
+    else
+	time_command grep -e "$str"  2>/dev/null ${CMDOUT_FILE}
+	rm -f ${NEW_CMDERR_FILE} ${NEW_CMDOUT_FILE}
+	if [ ${NEW_EXIT_CODE} -ne 0 ];then
+	    failed_msg "${name}" ${REAL_TIME}  "String $str does not exist" "Command=${LAST_CMD_FULL}"
+	    return $EXIT_CODE_FAILED
+	fi
+    fi
+    ok_msg "${name}" ${REAL_TIME}
+    return $EXIT_CODE_OK
+}
+
+function StdoutContainArgument(){
+    local name=$1
+    local str=$2
+    : ${name:=${LAST_NAME}-StdoutContainArgument-$str}
+    local arg=`argument_convert "$cmd" "$str"`
+
+    StdoutContain "$name" "$arg"
 }
 
 function OutputNoError(){
@@ -384,7 +434,7 @@ function OutputNoError(){
     if [ -n "$SKIP_TEST" ];then
 	skipped_msg "${name}" 0.0
 	return $EXIT_CODE_SKIPPED
-    elif [ ${LAST_EXIT_CODE} -eq 126 -o ${LAST_EXIT_CODE} -eq 127 ];then
+    elif [ ${LAST_EXIT_CODE} -ne ${LAST_EXPECTED_EXIT_CODE} ];then
 	skipped_msg "${name}" 0.0 "LAST_EXIT_CODE=${LAST_EXIT_CODE}" "Command=${LAST_CMD_FULL}"
 	return $EXIT_CODE_SKIPPED
     else

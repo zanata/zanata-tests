@@ -13,68 +13,68 @@ DESCRIPTION
       Basic main workflow (no alternative paths)
       Assume the project and version is created
     1. pull 
-    2. pull trans
+    2. pull source
     3. pull both
 
 EXIT STATUS
    0 if all tests passed
-   1 at least one of test not passed
-   2 invalid or missing arguments
+   ${EXIT_CODE_INVALID_ARGUMENTS} invalid or missing arguments
+   ${EXIT_CODE_FAILED} at least one of test not passed
 
 END
 }
 
-SCRIPT_DIR=$(dirname $(readlink -f $0))
+: ${CLASSNAME:=$(basename $0 .sh | sed -e 's/-test$//')}
+: ${TEST_SUITE_NAME:=${CLASSNAME}}
+
+export SCRIPT_DIR="$(dirname "$(readlink -f $0)")"
 TOP_DIR=${SCRIPT_DIR%%/client-tests/*}
 COMMON_DIR="${SCRIPT_DIR}"
 source ${COMMON_DIR}/functions.sh
-MAVEN_GOAL_PREFIX="org.zanata:zanata-maven-plugin"
 
-CMD=$1
+## Parse CMD
+CMD=`real_command $1`
+ret=$?
+if [ $ret -ne 0 ];then
+    exit $ret
+fi
+
 shift
 
-CMD_NAME=`basename ${CMD}`
-if [ "${CMD_NAME}" = "mvn" ];then
-    MAVEN_CMD=1
-else
-    MAVEN_CMD=
-fi
-
-if [ -z "${CMD}" ]; then
-    print_usage
-    echo "[command] is not specified"
-    exit 1
-fi
-
-
-if [ -n "$MAVEN_CMD" ];then
-    REAL_CMD="${CMD} -B -e ${MAVEN_GOAL_PREFIX}:pull -Dzanata.username=${ZANATA_USERNAME} -Dzanata.key=${ZANATA_KEY}"
-else
-    REAL_CMD="${CMD} -B -e pull --url ${ZANATA_URL} --username ${ZANATA_USERNAME} --key ${ZANATA_KEY}"
-fi
-
-## Use ibus-chewing
-: ${ZANATA_PROJECT_SLUG:=ibus-chewing}
+## Project definition
+: ${ZANATA_PROJECT_SLUG:=ibus-chewing-a}
+: ${ZANATA_PROJECT_NAME:=$ZANATA_PROJECT_SLUG}
+: ${ZANATA_PROJECT_DESC:=$ZANATA_PROJECT_NAME}
 : ${ZANATA_VERSION_SLUG:=master}
-OUTPUT_DIR=/tmp/doc-prjs/$PRJ/$VER/po
+: ${ZANATA_PROJECT_TYPE:=gettext}
+: ${WORK_DIR:=/tmp/doc-prjs/$ZANATA_PROJECT_SLUG/$ZANATA_VERSION_SLUG}
 
-mkdir -p ${OUTPUT_DIR}
-cd $OUTPUT_DIR
+mkdir -p ${WORK_DIR}
+cd $WORK_DIR
 
-wget -O zanata.xml $(get_zanata_xml_url $ZANATA_URL $PRJ $VER)
+COMMON_OPTIONS=("--url=${ZANATA_URL}" "--username=${ZANATA_USERNAME}" "--key=${ZANATA_KEY}")
+COMPULSORY_OPTIONS=()
 
-## pull (without arguments)
-command_has_no_error_check "pull" "${REAL_CMD}"
+## Compulsory options Only
 
-## pull --pull-type trans
-command_has_no_error_check "pull --pull-type src" "${REAL_CMD} --pull-type src"
+RunCmd "CompulsoryOptions Only" ${CMD} -B -e ${CLASSNAME} ${COMMON_OPTIONS[@]} ${COMPULSORY_OPTIONS[@]} 
 
-## pull --pull-type both
-command_has_no_error_check "pull --pull-type both" "${REAL_CMD} --pull-type both"
+OutputNoError
+
+## Pull type source
+RunCmd "pullType=source" ${CMD} -B -e ${CLASSNAME} ${COMMON_OPTIONS[@]} ${COMPULSORY_OPTIONS[@]} --pull-type=source
+
+OutputNoError
+
+## Pull type both
+RunCmd "pullType=both" ${CMD} -B -e ${CLASSNAME} ${COMMON_OPTIONS[@]} ${COMPULSORY_OPTIONS[@]} --pull-type=both
+
+OutputNoError
 
 print_summary `basename $0 .sh`
 
 if [ $failed -ne 0 ];then
-    exit 1
+    exit ${EXIT_CODE_FAILED}
 fi
 exit 0
+

@@ -35,11 +35,6 @@ if [ $ret -ne 0 ];then
     exit $ret
 fi
 
-if [ -z "${CMD}" ]; then
-    print_usage
-    stderr_echo "<command> is not specified"
-    exit ${EXIT_CODE_INVALID_ARGUMENTS}
-fi
 shift
 
 ## Project definition
