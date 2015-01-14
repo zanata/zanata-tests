@@ -24,23 +24,6 @@ EXIT STATUS
 END
 }
 
-function get_zanata_xml_url(){
-    local url=$1
-    local proj=$2
-    local ver=$3
-    echo "${url}iteration/view/${proj}/${ver}?actionMethod=iteration%2Fview.xhtml%3AconfigurationAction.downloadGeneralConfig%28%29"
-}
-
-error=
- : ${ZANATA_URL:=http://localized-zanatatest.itos.redhat.com/}
- : ${ZANATA_USERNAME:=peggy}
- : ${ZANATA_KEY:=1a0172997f0a751ca351285b08de4d64}
-
-
-if [ -n "$error" ];then
-    exit 2
-fi
-
 SCRIPT_DIR=$(dirname $(readlink -f $0))
 TOP_DIR=${SCRIPT_DIR%%/client-tests/*}
 COMMON_DIR="${SCRIPT_DIR}"

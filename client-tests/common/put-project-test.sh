@@ -1,7 +1,7 @@
 #!/bin/bash
 function print_usage(){
     cat <<END
-    $0 - Client push test
+    $0 - Client put-project test
 SYNOPSIS
     $0  <command>
 
@@ -11,15 +11,11 @@ ARGUMENTS
 DESCRIPTION
     Scope: 
       Basic main workflow (no alternative paths)
-      Assume the project and version is created
-    1. push 
-    2. push trans
-    3. push both
 
 EXIT STATUS
    0 if all tests passed
-   1 at least one of test not passed
-   2 invalid or missing arguments
+   ${EXIT_CODE_INVALID_ARGUMENTS} invalid or missing arguments
+   ${EXIT_CODE_FAILED} at least one of test not passed
 
 END
 }
@@ -58,21 +54,10 @@ mkdir -p ${WORK_DIR}
 cd $WORK_DIR
 
 COMMON_OPTIONS=("--url=${ZANATA_URL}" "--username=${ZANATA_USERNAME}" "--key=${ZANATA_KEY}")
-COMPULSORY_OPTIONS=()
+COMPULSORY_OPTIONS=("--project-slug=${ZANATA_PROJECT_SLUG}" "--project-name=${ZANATA_PROJECT_NAME}" "--project-desc=${ZANATA_PROJECT_DESC}" "--default-project-type=${ZANATA_PROJECT_TYPE}")
 
 ## Compulsory options Only
-
 RunCmd "CompulsoryOptions Only" ${CMD} -B -e ${CLASSNAME} ${COMMON_OPTIONS[@]} ${COMPULSORY_OPTIONS[@]} 
-
-OutputNoError
-
-## Push type trans
-RunCmd "pushType=trans" ${CMD} -B -e ${CLASSNAME} ${COMMON_OPTIONS[@]} ${COMPULSORY_OPTIONS[@]} --push-type=trans
-
-OutputNoError
-
-## Push type trans
-RunCmd "pushType=both" ${CMD} -B -e ${CLASSNAME} ${COMMON_OPTIONS[@]} ${COMPULSORY_OPTIONS[@]} --push-type=both
 
 OutputNoError
 
@@ -82,4 +67,3 @@ if [ $failed -ne 0 ];then
     exit ${EXIT_CODE_FAILED}
 fi
 exit 0
-
