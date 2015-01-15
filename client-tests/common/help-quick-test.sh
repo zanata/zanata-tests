@@ -1,7 +1,7 @@
 #!/bin/bash
 function print_usage(){
     cat <<END
-    $0 - Client help-quick test
+    $0 -  Tests of help message of frequently used command.
 SYNOPSIS
     $0  <command>
 
@@ -9,8 +9,7 @@ ARGUMENTS
     command: Client command with path.
 
 DESCRIPTION
-    The purpose of help-quick test is make sure new client users
-    can access sufficient command line help.
+    Tests for help messages of frequently used command.
 
     Scope of help quick test:
     1. Command exists
@@ -42,9 +41,7 @@ EXIT STATUS
 END
 }
 
-
-: ${CLASSNAME:=$(basename $0 .sh | sed -e 's/-test$//')}
-: ${TEST_SUITE_NAME:=${CLASSNAME}}
+: ${TEST_SUITE_NAME:=$(basename $0 .sh | sed -e 's/-test$//')}
 
 export SCRIPT_DIR="$(dirname "$(readlink -f $0)")"
 TOP_DIR=${SCRIPT_DIR%%/client-tests/*}
@@ -60,60 +57,15 @@ fi
 
 shift
 
-## No arguments
-case $cmd in
-    *mvn )
-	RunCmd "No arguments" ${CMD} help
-	;;
-    * )
-	RunCmd "No arguments" ${CMD}
-	;;
-esac
-StdoutContainArgument "" "help"
-StdoutContainArgument "" "push"
-StdoutContainArgument "" "pull"
+SUITE_DIR=${TOP_DIR}/client-tests/suites
+## Test start
+source ${SUITE_DIR}/help-quick.sh
+## Test end
 
-## Verbose mode (-v)
-RunCmd "Verbose" ${CMD} -v
-StdoutContain "" "API version: [0-9]*.[0-9]*"
-
-function check_push_pull_common_args(){
-    StdoutContainArgument "" "disable-ssl-cert"
-    StdoutContainArgument "" "url"
-    StdoutContainArgument "" "username"
-    StdoutContainArgument "" "key"
-    StdoutContainArgument "" "user-config"
-    StdoutContainArgument "" "project-config"
-    StdoutContainArgument "" "src-dir"
-    StdoutContainArgument "" "trans-dir"
-    StdoutContainArgument "" "excludes"
-    StdoutContainArgument "" "includes"
-    StdoutContainArgument "" "locales"
-    StdoutContainArgument "" "project"
-    StdoutContainArgument "" "project-version"
-}
-
-## Subcommand: help push
-RunCmd "help push" ${CMD} help push
-check_push_pull_common_args
-StdoutContainArgument "" "copy-trans"
-StdoutContainArgument "" "file-types"
-StdoutContainArgument "" "merge-type"
-StdoutContainArgument "" "push-type"
-StdoutContainArgument "" "from-doc"
-
-## Subcommand: help pull
-RunCmd "help pull" ${CMD} help pull
-check_push_pull_common_args
-StdoutContainArgument "" "create-skeletons"
-StdoutContainArgument "" "encode-tabs"
-StdoutContainArgument "" "include-fuzzy"
-StdoutContainArgument "" "pull-type"
-
-print_summary `basename $0 .sh`
+print_summary "${TEST_SUITE_NAME}"
 
 if [ $failed -ne 0 ];then
     exit ${EXIT_CODE_FAILED}
 fi
-exit 0
+exit ${EXIT_CODE_OK}
 

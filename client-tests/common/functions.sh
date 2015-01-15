@@ -16,6 +16,15 @@ MVN_COMMAND_PREFIX=org.zanata:zanata-maven-plugin
 : ${ZANATA_USERNAME:=peggy}
 : ${ZANATA_KEY:=1a0172997f0a751ca351285b08de4d64}
 
+## Project definition
+: ${ZANATA_PROJECT_SLUG:=ibus-chewing}
+: ${ZANATA_PROJECT_NAME:=$ZANATA_PROJECT_SLUG}
+: ${ZANATA_PROJECT_DESC:=$ZANATA_PROJECT_NAME}
+: ${ZANATA_VERSION_SLUG:=master}
+: ${ZANATA_PROJECT_TYPE:=gettext}
+: ${WORK_DIR:=${TOP_DIR}/doc-prjs/$ZANATA_PROJECT_SLUG/$ZANATA_VERSION_SLUG}
+
+
 JUNIT_XML_INTERNAL=
 
 #================================
@@ -26,20 +35,32 @@ function hyphen_to_camel_case(){
     sed -e 's/-\([a-z]\)/\U\1/g'<<<$1
 }
 
-function long_option_convert(){
+function long_option_name_convert(){
     local cmd=$1
     local name=$2
+    case $cmd in
+	*mvn )
+	    if [ "$name" = "disable-ssl-cert" ];then
+		echo "disableSSLCert"
+	    elif [ "$name" = "merge-type" ];then
+		echo "merge"
+	    else
+		hyphen_to_camel_case "$name"
+	    fi
+	    ;;
+	* )
+	    echo "$name"
+	    ;;
+    esac
+}
+
+function long_option_convert(){
+    local cmd=$1
+    local name=`long_option_name_convert $cmd $2`
     local value=$3
 
     case $cmd in
 	*mvn )
-	    if [ "$name" = "disble-ssl-cert" ];then
-		name="disableSSLCert"
-	    elif [ "$name" = "merge-type" ];then
-		name="merge"
-	    else
-		name=`hyphen_to_camel_case $name`
-	    fi
 	    if [ -n "$value" ];then
 		echo "-Dzanata.$name=$value"
 	    else
@@ -56,10 +77,37 @@ function long_option_convert(){
     esac
 }
 
+function short_option_convert(){
+    local cmd=$1
+    local name=$2
+    local value=$3
+
+    case $cmd in
+	*mvn )
+	    if [ "$name" = "v" ];then
+		name="Ddetail"
+	    fi
+	    if [ -n "$value" ];then
+		echo "-$name $value"
+	    else
+		echo "-$name"
+	    fi
+	    ;;
+	* )
+	    if [ -n "$value" ];then
+		echo "-$name $value"
+	    else
+		echo "-$name"
+	    fi
+	    ;;
+    esac
+}
+
+
 function argument_convert(){
     local cmd=$1
     local optString=$2
-    local asis=$3
+    local subCommand=$3
     
     case $optString in
 	--* )
@@ -72,11 +120,17 @@ function argument_convert(){
 	    optStr=`sed -e 's/^-//'<<<$optString`
 	    local name=`sed -e 's/=.*$//'<<<$optStr`
 	    local value=`sed -e 's/^[^=]*=*//'<<<$optStr`
-	    echo "-$name $value"
+	    short_option_convert "$cmd" "$name" "$value"
 	    ;;
 	* )
 	    if [[ $cmd =~ mvn ]];then
-		echo "$MVN_COMMAND_PREFIX:$optString"
+		if [ -z "${subCommand}" ];then
+		    echo "$MVN_COMMAND_PREFIX:$optString"
+		elif [ "${subCommand}" = "help" ];then
+		    echo "-Dgoal=$optString -Ddetail"
+		else
+		    echo "$optString" 
+		fi
 	    else
 		echo "$optString"
 	    fi
@@ -117,21 +171,6 @@ function get_zanata_xml_url(){
 }
 
 ZANATA_OUTPUT_FILE_TEMPLATE="/tmp/zanata-test.XXXXXXXX"
-
-function new_cmd_output_files(){
-    if [ -n "${CMDERR_FILE}" ]; then
-	rm -f ${CMDERR_FILE}
-    fi
-    CMDERR_FILE=`mktemp "${ZANATA_OUTPUT_FILE_TEMPLATE}"`
-    if [ -n "${CMDOUT_FILE}" ]; then
-        rm -f ${CMDOUT_FILE}
-    fi
-    CMDOUT_FILE=`mktemp "${ZANATA_OUTPUT_FILE_TEMPLATE}"`
-    if [ -n "${TIME_FILE}" ]; then
-        rm -f ${TIME_FILE}
-    fi
-    TIME_FILE=`mktemp "${ZANATA_OUTPUT_FILE_TEMPLATE}"`
-}
 
 #================================
 # Guide functions
@@ -187,19 +226,19 @@ function stderr_echo (){
 
 function skipped_msg(){
     SKIP_TEST=1
-    local name=$1
-    local eTime=$2
-    local message=$3
-    local detail=$4
-    local consoleOut="SKIPPED: $name ($eTime)"
+    local eTime=$1
+    local message=$2
+    local detail=$3
+    local consoleOut="SKIPPED: $TEST_CASE_NAME ($eTime)"
     echo $consoleOut
     : $((skipped++))
     : $((total++))
     totalTime=`perl -e "print $totalTime+$eTime;"`
 
     if [ -n "${JUNIT_XML_INTERNAL}" ];then
-	junit_xml_append_test_case SKIPPED "$name" "$eTime" "${message}" "${detail}"
+	junit_xml_append_test_case SKIPPED "${TEST_CASE_NAME}" "$eTime" "${message}" "${detail}"
     fi
+    unset TEST_CASE_NAME
 }
 
 function failed_msg(){
@@ -207,19 +246,34 @@ function failed_msg(){
 	skipped_msg "$@"
 	return
     fi
-    local name=$1
-    local eTime=$2
-    local message=$3
-    local detail=$4
-    local consoleOut="FAILED: $name ($eTime)"
+    local eTime=$1
+    local message=$2
+    local detail=$3
+    local outFile=$4
+    local errFile=$5
+    local consoleOut="FAILED: $TEST_CASE_NAME ($eTime)"
     echo $consoleOut
     : $((failed++))
     : $((total++))
     totalTime=`perl -e "print $totalTime+$eTime;"`
+    echo "-- FAILED -- ${TEST_CASE_NAME} ----- NEW_CMD_FULL=${NEW_CMD_FULL}" > /dev/stderr
+
+    if [ -n "${outFile}" ];then
+	echo "-- FAILED -- ${TEST_CASE_NAME} ----- STDOUT --------------------------------" > /dev/stderr
+	cat ${outFile} > /dev/stderr
+    fi
+    if [ -n "${errFile}" ];then
+	echo "-- FAILED -- ${TEST_CASE_NAME} ----- STDERR --------------------------------" > /dev/stderr
+	cat ${errFile} > /dev/stderr
+    fi
+    if [ -n "${outFile}" -o -n "${errFile}" ];then
+	echo "=================================================================" > /dev/stderr
+    fi
 
     if [ -n "${JUNIT_XML_INTERNAL}" ];then
-	junit_xml_append_test_case FAILED "$name" "$eTime" "${message}" "${detail}"
+	junit_xml_append_test_case FAILED "$TEST_CASE_NAME" "$eTime" "${message}" "${detail}" "${outFile}" "${errFile}"
     fi
+    unset TEST_CASE_NAME
 }
 
 function ok_msg(){
@@ -227,16 +281,16 @@ function ok_msg(){
         skipped_msg "$@"
 	return
     fi
-    local name=$1
-    local eTime=$2
-    local consoleOut="OK: $name ($eTime)"
+    local eTime=$1
+    local consoleOut="OK: $TEST_CASE_NAME ($eTime)"
     echo $consoleOut
     : $((total++))
     totalTime=`perl -e "print $totalTime+$eTime;"`
 
     if [ -n "${JUNIT_XML_INTERNAL}" ];then
-	junit_xml_append_test_case OK "$name" "$eTime"
+	junit_xml_append_test_case OK "$TEST_CASE_NAME" "$eTime"
     fi
+    unset TEST_CASE_NAME
 }
 
 function get_real_time(){
@@ -252,9 +306,12 @@ function get_real_time(){
 function time_command(){
     NEW_CMDERR_FILE=`mktemp "${ZANATA_OUTPUT_FILE_TEMPLATE}"`
     NEW_CMDOUT_FILE=`mktemp "${ZANATA_OUTPUT_FILE_TEMPLATE}"`
-    /usr/bin/time -p -o ${TIME_FILE} "$@" 1>${NEW_CMDOUT_FILE} 2>${NEW_CMDOUT_FILE} 
+    NEW_TIME_FILE=`mktemp "${ZANATA_OUTPUT_FILE_TEMPLATE}"`
+    NEW_CMD_FULL="$*"
+    /usr/bin/time -p -o ${NEW_TIME_FILE} "$@" 1>${NEW_CMDOUT_FILE} 2>${NEW_CMDOUT_FILE}
     NEW_EXIT_CODE=$?
-    REAL_TIME=`get_real_time ${TIME_FILE}`
+    REAL_TIME=`get_real_time ${NEW_TIME_FILE}`
+    rm -f ${NEW_TIME_FILE}
 }
 
 function print_summary(){
@@ -305,6 +362,8 @@ function junit_xml_append_test_case(){
     local eTime=$3
     local message=$4
     local detail=$5
+    local outFile=$6
+    local errFile=$7
     case $msgType in
 	SKIPPED )
 	    junit_xml_print_test_case_header "$name" $eTime 1 >> ${JUNIT_XML_INTERNAL}
@@ -314,6 +373,16 @@ function junit_xml_append_test_case(){
 	FAILED )
 	    junit_xml_print_test_case_header "$name" $eTime 1 >> ${JUNIT_XML_INTERNAL}
 	    echo "    <error message=\"$message\">$detail</error>" >> ${JUNIT_XML_INTERNAL}
+	    if [ -n "${outFile}" ];then
+		echo "    <system-out>" >> ${JUNIT_XML_INTERNAL}
+		cat "${outFile} " >> ${JUNIT_XML_INTERNAL}
+		echo "    </system-out>" >> ${JUNIT_XML_INTERNAL}
+	    fi
+	    if [ -n "${errFile}" ];then
+		echo "    <system-err>" >> ${JUNIT_XML_INTERNAL}
+		cat "${errFile} " >> ${JUNIT_XML_INTERNAL}
+		echo "    </system-err>" >> ${JUNIT_XML_INTERNAL}
+	    fi
 	    echo "  </testcase>" >> ${JUNIT_XML_INTERNAL}
 	    ;;
 	* )
@@ -339,36 +408,50 @@ END
 }
 
 #================================
-# "Keyword" functions
-#
-# These functions must have exit code
+# Function for Keyword-Based testing
 #
 
-# Environment Variables that will affect behavior
-#   SKIP_TEST: this test should be skipped
-#   JUNIT_XML: JUnit output XML
-#
-#   CMDERR_FILE: Standard error file
-#   CMDOUT_FILE: Standard output file
-#   LAST_EXIT_CODE: Exit code of last command
+function TestCaseStart(){
+    if [ -n "${CMDERR_FILE}" ];then
+	rm -f ${CMDERR_FILE}
+	unset CMDERR_FILE
+    fi
+    if [ -n "${CMDOUT_FILE}" ];then
+	rm -f ${CMDOUT_FILE}
+	unset CMDOUT_FILE
+    fi
+    TEST_CASE_NAME_PREFIX=$1
+}
 
 function RunCmdExitCode(){
     local expectedExit=$1
     LAST_EXPECTED_EXIT_CODE=$expectedExit
-    local name=$2
-    LAST_NAME="$name"
-    local cmd=$3
+    local cmd=$2
     LAST_CMD="$cmd"
-    shift 3
-    new_cmd_output_files
+    shift 2
+
+    : ${TEST_CASE_NAME:=${TEST_CASE_NAME_PREFIX}-RunCmdExitCode}
+
+    local subCommand
     declare -a args
     for o in "$@";do
-	args+=(`argument_convert $cmd $o`)
+	if [ -z "${subCommand}" ];then
+	    # First non-option argument become subCommand (e.g. help)
+	    if [[ ! "$o" =~ ^- ]]; then
+		subCommand="$o"
+	    fi
+	    args+=(`argument_convert "$cmd" "$o"`)
+	else
+	    args+=(`argument_convert "$cmd" "$o" "${subCommand}"`)
+	fi
     done
 
     LAST_CMD_FULL="${cmd} ${args[*]}"
+    if [ -n "$ZANATA_TEST_DEBUG" ];then
+	stderr_echo "LAST_CMD_FULL=$LAST_CMD_FULL"
+    fi
     if [ -n "$SKIP_TEST" ];then
-	skipped_msg "${name}" 0.0 "${LAST_CMD_FULL}"
+	skipped_msg 0.0 "${LAST_CMD_FULL}"
 	return $EXIT_CODE_SKIPPED
     fi
     time_command $cmd ${args[@]} 
@@ -377,74 +460,70 @@ function RunCmdExitCode(){
     LAST_EXIT_CODE=${NEW_EXIT_CODE}
 
     if [ ${LAST_EXIT_CODE} -eq ${expectedExit} ];then
-	ok_msg "${name}" ${REAL_TIME} "Command returns $expectedExit"
+	ok_msg  ${REAL_TIME} "Command returns $expectedExit"
 	return $EXIT_CODE_OK
     fi
 
-    failed_msg "${name}" ${REAL_TIME} "${LAST_CMD_FULL}" "Failed to return $expectedExit, returned $ret instead. Command=${LAST_CMD_FULL}"
-    echo "----- ${name} ----- STDOUT --------------------------------------" > /dev/stderr
-    cat ${CMDOUT_FILE} > /dev/stderr
-    echo "----- ${name} ----- STDERR --------------------------------------" > /dev/stderr
-    cat ${CMDERR_FILE} > /dev/stderr
-    echo "=================================================================" > /dev/stderr
+    failed_msg ${REAL_TIME} "${LAST_CMD_FULL}" "Expected: $expectedExit, Actual: $ret instead. Command=${LAST_CMD_FULL}" "${CMDOUT_FILE}" "${CMDERR_FILE}"
     return $EXIT_CODE_FAILED
 }
 
 function RunCmd(){
+    : ${TEST_CASE_NAME:=${TEST_CASE_NAME_PREFIX}-RunCmd}
     RunCmdExitCode 0 "$@"
     return $?
 }
 
 function StdoutContain(){
-    local name=$1
-    local str=$2
-    : ${name:=${LAST_NAME}-StdoutContain-$str}
+    local str=$1
+    local exitCode=$EXIT_CODE_OK
+    : ${TEST_CASE_NAME:=${TEST_CASE_NAME_PREFIX}-StdoutContain-$str}
 
     if [ -n "$SKIP_TEST" ];then
-	skipped_msg "${name}" 0.0
+	skipped_msg 0.0
 	return $EXIT_CODE_SKIPPED
     elif [ ${LAST_EXIT_CODE} -ne ${LAST_EXPECTED_EXIT_CODE} ];then
-	skipped_msg "${name}" 0.0 "LAST_EXIT_CODE=${LAST_EXIT_CODE}" "LAST_EXIT_CODE=${LAST_EXIT_CODE} Command=${LAST_CMD_FULL}"
-	return $EXIT_CODE_SKIPPED
+	skipped_msg 0.0 "LAST_EXIT_CODE=${LAST_EXIT_CODE}" "LAST_EXIT_CODE=${LAST_EXIT_CODE} Command=${LAST_CMD_FULL}"
+	exitCode=$EXIT_CODE_SKIPPED
     else
 	time_command grep -e "$str"  2>/dev/null ${CMDOUT_FILE}
-	rm -f ${NEW_CMDERR_FILE} ${NEW_CMDOUT_FILE}
 	if [ ${NEW_EXIT_CODE} -ne 0 ];then
-	    failed_msg "${name}" ${REAL_TIME}  "String $str does not exist" "Command=${LAST_CMD_FULL}"
-	    return $EXIT_CODE_FAILED
+	    failed_msg ${REAL_TIME}  "String $str does not exist" "Command=${LAST_CMD_FULL}" "${NEW_CMDOUT_FILE}" "${NEW_CMDERR_FILE}"
+	    exitCode=$EXIT_CODE_FAILED
+	else
+	    ok_msg ${REAL_TIME}
 	fi
+	rm -f ${NEW_CMDERR_FILE} ${NEW_CMDOUT_FILE}
     fi
-    ok_msg "${name}" ${REAL_TIME}
-    return $EXIT_CODE_OK
+    return $exitCode
 }
 
 function StdoutContainArgument(){
-    local name=$1
-    local str=$2
-    : ${name:=${LAST_NAME}-StdoutContainArgument-$str}
-    local arg=`argument_convert "$cmd" "$str"`
+    local str=$1
+    local arg=`long_option_name_convert "${LAST_CMD}" "$str"`
+    : ${TEST_CASE_NAME:=${TEST_CASE_NAME_PREFIX}-StdoutContainArgument-${arg}}
 
-    StdoutContain "$name" "$arg"
+    StdoutContain "$arg"
 }
 
 function OutputNoError(){
     ## Command has error test 
+    : ${TEST_CASE_NAME:=${TEST_CASE_NAME_PREFIX}-OutputNoError}
 
-    name="${LAST_NAME}-OutputNoError"
     if [ -n "$SKIP_TEST" ];then
-	skipped_msg "${name}" 0.0
+	skipped_msg 0.0
 	return $EXIT_CODE_SKIPPED
     elif [ ${LAST_EXIT_CODE} -ne ${LAST_EXPECTED_EXIT_CODE} ];then
-	skipped_msg "${name}" 0.0 "LAST_EXIT_CODE=${LAST_EXIT_CODE}" "Command=${LAST_CMD_FULL}"
+	skipped_msg 0.0 "LAST_EXIT_CODE=${LAST_EXIT_CODE}" "Command=${LAST_CMD_FULL}"
 	return $EXIT_CODE_SKIPPED
     else
 	time_command grep -e '\[ERROR\]'  2>/dev/null ${CMDOUT_FILE}
 	if [ ${NEW_EXIT_CODE} -eq 0 ];then
-	    failed_msg "${name}" ${REAL_TIME}  "[ERROR] exist" "stdout contains [ERROR] Command=${LAST_CMD_FULL}"
+	    failed_msg ${REAL_TIME}  "[ERROR] exist" "stdout contains [ERROR] Command=${LAST_CMD_FULL}"
 	    return $EXIT_CODE_FAILED
 	fi
     fi
-    ok_msg "${name}" ${REAL_TIME}
+    ok_msg ${REAL_TIME}
     return $EXIT_CODE_OK
 }
 
