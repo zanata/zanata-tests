@@ -24,7 +24,6 @@ MVN_COMMAND_PREFIX=org.zanata:zanata-maven-plugin
 : ${ZANATA_PROJECT_TYPE:=gettext}
 : ${WORK_DIR:=${TOP_DIR}/doc-prjs/$ZANATA_PROJECT_SLUG/$ZANATA_VERSION_SLUG}
 
-
 JUNIT_XML_INTERNAL=
 
 #================================
@@ -138,6 +137,11 @@ function argument_convert(){
     esac
 }
 
+#================================
+# Command functions
+#
+
+
 ## real_command  <cmd> - Obtain canonicalized command path
 ## Stdout: Canonicalized command path
 function real_command(){
@@ -157,6 +161,24 @@ function real_command(){
 	exit $EXIT_CODE_INVALID_ARGUMENTS
     fi
     readlink -f "$str"
+}
+
+function command_get_type(){
+    local realCmd=`real_command $1`
+    case $realCmd in
+	*mvn )
+	    echo "mvn"
+	    ;;
+	*zanata-cli )
+	    echo "java"
+	    ;;
+	*zanata )
+	    echo "python"
+	    ;;
+	* )
+	    basename $realCmd
+	    ;;
+    esac
 }
 
 #================================
@@ -332,6 +354,7 @@ function get_real_time(){
     fi
 }
 
+
 ## Time 
 function time_command(){
     NEW_CMDERR_FILE=`mktemp "${ZANATA_OUTPUT_FILE_TEMPLATE}"`
@@ -350,6 +373,8 @@ function print_summary(){
 	return
     fi
 
+    : ${TEST_PACKAGE:=client-$(command_get_type ${CMD})}
+    sed -i -e "s/@TEST_PACKAGE@/${TEST_PACKAGE}/" ${JUNIT_XML_INTERNAL}
     sed -i -e "s/@FAILED@/${failed}/" ${JUNIT_XML_INTERNAL}
     sed -i -e "s/@TOTAL@/${total}/" ${JUNIT_XML_INTERNAL}
     sed -i -e "s/@TOTAL_TIME@/${totalTime}/" ${JUNIT_XML_INTERNAL}
@@ -437,7 +462,7 @@ function junit_xml_new(){
     fi
     cat >${JUNIT_XML_INTERNAL}<<END
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="@FAILED@" hostname="${HOSTNAME}" name="${TEST_SUITE_NAME}" tests="@TOTAL@" time="@TOTAL_TIME@" timestamp="${TIME_STAMP}">
+<testsuite errors="0" failures="@FAILED@" hostname="${HOSTNAME}" package="@TEST_PACKAGE@" name="${TEST_SUITE_NAME}" tests="@TOTAL@" time="@TOTAL_TIME@" timestamp="${TIME_STAMP}">
 END
 }
 
