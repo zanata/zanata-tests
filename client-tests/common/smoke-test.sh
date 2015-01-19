@@ -46,9 +46,13 @@ shift
 SUITE_DIR=${TOP_DIR}/client-tests/suites
 export ZANATA_BACKEND=${CMD}
 source ${SUITE_DIR}/help-quick.sh
+unset SKIP_TEST
 source ${SUITE_DIR}/put-project-quick.sh
+unset SKIP_TEST
 source ${SUITE_DIR}/put-version-quick.sh
+unset SKIP_TEST
 source ${SUITE_DIR}/push-quick.sh
+unset SKIP_TEST
 source ${SUITE_DIR}/pull-quick.sh
 
 print_summary "${CLASSNAME}"
