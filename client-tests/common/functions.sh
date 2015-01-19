@@ -196,15 +196,30 @@ function to_asciidoc(){  # NOT_IN_DOC
     for k in "${varNames[@]}";do
 	local value=
 	if [ -n "${varValues[$k]}" ];then
-	    value=" "
-	    value+=`str_convert_variable_to_asciidoc_variable "${varValues[$k]}"`
+	    value=" $(str_convert_variable_to_asciidoc_variable "${varValues[$k]}")"
 	fi
 	echo ":$k:$value"
     done
-    awk 'BEGIN {start=0;} \
+    awk 'BEGIN {start=0;sh_start=0} \
 	/^#### End Doc/ { start=0} \
-	start==1 { gsub("^###[ ]?","", $0); print $0;}\
+	(start==1 && /^[^#]/ ) { if (sh_start==0) {sh_start=1; print "+" ; print "[source,sh]"; print "----"} print $0;} \
+	(start==1 && /^###/ ) { if (sh_start==1) {sh_start=0; print "----"} gsub("^###[ ]?","", $0) ; print $0;} \
 	/^#### Start Doc/ { start=1; } ' $0
+    echo "== Default Environment Variables"
+    echo "[source,sh]"
+    echo "----"
+    for k in "${varNames[@]}";do
+	if [[ "$k" =~ ^[a-z] ]];then
+	    ## Skip the asciidoc internal variables
+	    continue
+	fi
+	local value=
+	if [ -n "${varValues[$k]}" ];then
+	    value="${varValues[$k]}"
+	fi
+	echo "export $k=\"$value\""
+    done
+    echo "----"
 }
 
 function str_convert_variable_to_asciidoc_variable(){

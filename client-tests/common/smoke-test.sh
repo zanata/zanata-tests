@@ -26,11 +26,11 @@ EXIT STATUS
 END
 }
 
-TEST_SUITE_NAME="Smoke"
+: ${TEST_SUITE_NAME:="Smoke"}
 
 export SCRIPT_DIR="$(dirname "$(readlink -f $0)")"
 TOP_DIR=${SCRIPT_DIR%%/client-tests/*}
-COMMON_DIR="${SCRIPT_DIR}"
+COMMON_DIR="${TOP_DIR}/client-tests/common"
 source ${COMMON_DIR}/functions.sh
 
 ## Parse CMD
@@ -44,6 +44,7 @@ shift
 
 ## Test start
 SUITE_DIR=${TOP_DIR}/client-tests/suites
+export ZANATA_BACKEND=${CMD}
 source ${SUITE_DIR}/help-quick.sh
 source ${SUITE_DIR}/put-project-quick.sh
 source ${SUITE_DIR}/put-version-quick.sh

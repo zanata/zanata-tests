@@ -25,7 +25,7 @@ END
 
 export SCRIPT_DIR="$(dirname "$(readlink -f $0)")"
 TOP_DIR=${SCRIPT_DIR%%/client-tests/*}
-COMMON_DIR="${SCRIPT_DIR}"
+COMMON_DIR="${TOP_DIR}/client-tests/common"
 source ${COMMON_DIR}/functions.sh
 
 ## Parse CMD
