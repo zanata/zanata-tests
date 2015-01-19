@@ -239,6 +239,21 @@ function stderr_echo (){
     echo "$@" >/dev/stderr
 }
 
+function clean_files (){
+    if [ -n "${CMDERR_FILE}" ];then
+	rm -f "${CMDERR_FILE}"
+    fi
+    if [ -n "${CMDOUT_FILE}" ];then
+        rm -f "${CMDOUT_FILE}"
+    fi
+    if [ -n "${NEW_CMDERR_FILE}" ];then
+        rm -f "${NEW_CMDERR_FILE}"
+    fi
+    if [ -n "${NEW_CMDOUT_FILE}" ];then
+	rm -f "${NEW_CMDOUT_FILE}"
+    fi
+}
+
 function skipped_msg(){
     SKIP_TEST=1
     local eTime=$1
@@ -390,12 +405,12 @@ function junit_xml_append_test_case(){
 	    echo "    <error message=\"$message\">$detail</error>" >> ${JUNIT_XML_INTERNAL}
 	    if [ -n "${outFile}" ];then
 		echo "    <system-out>" >> ${JUNIT_XML_INTERNAL}
-		cat "${outFile} " >> ${JUNIT_XML_INTERNAL}
+		cat "${outFile}" >> ${JUNIT_XML_INTERNAL}
 		echo "    </system-out>" >> ${JUNIT_XML_INTERNAL}
 	    fi
 	    if [ -n "${errFile}" ];then
 		echo "    <system-err>" >> ${JUNIT_XML_INTERNAL}
-		cat "${errFile} " >> ${JUNIT_XML_INTERNAL}
+		cat "${errFile}" >> ${JUNIT_XML_INTERNAL}
 		echo "    </system-err>" >> ${JUNIT_XML_INTERNAL}
 	    fi
 	    echo "  </testcase>" >> ${JUNIT_XML_INTERNAL}
@@ -416,6 +431,10 @@ function junit_xml_new(){
     rm -f "${JUNIT_XML_INTERNAL}"
     TIME_STAMP=`date --iso-8601=second`
     HOSTNAME=`hostname`
+    local resultDir=$(dirname $(readlink -m "${JUNIT_XML_INTERNAL}"))
+    if [ -n "${resultDir}" ];then
+	mkdir -p "${resultDir}"
+    fi
     cat >${JUNIT_XML_INTERNAL}<<END
 <?xml version="1.0" encoding="UTF-8" ?>
 <testsuite errors="0" failures="@FAILED@" hostname="${HOSTNAME}" name="${TEST_SUITE_NAME}" tests="@TOTAL@" time="@TOTAL_TIME@" timestamp="${TIME_STAMP}">
@@ -427,14 +446,7 @@ END
 #
 
 function TestCaseStart(){
-    if [ -n "${CMDERR_FILE}" ];then
-	rm -f ${CMDERR_FILE}
-	unset CMDERR_FILE
-    fi
-    if [ -n "${CMDOUT_FILE}" ];then
-	rm -f ${CMDOUT_FILE}
-	unset CMDOUT_FILE
-    fi
+    clean_files
     TEST_CASE_NAME_PREFIX=$1
 }
 
@@ -543,10 +555,20 @@ function OutputNoError(){
 }
 
 #================================
+# Common exit
+#
+
+function finish {
+    clean_files
+}
+
+trap finish EXIT 
+
+#================================
 # Common init
 #
 
 if [ -n "${JUNIT_XML}" ];then
-    junit_xml_new "${JUNIT_XML}"
+    junit_xml_new "$(readlink -m "${JUNIT_XML}")"
 fi
 
