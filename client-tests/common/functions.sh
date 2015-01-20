@@ -395,6 +395,14 @@ function has_string_check(){
 # JUnit
 #
 
+function file_encode_xml(){
+    local file=$1
+    if [ -z "$file" ];then
+	file=/dev/stdin
+    fi
+    sed -e 's~&~\&amp;~g' -e 's~<~\&lt;~g'  -e  's~>~\&gt;~g' "$file"
+}
+
 function junit_xml_print_test_case_header(){
     local name=$1
     local eTime=$2
@@ -430,12 +438,12 @@ function junit_xml_append_test_case(){
 	    echo "    <error message=\"$message\">$detail</error>" >> ${JUNIT_XML_INTERNAL}
 	    if [ -n "${outFile}" ];then
 		echo "    <system-out>" >> ${JUNIT_XML_INTERNAL}
-		cat "${outFile}" >> ${JUNIT_XML_INTERNAL}
+		file_encode_xml "${outFile}" >> ${JUNIT_XML_INTERNAL}
 		echo "    </system-out>" >> ${JUNIT_XML_INTERNAL}
 	    fi
 	    if [ -n "${errFile}" ];then
 		echo "    <system-err>" >> ${JUNIT_XML_INTERNAL}
-		cat "${errFile}" >> ${JUNIT_XML_INTERNAL}
+		file_encode_xml "${errFile}" >> ${JUNIT_XML_INTERNAL}
 		echo "    </system-err>" >> ${JUNIT_XML_INTERNAL}
 	    fi
 	    echo "  </testcase>" >> ${JUNIT_XML_INTERNAL}
