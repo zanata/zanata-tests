@@ -29,7 +29,7 @@ source ${COMMON_DIR}/functions.sh
 
 DOCKER_USERNAME=queen
 DOCKER_IMAGE=zanata-client-fedora
-DOCKER_IMAGE_TAG=20
+DOCKER_IMAGE_TAG=21
 
 while getopts "i:t:u:" opt; do
     case $opt in

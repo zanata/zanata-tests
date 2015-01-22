@@ -24,6 +24,7 @@ EXIT STATUS
     0 if all tests passed
     ${EXIT_CODE_INVALID_ARGUMENTS} invalid or missing arguments
     ${EXIT_CODE_FAILED} at least one of test not passed
+    ${EXIT_CODE_DEPENDENCY_MISSING} if dependency is missing
 
 
 END
@@ -41,7 +42,7 @@ source ${COMMON_DIR}/functions.sh
 #=== Variables =============================
 
 set_var author 'Ding-Yi Chen'
-set_var revdate 2015-01-19
+set_var revdate 2015-01-22
 set_var revnumber 2
 set_var numbered
 set_var toc2
@@ -69,35 +70,18 @@ while [ -n "$1" ];do
 done
 
 #### Start Doc
-
-set_var PACKAGE_INSTALL_COMMAND 'yum -y install'
-set_var PACKAGE_NAME 'zanata-client'
-set_var ZANATA_CLIENT_COMMAND 'zanata-cli'
-
-while getopts "a" opt; do
-    case $opt in
-	a)
-	    # asciidoc mode
-	    to_asciidoc $0
-	    exit 0
-	    ;;
-    esac
-done
-shift $((OPTIND-1));
-
-#### Start Doc
 ### = Zanata Java Client Installation Guide
 ### Document Version {revnumber}-{revdate}
 ### 
 ### This document shows the steps to install Zanata Java client (zanata-cli).
 ###
 ### == Steps
-### . Install zanata-client though yum
-sudo ${PACKAGE_INSTALL_COMMAND} zanata-client
+### . Install +{PACKAGE_NAME}+ though +{PACKAGE_INSTALL_COMMAND}+
+sudo ${PACKAGE_INSTALL_COMMAND} ${PACKAGE_NAME}
 ###
 ### == To Test
 ### . Command without arguments should return available commands
-${ZANATA_CLIENT_COMMAND}
+${ZANATA_BACKEND}
 ###
 #### End Doc
 

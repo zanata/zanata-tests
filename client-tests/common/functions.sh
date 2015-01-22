@@ -4,11 +4,28 @@
 # Variables
 #
 export EXIT_CODE_OK=0
-export EXIT_CODE_INVALID_ARGUMENTS=3
-export EXIT_CODE_ERROR=5
-export EXIT_CODE_FAILED=6
-export EXIT_CODE_SKIPPED=7
-export EXIT_CODE_FATAL=125
+
+# test results
+export EXIT_CODE_ERROR=3
+export EXIT_CODE_FAILED=4
+export EXIT_CODE_SKIPPED=5
+export EXIT_CODE_FATAL=6
+
+# other error
+export EXIT_CODE_DEPENDENCY_MISSING=10
+
+# sysexits.h
+export EXIT_CODE_INVALID_ARGUMENTS=64
+export EXIT_CODE_DATAERR=65
+export EXIT_CODE_NO_INPUT=66
+export EXIT_CODE_UNAVAILABLE=66
+export EXIT_CODE_SOFTWARE=70
+export EXIT_CODE_CANTCREAT=73
+export EXIT_CODE_IOERROR=74
+
+# Shell reserved
+export EXIT_CODE_COMMAND_CANNOT_EXECUTE=126
+export EXIT_CODE_COMMAND_NOT_FOUND=127
 
 MVN_COMMAND_PREFIX=org.zanata:zanata-maven-plugin
 
@@ -214,7 +231,7 @@ function set_var(){
     fi
 }
 
-function to_asciidoc(){  # NOT_IN_DOC
+function to_asciidoc(){
     for k in "${varNames[@]}";do
 	local value=
 	if [ -n "${varValues[$k]}" ];then
