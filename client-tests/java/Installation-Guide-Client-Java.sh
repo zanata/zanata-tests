@@ -69,23 +69,6 @@ while [ -n "$1" ];do
 done
 
 #### Start Doc
-
-set_var PACKAGE_INSTALL_COMMAND 'yum -y install'
-set_var PACKAGE_NAME 'zanata-client'
-set_var ZANATA_CLIENT_COMMAND 'zanata-cli'
-
-while getopts "a" opt; do
-    case $opt in
-	a)
-	    # asciidoc mode
-	    to_asciidoc $0
-	    exit 0
-	    ;;
-    esac
-done
-shift $((OPTIND-1));
-
-#### Start Doc
 ### = Zanata Java Client Installation Guide
 ### Document Version {revnumber}-{revdate}
 ### 
@@ -97,7 +80,7 @@ sudo ${PACKAGE_INSTALL_COMMAND} zanata-client
 ###
 ### == To Test
 ### . Command without arguments should return available commands
-${ZANATA_CLIENT_COMMAND}
+${ZANATA_BACKEND}
 ###
 #### End Doc
 
