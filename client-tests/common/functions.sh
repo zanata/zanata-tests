@@ -198,54 +198,57 @@ ZANATA_OUTPUT_FILE_TEMPLATE="/tmp/zanata-test.XXXXXXXX"
 # Guide functions
 #
 
-declare -a varNames
-declare -A varValues
-function set_var(){
-    varNames+=($1)
-    local origValue=$(eval echo \$$1)
-    if [ -n "${origValue}" ]; then
-	# Environment already defined
-	varValues[$1]="${origValue}"
-    elif [ -n "$2" ];then
-	varValues[$1]="$2"
-	eval `echo $1=\"$2\"`
-    else
-	eval `echo $1=`
-    fi
+function extract_variable(){
+    local file=$1
+    local nameFilter=$2
+    awk -v nameFilter="$nameFilter" \
+	'BEGIN {FPAT = "(\"[^\"]+\")|(\\(.+\\))|([^ =]+)"; start=0; descr=""} \
+	/^#### End Var/ { start=0} \
+        (start==1 && /^[^#]/ && $2 ~ nameFilter) { sub(/^\"/, "", $3); sub(/\"$/, "", $3); print $2 "\t" $3 "\t" descr ; descr="";} \
+	(start==1 && /^###/) { gsub("^###[ ]?","", $0) ; descr=$0} \
+        /^#### Start Var/ { start=1; } ' $file
 }
 
-function to_asciidoc(){  # NOT_IN_DOC
-    for k in "${varNames[@]}";do
-	local value=
-	if [ -n "${varValues[$k]}" ];then
-	    value=" $(str_convert_variable_to_asciidoc_variable "${varValues[$k]}")"
-	fi
-	echo ":$k:$value"
-    done
-    awk 'BEGIN {start=0;sh_start=0} \
+function print_variables(){
+    local format=$1
+    local file=$2
+    case $format in
+        asciidoc )
+	    extract_variable $file | awk -F '\\t' 'BEGIN { done=0 } \
+		$2 ~ /^\$\{.*:[=-]/ { ret=gensub(/^\$\{.*:[=-](.+)\}/, "\\1", "g", $2) ; print ":" $1 ": " ret; done=1 }\
+		done==0  {print ":" $1 ": " $2 ; done=1 }\
+		done==1  {done=0}'
+	    ;;
+	bash )
+	    extract_variable $file "^[A-Z]" | awk -F '\\t' \
+		'$2 ~ /[^\)]$/ {print "exportb " $1 "=\""$2"\"" ;} \
+		$2 ~ /\)$/ {print "exporta " $1 "="$2 ;} '
+	    ;;
+        usage )
+	    extract_variable $file "^[A-Z]" | awk -F '\\t' '{print $1 "::"; \
+		if ( $3 != "" ) {print "    " $3  }; \
+		print "    Default: " $2 "\n"}'
+	    ;;	    
+        * )
+	    ;;
+    esac
+}
+
+function to_asciidoc(){  
+    print_variables asciidoc $0
+
+    awk 'BEGIN {start=0;sh_start=0; in_list=0} \
 	/^#### End Doc/ { start=0} \
-	(start==1 && /^[^#]/ ) { if (sh_start==0) {sh_start=1; print "+" ; print "[source,sh]"; print "----"} print $0;} \
-	(start==1 && /^###/ ) { if (sh_start==1) {sh_start=0; print "----"} gsub("^###[ ]?","", $0) ; print $0;} \
+	(start==1 && /^[^#]/ ) { if (sh_start==0) {sh_start=1; if (in_list ==1 ) {print "+"}; print "[source,sh]"; print "----"} print $0;} \
+	(start==1 && /^### \./ ) { in_list=1 } \
+        (start==1 && /^###/ ) { if (sh_start==1) {sh_start=0; print "----"} gsub("^###[ ]?","", $0) ; print $0;} \
 	/^#### Start Doc/ { start=1; } ' $0
     echo "== Default Environment Variables"
     echo "[source,sh]"
     echo "----"
-    for k in "${varNames[@]}";do
-	if [[ "$k" =~ ^[a-z] ]];then
-	    ## Skip the asciidoc internal variables
-	    continue
-	fi
-	local value=
-	if [ -n "${varValues[$k]}" ];then
-	    value="${varValues[$k]}"
-	fi
-	echo "export $k=\"$value\""
-    done
+    # Extract variable
+    print_variables bash $0
     echo "----"
-}
-
-function str_convert_variable_to_asciidoc_variable(){
-    sed -e 's/[$][{]/{/g' <<<$1
 }
 
 #================================

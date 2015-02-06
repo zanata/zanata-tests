@@ -69,10 +69,10 @@ declare DOCKER_IMAGE_SUDO_USERS="alice grace irene peggy queen"
 declare DOCKER_DOCKERFILE_TOP_DIR="${DOCKER_DOCKERFILE_TOP_DIR:-$PWD}"
 
 ### Docker instances for fedora releases
-declare DOCKER_FEDORA_IMAGE_TAGS="rawhide f21 f20"
+declare DOCKER_FEDORA_IMAGE_TAGS="rawhide 21 20"
 
 ### Docker RHEL REPO
-declare DOCKER_RHEL_REPO=""
+declare DOCKER_RHEL_REPO="registry.access.redhat.com/rhel"
 
 ### Docker RHEL REPO
 declare DOCKER_RHEL_IMAGE_TAGS="latest"
@@ -122,8 +122,8 @@ function print_variables(){
 	    ;;
 	bash )
 	    extract_variable $file "^[A-Z]" | awk -F '\\t' \
-		'$2 ~ /[^\)]$/ {print "exportb " $1 "=\""$2"\"" ;} \
-		$2 ~ /\)$/ {print "exporta " $1 "="$2 ;} '
+		'$2 ~ /[^\)]$/ {print "export " $1 "=\""$2"\"" ;} \
+		$2 ~ /\)$/ {print "export " $1 "="$2 ;} '
 	    ;;
 	usage )
 	    extract_variable $file "^[A-Z]" | awk -F '\\t' '{print $1 "::"; \
@@ -180,14 +180,14 @@ done
 ### This document shows the steps to install docker environment for zanata-tests
 ###
 ### == Steps
-### . Determine which docker image
+### . Determine docker package name:
 lsbReleaseId=`lsb_release -is`
 lsbReleaseRelease=`lsb_release -rs`
 lsbReleaseReleaseMajor=$(sed -e 's/\..*$//' <<<$lsbReleaseRelease)
 case "$lsbReleaseId" in
     RedHatEnterprise* )
 	# RHEL
-	if [[ $lsbReleaseMajor -le 5 ]];then
+	if [[ $lsbReleaseReleaseMajor -le 5 ]];then
 	    echo "RHEL 5 and earlier does not support docker" > /dev/stderr
 	    exit $DEPENDENCY_MISSING
 	fi
@@ -226,35 +226,45 @@ sudo systemctl start docker
 ### == Setup Support Platforms
 ### We put all +DockerFile+ in sub-directory named <repo>:<tag>
 ### under +DOCKER_DOCKERFILE_TOP_DIR+
-### 
+### Dockerfiles and corresponding images will be build with following:
 function docker_image_build(){
-    local from=$1
-    local repoName=$2
-    shift 2
+    local fromRepo=$1
+    local fromTag=$2
+    local repo=$3
+    local tag=$4
+    shift 4
 
-    for tag in "$@" ;do
-	local subDir=${DOCKER_DOCKERFILE_TOP_DIR}/${repoName}:${tag}
-	mkdir -p ${subDir}
-	local dockerFile=${subDir}/Dockerfile
-	cat >${dockerFile}<<END
-FROM ${from}:${tag}
+    local subDir=${DOCKER_DOCKERFILE_TOP_DIR}/${repo}:${tag}
+    mkdir -p ${subDir}
+    local dockerFile=${subDir}/Dockerfile
+    cat >${dockerFile}<<END
+FROM ${fromRepo}:${fromTag}
 MAINTAINER "Ding-Yi Chen" <dchen@redhat.com>
 END
-	cat >>${dockerFile}</dev/stdin
-	sg docker "docker build --rm -t ${repoName}:${tag} ${subDir}/"
+    cat >>${dockerFile}</dev/stdin
+    sg docker "docker build --rm -t ${repo}:${tag} ${subDir}/"
+}
+
+function docker_images_build_tags(){
+    local fromRepo=$1
+    local repo=$2
+    shift 3
+
+    for tag in "$@" ;do
+	docker_image_build $fromRepo $tag $repo $tag </dev/stdin
     done
 }
 
 ### === Common Images
 ### Common images contain common environment for both server and client.
 ### That is, basic packages and users.
-### It is build by following script
+### It is build by following:
 commonDockerScript=$(cat<<END
 RUN ${PACKAGE_SYSTEM_COMMAND} -y update; ${PACKAGE_INSTALL_COMMAND} sudo wget git glibc-common; ${PACKAGE_SYSTEM_COMMAND} clean all
 ##Disable Defaults requiretty in sudoers file
 RUN sed -ie 's/Defaults\\(.*\\)requiretty/ #Defaults\\1requiretty/g' /etc/sudoers
 RUN groupadd ${DOCKER_IMAGE_SUDO_GROUP}; echo '%${DOCKER_IMAGE_SUDO_GROUP} ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-RUN cat > /etc/profiles.d/common.sh<<<'export PS1="[\u@\h \w]\\$ "'
+RUN cat > /etc/profile.d/common.sh<<<'export PS1="[\u@\h \w]\\$ "'
 RUN adduser -p "" -m zanata -G ${DOCKER_IMAGE_SUDO_GROUP};
 END
 )
@@ -264,7 +274,7 @@ done
 
 ### ==== Fedora
 ### Script to build Fedora common images
-docker_image_build fedora znt_f ${DOCKER_FEDORA_IMAGE_TAGS} <<<"${commonDockerScript}"
+docker_images_build_tags  fedora znt_f ${DOCKER_FEDORA_IMAGE_TAGS} <<<"${commonDockerScript}"
 ### ==== RHEL
 ### If you have access to {DOCKER_RHEL_REPO} 
 ### then use following script to build RHEL common images. 
@@ -275,13 +285,13 @@ fi
 
 if [ -n "${DOCKER_RHEL_ENABLE}" ];then
     sg docker "docker pull ${DOCKER_RHEL_REPO}"
-
-    docker_image_build ${DOCKER_RHEL_REPO} znt_r ${DOCKER_RHEL_IMAGE_TAGS} <<<"${commonDockerScript}"
+    docker_images_build_tags ${DOCKER_RHEL_REPO} znt_r ${DOCKER_RHEL_IMAGE_TAGS} <<<"${commonDockerScript}"
 fi
 ### === Client Images
 ### Docker images for following clients will be built: {ZANATA_CLIENT_PACKAGE_NAMES}
 ### ==== Fedora
 for package in ${ZANATA_CLIENT_PACKAGE_NAMES};do
+
     docker_image_build znt_f znt_f_${package} ${DOCKER_FEDORA_IMAGE_TAGS} <<<"RUN ${PACKAGE_INSTALL_UPDATE_REPO_COMMAND} ${package}"
 done
 ### === Server Images

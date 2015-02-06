@@ -3,10 +3,10 @@ function print_usage(){
     cat <<END
     $0 - Client smoke test
 SYNOPSIS
-    $0  <command>
+    $0  <zanata-executable>
 
 ARGUMENTS
-    command: Client command with path.
+    zanata-executable: Path to zanata executable (e.g. /usr/bin/zanata-cli)
 
 DESCRIPTION
     Smoke tests covert most frequenty used functions.
