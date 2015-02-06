@@ -284,7 +284,7 @@ function skipped_msg(){
     local eTime=$1
     local message=$2
     local detail=$3
-    local consoleOut="SKIPPED: $TEST_CASE_NAME ($eTime)"
+    local consoleOut="SKIPPED: $CLASSNAME $TEST_CASE_NAME ($eTime)"
     echo $consoleOut
     : $((skipped++))
     : $((total++))
@@ -306,7 +306,7 @@ function failed_msg(){
     local detail=$3
     local outFile=$4
     local errFile=$5
-    local consoleOut="FAILED: $TEST_CASE_NAME ($eTime)"
+    local consoleOut="FAILED: $CLASSNAME $TEST_CASE_NAME ($eTime)"
     echo $consoleOut
     : $((failed++))
     : $((total++))
@@ -337,7 +337,7 @@ function ok_msg(){
 	return
     fi
     local eTime=$1
-    local consoleOut="OK: $TEST_CASE_NAME ($eTime)"
+    local consoleOut="OK: $CLASSNAME $TEST_CASE_NAME ($eTime)"
     echo $consoleOut
     : $((total++))
     totalTime=`perl -e "print $totalTime+$eTime;"`
