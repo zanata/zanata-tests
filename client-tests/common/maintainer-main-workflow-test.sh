@@ -61,7 +61,7 @@ unset SKIP_TEST
 source ${SUITE_DIR}/put-version-quick.sh
 unset SKIP_TEST
 
-wget --no-check-certificate -O zanata.xml "${ZANATA_URL}iteration/view/${ZANATA_PROJECT_SLUG}/${ZANATA_VERSION_SLUG}?cid=77&actionMethod=iteration%2Fview.xhtml%3AconfigurationAction.downloadGeneralConfig%28%29" 
+zanata_xml_make ${ZANATA_URL} ${ZANATA_PROJECT_SLUG} ${ZANATA_VERSION_SLUG}
 
 source ${SUITE_DIR}/push-quick.sh
 unset SKIP_TEST

@@ -34,41 +34,34 @@ function hyphen_to_camel_case(){
     sed -e 's/-\([a-z]\)/\U\1/g'<<<$1
 }
 
-function long_option_name_convert(){
+#===== Start Option functions =====
+declare -A CONVERT_OPTION_MVN
+CONVERT_OPTION_MVN['disable-ssl-cert']=zanata.disableSSLCert
+CONVERT_OPTION_MVN['merge-type']=zanata.merge
+CONVERT_OPTION_MVN['v']=detail
+CONVERT_OPTION_MVN['push:s']=zanata.srcDir
+CONVERT_OPTION_MVN['push:t']=zanata.transDir
+CONVERT_OPTION_MVN['pull:s']=zanata.srcDir
+CONVERT_OPTION_MVN['pull:t']=zanata.transDir
+
+function option_name_convert(){
     local cmd=$1
-    local name=$2
+    local subCommand=$2
+    local name=$3
     case $cmd in
 	*mvn )
-	    if [ "$name" = "disable-ssl-cert" ];then
-		echo "disableSSLCert"
-	    elif [ "$name" = "merge-type" ];then
-		echo "merge"
+	    if [ -n "${CONVERT_OPTION_MVN["$subCommand:$name"]}" ];then
+		echo "-D${CONVERT_OPTION_MVN["$subCommand:$name"]}"
+	    elif  [ -n "${CONVERT_OPTION_MVN["$name"]}" ];then
+		echo "-D${CONVERT_OPTION_MVN["$name"]}"
 	    else
+		echo -n "-Dzanata."
 		hyphen_to_camel_case "$name"
 	    fi
 	    ;;
 	* )
-	    echo "$name"
-	    ;;
-    esac
-}
-
-function long_option_convert(){
-    local cmd=$1
-    local name=`long_option_name_convert $cmd $2`
-    local value=$3
-
-    case $cmd in
-	*mvn )
-	    if [ -n "$value" ];then
-		echo "-Dzanata.$name=$value"
-	    else
-		echo "-Dzanata.$name"
-	    fi
-	    ;;
-	* )
-	    if [ -n "$value" ];then
-		echo "--$name $value"
+	    if [[ $name =~ ^[A-Za-z0-9]$ ]]; then
+		echo "-$name"
 	    else
 		echo "--$name"
 	    fi
@@ -76,27 +69,25 @@ function long_option_convert(){
     esac
 }
 
-function short_option_convert(){
+function option_convert(){
     local cmd=$1
-    local name=$2
-    local value=$3
+    local subCommand=$2
+    local optionName=$3
+    local value=$4
+    local name=`option_name_convert $cmd $subCommand $optionName`
 
     case $cmd in
 	*mvn )
-	    if [ "$name" = "v" ];then
-		name="Ddetail"
-	    fi
 	    if [ -n "$value" ];then
-		echo "-$name $value"
+		args+=("$name=$value")
 	    else
-		echo "-$name"
+		args+=("$name")
 	    fi
 	    ;;
 	* )
+	    args+=("$name")
 	    if [ -n "$value" ];then
-		echo "-$name $value"
-	    else
-		echo "-$name"
+		args+=("$value")
 	    fi
 	    ;;
     esac
@@ -106,36 +97,49 @@ function short_option_convert(){
 function argument_convert(){
     local cmd=$1
     local optString=$2
-    local subCommand=$3
-    
-    case $optString in
-	--* )
-	    optStr=`sed -e 's/^--//'<<<$optString`
-	    local name=`sed -e 's/=.*$//'<<<$optStr`
-	    local value=`sed -e 's/^[^=]*=*//'<<<$optStr`
-	    long_option_convert "$cmd" "$name" "$value"
-	    ;;
-	-* )
-	    optStr=`sed -e 's/^-//'<<<$optString`
-	    local name=`sed -e 's/=.*$//'<<<$optStr`
-	    local value=`sed -e 's/^[^=]*=*//'<<<$optStr`
-	    short_option_convert "$cmd" "$name" "$value"
-	    ;;
-	* )
-	    if [[ $cmd =~ mvn ]];then
-		if [ -z "${subCommand}" ];then
-		    echo "$MVN_COMMAND_PREFIX:$optString"
-		elif [ "${subCommand}" = "help" ];then
-		    echo "-Dgoal=$optString -Ddetail"
+    if [ -z "$subCommand" ];then
+	# First non-option argument become subCommand (e.g. help)
+	if [[ ! "$optString" =~ ^- ]]; then
+	    subCommand="$optString"
+	    case $cmd in
+		*mvn )
+		    args+=($MVN_COMMAND_PREFIX:$subCommand)
+		    ;;
+
+		* )
+		    args+=($subCommand)
+		    ;;
+	    esac
+	else
+	    # Still an option
+	    args+=($optString)
+	fi
+    else
+	case $optString in
+	    -* )
+		optStr=`sed -e 's/^-*//'<<<$optString`
+		local name=`sed -e 's/=.*$//'<<<$optStr`
+		local value=`sed -e 's/^[^=]*=*//'<<<$optStr`
+		option_convert "$cmd" "$subCommand" "$name" "$value"
+		;;
+	    * )
+		if [[ $cmd =~ mvn ]];then
+		    if [ -z "${subCommand}" ];then
+			args+=("$MVN_COMMAND_PREFIX:$optString")
+		    elif [ "${subCommand}" = "help" ];then
+			args+=("-Dgoal=$optString" "-Ddetail")
+		    else
+			args+=($optString)
+		    fi
 		else
-		    echo "$optString" 
+		    args+=("$optString")
 		fi
-	    else
-		echo "$optString"
-	    fi
-	    ;;
-    esac
+		;;
+	esac
+    fi
 }
+
+#===== End Option functions =====
 
 #================================
 # Command functions
@@ -187,9 +191,31 @@ function command_get_type(){
 
 function get_zanata_xml_url(){
     local url=$1
-    local proj=$2
+    local prj=$2
     local ver=$3
-    echo "${url}iteration/view/${proj}/${ver}?actionMethod=iteration%2Fview.xhtml%3AconfigurationAction.downloadGeneralConfig%28%29"
+    echo "${url}iteration/view/${prj}/${ver}?actionMethod=iteration%2Fview.xhtml%3AconfigurationAction.downloadGeneralConfig%28%29"
+}
+
+function zanata_xml_make(){
+    local force=0
+    if [ "$1" = "-f" ];then
+	force=1
+	shift
+    fi
+    local url=$1
+    local prj=$2
+    local ver=$3
+    local zanataXml=$4
+    if [ -z "$zanataXml" ];then
+	zanataXml="zanata.xml"
+    fi
+    if [ -r "$zanataXml" -a "$force" -eq 0 ];then
+	# zanata.xml exist and no force
+	return
+    else
+	zanataXmlUrl=$(get_zanata_xml_url "$url" "$prj" "$ver")
+	wget --no-check-certificate -O "$zanataXml" "$zanataXmlUrl"
+    fi
 }
 
 ZANATA_OUTPUT_FILE_TEMPLATE="/tmp/zanata-test.XXXXXXXX"
@@ -311,18 +337,18 @@ function failed_msg(){
     : $((failed++))
     : $((total++))
     totalTime=`perl -e "print $totalTime+$eTime;"`
-    echo "-- FAILED -- ${TEST_CASE_NAME} ----- NEW_CMD_FULL=${NEW_CMD_FULL}" > /dev/stderr
+    stderr_echo "-- FAILED -- ${TEST_CASE_NAME} ----- NEW_CMD_FULL=${NEW_CMD_FULL}"
 
     if [ -n "${outFile}" ];then
-	echo "-- FAILED -- ${TEST_CASE_NAME} ----- STDOUT --------------------------------" > /dev/stderr
+	stderr_echo "-- FAILED -- ${TEST_CASE_NAME} ----- STDOUT --------------------------------"
 	cat ${outFile} > /dev/stderr
     fi
     if [ -n "${errFile}" ];then
-	echo "-- FAILED -- ${TEST_CASE_NAME} ----- STDERR --------------------------------" > /dev/stderr
+	stderr_echo "-- FAILED -- ${TEST_CASE_NAME} ----- STDERR --------------------------------"
 	cat ${errFile} > /dev/stderr
     fi
     if [ -n "${outFile}" -o -n "${errFile}" ];then
-	echo "=================================================================" > /dev/stderr
+	stderr_echo "================================================================="
     fi
 
     if [ -n "${JUNIT_XML_INTERNAL}" ];then
@@ -495,18 +521,10 @@ function RunCmdExitCode(){
 
     : ${TEST_CASE_NAME:=${TEST_CASE_NAME_PREFIX}-RunCmdExitCode}
 
-    local subCommand
+    subCommand=
     declare -a args
     for o in "$@";do
-	if [ -z "${subCommand}" ];then
-	    # First non-option argument become subCommand (e.g. help)
-	    if [[ ! "$o" =~ ^- ]]; then
-		subCommand="$o"
-	    fi
-	    args+=(`argument_convert "$cmd" "$o"`)
-	else
-	    args+=(`argument_convert "$cmd" "$o" "${subCommand}"`)
-	fi
+	argument_convert "$cmd" "$o"
     done
 
     LAST_CMD_FULL="${cmd} ${args[*]}"
@@ -517,7 +535,7 @@ function RunCmdExitCode(){
 	skipped_msg 0.0 "${LAST_CMD_FULL}"
 	return $EXIT_CODE_SKIPPED
     fi
-    time_command $cmd ${args[@]} 
+    time_command $cmd "${args[@]}"
     CMDERR_FILE="${NEW_CMDERR_FILE}"
     CMDOUT_FILE="${NEW_CMDOUT_FILE}"
     LAST_EXIT_CODE=${NEW_EXIT_CODE}
