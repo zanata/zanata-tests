@@ -1,14 +1,10 @@
-CLASSNAME=put-version
 SUMMARY="put-version frequently used options"
-
-mkdir -p ${WORK_DIR}
-cd $WORK_DIR
-
-COMMON_OPTIONS=("--url=${ZANATA_URL}" "--username=${ZANATA_USERNAME}" "--key=${ZANATA_KEY}")
-COMPULSORY_OPTIONS=("--version-project=${ZANATA_PROJECT_SLUG}" "--version-slug=${ZANATA_VERSION_SLUG}")
+SUITE_DIR=$(dirname $(readlink -f ${BASH_SOURCE[0]}))
+USE_DEFAULT=1
 
 ## Compulsory options Only
-TestCaseStart "CompulsoryOptions Only"
-RunCmd ${CMD} -B -e ${CLASSNAME} ${COMMON_OPTIONS[@]} ${COMPULSORY_OPTIONS[@]} 
-OutputNoError
+TEST_CASE_NAME_PREFIX="CompulsoryOptions Only"
+source ${SUITE_DIR}/put-version.sh
+
+CLEAN_OPTIONS=1
 
