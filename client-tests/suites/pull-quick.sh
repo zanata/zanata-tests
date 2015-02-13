@@ -1,26 +1,22 @@
 CLASSNAME=pull
 SUMMARY="pull frequently used options"
 
-mkdir -p ${WORK_DIR}
-cd $WORK_DIR
-
-COMMON_OPTIONS=("--url=${ZANATA_URL}" "--username=${ZANATA_USERNAME}" "--key=${ZANATA_KEY}")
-COMPULSORY_OPTIONS=()
+USE_DEFAULT_OPTIONS=1
+PULL_ORIG_OPTIONS=("${PULL_OPTIONS[@]}")
 
 ## Compulsory options Only
-TestCaseStart "CompulsoryOptions Only"
-RunCmd  ${CMD} -B -e ${CLASSNAME} ${COMMON_OPTIONS[@]} ${COMPULSORY_OPTIONS[@]} 
-OutputNoError
+TEST_CASE_NAME_PREFIX="Compulsory options"
+source ${SUITE_DIR}/pull.sh
 
-## Push type trans
-TestCaseStart "pullType=source"
-RunCmd ${CMD} -B -e ${CLASSNAME} ${COMMON_OPTIONS[@]} ${COMPULSORY_OPTIONS[@]} --pull-type=source
-OutputNoError
+## Pull type trans
+TEST_CASE_NAME_PREFIX="pullType=source"
+PULL_OPTIONS=( "${PULL_ORIG_OPTIONS[@]}" --pull-type=source)
+source ${SUITE_DIR}/pull.sh
 
-## Push type both
-TestCaseStart "pullType=both"
-RunCmd ${CMD} -B -e ${CLASSNAME} ${COMMON_OPTIONS[@]} ${COMPULSORY_OPTIONS[@]} --pull-type=both
-OutputNoError
+## Pull type both
+TEST_CASE_NAME_PREFIX="pullType=both"
+PULL_OPTIONS=( "${PULL_ORIG_OPTIONS[@]}" --pull-type=both)
+source ${SUITE_DIR}/pull.sh
 
-
-
+## Restore PULL_OPTIONS
+PULL_OPTIONS=("${PULL_ORIG_OPTIONS[@]}")

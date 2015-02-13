@@ -1,5 +1,9 @@
 #######################################
 # Definition
+#
+
+TOP_DIR=$(shell sed -e 's|/zanata-tests/.*|/zanata-tests|'<<<$(realpath .))
+
 
 VER_DIRS?=$(addsuffix /,$(VERS))
 
@@ -28,10 +32,10 @@ PRJ_SLUG?=$(SLUG)
 # Rules
 
 ifdef SKIP_TARGET
-download_all:
+download-all:
 
 else
-download_all: $(VER_TASKS)
+download-all: $(VER_TASKS)
 endif
 clean:
 	rm -fr $(VER_DIRS)
@@ -58,14 +62,12 @@ $(VER_TASKS): %/pot/: %/
 
 endif
 
-#maintainer_main_workflow: $(addsuffix maintainer_main_workflow_,$(VERS))
+maintainer-main-workflow-mvn: $(addprefix maintainer-main-workflow-mvn,$(VERS))
 
-#$(addsuffix maintainer_main_workflow_,$(VERS)):maintainer_main_workflow_%:
-#	pushd $*
-#	../../client-tests/maintainer_main_workflow.sh -c "B;e" $(SLUG)
-#	popd
-#
-	
+$(addprefix maintainer-main-workflow-mvn,$(VERS)):maintainer-main-workflow-mvn%:
+	cd $*; $(TOP_DIR)/client-tests/common/maintainer-main-workflow-test.sh  mvn $(PRJ_SLUG) $* $(PRJ_TYPE)
+
+
 
 
 # publican no longer required, as the revnumber in older projects 

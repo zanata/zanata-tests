@@ -44,8 +44,8 @@ TOP_DIR=${SCRIPT_DIR%%/client-tests/*}
 COMMON_DIR="${TOP_DIR}/client-tests/common"
 source ${COMMON_DIR}/functions.sh
 
-## Parse CMD
-CMD=`real_command $ZANATA_EXECUTABLE`
+## Canonicalize ZANATA_EXECUTABLE
+ZANATA_EXECUTABLE=`real_command $ZANATA_EXECUTABLE`
 ret=$?
 if [ $ret -ne 0 ];then
     exit $ret
@@ -53,19 +53,61 @@ fi
 shift
 
 
-## Test start
+### Test Start
+### ~~~~~~~~~~~
 SUITE_DIR=${TOP_DIR}/client-tests/suites
+
+### Test put-project
+### ^^^^^^^^^^^^^^^^
 unset SKIP_TEST
 source ${SUITE_DIR}/put-project-quick.sh
+
+### Test put-version
+### ^^^^^^^^^^^^^^^^
 unset SKIP_TEST
 source ${SUITE_DIR}/put-version-quick.sh
-unset SKIP_TEST
 
+### Make zanata.xml (Not a test)
+### ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 zanata_xml_make ${ZANATA_URL} ${ZANATA_PROJECT_SLUG} ${ZANATA_VERSION_SLUG}
 
-source ${SUITE_DIR}/push-quick.sh
+### Test push
+### ^^^^^^^^^
 unset SKIP_TEST
-source ${SUITE_DIR}/pull-quick.sh
+PUSH_ORIG_OPTIONS=("${PUSH_OPTIONS[@]}")
+
+### push with Compulsory Options
+### ++++++++++++++++++++++++++++
+TEST_CASE_NAME_PREFIX="Compulsory options"
+source ${SUITE_DIR}/push.sh
+
+### push with pushType=both
+### ++++++++++++++++++++++++
+TEST_CASE_NAME_PREFIX="pushType=both"
+PUSH_OPTIONS=( "${PUSH_ORIG_OPTIONS[@]}" --push-type=both)
+source ${SUITE_DIR}/push.sh
+
+## Restore PUSH_OPTIONS
+PUSH_OPTIONS=("${PUSH_ORIG_OPTIONS[@]}")
+
+### Test pull
+### ^^^^^^^^^
+unset SKIP_TEST
+PULL_ORIG_OPTIONS=("${PULL_OPTIONS[@]}")
+
+### pull with Compulsory Options
+### ++++++++++++++++++++++++++++
+TEST_CASE_NAME_PREFIX="Compulsory options"
+source ${SUITE_DIR}/pull.sh
+
+### pull with pullType=both
+### ++++++++++++++++++++++++
+TEST_CASE_NAME_PREFIX="pullType=both"
+PULL_OPTIONS=( "${PULL_ORIG_OPTIONS[@]}" --pull-type=both)
+source ${SUITE_DIR}/pull.sh
+
+## Restore PULL_OPTIONS
+PULL_OPTIONS=("${PULL_ORIG_OPTIONS[@]}")
 
 print_summary "${TEST_SUITE_NAME}"
 

@@ -1,8 +1,9 @@
-# this is to be sourced
+### common/functions.sh
+### -------------------
+### Helper functions that should be sourced.
 
-#================================
-# Variables
-#
+### Variables 
+### ~~~~~~~~~~
 export EXIT_CODE_OK=0
 export EXIT_CODE_INVALID_ARGUMENTS=3
 export EXIT_CODE_ERROR=5
@@ -25,16 +26,32 @@ MVN_COMMAND_PREFIX=org.zanata:zanata-maven-plugin
 : ${WORK_DIR:=${TOP_DIR}/doc-prjs/$ZANATA_PROJECT_SLUG/$ZANATA_VERSION_SLUG}
 
 JUNIT_XML_INTERNAL=
+ZANATA_OUTPUT_FILE_TEMPLATE="/tmp/zanata-test.XXXXXXXX"
 
-#================================
-# String functions
-#
-
+### String functions
+### ~~~~~~~~~~~~~~~~
 function hyphen_to_camel_case(){
     sed -e 's/-\([a-z]\)/\U\1/g'<<<$1
 }
 
-#===== Start Option functions =====
+### Option processing
+### ~~~~~~~~~~~~~~~~~
+
+### Default options 
+### ^^^^^^^^^^^^^^^
+function unversal_option_get_default_executable(){
+    var=$1
+    eval "$var+=( -B -e )"
+}
+
+function unversal_option_get_default_auth(){
+    var=$1
+    eval "$var+=('--url=$ZANATA_URL' '--username=$ZANATA_USERNAME' '--key=$ZANATA_KEY')"
+}
+
+
+### Convert to ZANATA_EXECUTABLE options from universal options
+### ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 declare -A CONVERT_OPTION_MVN
 CONVERT_OPTION_MVN['disable-ssl-cert']=zanata.disableSSLCert
 CONVERT_OPTION_MVN['merge-type']=zanata.merge
@@ -139,15 +156,27 @@ function argument_convert(){
     fi
 }
 
-#===== End Option functions =====
+### Executable handling functions
+### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#================================
-# Command functions
-#
+### time_command: Time the execution time
+### ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+function time_command(){
+    NEW_CMDERR_FILE=`mktemp "${ZANATA_OUTPUT_FILE_TEMPLATE}"`
+    NEW_CMDOUT_FILE=`mktemp "${ZANATA_OUTPUT_FILE_TEMPLATE}"`
+    NEW_TIME_FILE=`mktemp "${ZANATA_OUTPUT_FILE_TEMPLATE}"`
+    NEW_CMD_FULL="$*"
+    /usr/bin/time -p -o ${NEW_TIME_FILE} "$@" 1>${NEW_CMDOUT_FILE} 2>${NEW_CMDOUT_FILE}
+    NEW_EXIT_CODE=$?
+    REAL_TIME=`get_real_time ${NEW_TIME_FILE}`
+    rm -f ${NEW_TIME_FILE}
+}
 
 
-## real_command  <cmd> - Obtain canonicalized command path
-## Stdout: Canonicalized command path
+### real_command: Obtain canonicalized command path
+### ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+### real_command  <cmd>
+### Stdout: Canonicalized command path
 function real_command(){
     local cmd=$1
     if [ -z "$cmd" ]; then
@@ -167,17 +196,17 @@ function real_command(){
     readlink -f "$str"
 }
 
-function command_get_type(){
+function get_test_package(){
     local realCmd=`real_command $1`
     case $realCmd in
 	*mvn )
 	    echo "mvn"
 	    ;;
 	*zanata-cli )
-	    echo "java"
+	    echo "zanata-client"
 	    ;;
 	*zanata )
-	    echo "python"
+	    echo "zanata-python-client"
 	    ;;
 	* )
 	    basename $realCmd
@@ -185,10 +214,8 @@ function command_get_type(){
     esac
 }
 
-#================================
-# Utilities functions
-#
-
+### zanata.xml functions
+### ^^^^^^^^^^^^^^^^^^^^
 function get_zanata_xml_url(){
     local url=$1
     local prj=$2
@@ -218,12 +245,8 @@ function zanata_xml_make(){
     fi
 }
 
-ZANATA_OUTPUT_FILE_TEMPLATE="/tmp/zanata-test.XXXXXXXX"
-
-#================================
-# Guide functions
-#
-
+### Guide document generation functions
+### ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 function extract_variable(){
     local file=$1
     local nameFilter=$2
@@ -277,15 +300,28 @@ function to_asciidoc(){
     echo "----"
 }
 
-#================================
-# Test Reporting
-#
+### Test Reporting Functions
+### ~~~~~~~~~~~~~~~~~~~~~~~~
+
+### Time reporting
+### ^^^^^^^^^^^^^^^^^^^^^^^^
 
 total=0
 totaltime=0.0
 failed=0
 skipped=0
 
+function get_real_time(){
+    local realTime=`grep -e "real" $1 2>/dev/null`
+    if [ -n "${realTime}" ];then
+	sed -e 's/real //'<<<${realTime}
+    else
+	echo "0.00"
+    fi
+}
+
+### Test Result Outputting
+### ^^^^^^^^^^^^^^^^^^^^^^
 function stderr_echo (){
     echo "$@" >/dev/stderr
 }
@@ -363,37 +399,36 @@ function ok_msg(){
 	return
     fi
     local eTime=$1
+    local message=$2
+    local outFile=$3
+    local errFile=$4
     local consoleOut="OK: $CLASSNAME $TEST_CASE_NAME ($eTime)"
     echo $consoleOut
     : $((total++))
     totalTime=`perl -e "print $totalTime+$eTime;"`
 
+    if [ -n "$ZANATA_TEST_DEBUG" ];then
+	stderr_echo "-- OK -- ${TEST_CASE_NAME} ----- NEW_CMD_FULL=${NEW_CMD_FULL}"
+
+	if [ -n "${outFile}" ];then
+	    stderr_echo "-- OK -- ${TEST_CASE_NAME} ----- STDOUT --------------------------------"
+	    cat ${outFile} > /dev/stderr
+	fi
+	if [ -n "${errFile}" ];then
+	    stderr_echo "-- OK -- ${TEST_CASE_NAME} ----- STDERR --------------------------------"
+	    cat ${errFile} > /dev/stderr
+	fi
+	if [ -n "${outFile}" -o -n "${errFile}" ];then
+	    stderr_echo "================================================================="
+	fi
+    fi
+
+
+
     if [ -n "${JUNIT_XML_INTERNAL}" ];then
 	junit_xml_append_test_case OK "$TEST_CASE_NAME" "$eTime"
     fi
     unset TEST_CASE_NAME
-}
-
-function get_real_time(){
-    local realTime=`grep -e "real" $1 2>/dev/null`
-    if [ -n "${realTime}" ];then
-	sed -e 's/real //'<<<${realTime}
-    else
-	echo "0.00"
-    fi
-}
-
-
-## Time 
-function time_command(){
-    NEW_CMDERR_FILE=`mktemp "${ZANATA_OUTPUT_FILE_TEMPLATE}"`
-    NEW_CMDOUT_FILE=`mktemp "${ZANATA_OUTPUT_FILE_TEMPLATE}"`
-    NEW_TIME_FILE=`mktemp "${ZANATA_OUTPUT_FILE_TEMPLATE}"`
-    NEW_CMD_FULL="$*"
-    /usr/bin/time -p -o ${NEW_TIME_FILE} "$@" 1>${NEW_CMDOUT_FILE} 2>${NEW_CMDOUT_FILE}
-    NEW_EXIT_CODE=$?
-    REAL_TIME=`get_real_time ${NEW_TIME_FILE}`
-    rm -f ${NEW_TIME_FILE}
 }
 
 function print_summary(){
@@ -402,7 +437,7 @@ function print_summary(){
 	return
     fi
 
-    : ${TEST_PACKAGE:=client-$(command_get_type ${CMD})}
+    : ${TEST_PACKAGE:=$(get_test_package ${ZANATA_EXECUTABLE})}
     sed -i -e "s/@TEST_PACKAGE@/${TEST_PACKAGE}/" ${JUNIT_XML_INTERNAL}
     sed -i -e "s/@FAILED@/${failed}/" ${JUNIT_XML_INTERNAL}
     sed -i -e "s/@TOTAL@/${total}/" ${JUNIT_XML_INTERNAL}
@@ -412,18 +447,8 @@ cat >>${JUNIT_XML_INTERNAL}<<END
 END
 }
 
-function has_string_check(){
-    if ! grep -e "$str" 2>/dev/null <<<"$output" ;then
-	failed_msg "$str does not exist"
-	return $EXIT_CODE_FAILED
-    fi
-    ok_msg "$str"
-}
-
-#================================
-# JUnit
-#
-
+### JUnit Functions
+### ^^^^^^^^^^^^^^^
 function file_encode_xml(){
     local file=$1
     if [ -z "$file" ];then
@@ -503,10 +528,12 @@ function junit_xml_new(){
 END
 }
 
-#================================
-# Function for Keyword-Based testing
-#
+### Keyword-Based testing Function
+### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+### These are "real" testing functions that should be written in test cases.
 
+### === TestCaseStart
+### TestCaseStart <TEST_CASE_NAME_PREFIX>
 function TestCaseStart(){
     clean_files
     TEST_CASE_NAME_PREFIX=$1
@@ -528,9 +555,6 @@ function RunCmdExitCode(){
     done
 
     LAST_CMD_FULL="${cmd} ${args[*]}"
-    if [ -n "$ZANATA_TEST_DEBUG" ];then
-	stderr_echo "LAST_CMD_FULL=$LAST_CMD_FULL"
-    fi
     if [ -n "$SKIP_TEST" ];then
 	skipped_msg 0.0 "${LAST_CMD_FULL}"
 	return $EXIT_CODE_SKIPPED
@@ -541,7 +565,7 @@ function RunCmdExitCode(){
     LAST_EXIT_CODE=${NEW_EXIT_CODE}
 
     if [ ${LAST_EXIT_CODE} -eq ${expectedExit} ];then
-	ok_msg  ${REAL_TIME} "Command returns $expectedExit"
+	ok_msg  ${REAL_TIME} "Command returns $expectedExit" "${CMDOUT_FILE}" "${CMDERR_FILE}"
 	return $EXIT_CODE_OK
     fi
 
@@ -572,7 +596,7 @@ function StdoutContain(){
 	    failed_msg ${REAL_TIME}  "String $str does not exist" "Command=${LAST_CMD_FULL}" "${NEW_CMDOUT_FILE}" "${NEW_CMDERR_FILE}"
 	    exitCode=$EXIT_CODE_FAILED
 	else
-	    ok_msg ${REAL_TIME}
+	    ok_msg ${REAL_TIME} "stdout contains $str" "${CMDOUT_FILE}" "${CMDERR_FILE}"
 	fi
 	rm -f ${NEW_CMDERR_FILE} ${NEW_CMDOUT_FILE}
     fi

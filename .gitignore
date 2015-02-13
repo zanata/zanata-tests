@@ -4,24 +4,8 @@ CTestTestfile.cmake
 cmake_install.cmake
 .cache/
 Testing/
-doc-prjs/*/*/*
+doc-prjs/*/*/*/*
 
-cookie.file
-HomePage.html
-selenium/user-extensions.js
-selenium/src/initial_setup/ManageLanguages.html
-selenium/src/initial_setup/ServerConfiguration.html
-selenium/src/initial_setup/SignInAdmin.html
-[1-9]*.html
-SignIn*.html
-SignOut.html
-
-concordion/src/TODO/
-concordion/src/html/
-
-samples/
-results/
-pulled/
 
 *.bak
 *.bz2
