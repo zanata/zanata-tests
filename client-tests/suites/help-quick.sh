@@ -3,27 +3,27 @@ SUMMARY="Help message of frequently used command"
 
 
 TestCaseStart "No arguments"
-case $CMD in
+case $ZANATA_EXECUTABLE in
     *mvn )
-	RunCmd ${CMD} help
+	RunCmd ${ZANATA_EXECUTABLE} help
 	;;
     * )
-	RunCmd ${CMD}
+	RunCmd ${ZANATA_EXECUTABLE}
 	;;
 esac
-StdoutContainArgument "help"
-StdoutContainArgument "push"
-StdoutContainArgument "pull"
+StdoutContain "help"
+StdoutContain "push"
+StdoutContain "pull"
 
 ## Verbose mode (-v)
 TestCaseStart "Verbose"
 unset SKIP_TEST
-case $CMD in
+case $ZANATA_EXECUTABLE in
     *mvn )
 	## mvn does not have the sole verbose mode for Zanata
 	;;
     * )
-	RunCmd ${CMD} -v
+	RunCmd ${ZANATA_EXECUTABLE} -v
 	StdoutContain "API version: [0-9]*.[0-9]*"
 	;;
 esac
@@ -47,7 +47,7 @@ function check_push_pull_common_args(){
 
 TestCaseStart "help push"
 SKIP_TEST=
-RunCmd ${CMD} help push
+RunCmd ${ZANATA_EXECUTABLE} help push
 check_push_pull_common_args
 StdoutContainArgument "copy-trans"
 StdoutContainArgument "file-types"
@@ -57,7 +57,7 @@ StdoutContainArgument "from-doc"
 
 TestCaseStart "help pull"
 SKIP_TEST=
-RunCmd ${CMD} help pull
+RunCmd ${ZANATA_EXECUTABLE} help pull
 check_push_pull_common_args
 StdoutContainArgument "create-skeletons"
 StdoutContainArgument "encode-tabs"

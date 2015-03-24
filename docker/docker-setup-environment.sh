@@ -2,7 +2,6 @@
 set -e 
 set -o pipefail
 
-
 function print_usage(){
     cat <<END
 NAME
@@ -44,9 +43,6 @@ declare PACKAGE_SYSTEM_COMMAND=yum
 ### The command to install a package
 declare PACKAGE_INSTALL_COMMAND="${PACKAGE_SYSTEM_COMMAND} -y install"
 
-### The command to install a package in updates-testing
-declare PACKAGE_INSTALL_UPDATE_REPO_COMMAND="${PACKAGE_SYSTEM_COMMAND} -y install --enablerepo=updates-testing"
-
 ### The command to check list matched package in repo
 declare PACKAGE_LIST_COMMAND="${PACKAGE_SYSETEM_COMMAND} list"
 
@@ -68,21 +64,27 @@ declare DOCKER_IMAGE_SUDO_USERS="alice grace irene peggy queen"
 ### Base dir for generate docker file
 declare DOCKER_DOCKERFILE_TOP_DIR="${DOCKER_DOCKERFILE_TOP_DIR:-$PWD}"
 
-### Docker instances for fedora releases
-declare DOCKER_FEDORA_IMAGE_TAGS="rawhide 21 20"
+### Docker instances for fedora releases except rawhide
+declare DOCKER_FEDORA_IMAGE_TAGS="21 20"
 
-### Docker RHEL REPO
-declare DOCKER_RHEL_REPO="registry.access.redhat.com/rhel"
+### Docker Centos
+declare DOCKER_CENTOS_IMAGE_TAGS="7"
 
-### Docker RHEL REPO
-declare DOCKER_RHEL_IMAGE_TAGS="latest"
+### Zanata client Fedora package names
+declare ZANATA_CLIENT_FEDORA_PACKAGE_NAMES="maven zanata-client zanata-python-client"
 
-### Zanata client package names
-declare ZANATA_CLIENT_PACKAGE_NAMES="maven zanata-client zanata-python-client"
+### Zanata client CentOS package names
+declare ZANATA_CLIENT_CENTOS_PACKAGE_NAMES="maven zanata-python-client"
 
 ### Database backend in Fedora tags
 declare DB_FEDORA_TAGS=([mariadb]="mariadb mariadb-server mysql-connector-java" [mysql]="mysql mysql-server mysql-connector-java")
 
+
+### Database backend in Centos tags
+declare DB_CENTOS_TAGS=([mariadb]="mariadb mariadb-server mysql-connector-java" [mysql]="mysql mysql-server mysql-connector-java")
+
+### Base of work directories
+declare WORK_BASE_DIR="/tmp"
 
 #### End Var
 
@@ -97,7 +99,6 @@ export EXIT_CODE_ERROR=5
 export EXIT_CODE_FAILED=6
 export EXIT_CODE_SKIPPED=7
 export EXIT_CODE_FATAL=125
-
 
 function extract_variable(){
     local file=$1
@@ -186,9 +187,9 @@ lsbReleaseRelease=`lsb_release -rs`
 lsbReleaseReleaseMajor=$(sed -e 's/\..*$//' <<<$lsbReleaseRelease)
 case "$lsbReleaseId" in
     RedHatEnterprise* )
-	# RHEL
+	# CENTOS
 	if [[ $lsbReleaseReleaseMajor -le 5 ]];then
-	    echo "RHEL 5 and earlier does not support docker" > /dev/stderr
+	    echo "CENTOS 5 and earlier does not support docker" > /dev/stderr
 	    exit $DEPENDENCY_MISSING
 	fi
 	distroCompatible=RedHat
@@ -224,83 +225,95 @@ sudo systemctl enable docker
 sudo systemctl start docker
 
 ### == Setup Support Platforms
-### We put all +DockerFile+ in sub-directory named <repo>:<tag>
-### under +DOCKER_DOCKERFILE_TOP_DIR+
-### Dockerfiles and corresponding images will be build with following:
-function docker_image_build(){
-    local fromRepo=$1
-    local fromTag=$2
-    local repo=$3
-    local tag=$4
-    shift 4
+### === Obtain zanata-tests
+### +zanata-tests+ contains the scripts examples to build docker image
+### from +centos+ and +fedora+
+### . Clone or Update zanata-tests
+if [ ! -d "${WORK_BASE_DIR}" ];then
+    mkdir -p "${WORK_BASE_DIR}"
+fi
+cd "${WORK_BASE_DIR}"
+if [ ! -d ${WORK_BASE_DIR}/zanata-tests ]; then
+    git clone https://github.com/zanata/zanata-tests.git
+fi
+pushd zanata-tests
+git pull
+git checkout wip
+popd
 
-    local subDir=${DOCKER_DOCKERFILE_TOP_DIR}/${repo}:${tag}
-    mkdir -p ${subDir}
-    local dockerFile=${subDir}/Dockerfile
-    cat >${dockerFile}<<END
-FROM ${fromRepo}:${fromTag}
-MAINTAINER "Ding-Yi Chen" <dchen@redhat.com>
-END
-    cat >>${dockerFile}</dev/stdin
-    sg docker "docker build --rm -t ${repo}:${tag} ${subDir}/"
-}
-
-function docker_images_build_tags(){
-    local fromRepo=$1
-    local repo=$2
-    shift 3
-
-    for tag in "$@" ;do
-	docker_image_build $fromRepo $tag $repo $tag </dev/stdin
-    done
-}
-
-### === Common Images
-### Common images contain common environment for both server and client.
-### That is, basic packages and users.
-### It is build by following:
-commonDockerScript=$(cat<<END
-RUN ${PACKAGE_SYSTEM_COMMAND} -y update; ${PACKAGE_INSTALL_COMMAND} sudo wget git glibc-common; ${PACKAGE_SYSTEM_COMMAND} clean all
-##Disable Defaults requiretty in sudoers file
-RUN sed -ie 's/Defaults\\(.*\\)requiretty/ #Defaults\\1requiretty/g' /etc/sudoers
-RUN groupadd ${DOCKER_IMAGE_SUDO_GROUP}; echo '%${DOCKER_IMAGE_SUDO_GROUP} ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-RUN cat > /etc/profile.d/common.sh<<<'export PS1="[\u@\h \w]\\$ "'
-RUN adduser -p "" -m zanata -G ${DOCKER_IMAGE_SUDO_GROUP};
-END
-)
+### === Base images
+### Base images contain basic utilities, users, and yum repository
+### ==== Base images for Fedora
+### Dockerfile and image for fedora {DOCKER_FEDORA_IMAGE_TAGS} will be build with following
+adduserSnipplet=
 for username in ${DOCKER_IMAGE_SUDO_USERS}; do
-    commonDockerScript+=" adduser -p '' -m ${username} -G ${DOCKER_IMAGE_SUDO_GROUP}; "
+    adduserSnipplet+=" adduser -p '' -m ${username} -G ${DOCKER_IMAGE_SUDO_GROUP}; "
 done
 
-### ==== Fedora
-### Script to build Fedora common images
-docker_images_build_tags  fedora znt_f ${DOCKER_FEDORA_IMAGE_TAGS} <<<"${commonDockerScript}"
-### ==== RHEL
-### If you have access to {DOCKER_RHEL_REPO} 
-### then use following script to build RHEL common images. 
-DOCKER_RHEL_REPO_SITE=$(sed -e 's|/.*$||' <<<${DOCKER_RHEL_REPO})
-if ping -c 5 ${DOCKER_RHEL_REPO_SITE}; then
-    DOCKER_RHEL_ENABLE=${DOCKER_RHEL_REPO_SITE}
-fi
-
-if [ -n "${DOCKER_RHEL_ENABLE}" ];then
-    sg docker "docker pull ${DOCKER_RHEL_REPO}"
-    docker_images_build_tags ${DOCKER_RHEL_REPO} znt_r ${DOCKER_RHEL_IMAGE_TAGS} <<<"${commonDockerScript}"
-fi
-### === Client Images
-### Docker images for following clients will be built: {ZANATA_CLIENT_PACKAGE_NAMES}
-### ==== Fedora
-for package in ${ZANATA_CLIENT_PACKAGE_NAMES};do
-
-    docker_image_build znt_f znt_f_${package} ${DOCKER_FEDORA_IMAGE_TAGS} <<<"RUN ${PACKAGE_INSTALL_UPDATE_REPO_COMMAND} ${package}"
+for tag in ${DOCKER_FEDORA_IMAGE_TAGS}; do
+    repo="fedora"
+    imageName="znt-fedora:${tag}"
+    ${WORK_BASE_DIR}/zanata-tests/docker/docker-make-dockerfile -b ${WORK_BASE_DIR} -t ${imageName} $repo $tag <<< $adduserSnipplet
+    subDir="${WORK_BASE_DIR}/${imageName}"
+    sg docker "docker build --rm -t ${imageName} ${subDir}/"
 done
+
+### ==== Base images for CentOS
+### Dockerfile and image for fedora {DOCKER_FEDORA_IMAGE_TAGS} will be build with following
+
+for tag in ${DOCKER_CENTOS_IMAGE_TAGS}; do
+    repo="centos"
+    imageName="znt-${repo}:${tag}"
+    ${WORK_BASE_DIR}/zanata-tests/docker/docker-make-dockerfile -b ${WORK_BASE_DIR} -t ${imageName} $repo $tag <<< $adduserSnipplet
+    subDir="${WORK_BASE_DIR}/${imageName}"
+    sg docker "docker build --rm -t ${imageName} ${subDir}/"
+done
+
 ### === Server Images
-### Database and JBoss will be built.
+### Images with databases
 ### ==== Fedora
 ### . Add database images
+
 for db in "${!DB_FEDORA_TAGS[@]}";do
-    docker_image_build znt_f znt_f_${db} ${DOCKER_FEDORA_IMAGE_TAGS} <<<"RUN ${PACKAGE_INSTALL_COMMAND} ${DB_FEDORA_TAGS[@]}"
+    databasePkgs="${DB_FEDORA_TAGS[$db]}"
+
+    for tag in ${DOCKER_FEDORA_IMAGE_TAGS}; do
+	repo="znt-fedora"
+	imageName="${repo}-${db}:${tag}"
+	if [ "$tag" -eq "rawhide" ];then
+	    ${WORK_BASE_DIR}/zanata-tests/docker/docker-make-dockerfile -b ${WORK_BASE_DIR} -t ${imageName} $repo $tag <<< "RUN yum -y install ${databasePkgs}"
+	else
+	    ${WORK_BASE_DIR}/zanata-tests/docker/docker-make-dockerfile -b ${WORK_BASE_DIR} -t ${imageName} $repo $tag <<< "RUN yum -y --enablerepo=updates-testing install ${databasePkgs}"
+	fi
+
+	${WORK_BASE_DIR}/zanata-tests/docker/docker-make-dockerfile -b ${WORK_BASE_DIR} -t ${imageName} $repo $tag <<< $adduserSnipplet
+
+	subDir="${WORK_BASE_DIR}/${imageName}"
+	sg docker "docker build --rm -t ${imageName} ${subDir}/"
+    done
 done
+
+### ==== CentOS
+### . Add database images
+for db in "${!DB_CENTOS_TAGS[@]}";do
+    databasePkgs="${DB_CENTOS_TAGS[$db]}"
+
+    for tag in ${DOCKER_FEDORA_IMAGE_TAGS}; do
+	repo="znt-fedora"
+	imageName="${repo}-${db}:${tag}"
+	if [ "$tag" -eq "rawhide" ];then
+	    ${WORK_BASE_DIR}/zanata-tests/docker/docker-make-dockerfile -b ${WORK_BASE_DIR} -t ${imageName} $repo $tag <<< "RUN yum -y install ${databasePkgs}"
+	else
+	    ${WORK_BASE_DIR}/zanata-tests/docker/docker-make-dockerfile -b ${WORK_BASE_DIR} -t ${imageName} $repo $tag <<< "RUN yum -y --enablerepo=updates-testing install ${databasePkgs}"
+	fi
+
+	${WORK_BASE_DIR}/zanata-tests/docker/docker-make-dockerfile -b ${WORK_BASE_DIR} -t ${imageName} $repo $tag <<< $adduserSnipplet
+
+	subDir="${WORK_BASE_DIR}/${imageName}"
+	sg docker "docker build --rm -t ${imageName} ${subDir}/"
+    done
+done
+
 ### === Final
 ### You may need to re-login if you are not already in group docker.
 #### End Doc

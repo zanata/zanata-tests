@@ -110,7 +110,6 @@ function option_convert(){
     esac
 }
 
-
 function argument_convert(){
     local cmd=$1
     local optString=$2
@@ -346,7 +345,7 @@ function skipped_msg(){
     local eTime=$1
     local message=$2
     local detail=$3
-    local consoleOut="SKIPPED: $CLASSNAME $TEST_CASE_NAME ($eTime)"
+    local consoleOut="SKIPPED: [$CLASSNAME][$TEST_CASE_NAME] ($eTime)"
     echo $consoleOut
     : $((skipped++))
     : $((total++))
@@ -368,13 +367,13 @@ function failed_msg(){
     local detail=$3
     local outFile=$4
     local errFile=$5
-    local consoleOut="FAILED: $CLASSNAME $TEST_CASE_NAME ($eTime)"
+    local consoleOut="FAILED: [$CLASSNAME][$TEST_CASE_NAME] ($eTime)"
     echo $consoleOut
     : $((failed++))
     : $((total++))
     totalTime=`perl -e "print $totalTime+$eTime;"`
-    stderr_echo "-- FAILED -- ${TEST_CASE_NAME} ----- NEW_CMD_FULL=${NEW_CMD_FULL}"
 
+    stderr_echo "-- FAILED -- ${TEST_CASE_NAME}: NEW_CMD_FULL=${NEW_CMD_FULL}"
     if [ -n "${outFile}" ];then
 	stderr_echo "-- FAILED -- ${TEST_CASE_NAME} ----- STDOUT --------------------------------"
 	cat ${outFile} > /dev/stderr
@@ -402,13 +401,13 @@ function ok_msg(){
     local message=$2
     local outFile=$3
     local errFile=$4
-    local consoleOut="OK: $CLASSNAME $TEST_CASE_NAME ($eTime)"
+    local consoleOut="OK: [$CLASSNAME][$TEST_CASE_NAME] ($eTime)"
     echo $consoleOut
     : $((total++))
     totalTime=`perl -e "print $totalTime+$eTime;"`
 
     if [ -n "$ZANATA_TEST_DEBUG" ];then
-	stderr_echo "-- OK -- ${TEST_CASE_NAME} ----- NEW_CMD_FULL=${NEW_CMD_FULL}"
+	stderr_echo "-- OK -- ${TEST_CASE_NAME}: NEW_CMD_FULL=${NEW_CMD_FULL}"
 
 	if [ -n "${outFile}" ];then
 	    stderr_echo "-- OK -- ${TEST_CASE_NAME} ----- STDOUT --------------------------------"
@@ -422,8 +421,6 @@ function ok_msg(){
 	    stderr_echo "================================================================="
 	fi
     fi
-
-
 
     if [ -n "${JUNIT_XML_INTERNAL}" ];then
 	junit_xml_append_test_case OK "$TEST_CASE_NAME" "$eTime"
@@ -570,6 +567,7 @@ function RunCmdExitCode(){
     fi
 
     failed_msg ${REAL_TIME} "${LAST_CMD_FULL}" "Expected: $expectedExit, Actual: $ret instead. Command=${LAST_CMD_FULL}" "${CMDOUT_FILE}" "${CMDERR_FILE}"
+    unset TEST_CASE_NAME
     return $EXIT_CODE_FAILED
 }
 
@@ -605,7 +603,7 @@ function StdoutContain(){
 
 function StdoutContainArgument(){
     local str=$1
-    local arg=`long_option_name_convert "${LAST_CMD}" "$str"`
+    local arg=`option_name_convert "${LAST_CMD}" "" "$str"`
     : ${TEST_CASE_NAME:=${TEST_CASE_NAME_PREFIX}-StdoutContainArgument-${arg}}
 
     StdoutContain "$arg"
@@ -613,7 +611,7 @@ function StdoutContainArgument(){
 
 function OutputNoError(){
     ## Command has error test 
-    : ${TEST_CASE_NAME:=${TEST_CASE_NAME_PREFIX}-OutputNoError}
+    TEST_CASE_NAME="${TEST_CASE_NAME_PREFIX}-OutputNoError"
 
     if [ -n "$SKIP_TEST" ];then
 	skipped_msg 0.0

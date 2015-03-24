@@ -19,7 +19,7 @@ DESCRIPTION
     5. pull
 
 EXIT STATUS
-   0 if all tests passed
+   ${EXIT_CODE_OK} if all tests passed
    ${EXIT_CODE_INVALID_ARGUMENTS} invalid or missing arguments
    ${EXIT_CODE_FAILED} at least one of test not passed
 
@@ -44,16 +44,75 @@ shift
 
 ## Test start
 SUITE_DIR=${TOP_DIR}/client-tests/suites
-export ZANATA_BACKEND=${CMD}
+export ZANATA_EXECUTABLE=${CMD}
+: ${ZANATA_PROJECT_SLUG:=ibus-chewing}
+: ${ZANATA_PROJECT_NAME:=$ZANATA_PROJECT_SLUG}
+: ${ZANATA_PROJECT_DESC:=$ZANATA_PROJECT_NAME}
+: ${ZANATA_VERSION_SLUG:=master}
+: ${ZANATA_PROJECT_TYPE:=gettext}
+: ${WORK_DIR:=${TOP_DIR}/doc-prjs/$ZANATA_PROJECT_SLUG/$ZANATA_VERSION_SLUG}
+
 source ${SUITE_DIR}/help-quick.sh
 unset SKIP_TEST
 source ${SUITE_DIR}/put-project-quick.sh
 unset SKIP_TEST
 source ${SUITE_DIR}/put-version-quick.sh
 unset SKIP_TEST
-source ${SUITE_DIR}/push-quick.sh
+
+###===== Start push tests =====
+CLASSNAME=push
+pushd ${WORK_DIR}
+PUSH_OPTIONS=(--
+--project=${ZANATA_PROJECT_SLUG} --project-version=${ZANATA_VERSION_SLUG} --project-type=${ZANATA_PROJECT_TYPE})
+
+### push with Compulsory options Only
+TestCaseStart "Compulsory options"
+RunCmd ${ZANATA_EXECUTABLE} 
+
+source ${SUITE_DIR}/push.sh
+
+## push with --push-type=trans
+TEST_CASE_NAME_PREFIX="pushType=trans"
+PUSH_OPTIONS=( "${PUSH_ORIG_OPTIONS[@]}" --push-type=trans)
+source ${SUITE_DIR}/push.sh
+
+## push with --push-type=both
+## Push type both
+TEST_CASE_NAME_PREFIX="pushType=both"
+PUSH_OPTIONS=( "${PUSH_ORIG_OPTIONS[@]}" --push-type=both)
+source ${SUITE_DIR}/push.sh
+
+## Restore PUSH_OPTIONS
+PUSH_OPTIONS=("${PUSH_ORIG_OPTIONS[@]}")
+popd
 unset SKIP_TEST
-source ${SUITE_DIR}/pull-quick.sh
+###===== End push tests =====
+
+###===== Start pull tests =====
+unset SKIP_TEST
+pushd ${WORK_DIR}
+USE_DEFAULT_OPTIONS=1
+PULL_OPTIONS=(--project=${ZANATA_PROJECT_SLUG} --project-version=${ZANATA_VERSION_SLUG} --project-type=${ZANATA_PROJECT_TYPE})
+PULL_ORIG_OPTIONS=("${PULL_OPTIONS[@]}")
+
+## Compulsory options Only
+TEST_CASE_NAME_PREFIX="Compulsory options"
+source ${SUITE_DIR}/pull.sh
+
+## Pull type trans
+TEST_CASE_NAME_PREFIX="pullType=source"
+PULL_OPTIONS=( "${PULL_ORIG_OPTIONS[@]}" --pull-type=source)
+source ${SUITE_DIR}/pull.sh
+
+## Pull type both
+TEST_CASE_NAME_PREFIX="pullType=both"
+PULL_OPTIONS=( "${PULL_ORIG_OPTIONS[@]}" --pull-type=both)
+source ${SUITE_DIR}/pull.sh
+
+## Restore PULL_OPTIONS
+PULL_OPTIONS=("${PULL_ORIG_OPTIONS[@]}")
+popd
+###===== End push tests =====
 
 print_summary "${TEST_SUITE_NAME}"
 
