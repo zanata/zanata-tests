@@ -8,7 +8,7 @@ SYNOPSIS
 
 
 DESCRIPTION
-    Return the first matched id
+    Return the Image Id whose repository match the specified regex
 
 END
 }
@@ -23,6 +23,6 @@ fi
 REPOSITORY=$1
 TAG=$2
 
-${DOCKER_CMD} images -a | awk -v tag="$TAG" -v repo="$REPOSITORY" '($1 ~ repo && $2 ~ tag) { print $3 }' 
+${DOCKER_CMD} images -a --no-trunc=true| awk -v tag="$TAG" -v repo="$REPOSITORY" '($1 ~ repo && $2 ~ tag) { print $3 }' 
 exit $?
 

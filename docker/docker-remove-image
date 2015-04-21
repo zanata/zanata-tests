@@ -32,7 +32,8 @@ TAG=$2
 SCRIPT_DIR=`dirname $0`
 : ${DOCKER_CMD:=docker}
 
-imageList=`$SCRIPT_DIR/docker-get-image-id.sh $REPOSITORY $TAG`
+## Put the oldest image in front
+imageList=`$SCRIPT_DIR/docker-get-image-id $REPOSITORY $TAG| tac`
 
 if [ -z "$imageList" ];then
     error_msg "Matched Image not found"
@@ -40,10 +41,11 @@ if [ -z "$imageList" ];then
 fi
 
 for imageId in $(xargs<<<"$imageList");do
-    if ! $DOCKER_CMD rmi $imageId; then
-	error_msg "Failed to remove image"
-	exit 41
-    fi
+    $DOCKER_CMD rmi $imageId
+#    if ! $DOCKER_CMD rmi $imageId; then
+#	error_msg "Failed to remove image"
+#	exit 41
+#    fi
 done
 
 
