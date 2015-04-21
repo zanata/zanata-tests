@@ -29,13 +29,15 @@ ENVIRONMENT
 END
     print_variables usage $0
 }
+ZANATA_DOCKER_SCRIPT_DIR=$(readlink -f `dirname $0`)
 
 #### Start Var
 declare author="Ding-Yi Chen"
-declare revdate=2015-02-03
+declare revdate=2015-04-20
 declare revnumber=1
 declare numbered
 declare toc2
+
 
 ### The command for package management system
 declare PACKAGE_SYSTEM_COMMAND=yum
@@ -77,11 +79,11 @@ declare ZANATA_CLIENT_FEDORA_PACKAGE_NAMES="maven zanata-client zanata-python-cl
 declare ZANATA_CLIENT_CENTOS_PACKAGE_NAMES="maven zanata-python-client"
 
 ### Database backend in Fedora tags
-declare DB_FEDORA_TAGS=([mariadb]="mariadb mariadb-server mysql-connector-java" [mysql]="mysql mysql-server mysql-connector-java")
+declare -A DB_FEDORA_TAGS=([mariadb]="mariadb mariadb-server mysql-connector-java" [mysql]="mysql mysql-server mysql-connector-java")
 
 
 ### Database backend in Centos tags
-declare DB_CENTOS_TAGS=([mariadb]="mariadb mariadb-server mysql-connector-java" [mysql]="mysql mysql-server mysql-connector-java")
+declare -A DB_CENTOS_TAGS=([mariadb]="mariadb mariadb-server mysql-connector-java" [mysql]="mysql mysql-server mysql-connector-java")
 
 ### Base of work directories
 declare WORK_BASE_DIR="/tmp"
@@ -106,7 +108,8 @@ function extract_variable(){
     awk -v nameFilter="$nameFilter" \
 	'BEGIN {FPAT = "(\"[^\"]+\")|(\\(.+\\))|([^ =]+)"; start=0; descr=""} \
 	/^#### End Var/ { start=0} \
-	(start==1 && /^[^#]/ && $2 ~ nameFilter) { sub(/^\"/, "", $3); sub(/\"$/, "", $3); print $2 "\t" $3 "\t" descr ; descr="";} \
+	(start==1 && /^[^#]/ && $2 != "-A" && $2 ~ nameFilter) { sub(/^\"/, "", $3); sub(/\"$/, "", $3); print $2 "\t" $3 "\t" descr ; descr="";} \
+	(start==1 && /^[^#]/ && $2 == "-A" && $3 ~ nameFilter) { print $3 "\t" $4} \
 	(start==1 && /^###/) { gsub("^###[ ]?","", $0) ; descr=$0} \
 	/^#### Start Var/ { start=1; } ' $file
 }
@@ -124,7 +127,7 @@ function print_variables(){
 	bash )
 	    extract_variable $file "^[A-Z]" | awk -F '\\t' \
 		'$2 ~ /[^\)]$/ {print "export " $1 "=\""$2"\"" ;} \
-		$2 ~ /\)$/ {print "export " $1 "="$2 ;} '
+		$2 ~ /\)$/ {print "export " $1 "=" $2 ;} '
 	    ;;
 	usage )
 	    extract_variable $file "^[A-Z]" | awk -F '\\t' '{print $1 "::"; \
@@ -141,7 +144,7 @@ function to_asciidoc(){
     # Extract variable
 
     awk 'BEGIN {start=0;sh_start=0; in_list=0} \
-	/^#### End Doc/ { start=0} \
+	/^#### End Doc/ { print "" ; start=0} \
 	(start==1 && /^[^#]/ ) { if (sh_start==0) {sh_start=1; if (in_list ==1 ) {print "+"}; print "[source,sh]"; print "----"} print $0;} \
 	(start==1 && /^### \./ ) { in_list=1 } \
 	(start==1 && /^###/ ) { if (sh_start==1) {sh_start=0; print "----"} gsub("^###[ ]?","", $0) ; print $0;} \
@@ -181,6 +184,14 @@ done
 ### This document shows the steps to install docker environment for zanata-tests
 ###
 ### == Steps
+### . Obtain zanata-tests
+### +
+### ----
+### cd ${WORK_BASE_DIR}
+### git clone https://github.com/zanata/zanata-tests.git
+### cd zanata-tests
+### ----
+### +
 ### . Determine docker package name:
 lsbReleaseId=`lsb_release -is`
 lsbReleaseRelease=`lsb_release -rs`
@@ -201,7 +212,6 @@ case "$lsbReleaseId" in
     * )
 	;;
 esac
-
 ### . Install +{DOCKER_PACKAGE_NAME}+ if it is not already installed.
 if ! ${PACKAGE_EXIST_COMMAND} "${DOCKER_PACKAGE_NAME}";then
     if ! sudo ${PACKAGE_INSTALL_COMMAND} $p; then
@@ -215,34 +225,26 @@ if ! grep "^docker:" /etc/group &>/dev/null;then
     sudo groupadd docker
 fi
 
-### . Add +DOCKER_RUN_USER' to docker group if not already.
+### . Add +DOCKER_RUN_USER+ to docker group if not already.
 if ! grep docker &>/dev/null <<<$(id -Gn ${DOCKER_RUN_USER}); then
     sudo gpasswd -a ${DOCKER_RUN_USER} docker
 fi
 
-### . Enable and start docker service
-sudo systemctl enable docker
-sudo systemctl start docker
+### . Enable docker service if not enabled
+if ! systemctl -q is-enabled docker; then
+    sudo systemctl enable docker
+fi
+
+### . Start docker service if not active
+if ! systemctl -q is-active docker; then
+    sudo systemctl start docker
+fi
 
 ### == Setup Support Platforms
-### === Obtain zanata-tests
-### +zanata-tests+ contains the scripts examples to build docker image
-### from +centos+ and +fedora+
-### . Clone or Update zanata-tests
-if [ ! -d "${WORK_BASE_DIR}" ];then
-    mkdir -p "${WORK_BASE_DIR}"
-fi
-cd "${WORK_BASE_DIR}"
-if [ ! -d ${WORK_BASE_DIR}/zanata-tests ]; then
-    git clone https://github.com/zanata/zanata-tests.git
-fi
-pushd zanata-tests
-git pull
-git checkout wip
-popd
-
+###
 ### === Base images
 ### Base images contain basic utilities, users, and yum repository
+###
 ### ==== Base images for Fedora
 ### Dockerfile and image for fedora {DOCKER_FEDORA_IMAGE_TAGS} will be build with following
 adduserSnipplet=
@@ -253,7 +255,10 @@ done
 for tag in ${DOCKER_FEDORA_IMAGE_TAGS}; do
     repo="fedora"
     imageName="znt-fedora:${tag}"
-    ${WORK_BASE_DIR}/zanata-tests/docker/docker-make-dockerfile -b ${WORK_BASE_DIR} -t ${imageName} $repo $tag <<< $adduserSnipplet
+    ${ZANATA_DOCKER_SCRIPT_DIR}/docker-make-dockerfile -a \
+	-b ${WORK_BASE_DIR} -t ${imageName} $repo $tag \
+	${ZANATA_DOCKER_SCRIPT_DIR}/Dockerfile.${repo}.in \
+	<<< "RUN $adduserSnipplet"
     subDir="${WORK_BASE_DIR}/${imageName}"
     sg docker "docker build --rm -t ${imageName} ${subDir}/"
 done
@@ -264,15 +269,18 @@ done
 for tag in ${DOCKER_CENTOS_IMAGE_TAGS}; do
     repo="centos"
     imageName="znt-${repo}:${tag}"
-    ${WORK_BASE_DIR}/zanata-tests/docker/docker-make-dockerfile -b ${WORK_BASE_DIR} -t ${imageName} $repo $tag <<< $adduserSnipplet
+    ${ZANATA_DOCKER_SCRIPT_DIR}/docker-make-dockerfile -a \
+	-b ${WORK_BASE_DIR} -t ${imageName} $repo $tag \
+	${ZANATA_DOCKER_SCRIPT_DIR}/Dockerfile.${repo}.in \
+	<<< $adduserSnipplet
     subDir="${WORK_BASE_DIR}/${imageName}"
     sg docker "docker build --rm -t ${imageName} ${subDir}/"
 done
-
+###
 ### === Server Images
 ### Images with databases
 ### ==== Fedora
-### . Add database images
+### . Add database to images
 
 for db in "${!DB_FEDORA_TAGS[@]}";do
     databasePkgs="${DB_FEDORA_TAGS[$db]}"
@@ -280,41 +288,37 @@ for db in "${!DB_FEDORA_TAGS[@]}";do
     for tag in ${DOCKER_FEDORA_IMAGE_TAGS}; do
 	repo="znt-fedora"
 	imageName="${repo}-${db}:${tag}"
-	if [ "$tag" -eq "rawhide" ];then
-	    ${WORK_BASE_DIR}/zanata-tests/docker/docker-make-dockerfile -b ${WORK_BASE_DIR} -t ${imageName} $repo $tag <<< "RUN yum -y install ${databasePkgs}"
+	if [ "$tag" = "rawhide" ];then
+	    ${ZANATA_DOCKER_SCRIPT_DIR}/docker-make-dockerfile -a \
+		-b ${WORK_BASE_DIR} -t ${imageName} $repo $tag \
+		<<< "RUN yum -y install ${databasePkgs}"
 	else
-	    ${WORK_BASE_DIR}/zanata-tests/docker/docker-make-dockerfile -b ${WORK_BASE_DIR} -t ${imageName} $repo $tag <<< "RUN yum -y --enablerepo=updates-testing install ${databasePkgs}"
+	    ${ZANATA_DOCKER_SCRIPT_DIR}/docker-make-dockerfile -a \
+		-b ${WORK_BASE_DIR} -t ${imageName} $repo $tag \
+		<<< "RUN yum -y --enablerepo=updates-testing install ${databasePkgs}"
 	fi
-
-	${WORK_BASE_DIR}/zanata-tests/docker/docker-make-dockerfile -b ${WORK_BASE_DIR} -t ${imageName} $repo $tag <<< $adduserSnipplet
-
 	subDir="${WORK_BASE_DIR}/${imageName}"
 	sg docker "docker build --rm -t ${imageName} ${subDir}/"
     done
 done
 
 ### ==== CentOS
-### . Add database images
+### . Add database to images
 for db in "${!DB_CENTOS_TAGS[@]}";do
     databasePkgs="${DB_CENTOS_TAGS[$db]}"
 
-    for tag in ${DOCKER_FEDORA_IMAGE_TAGS}; do
-	repo="znt-fedora"
+    for tag in ${DOCKER_CENTOS_IMAGE_TAGS}; do
+	repo="znt-centos"
 	imageName="${repo}-${db}:${tag}"
-	if [ "$tag" -eq "rawhide" ];then
-	    ${WORK_BASE_DIR}/zanata-tests/docker/docker-make-dockerfile -b ${WORK_BASE_DIR} -t ${imageName} $repo $tag <<< "RUN yum -y install ${databasePkgs}"
-	else
-	    ${WORK_BASE_DIR}/zanata-tests/docker/docker-make-dockerfile -b ${WORK_BASE_DIR} -t ${imageName} $repo $tag <<< "RUN yum -y --enablerepo=updates-testing install ${databasePkgs}"
-	fi
-
-	${WORK_BASE_DIR}/zanata-tests/docker/docker-make-dockerfile -b ${WORK_BASE_DIR} -t ${imageName} $repo $tag <<< $adduserSnipplet
-
+	${ZANATA_DOCKER_SCRIPT_DIR}/docker-make-dockerfile -a \
+	    -b ${WORK_BASE_DIR} -t ${imageName} $repo $tag \
+	    <<< "RUN yum -y --enablerepo=epel-testing install ${databasePkgs}"
 	subDir="${WORK_BASE_DIR}/${imageName}"
 	sg docker "docker build --rm -t ${imageName} ${subDir}/"
     done
 done
 
-### === Final
+### == Final
 ### You may need to re-login if you are not already in group docker.
 #### End Doc
 

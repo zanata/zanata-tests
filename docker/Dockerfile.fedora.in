@@ -1,4 +1,4 @@
-RUN yum -y update; yum sudo git glibc-common; yum clean all
+RUN yum -y update; yum -y install sudo git glibc-common; yum clean all
 RUN cat > /etc/profile.d/common.sh<<<'export PS1="[\u@\h \w]\\$ "'
 ##Disable Defaults requiretty in sudoers file
 RUN sed -ie 's/Defaults\\(.*\\)requiretty/ #Defaults\\1requiretty/g' /etc/sudoers

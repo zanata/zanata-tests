@@ -12,7 +12,7 @@ function print_usage(){
 
 	SYNOPSIS
 	--------
-	$0 [options] <repo> <tag>
+	$0 [options] <repo> <tag> [file1 [file2 ... ]]
 
 	DESCRIPTION
 	-----------
@@ -24,7 +24,8 @@ function print_usage(){
 	ARGUMENTS
 	---------
 	repo: The repo like fedora or centos
-	tag:    The tag like rawhide, 21
+	tag:  The tag like rawhide, 21
+	file1 ...: File that will append to Dockerfile
 
 	OPTIONS
 	-------
@@ -32,8 +33,13 @@ function print_usage(){
 	   Directory to create a directory with imageName/Dockerfle
 	   If not specify, it will use current directory.
 
+	-a :
+	   Append stdin to Dockerfile after all other file appended.
+
 	-t imageName:
 	   Docker image file, which will also be the directory name that contain Dockerfile.
+
+	
 
 	EXIT STATUS
 	-----------
@@ -58,8 +64,12 @@ export EXIT_CODE_FATAL=125
 
 baseDir=.
 imageName=
-while getopts "b:t:" opt;do
+outStdio=0
+while getopts "ab:t:" opt;do
     case $opt in
+	a )
+	    outStdio=1
+	    ;;
 	b )
 	    baseDir=$OPTARG
 	    ;;
@@ -72,6 +82,7 @@ while getopts "b:t:" opt;do
 	    ;;
     esac
 done
+shift $((OPTIND-1))
 
 if [ $# -le 1 ];then
     print_usage
@@ -79,6 +90,7 @@ if [ $# -le 1 ];then
 fi
 repo=$1
 tag=$2
+shift 2
 
 if [ -z "$imageName" ];then
     imageName="znt-$repo-$tag"
@@ -89,15 +101,22 @@ subDir=${baseDir}/${imageName}
 mkdir -p ${subDir}
 dockerFile=${subDir}/Dockerfile
 
-cat>${dockerFile}<<END
-FROM $docker:$tag
+cat >${dockerFile}<<END
+FROM $repo:$tag
 MAINTAINER "Ding-Yi Chen" <dchen@redhat.com>
 END
 
-if [ -r "${SCRIPT_DIR}/Dockerfile.${repo}.in" ];then
-    cat ${SCRIPT_DIR}/Dockerfile.${repo}.in >> ${dockerFile}
-fi
+for f in "$@"; do 
+    if [ -r $f ];then
+	cat $f >> ${dockerFile}
+    else
+	echo "File $f is unreadable" > /dev/stderr
+	exit $EXIT_CODE_INVALID_ARGUMENTS
+    fi
+done
 
 ## Append from stdin
-cat  >> ${dockerFile} </dev/stdin
+if [ $outStdio -eq 1 ];then
+    cat  >>${dockerFile} </dev/stdin
+fi
 
