@@ -1,0 +1,92 @@
+#!/bin/bash
+set -o pipefail
+
+function print_usage(){
+    cat <<END
+    $0 - docker install ${PACKAGE_NAME} test
+
+SYNOPSIS
+    $0 [-h]
+
+DESCRIPTION
+    docker install ${PACKAGE_NAME} test verify the
+    package can be installed property, at least in docker.
+
+OPTIONS
+    -h: show this help
+
+EXIT STATUS
+    ${EXIT_CODE_ERROR} if distro is not supported
+    Otherwise same as docker build
+END
+}
+
+###== Exit status
+export EXIT_CODE_OK=0
+export EXIT_CODE_INVALID_ARGUMENTS=3
+export EXIT_CODE_DEPENDENCY_MISSING=4
+export EXIT_CODE_ERROR=5
+export EXIT_CODE_FAILED=6
+export EXIT_CODE_SKIPPED=7
+export EXIT_CODE_FATAL=125
+
+###== Default environment variables
+: ${DOCKER_BUILD_OPTS:=--force-rm --rm}
+: ${DOCKER_DISTROS:=fedora}
+: ${WORK_BASE_DIR:=/tmp}
+: ${INSTALL_OK_MSG:=INSTALL_OK}
+
+###== Detect variables
+SCRIPT_DIR=$(readlink -f `dirname $0`)
+TOP_DIR=`(cd ${SCRIPT_DIR}; git-rev-parse --show-toplevel)`
+COMMON_DIR="${TOP_DIR}/client-tests/common"
+SUITE_DIR=${TOP_DIR}/client-tests/suites
+source ${COMMON_DIR}/functions.sh
+PARENT_DIR=$(dirname ${SCRIPT_DIR})
+DOCKER_MAKE_DOCKER_FILE_EXEUTABLE=${TOP_DIR}/docker/docker-make-dockerfile
+
+### Package to be installed
+PACKAGE_NAME=$(basename ${PARENT_DIR})
+: ${TEST_SUITE_NAME:="docker-install-${PACKAGE_NAME}"}
+: ${CLASSNAME:=".install"}
+
+
+### install zanata-client on all listed distros and releases
+for distro in ${DOCKER_DISTROS};do
+    tags=$(docker images "znt-${distro}" | tail -n +2 | awk '{print $2}')
+
+    ###== TEST install zanata-client on all releases with in ${distro}
+    ### tag is either release number or "rawhide"
+    for tag in ${tags}; do
+	imageName="znt-$distro-${PACKAGE_NAME}:${tag}"
+	subDir=${WORK_BASE_DIR}/${imageName}
+
+	##=== Create Docker file
+	case ${distro} in
+	    fedora )
+		if [ "${tag}" = "rawhide" ];then
+		    installCmd="yum -y install"
+		else
+		    installCmd="yum -y install --enablerepo=update-testings"
+		fi
+		postInstallCmd="yum clean all"
+		;;
+	    centos | rhel )
+		installCmd="yum -y install --enablerepo=epel-testing"
+		postInstallCmd="yum clean all"
+		;;
+            * )
+		echo "Distro $distro is not supported yet" >/dev/stderr
+		exit ${EXIT_CODE_ERROR}
+		;;
+        esac
+	${DOCKER_MAKE_DOCKER_FILE_EXEUTABLE} -a -b ${subDir} \
+	   -t "znt-${distro}-${PACKAGE_NAME}:${tag}" \
+	   <<< "RUN $installCmd ${PACKAGE_NAME} && echo ${INSTALL_OK_MSG} ; ${postInstallCmd}"
+
+	### Test on docker build
+	TestCaseStart "docker-instll-${PACKAGE_NAME}"
+	RunCmd docker build ${DOCKER_BUILD_OPTS} -t "${imageName}" "${subDir}/"
+	StdoutContain "${INSTALL_OK_MSG}"
+    done
+done

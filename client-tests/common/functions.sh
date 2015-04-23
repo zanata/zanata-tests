@@ -601,6 +601,30 @@ function StdoutContain(){
     return $exitCode
 }
 
+function StdoutDoesNotContain(){
+    local str=$1
+    local exitCode=$EXIT_CODE_OK
+    : ${TEST_CASE_NAME:=${TEST_CASE_NAME_PREFIX}-StdoutContain-$str}
+
+    if [ -n "$SKIP_TEST" ];then
+	skipped_msg 0.0
+	return $EXIT_CODE_SKIPPED
+    elif [ ${LAST_EXIT_CODE} -ne ${LAST_EXPECTED_EXIT_CODE} ];then
+	skipped_msg 0.0 "LAST_EXIT_CODE=${LAST_EXIT_CODE}" "LAST_EXIT_CODE=${LAST_EXIT_CODE} Command=${LAST_CMD_FULL}"
+	exitCode=$EXIT_CODE_SKIPPED
+    else
+	time_command grep -e "$str"  2>/dev/null ${CMDOUT_FILE}
+	if [ ${NEW_EXIT_CODE} -eq 0 ];then
+	    failed_msg ${REAL_TIME}  "String $str exists" "Command=${LAST_CMD_FULL}" "${NEW_CMDOUT_FILE}" "${NEW_CMDERR_FILE}"
+	    exitCode=$EXIT_CODE_FAILED
+	else
+	    ok_msg ${REAL_TIME} "stdout does not contains $str" "${CMDOUT_FILE}" "${CMDERR_FILE}"
+	fi
+	rm -f ${NEW_CMDERR_FILE} ${NEW_CMDOUT_FILE}
+    fi
+    return $exitCode
+}
+
 function StdoutContainArgument(){
     local str=$1
     local arg=`option_name_convert "${LAST_CMD}" "" "$str"`

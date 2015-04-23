@@ -37,12 +37,14 @@ export EXIT_CODE_FAILED=6
 export EXIT_CODE_SKIPPED=7
 export EXIT_CODE_FATAL=125
 
+## Default environment variables
+: ${DOCKER_RUN_OPTS:=--rm -t -i}
+
+## Detect directory variables
 SCRIPT_DIR=$(readlink -f `dirname $0`)
 TOP_DIR=`(cd ${SCRIPT_DIR}; git-rev-parse --show-toplevel)`
 COMMON_DIR="${TOP_DIR}/client-tests/common"
 source ${COMMON_DIR}/functions.sh
-
-: ${DOCKER_RUN_OPTS:=--rm -t -i}
 
 USER_IN_DOCKER=root
 
