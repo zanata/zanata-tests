@@ -41,15 +41,21 @@ SCRIPT_DIR=$(readlink -f `dirname $0`)
 TOP_DIR=`(cd ${SCRIPT_DIR}; git-rev-parse --show-toplevel)`
 COMMON_DIR="${TOP_DIR}/client-tests/common"
 SUITE_DIR=${TOP_DIR}/client-tests/suites
-source ${COMMON_DIR}/functions.sh
-PARENT_DIR=$(dirname ${SCRIPT_DIR})
 DOCKER_MAKE_DOCKER_FILE_EXEUTABLE=${TOP_DIR}/docker/docker-make-dockerfile
 
 ### Package to be installed
-PACKAGE_NAME=$(basename ${PARENT_DIR})
+PACKAGE_NAME=$(basename ${SCRIPT_DIR})
 : ${TEST_SUITE_NAME:="docker-install-${PACKAGE_NAME}"}
 : ${CLASSNAME:=".install"}
 
+
+###== Program Start
+if [ "$1" = "-h" ];then
+    print_usage
+    exit ${EXIT_CODE_OK}
+fi
+
+source ${COMMON_DIR}/functions.sh
 
 ### install zanata-client on all listed distros and releases
 for distro in ${DOCKER_DISTROS};do
@@ -81,7 +87,7 @@ for distro in ${DOCKER_DISTROS};do
 		;;
         esac
 	${DOCKER_MAKE_DOCKER_FILE_EXEUTABLE} -a -b ${subDir} \
-	   -t "znt-${distro}-${PACKAGE_NAME}:${tag}" \
+	    -t "znt-${distro}-${PACKAGE_NAME}:${tag}" znt-${distro} ${tag}\
 	   <<< "RUN $installCmd ${PACKAGE_NAME} && echo ${INSTALL_OK_MSG} ; ${postInstallCmd}"
 
 	### Test on docker build

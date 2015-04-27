@@ -66,6 +66,9 @@ declare DOCKER_IMAGE_SUDO_USERS="alice grace irene peggy queen"
 ### Base dir for generate docker file
 declare DOCKER_DOCKERFILE_TOP_DIR="${DOCKER_DOCKERFILE_TOP_DIR:-$PWD}"
 
+### docker build options
+declare DOCKER_BUILD_OPTIONS=${DOCKER_BUILD_OPTIONS:--rm=true --force-rm=true --no-cache=true}
+
 ### Docker instances for fedora releases except rawhide
 declare DOCKER_FEDORA_IMAGE_TAGS="21 20"
 
@@ -260,7 +263,7 @@ for tag in ${DOCKER_FEDORA_IMAGE_TAGS}; do
 	${ZANATA_DOCKER_SCRIPT_DIR}/Dockerfile.${repo}.in \
 	<<< "RUN $adduserSnipplet"
     subDir="${WORK_BASE_DIR}/${imageName}"
-    sg docker "docker build --rm -t ${imageName} ${subDir}/"
+    sg docker "docker build ${DOCKER_BUILD_OPTIONS} -t ${imageName} ${subDir}/"
 done
 
 ### ==== Base images for CentOS
@@ -274,7 +277,7 @@ for tag in ${DOCKER_CENTOS_IMAGE_TAGS}; do
 	${ZANATA_DOCKER_SCRIPT_DIR}/Dockerfile.${repo}.in \
 	<<< $adduserSnipplet
     subDir="${WORK_BASE_DIR}/${imageName}"
-    sg docker "docker build --rm -t ${imageName} ${subDir}/"
+    sg docker "docker build ${DOCKER_BUILD_OPTIONS} -t ${imageName} ${subDir}/"
 done
 ###
 ### === Server Images
@@ -298,7 +301,7 @@ for db in "${!DB_FEDORA_TAGS[@]}";do
 		<<< "RUN yum -y --enablerepo=updates-testing install ${databasePkgs}"
 	fi
 	subDir="${WORK_BASE_DIR}/${imageName}"
-	sg docker "docker build --rm -t ${imageName} ${subDir}/"
+	sg docker "docker build ${DOCKER_BUILD_OPTIONS} -t ${imageName} ${subDir}/"
     done
 done
 
@@ -314,7 +317,7 @@ for db in "${!DB_CENTOS_TAGS[@]}";do
 	    -b ${WORK_BASE_DIR} -t ${imageName} $repo $tag \
 	    <<< "RUN yum -y --enablerepo=epel-testing install ${databasePkgs}"
 	subDir="${WORK_BASE_DIR}/${imageName}"
-	sg docker "docker build --rm -t ${imageName} ${subDir}/"
+	sg docker "docker build ${DOCKER_BUILD_OPTIONS} -t ${imageName} ${subDir}/"
     done
 done
 
