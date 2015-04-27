@@ -214,8 +214,8 @@ case "$lsbReleaseId" in
 esac
 ### . Install +{DOCKER_PACKAGE_NAME}+ if it is not already installed.
 if ! ${PACKAGE_EXIST_COMMAND} "${DOCKER_PACKAGE_NAME}";then
-    if ! sudo ${PACKAGE_INSTALL_COMMAND} $p; then
-	echo "Error: ${PACKAGE_INSTALL_COMMAND} $p" >/dev/stderr
+    if ! sudo ${PACKAGE_INSTALL_COMMAND} ${DOCKER_PACKAGE_NAME}; then
+	echo "Error: ${PACKAGE_INSTALL_COMMAND} ${PACKAGE_EXIST_COMMAND}" >/dev/stderr
 	exit ${EXIT_CODE_DEPENDENCY_MISSING}
     fi
 fi
