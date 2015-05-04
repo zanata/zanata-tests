@@ -8,7 +8,7 @@ VERS:=4.9.0 4.8.3
 TARBALL_SUFFIX:=tar.gz
 TARBALLS:=$(foreach v, $(VERS), $(SLUG)-$(v).$(TARBALL_SUFFIX))
 REPO_TYPE:=tar
-URL:=ftp://mirror.aarnet.edu.au/pub/gnu/$(SLUG)/
+URL:=http://mirror.aarnet.edu.au/pub/gnu/$(SLUG)/
 include ../common.mk
 
 $(TARBALLS): $(SLUG)-%.${TARBALL_SUFFIX}:
