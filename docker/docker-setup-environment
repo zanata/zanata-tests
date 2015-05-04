@@ -1,6 +1,6 @@
 #!/bin/bash
-set -e 
-set -o pipefail
+#set -e 
+#set -o pipefail
 
 function print_usage(){
     cat <<END
@@ -38,16 +38,6 @@ declare revnumber=1
 declare numbered
 declare toc2
 
-
-### The command for package management system
-declare PACKAGE_SYSTEM_COMMAND=yum
-
-### The command to install a package
-declare PACKAGE_INSTALL_COMMAND="${PACKAGE_SYSTEM_COMMAND} -y install"
-
-### The command to check list matched package in repo
-declare PACKAGE_LIST_COMMAND="${PACKAGE_SYSETEM_COMMAND} list"
-
 ### The command to check whether the package is installed
 declare PACKAGE_EXIST_COMMAND="rpm -q"
 
@@ -70,7 +60,7 @@ declare DOCKER_DOCKERFILE_TOP_DIR="${DOCKER_DOCKERFILE_TOP_DIR:-$PWD}"
 declare DOCKER_BUILD_OPTIONS=${DOCKER_BUILD_OPTIONS:--rm=true --force-rm=true --no-cache=true}
 
 ### Docker instances for fedora releases except rawhide
-declare DOCKER_FEDORA_IMAGE_TAGS="21 20"
+declare DOCKER_FEDORA_IMAGE_TAGS="rawhide 21 20"
 
 ### Docker Centos
 declare DOCKER_CENTOS_IMAGE_TAGS="7"
@@ -199,6 +189,7 @@ done
 lsbReleaseId=`lsb_release -is`
 lsbReleaseRelease=`lsb_release -rs`
 lsbReleaseReleaseMajor=$(sed -e 's/\..*$//' <<<$lsbReleaseRelease)
+
 case "$lsbReleaseId" in
     RedHatEnterprise* )
 	# CENTOS
@@ -206,11 +197,21 @@ case "$lsbReleaseId" in
 	    echo "CENTOS 5 and earlier does not support docker" > /dev/stderr
 	    exit $DEPENDENCY_MISSING
 	fi
-	distroCompatible=RedHat
+	PACKAGE_SYSTEM_COMMAND=yum
+	PACKAGE_INSTALL_COMMAND="${PACKAGE_SYSTEM_COMMAND} -y install"
+	PACKAGE_LIST_COMMAND="${PACKAGE_SYSETEM_COMMAND} list"
+	PACKAGE_CLEAN_COMMAND="${PACKAGE_SYSETEM_COMMAND} clean all"
 	;;
     Fedora* )
-	DOCKER_PACKAGE_NAME=docker-io
-	distroCompatible=RedHat
+	if [[ $lsbRelease -ge 22 ]];then
+	    PACKAGE_SYSTEM_COMMAND=dnf
+	else
+	    PACKAGE_SYSTEM_COMMAND=yum
+	    DOCKER_PACKAGE_NAME=docker-io
+	fi
+	PACKAGE_INSTALL_COMMAND="${PACKAGE_SYSTEM_COMMAND} -y install"
+	PACKAGE_LIST_COMMAND="${PACKAGE_SYSETEM_COMMAND} list"
+	PACKAGE_CLEAN_COMMAND="${PACKAGE_SYSETEM_COMMAND} clean all"
 	;;
     * )
 	;;
@@ -250,6 +251,14 @@ fi
 ###
 ### ==== Base images for Fedora
 ### Dockerfile and image for fedora {DOCKER_FEDORA_IMAGE_TAGS} will be build with following
+read -d '' fedoraDockerString << EOF
+RUN ${PACKAGE_SYSTEM_COMMAND} -y update; ${PACKAGE_INSTALL_COMMAND} sudo git glibc-common; ${PACKAGE_CLEAN_COMMAND}
+RUN cat > /etc/profile.d/common.sh<<<'export PS1="[\u@\h \w]\\$ "'
+##Disable Defaults requiretty in sudoers file
+RUN sed -ie 's/Defaults\\(.*\\)requiretty/ #Defaults\\1requiretty/g' /etc/sudoers
+RUN groupadd sudo; echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+EOF
+
 adduserSnipplet=
 for username in ${DOCKER_IMAGE_SUDO_USERS}; do
     adduserSnipplet+=" adduser -p '' -m ${username} -G ${DOCKER_IMAGE_SUDO_GROUP}; "
@@ -260,22 +269,29 @@ for tag in ${DOCKER_FEDORA_IMAGE_TAGS}; do
     imageName="znt-fedora:${tag}"
     ${ZANATA_DOCKER_SCRIPT_DIR}/docker-make-dockerfile -a \
 	-b ${WORK_BASE_DIR} -t ${imageName} $repo $tag \
-	${ZANATA_DOCKER_SCRIPT_DIR}/Dockerfile.${repo}.in \
-	<<< "RUN $adduserSnipplet"
+	<<< "$fedoraDockerString
+RUN $adduserSnipplet"
     subDir="${WORK_BASE_DIR}/${imageName}"
     sg docker "docker build ${DOCKER_BUILD_OPTIONS} -t ${imageName} ${subDir}/"
 done
 
 ### ==== Base images for CentOS
 ### Dockerfile and image for fedora {DOCKER_FEDORA_IMAGE_TAGS} will be build with following
+read -r -d '' centosDockerString << EOF
+RUN curl -O https://repos.fedorapeople.org/repos/dchen/epel-collection/epel-epel-collection.repo; ${PACKAGE_SYSTEM_COMMAND} -y update; ${PACKAGE_INSTALL_COMMAND} sudo git glibc-common; ${PACKAGE_CLEAN_COMMAND}
+RUN cat > /etc/profile.d/common.sh<<<'export PS1="[\u@\h \w]\\$ "'
+##Disable Defaults requiretty in sudoers file
+RUN sed -ie 's/Defaults\\(.*\\)requiretty/ #Defaults\\1requiretty/g' /etc/sudoers
+RUN groupadd sudo; echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+EOF
 
 for tag in ${DOCKER_CENTOS_IMAGE_TAGS}; do
     repo="centos"
     imageName="znt-${repo}:${tag}"
     ${ZANATA_DOCKER_SCRIPT_DIR}/docker-make-dockerfile -a \
 	-b ${WORK_BASE_DIR} -t ${imageName} $repo $tag \
-	${ZANATA_DOCKER_SCRIPT_DIR}/Dockerfile.${repo}.in \
-	<<< $adduserSnipplet
+	<<< "$centosDockerString
+RUN $adduserSnipplet"
     subDir="${WORK_BASE_DIR}/${imageName}"
     sg docker "docker build ${DOCKER_BUILD_OPTIONS} -t ${imageName} ${subDir}/"
 done
@@ -294,11 +310,11 @@ for db in "${!DB_FEDORA_TAGS[@]}";do
 	if [ "$tag" = "rawhide" ];then
 	    ${ZANATA_DOCKER_SCRIPT_DIR}/docker-make-dockerfile -a \
 		-b ${WORK_BASE_DIR} -t ${imageName} $repo $tag \
-		<<< "RUN yum -y install ${databasePkgs}"
+		<<< "RUN ${PACKAGE_INSTALL_COMMAND} ${databasePkgs}"
 	else
 	    ${ZANATA_DOCKER_SCRIPT_DIR}/docker-make-dockerfile -a \
 		-b ${WORK_BASE_DIR} -t ${imageName} $repo $tag \
-		<<< "RUN yum -y --enablerepo=updates-testing install ${databasePkgs}"
+		<<< "RUN ${PACKAGE_SYSTEM_COMMAND} -y --enablerepo=updates-testing install ${databasePkgs}"
 	fi
 	subDir="${WORK_BASE_DIR}/${imageName}"
 	sg docker "docker build ${DOCKER_BUILD_OPTIONS} -t ${imageName} ${subDir}/"
