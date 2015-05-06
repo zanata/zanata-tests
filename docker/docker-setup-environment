@@ -278,7 +278,7 @@ done
 ### ==== Base images for CentOS
 ### Dockerfile and image for fedora {DOCKER_FEDORA_IMAGE_TAGS} will be build with following
 read -r -d '' centosDockerString << EOF
-RUN curl -O https://repos.fedorapeople.org/repos/dchen/epel-collection/epel-epel-collection.repo; ${PACKAGE_SYSTEM_COMMAND} -y update; ${PACKAGE_INSTALL_COMMAND} sudo git glibc-common; ${PACKAGE_CLEAN_COMMAND}
+RUN curl -O https://repos.fedorapeople.org/repos/dchen/epel-collection/epel-epel-collection.repo; cp epel-epel-collection.repo /etc/yum.repos.d  ${PACKAGE_SYSTEM_COMMAND} -y update; ${PACKAGE_INSTALL_COMMAND} epel-release sudo git glibc-common; ${PACKAGE_CLEAN_COMMAND}
 RUN cat > /etc/profile.d/common.sh<<<'export PS1="[\u@\h \w]\\$ "'
 ##Disable Defaults requiretty in sudoers file
 RUN sed -ie 's/Defaults\\(.*\\)requiretty/ #Defaults\\1requiretty/g' /etc/sudoers
