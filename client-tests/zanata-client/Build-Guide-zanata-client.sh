@@ -18,45 +18,55 @@ END
     print_variables usage $0
 }
 
+function def_var(){
+    if [[ -z $(eval echo \$$1) ]];then
+        if [[ -z "$2" ]];then
+            export $1 
+        else
+            export $1="$2"
+        fi
+    fi
+}
+
 #### Start Var
-declare author="Ding-Yi Chen"
-declare revdate=2015-02-06
-declare revnumber=2
-declare numbered
-declare toc2
+def_var author "Ding-Yi Chen"
+def_var revdate 2015-06-16
+def_var revnumber 3
+def_var numbered
+def_var toc2
 
 ### Project name
-declare PROJECT_NAME="zanata-client"
+def_var PROJECT_NAME "zanata-client"
 
 ### Clone url
-declare GIT_URL="https://github.com/zanata/${PROJECT_NAME}.git"
+def_var GIT_URL "https://github.com/zanata/${PROJECT_NAME}.git"
 
 ### zanata-client branch to be test.
-declare GIT_BRANCH=master
+def_var GIT_BRANCH master
 
 ### The command for package management system
-declare PACKAGE_SYSTEM_COMMAND=yum
+def_var PACKAGE_SYSTEM_COMMAND yum
 
 ### The command to install a package
-declare PACKAGE_INSTALL_COMMAND="${PACKAGE_SYSTEM_COMMAND} -y install"
+def_var PACKAGE_INSTALL_COMMAND "${PACKAGE_SYSTEM_COMMAND} -y install"
 
 ### The command to check list matched package in repo
-declare PACKAGE_LIST_COMMAND="${PACKAGE_SYSETEM_COMMAND} list"
+def_var PACKAGE_LIST_COMMAND "${PACKAGE_SYSETEM_COMMAND} list"
 
 ### The command to check whether the package is installed
-declare PACKAGE_EXIST_COMMAND="rpm -q"
+def_var PACKAGE_EXIST_COMMAND "rpm -q"
 
 ### The parent directory for cloned zanata-client repo.
-declare ZANATA_CLIENT_CHECKOUT_PARENT_DIR="/tmp"
+def_var ZANATA_CLIENT_CHECKOUT_PARENT_DIR "/tmp"
 
 ### The directory for cloned zanata-client repo.
-declare ZANATA_CLIENT_CHECKOUT_DIR="${ZANATA_CLIENT_CHECKOUT_PARENT_DIR}/zanata-client"
+def_var ZANATA_CLIENT_CHECKOUT_DIR "${ZANATA_CLIENT_CHECKOUT_PARENT_DIR}/zanata-client"
 
 ### Zanata client executable file with path
-declare ZANATA_EXECUTABLE="${ZANATA_CLIENT_CHECKOUT_PARENT_DIR}/${PROJECT_NAME}/zanata-cli/etc/scripts/zanata-cli"
+def_var ZANATA_EXECUTABLE "${ZANATA_CLIENT_CHECKOUT_PARENT_DIR}/${PROJECT_NAME}/zanata-cli/etc/scripts/zanata-cli"
 #### End Var
 
-#===== Start Guide Functions =====
+#      Start Guide Functions      
 
 ## Exit status
 export EXIT_CODE_OK=0
@@ -67,12 +77,11 @@ export EXIT_CODE_FAILED=6
 export EXIT_CODE_SKIPPED=7
 export EXIT_CODE_FATAL=125
 
-
 function extract_variable(){
     local file=$1
     local nameFilter=$2
     awk -v nameFilter="$nameFilter" \
-	'BEGIN {FPAT = "(\"[^\"]+\")|(\\(.+\\))|([^ =]+)"; start=0; descr=""} \
+	'BEGIN {FPAT="(\"[^\"]+\")|(\\(.+\\))|([^ ]+)"; start=0; descr=""} \
 	/^#### End Var/ { start=0} \
 	(start==1 && /^[^#]/ && $2 ~ nameFilter) { sub(/^\"/, "", $3); sub(/\"$/, "", $3); print $2 "\t" $3 "\t" descr ; descr="";} \
 	(start==1 && /^###/) { gsub("^###[ ]?","", $0) ; descr=$0} \
@@ -85,14 +94,14 @@ function print_variables(){
     case $format in
 	asciidoc )
 	    extract_variable $file | awk -F '\\t' 'BEGIN { done=0 } \
-		$2 ~ /^\$\{.*:[=-]/ { ret=gensub(/^\$\{.*:[=-](.+)\}/, "\\1", "g", $2) ; print ":" $1 ": " ret; done=1 }\
+		$2 ~ /^\$\{.*:[ -]/ { ret=gensub(/^\$\{.*:[ -](.+)\}/, "\\1", "g", $2) ; print ":" $1 ": " ret; done=1 }\
 		done==0  {print ":" $1 ": " $2 ; done=1 }\
 		done==1  {done=0}'
 	    ;;
 	bash )
 	    extract_variable $file "^[A-Z]" | awk -F '\\t' \
-		'$2 ~ /[^\)]$/ {print "export " $1 "=\""$2"\"" ;} \
-		$2 ~ /\)$/ {print "export " $1 "="$2 ;} '
+		'$2 ~ /[^\)]$/ {print "export " $1 " \""$2"\"" ;} \
+		$2 ~ /\)$/ {print "export " $1 " "$2 ;} '
 	    ;;
 	usage )
 	    extract_variable $file "^[A-Z]" | awk -F '\\t' '{print $1 "::"; \
@@ -110,11 +119,11 @@ function to_asciidoc(){
 
     awk 'BEGIN {start=0;sh_start=0; in_list=0} \
 	/^#### End Doc/ { start=0} \
-	(start==1 && /^[^#]/ ) { if (sh_start==0) {sh_start=1; if (in_list ==1 ) {print "+"}; print "[source,sh]"; print "----"} print $0;} \
+	(start==1 && /^[^#]/ ) { if (sh_start==0) {sh_start=1; if (in_list==1 ) {print "+"}; print "[source,sh]"; print "----"} print $0;} \
 	(start==1 && /^### \./ ) { in_list=1 } \
 	(start==1 && /^###/ ) { if (sh_start==1) {sh_start=0; print "----"} gsub("^###[ ]?","", $0) ; print $0;} \
 	/^#### Start Doc/ { start=1; } ' $0
-    echo "== Default Environment Variables"
+    echo "   Default Environment Variables"
     echo "[source,sh]"
     echo "----"
     # Extract variable
@@ -139,7 +148,7 @@ while [ -n "$1" ];do
     esac
     shift
 done
-#===== End Guide Functions =====
+#      End Guide Functions      
 
 #### Start Doc
 ### = {PROJECT_NAME} Build Guide
@@ -151,12 +160,12 @@ done
 ### . Make sure maven is installed
 if ! rpm -q --whatprovides maven2 ;then
     # Find suitable package
-    PACKAGE_NAME=
+    PACKAGE_NAME 
     if ${PACKAGE_LIST_COMMAND} maven; then
-	PACKAGE_NAME=maven
+	PACKAGE_NAME maven
     else
 	# EL does not have maven
-	PACKAGE_NAME=apache-maven
+	PACKAGE_NAME apache-maven
 	if ! ${PACKAGE_LIST_COMMAND} ${PACKAGE_NAME}; then
 	    # Install repo file
 	    sudo wget -O /etc/yum.repos.d/epel-apache-maven.repo https://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo
@@ -169,17 +178,17 @@ fi
 ### . Change dir to {ZANATA_CLIENT_CHECKOUT_PARENT_DIR}
 cd ${ZANATA_CLIENT_CHECKOUT_PARENT_DIR}
 ###
-###  . Clone the zanata-client git repo; change dir to {ZANATA_CLIENT_CHECKOUT_DIR}; 
+### . Clone or update zanata-client on +GIT_BRANCH+ on {ZANATA_CLIENT_CHECKOUT_DIR}; 
 if [ ! -d zanata-client ];then
-    git clone https://github.com/zanata/zanata-client.git
+    git clone -b ${GIT_BRANCH} https://github.com/zanata/zanata-client.git
+    cd ${ZANATA_CLIENT_CHECKOUT_DIR}
+else
+    cd ${ZANATA_CLIENT_CHECKOUT_DIR}
+    git fetch
+    git checkout ${GIT_BRANCH}
+    git merge origin/${GIT_BRANCH}
 fi
-cd ${ZANATA_CLIENT_CHECKOUT_DIR}
-###
-### . (Optional) Checkout the branch {GIT_BRANCH}; and pull the latest change
-git checkout master
-git pull
-git checkout ${GIT_BRANCH}
-git pull --rebase
+
 ###
 ### . mvn install
 mvn clean install

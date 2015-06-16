@@ -62,8 +62,7 @@ unset SKIP_TEST
 ###===== Start push tests =====
 CLASSNAME=push
 pushd ${WORK_DIR}
-PUSH_OPTIONS=(--
---project=${ZANATA_PROJECT_SLUG} --project-version=${ZANATA_VERSION_SLUG} --project-type=${ZANATA_PROJECT_TYPE})
+PUSH_OPTIONS=(--project=${ZANATA_PROJECT_SLUG} --project-version=${ZANATA_VERSION_SLUG} --project-type=${ZANATA_PROJECT_TYPE})
 
 ### push with Compulsory options Only
 TestCaseStart "Compulsory options"
