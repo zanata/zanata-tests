@@ -1,0 +1,96 @@
+#!/bin/bash
+
+function print_usage(){
+    cat <<END
+    $0 - Run test on specified docker image
+SYNOPSIS
+    $0 [OPTIONS] <image>:<tag> <command> ...
+
+ARGUMENTS
+    command: Command to be run at docker
+
+OPTIONS
+    -u <username>: username inside docker
+
+DESCRIPTION
+    This command bind mount host zanata-tests/ to 
+    as /zanata-tests/ in docker, then run the command.
+    
+ENVIRONMENT
+    DOCKER_RUN_OPTS:
+	Docker run options:
+	Default: --rm -t -i 
+
+
+EXIT STATUS
+    ${EXIT_CODE_INVALID_ARGUMENTS} invalid or missing arguments
+    Otherwise same as <command>
+END
+}
+
+## Exit status
+export EXIT_CODE_OK=0
+export EXIT_CODE_INVALID_ARGUMENTS=3
+export EXIT_CODE_DEPENDENCY_MISSING=4
+export EXIT_CODE_ERROR=5
+export EXIT_CODE_FAILED=6
+export EXIT_CODE_SKIPPED=7
+export EXIT_CODE_FATAL=125
+
+## Default environment variables
+: ${DOCKER_RUN_OPTS:=--rm -t -i}
+
+## Detect directory variables
+SCRIPT_DIR=$(readlink -f `dirname $0`)
+TOP_DIR=`(cd ${SCRIPT_DIR}; git-rev-parse --show-toplevel)`
+COMMON_DIR="${TOP_DIR}/client-tests/common"
+source ${COMMON_DIR}/functions.sh
+
+USER_IN_DOCKER=root
+
+while getopts "i:t:u:" opt; do
+    case $opt in
+	u) 
+	    USER_IN_DOCKER=$OPTARG
+	    ;;
+	*)
+	    print_usage
+	    echo "Unrecognized option $opt" > /etc/strerr
+	    exit 1
+	    ;;
+    esac
+done
+shift $((OPTIND-1));
+
+imageTag=$1
+shift
+
+if [ -z "${imageTag}" ];then
+    print_usage
+    exit ${EXIT_CODE_INVALID_ARGUMENTS}
+fi
+
+CMD=$1
+shift
+
+if [ -z "${CMD}" ]; then
+    print_usage
+    echo "[command] is not specified"
+    exit 1
+fi
+
+CMD_DIR=$(dirname `readlink -f ${CMD}`)
+CMD_NAME=$(basename ${CMD})
+
+CMD_RELATIVE_TO_TOP_DIR=${CMD_DIR##$TOP_DIR}
+
+if [ "${CMD_RELATIVE_TO_TOP_DIR}" = "${CMD_DIR}" ];then
+    ### Relative dir == CMD_DIR means it is not under zanata-tests/
+    CMD_IN_DOCKER=$CMD
+else
+    ### Command is in zanata-tests/
+    CMD_IN_DOCKER=/zanata-tests${CMD_RELATIVE_TO_TOP_DIR}/${CMD_NAME}
+fi
+
+docker run ${DOCKER_RUN_OPTS} -v ${TOP_DIR}/:/zanata-tests/ ${imageTag} su - ${USER_IN_DOCKER} -c ${CMD_IN_DOCKER} "$@"
+

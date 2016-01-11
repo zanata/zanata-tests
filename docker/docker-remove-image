@@ -4,7 +4,7 @@ function print_usage(){
     cat <<END
 $0 - remove docker image id
 SYNOPSIS
-    $0 REPOSITORY [TAG]
+    $0 <repoRegex> [TAG]
 
 DESCRIPTION
     Return the specified docker image
@@ -13,7 +13,7 @@ EXIT STATUS
     0 Ok
     1 Showing print_usage
     41 Failed to remove image
-    44 if no such repository
+    44 if no such repository/tag
     45 if tag is not found
 END
 }
@@ -32,29 +32,22 @@ TAG=$2
 SCRIPT_DIR=`dirname $0`
 : ${DOCKER_CMD:=docker}
 
-imageId=`$SCRIPT_DIR/docker-get-image-id.sh $REPOSITORY $TAG`
-ret=$?
+## Put the oldest image in front
+imageList=`$SCRIPT_DIR/docker-get-image-id $REPOSITORY $TAG| tac`
 
-case $ret in
-    44)
-	error_msg "No such repository"
-	exit 44
-	;;
-    45)
-	error_msg "No such tag"
-	exit 45
-	;;
-esac
-
-if [ -z "$imageId" ];then
-    error_msg "Image Id not found"
-    exit 41
+if [ -z "$imageList" ];then
+    error_msg "Matched Image not found"
+    return 44
 fi
 
-if ! $DOCKER_CMD rmi $imageId; then
-    error_msg "Failed to remove image"
-    exit 41
-fi
+for imageId in $(xargs<<<"$imageList");do
+    $DOCKER_CMD rmi $imageId
+#    if ! $DOCKER_CMD rmi $imageId; then
+#	error_msg "Failed to remove image"
+#	exit 41
+#    fi
+done
+
 
 exit 0
 

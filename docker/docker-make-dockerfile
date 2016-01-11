@@ -1,0 +1,122 @@
+#!/bin/bash
+set -e 
+set -o pipefail
+
+SCRIPT_DIR=$(readlink -f `dirname $0`)
+
+function print_usage(){
+    cat <<-END
+	NAME
+	----
+	$0 -  Make Dockerfile
+
+	SYNOPSIS
+	--------
+	$0 [options] <repo> <tag> [file1 [file2 ... ]]
+
+	DESCRIPTION
+	-----------
+        This program makes Dockerfile in subdirectory.
+	By default, it will create znt-<repo>:<tag>/Dockerfile
+	in base directory (which is, by default, current directory)
+
+
+	ARGUMENTS
+	---------
+	repo: The repo like fedora or centos
+	tag:  The tag like rawhide, 21
+	file1 ...: File that will append to Dockerfile
+
+	OPTIONS
+	-------
+	-b baseDir:
+	   Directory to create a directory with imageName/Dockerfle
+	   If not specify, it will use current directory.
+
+	-a :
+	   Append stdin to Dockerfile after all other file appended.
+
+	-t imageName:
+	   Docker image file, which will also be the directory name that contain Dockerfile.
+
+	
+
+	EXIT STATUS
+	-----------
+	${EXIT_CODE_OK} if successiful
+	${EXIT_CODE_DEPENDENCY_MISSING} if dependency is missing
+	${EXIT_CODE_INVALID_ARGUMENTS} invalid or missing arguments
+
+
+	ENVIRONMENT
+	-----------
+	END
+}
+
+## Exit status
+export EXIT_CODE_OK=0
+export EXIT_CODE_INVALID_ARGUMENTS=3
+export EXIT_CODE_DEPENDENCY_MISSING=4
+export EXIT_CODE_ERROR=5
+export EXIT_CODE_FAILED=6
+export EXIT_CODE_SKIPPED=7
+export EXIT_CODE_FATAL=125
+
+baseDir=.
+imageName=
+outStdio=0
+while getopts "ab:t:" opt;do
+    case $opt in
+	a )
+	    outStdio=1
+	    ;;
+	b )
+	    baseDir=$OPTARG
+	    ;;
+	t )
+	    imageName=$OPTARG
+	    ;;
+	* )
+	    echo "Invalid option -$opt" > /dev/stderr
+	    exit ${EXIT_CODE_INVALID_ARGUMENTS}
+	    ;;
+    esac
+done
+shift $((OPTIND-1))
+
+if [ $# -le 1 ];then
+    print_usage
+    exit ${EXIT_CODE_INVALID_ARGUMENTS}
+fi
+repo=$1
+tag=$2
+shift 2
+
+if [ -z "$imageName" ];then
+    imageName="znt-$repo-$tag"
+fi
+
+## Create Docker file
+subDir=${baseDir}/${imageName}
+mkdir -p ${subDir}
+dockerFile=${subDir}/Dockerfile
+
+cat >${dockerFile}<<END
+FROM $repo:$tag
+MAINTAINER "Ding-Yi Chen" <dchen@redhat.com>
+END
+
+for f in "$@"; do 
+    if [ -r $f ];then
+	cat $f >> ${dockerFile}
+    else
+	echo "File $f is unreadable" > /dev/stderr
+	exit $EXIT_CODE_INVALID_ARGUMENTS
+    fi
+done
+
+## Append from stdin
+if [ $outStdio -eq 1 ];then
+    cat  >>${dockerFile} </dev/stdin
+fi
+

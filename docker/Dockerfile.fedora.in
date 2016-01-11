@@ -1,0 +1,6 @@
+RUN @PACKAGE_SYSTEM_COMMAND@ -y update; @PACKAGE_SYSTEM_COMMAND@ -y install sudo git glibc-common; @PACKAGE_SYSTEM_COMMAND@ clean all
+RUN cat > /etc/profile.d/common.sh<<<'export PS1="[\u@\h \w]\\$ "'
+##Disable Defaults requiretty in sudoers file
+RUN sed -ie 's/Defaults\\(.*\\)requiretty/ #Defaults\\1requiretty/g' /etc/sudoers
+RUN groupadd sudo; echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
